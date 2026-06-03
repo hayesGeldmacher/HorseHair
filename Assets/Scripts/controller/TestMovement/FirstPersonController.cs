@@ -3,18 +3,18 @@ using UnityEngine;
 public class FirstPersonController : MonoBehaviour
 {
     [Header("movement fields")]
-    [SerializeField] private float horizontal;
-    [SerializeField] private float vertical;
-    [SerializeField] private bool isMovingInput = false; //is player moving
+    private float horizontal;
+    private float vertical;
+    private bool isMovingInput = false; //is player moving
     [SerializeField] private float walkSpeed;
 
     [Header("Gravity Fields")]
-    [SerializeField] private bool isGrounded = true;
+    private bool isGrounded = true;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private float groundCheckRange = 0.7f;
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private float gravityStrength;
-    [SerializeField] private float velocity;
+    private float velocity;
     [SerializeField] private float maxVelocity;
     
 
