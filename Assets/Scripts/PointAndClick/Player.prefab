@@ -31,6 +31,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 7630669772818860642}
   - {fileID: 3198279117304665761}
   - {fileID: 7551574917136326215}
   m_Father: {fileID: 0}
@@ -166,7 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController_PointAndClick
   PlayerCamera: {fileID: 6671725320161104119}
-  blinkAnimationSpeed: 0.5
+  blinkAnimationSpeed: 0.4
   blinkAnimator: {fileID: 5574424755196377670}
 --- !u!1 &1788094897615104466
 GameObject:
@@ -243,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.CanvasScaler
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -305,8 +306,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -490}
-  m_SizeDelta: {x: 1124, y: 100}
+  m_AnchoredPosition: {x: -15.8535, y: -490}
+  m_SizeDelta: {x: 1789.707, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3687121846331119800
 CanvasRenderer:
@@ -440,8 +441,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 531}
-  m_SizeDelta: {x: 1124, y: 100}
+  m_AnchoredPosition: {x: -7.0446, y: 531}
+  m_SizeDelta: {x: 1772.1018, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4061284166240488372
 CanvasRenderer:
@@ -623,7 +624,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraController
   _pitchClamp: 20
   _yawClamp: 20
-  _followSpeed: 2
+  _followSpeedX: 2
+  _followSpeedY: 2
 --- !u!20 &9116733426156734739
 Camera:
   m_ObjectHideFlags: 0
@@ -735,3 +737,74 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &7936480301406417312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7630669772818860642}
+  - component: {fileID: 8724004666053079414}
+  m_Layer: 0
+  m_Name: CursorManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7630669772818860642
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7936480301406417312}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.39045, y: 0, z: 2.57016}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7084677945363431872}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8724004666053079414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7936480301406417312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc55549baedc89041b6ce90479bc7a4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CursorManager
+  cursorAnimationsList:
+  - cursorType: 0
+    frames:
+    - {fileID: 2800000, guid: a17b1e89bfba5a84c8a265ab710eed59, type: 3}
+    frameRate: 0
+    offset: {x: 9, y: 4}
+  - cursorType: 2
+    frames:
+    - {fileID: 2800000, guid: c7b4e11499f44bc46bf8cc7cb092fc4d, type: 3}
+    - {fileID: 2800000, guid: 5f4229f27d4964e4c8b5bceb6b0f4727, type: 3}
+    - {fileID: 2800000, guid: c87fbfa34c99feb4db441ed79d1bfd4b, type: 3}
+    - {fileID: 2800000, guid: 12bbda0d74139f845b6b5f4a05869abc, type: 3}
+    - {fileID: 2800000, guid: 297d513b7dbe5494087f145426eaf9dc, type: 3}
+    frameRate: 0.15
+    offset: {x: 16, y: 16}
+  - cursorType: 3
+    frames:
+    - {fileID: 2800000, guid: d4a368f16dc786a43a896d46f97071c7, type: 3}
+    - {fileID: 2800000, guid: f31f13e6120571a41aefd397740754b4, type: 3}
+    frameRate: 0.15
+    offset: {x: 16, y: 16}
+  - cursorType: 1
+    frames:
+    - {fileID: 2800000, guid: c3fda771f302c4b4d8e7de005003e217, type: 3}
+    - {fileID: 2800000, guid: 84ad5d9135de58c46bec49d50005da3f, type: 3}
+    frameRate: 0.15
+    offset: {x: 16, y: 16}

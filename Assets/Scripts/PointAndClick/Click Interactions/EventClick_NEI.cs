@@ -5,15 +5,20 @@ public class NPCClickEventData : ClickEventData
     public string NPCName;
 }
 
-public class EventClick_NPC : EventClick
+public class EventClick_NEI : EventClick
 {
-    [SerializeField] private string npcName = "NPC";
+    [SerializeField] private string propName = "Prop";
+
+    protected override void SetType()
+    {
+        Type = ObjectType.NEI;
+    }
 
     protected override ClickEventData CreateEventData()
     {
         return new NPCClickEventData
         {
-            NPCName = npcName,
+            NPCName = propName,
             ObjectTransform = transform,
             Source = gameObject
         };

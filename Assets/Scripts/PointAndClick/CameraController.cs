@@ -9,8 +9,10 @@ public class CameraController : MonoBehaviour
     private float _pitchClamp = 20f;
     [SerializeField, Tooltip("How far can the camera move left and right")] 
     private float _yawClamp = 20f;
-    [SerializeField, Tooltip("How fast the camera follows the cursor")] 
-    private float _followSpeed = 5f;
+    [SerializeField, Tooltip("How fast the camera follows the cursor horizontally")]
+    private float _followSpeedX = 2f;
+    [SerializeField, Tooltip("How fast the camera follows the cursor vertically")]
+    private float _followSpeedY = 2f;
 
     private Vector2 _screenCenter;
     private Vector2 _mouseInput = Vector2.zero;
@@ -27,8 +29,11 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        _currentInput = Vector2.Lerp(_currentInput, _mouseInput, 
-            Time.deltaTime * _followSpeed);
+        _currentInput.x = Mathf.Lerp(_currentInput.x, _mouseInput.x, 
+            Time.deltaTime * _followSpeedX);
+        _currentInput.y = Mathf.Lerp(_currentInput.y, _mouseInput.y, 
+            Time.deltaTime * _followSpeedY);
+
 
         _panTilt.PanAxis.Value = _currentInput.x * _yawClamp;
         _panTilt.TiltAxis.Value = -_currentInput.y * _pitchClamp;
@@ -44,10 +49,12 @@ public class CameraController : MonoBehaviour
         _mouseInput = Vector2.ClampMagnitude(offset, 1f);
     }
 
-    public void ChangeCameraSettings(float newPitchLimit = 20, float newYawLimit = 20, float newFollowSpeed = 5)
+    public void ChangeCameraSettings(float newPitchLimit = 20, float newYawLimit = 20, float newFollowSpeedX = 2, 
+        float newFollowSpeedY = 2)
     {
         _pitchClamp = newPitchLimit;
         _yawClamp = newYawLimit;
-        _followSpeed = newFollowSpeed;
+        _followSpeedX = newFollowSpeedX;
+        _followSpeedY = newFollowSpeedY;
     }
 }

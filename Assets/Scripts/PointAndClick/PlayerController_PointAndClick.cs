@@ -55,7 +55,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
         transform.position = data.ObjectTransform.position;
         transform.rotation = data.ObjectTransform.rotation;
 
-        PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeed);
+        PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX, 
+            data.FollowSpeedY);
 
         blinkAnimator.SetTrigger("EyesUp");
     }
