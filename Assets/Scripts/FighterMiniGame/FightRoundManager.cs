@@ -2,10 +2,36 @@ using UnityEngine;
 using TMPro;
 
 /// <summary>
-/// Handles round timing, round wins, bo3 game rules, and round resets
+/// Handles start screen, round timing, round wins, bo3 game rules, next-round prompt, and round resets
 /// </summary>
 public class FightRoundManager : MonoBehaviour
 {
+    [Header("Start Screen")]
+    [Tooltip("Panel shown before the fighting game starts")]
+    [SerializeField] private GameObject startScreenPanel;
+
+    [Tooltip("Title text object shown on the start screen")]
+    [SerializeField] private TMP_Text titleText;
+
+    [Tooltip("Press any button text object shown on the start screen")]
+    [SerializeField] private TMP_Text pressAnyButtonText;
+
+    [Tooltip("How fast the press any button text blinks")]
+    [SerializeField] private float blinkSpeed = 2f;
+
+    [Tooltip("Small delay after pressing any button before fighter control turns on")]
+    [SerializeField] private float startInputLockoutTime = 0.25f;
+
+    [Tooltip("If true, the game returns to the start screen after the match ends")]
+    [SerializeField] private bool returnToStartScreenAfterGameOver = true;
+
+    [Header("Next Round Prompt")]
+    [Tooltip("Text shown between rounds to wait for player input")]
+    [SerializeField] private TMP_Text nextRoundPromptText;
+
+    [Tooltip("How long to ignore input after a round ends before the next-round prompt can be accepted")]
+    [SerializeField] private float nextRoundInputDelay = 1f;
+
     [Header("Round Rules")]
     [Tooltip("Length of each round in seconds 120 seconds = 2 minutes")]
     [SerializeField] private float roundTimeSeconds = 120f;
@@ -13,7 +39,7 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Number of round wins needed to win the full game")]
     [SerializeField] private int roundsNeededToWinGame = 2;
 
-    [Tooltip("Delay before starting the next round after a round ends")]
+    [Tooltip("Delay before returning to the start screen after the full game ends")]
     [SerializeField] private float roundRestartDelay = 2f;
 
     [Header("Fighter References")]
@@ -60,16 +86,37 @@ public class FightRoundManager : MonoBehaviour
     private int enemyRoundWins;
     private int currentRoundNumber = 1;
 
+    private float startBlinkTimer;
+    private float nextRoundBlinkTimer;
+    private float nextRoundInputTimer;
+
+    private bool waitingForStart;
+    private bool waitingForNextRound;
+    private bool startingRound;
     private bool roundActive;
     private bool gameOver;
 
     private void Start()
     {
-        StartRound();
+        ShowStartScreen();
     }
 
     private void Update()
     {
+        if (waitingForStart)
+        {
+            UpdateStartScreenBlink();
+            CheckForAnyButtonStart();
+            return;
+        }
+
+        if (waitingForNextRound)
+        {
+            UpdateNextRoundPrompt();
+            CheckForAnyButtonNextRound();
+            return;
+        }
+
         if (!roundActive || gameOver)
             return;
 
@@ -78,10 +125,150 @@ public class FightRoundManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Shows the start screen and disables fighter control
+    /// </summary>
+    private void ShowStartScreen()
+    {
+        CancelInvoke(nameof(StartRound));
+
+        waitingForStart = true;
+        waitingForNextRound = false;
+        startingRound = false;
+        roundActive = false;
+        gameOver = false;
+
+        ResetMatchState();
+        ResetFighters();
+        SetFightersActive(false);
+        UpdateAllUI();
+
+        SetStartScreenVisible(true);
+        SetNextRoundPromptVisible(false);
+
+        startBlinkTimer = 0f;
+        nextRoundBlinkTimer = 0f;
+        nextRoundInputTimer = 0f;
+
+        SetRoundMessage("");
+
+        Debug.Log("Start screen shown");
+    }
+
+    private void ResetMatchState()
+    {
+        currentRoundNumber = 1;
+        playerRoundWins = 0;
+        enemyRoundWins = 0;
+        currentRoundTime = roundTimeSeconds;
+    }
+
+    /// <summary>
+    /// Checks for any button or key press to start the match
+    /// </summary>
+    private void CheckForAnyButtonStart()
+    {
+        if (startingRound || !Input.anyKeyDown)
+            return;
+
+        StartMatch();
+    }
+
+    /// <summary>
+    /// Checks for any button or key press to start the next round
+    /// </summary>
+    private void CheckForAnyButtonNextRound()
+    {
+        if (startingRound || nextRoundInputTimer > 0f || !Input.anyKeyDown)
+            return;
+
+        StartNextRound();
+    }
+
+    /// <summary>
+    /// Hides the start screen and starts the first round after a short input lockout
+    /// </summary>
+    private void StartMatch()
+    {
+        waitingForStart = false;
+        waitingForNextRound = false;
+        startingRound = true;
+        gameOver = false;
+
+        SetStartScreenVisible(false);
+        SetNextRoundPromptVisible(false);
+        QueueRoundStart();
+    }
+
+    /// <summary>
+    /// Starts the next round after the between-round prompt
+    /// </summary>
+    private void StartNextRound()
+    {
+        waitingForNextRound = false;
+        startingRound = true;
+
+        SetNextRoundPromptVisible(false);
+        QueueRoundStart();
+    }
+
+    private void QueueRoundStart()
+    {
+        SetFightersActive(false);
+        Invoke(nameof(StartRound), startInputLockoutTime);
+    }
+
+    /// <summary>
+    /// Shows the next-round prompt and locks input briefly to prevent accidental button spam
+    /// </summary>
+    private void ShowNextRoundPrompt()
+    {
+        waitingForNextRound = true;
+        startingRound = false;
+        roundActive = false;
+
+        nextRoundInputTimer = nextRoundInputDelay;
+        nextRoundBlinkTimer = 0f;
+
+        SetFightersActive(false);
+        SetNextRoundPromptVisible(true);
+    }
+
+    /// <summary>
+    /// Makes the start screen press-any-button text blink
+    /// </summary>
+    private void UpdateStartScreenBlink()
+    {
+        BlinkText(pressAnyButtonText, ref startBlinkTimer);
+    }
+
+    /// <summary>
+    /// Updates the next-round prompt blink and input delay
+    /// </summary>
+    private void UpdateNextRoundPrompt()
+    {
+        nextRoundInputTimer = TickTimer(nextRoundInputTimer);
+        BlinkText(nextRoundPromptText, ref nextRoundBlinkTimer);
+    }
+
+    private void BlinkText(TMP_Text text, ref float timer)
+    {
+        if (text == null)
+            return;
+
+        timer += Time.deltaTime * blinkSpeed;
+        text.enabled = Mathf.Sin(timer) > 0f;
+    }
+
+    /// <summary>
     /// Starts or restarts a round
     /// </summary>
     private void StartRound()
     {
+        if (waitingForStart || gameOver)
+            return;
+
+        waitingForNextRound = false;
+        startingRound = false;
         currentRoundTime = roundTimeSeconds;
         roundActive = true;
 
@@ -89,6 +276,7 @@ public class FightRoundManager : MonoBehaviour
         SetFightersActive(true);
         UpdateAllUI();
 
+        SetNextRoundPromptVisible(false);
         SetRoundMessage("Round " + currentRoundNumber);
 
         Debug.Log("Round " + currentRoundNumber + " started.");
@@ -99,11 +287,10 @@ public class FightRoundManager : MonoBehaviour
     /// </summary>
     private void UpdateRoundTimer()
     {
-        currentRoundTime -= Time.deltaTime;
+        currentRoundTime = TickTimer(currentRoundTime);
 
         if (currentRoundTime <= 0f)
         {
-            currentRoundTime = 0f;
             EndRoundByTime();
         }
 
@@ -124,7 +311,6 @@ public class FightRoundManager : MonoBehaviour
         if (enemyHealth != null && enemyHealth.IsDefeated)
         {
             EndRound(playerCharacter);
-            return;
         }
     }
 
@@ -182,7 +368,7 @@ public class FightRoundManager : MonoBehaviour
             return;
 
         currentRoundNumber++;
-        Invoke(nameof(StartRound), roundRestartDelay);
+        ShowNextRoundPrompt();
     }
 
     /// <summary>
@@ -200,7 +386,7 @@ public class FightRoundManager : MonoBehaviour
         SetRoundMessage("Draw Round");
 
         currentRoundNumber++;
-        Invoke(nameof(StartRound), roundRestartDelay);
+        ShowNextRoundPrompt();
     }
 
     /// <summary>
@@ -230,11 +416,17 @@ public class FightRoundManager : MonoBehaviour
     {
         gameOver = true;
         roundActive = false;
+        waitingForNextRound = false;
+        startingRound = false;
 
         SetFightersActive(false);
+        SetNextRoundPromptVisible(false);
         SetRoundMessage(message);
 
         Debug.Log(message);
+
+        if (returnToStartScreenAfterGameOver)
+            Invoke(nameof(ShowStartScreen), roundRestartDelay);
     }
 
     /// <summary>
@@ -260,14 +452,17 @@ public class FightRoundManager : MonoBehaviour
         if (fighter == null || startPoint == null)
             return;
 
+        if (fighterRigidbody != null)
+        {
+            fighterRigidbody.linearVelocity = Vector3.zero;
+            fighterRigidbody.angularVelocity = Vector3.zero;
+            fighterRigidbody.position = startPoint.position;
+            fighterRigidbody.rotation = startPoint.rotation;
+            return;
+        }
+
         fighter.transform.position = startPoint.position;
         fighter.transform.rotation = startPoint.rotation;
-
-        if (fighterRigidbody == null)
-            return;
-
-        fighterRigidbody.linearVelocity = Vector3.zero;
-        fighterRigidbody.angularVelocity = Vector3.zero;
     }
 
     /// <summary>
@@ -280,6 +475,30 @@ public class FightRoundManager : MonoBehaviour
 
         if (enemyCharacter != null)
             enemyCharacter.SetRoundActive(isActive);
+    }
+
+    private void SetStartScreenVisible(bool isVisible)
+    {
+        if (startScreenPanel != null)
+            startScreenPanel.SetActive(isVisible);
+
+        if (titleText != null)
+            titleText.gameObject.SetActive(isVisible);
+
+        if (pressAnyButtonText != null)
+        {
+            pressAnyButtonText.gameObject.SetActive(isVisible);
+            pressAnyButtonText.enabled = isVisible;
+        }
+    }
+
+    private void SetNextRoundPromptVisible(bool isVisible)
+    {
+        if (nextRoundPromptText == null)
+            return;
+
+        nextRoundPromptText.gameObject.SetActive(isVisible);
+        nextRoundPromptText.enabled = isVisible;
     }
 
     /// <summary>
@@ -327,5 +546,13 @@ public class FightRoundManager : MonoBehaviour
             return;
 
         roundMessageText.text = message;
+    }
+
+    private float TickTimer(float timer)
+    {
+        if (timer <= 0f)
+            return 0f;
+
+        return timer - Time.deltaTime;
     }
 }

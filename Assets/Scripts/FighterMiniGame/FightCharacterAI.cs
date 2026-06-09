@@ -1,8 +1,8 @@
 using UnityEngine;
 
 /// <summary>
-///  Opponent AI for the fighting game
-/// Controls spacing, attacking, blocking, and jump attacks through FightCharacter input
+/// Opponent AI for the fighting game
+/// Controls spacing, attacking, blocking, jump attacks, round-start easing, breathing space, and player pressure response through FightCharacter input
 /// </summary>
 public class FightCharacterAI : MonoBehaviour
 {
@@ -31,6 +31,28 @@ public class FightCharacterAI : MonoBehaviour
     [Tooltip("Player transform the AI reacts to")]
     [SerializeField] private Transform player;
 
+    [Header("Round Start Behavior")]
+    [Tooltip("How long the AI uses slower, more cautious movement after a round starts")]
+    [SerializeField] private float openingEaseTime = 2f;
+
+    [Tooltip("Movement strength during the opening ease period")]
+    [SerializeField] private float openingApproachStrength = 0.35f;
+
+    [Tooltip("Chance that the AI slowly approaches during the opening")]
+    [SerializeField] private float openingSlowApproachChance = 0.6f;
+
+    [Tooltip("Chance that the AI waits during the opening")]
+    [SerializeField] private float openingWaitChance = 0.25f;
+
+    [Tooltip("Chance that the AI briefly backs away during the opening")]
+    [SerializeField] private float openingBackAwayChance = 0.15f;
+
+    [Tooltip("Minimum time before the AI changes opening movement")]
+    [SerializeField] private float openingChoiceMinTime = 0.35f;
+
+    [Tooltip("Maximum time before the AI changes opening movement")]
+    [SerializeField] private float openingChoiceMaxTime = 0.8f;
+
     [Header("Spacing")]
     [Tooltip("If farther than this, the AI walks toward the player")]
     [SerializeField] private float approachDistance = 3.5f;
@@ -49,7 +71,7 @@ public class FightCharacterAI : MonoBehaviour
 
     [Header("Decision Timing")]
     [Tooltip("Minimum time between AI decisions")]
-    [SerializeField] private float decisionCooldown = 0.65f;
+    [SerializeField] private float decisionCooldown = 0.75f;
 
     [Tooltip("Small delay before the AI reacts Higher values make the AI easier")]
     [SerializeField] private float reactionDelay = 0.12f;
@@ -65,24 +87,53 @@ public class FightCharacterAI : MonoBehaviour
     [SerializeField] private float blockCooldown = 1.5f;
 
     [Tooltip("Cooldown after the AI jump attacks so it does not jump repeatedly")]
-    [SerializeField] private float jumpAttackCooldown = 1.75f;
+    [SerializeField] private float jumpAttackCooldown = 2.5f;
 
     [Header("Behavior Weights")]
     [Tooltip("Higher value means standing punch is more likely")]
     [SerializeField] private int standingPunchWeight = 50;
 
     [Tooltip("Higher value means crouching punch is more likely")]
-    [SerializeField] private int crouchingPunchWeight = 20;
+    [SerializeField] private int crouchingPunchWeight = 25;
 
     [Tooltip("Higher value means jumping punch is more likely")]
-    [SerializeField] private int jumpingPunchWeight = 20;
+    [SerializeField] private int jumpingPunchWeight = 10;
 
     [Tooltip("Higher value means blocking is more likely")]
-    [SerializeField] private int blockWeight = 10;
+    [SerializeField] private int blockWeight = 15;
 
     [Header("Movement Feel")]
     [Tooltip("Prevents the AI from switching left/right movement too rapidly")]
     [SerializeField] private float movementCommitTime = 0.2f;
+
+    [Header("Breathing Space")]
+    [Tooltip("How many attacks the AI can do before it backs away")]
+    [SerializeField] private int attacksBeforeBackAway = 2;
+
+    [Tooltip("How long the AI backs away after attacking several times")]
+    [SerializeField] private float forcedBackAwayTime = 0.65f;
+
+    [Tooltip("How long the AI waits after backing away")]
+    [SerializeField] private float recoveryPauseTime = 0.25f;
+
+    [Tooltip("Distance where the AI is considered too close and should back away")]
+    [SerializeField] private float emergencyBackAwayDistance = 0.65f;
+
+    [Header("Player Pressure Response")]
+    [Tooltip("If true, the AI backs up when the player walks toward it")]
+    [SerializeField] private bool respectPlayerForwardPressure = true;
+
+    [Tooltip("Distance where the AI starts respecting player forward movement")]
+    [SerializeField] private float pressureRespectDistance = 2.25f;
+
+    [Tooltip("How long the player must move forward before the AI reacts")]
+    [SerializeField] private float pressureReactionTime = 0.15f;
+
+    [Tooltip("How long the AI backs away after detecting player pressure")]
+    [SerializeField] private float pressureBackAwayTime = 0.45f;
+
+    [Tooltip("Minimum player movement speed needed to count as forward pressure")]
+    [SerializeField] private float playerPressureSpeedThreshold = 0.05f;
 
     private AIState currentState;
     private LastAction lastAction;
@@ -95,10 +146,28 @@ public class FightCharacterAI : MonoBehaviour
     private float jumpAttackCooldownTimer;
     private float movementCommitTimer;
 
+    private float openingEaseTimer;
+    private float openingChoiceTimer;
+
+    private float forcedBackAwayTimer;
+    private float recoveryPauseTimer;
+
+    private float pressureTimer;
+    private float pressureBackAwayTimer;
+    private float previousPlayerX;
+
+    private float distanceToPlayer;
+    private float directionToPlayer;
+
+    private int attackSequenceCount;
+
     private Vector2 currentMoveInput;
+    private Vector2 openingMoveInput;
 
     private bool pendingDecision;
     private bool waitingForJumpPunch;
+    private bool openingBehaviorActive;
+    private bool wasRoundActive;
 
     private void Reset()
     {
@@ -112,8 +181,13 @@ public class FightCharacterAI : MonoBehaviour
 
     private void Start()
     {
-        currentState = AIState.Spacing;
-        lastAction = LastAction.None;
+        ResetAIState();
+
+        if (player != null)
+            previousPlayerX = player.position.x;
+
+        if (fightCharacter != null)
+            wasRoundActive = fightCharacter.IsRoundActive;
     }
 
     private void Update()
@@ -121,7 +195,25 @@ public class FightCharacterAI : MonoBehaviour
         if (fightCharacter == null || player == null)
             return;
 
+        UpdateSpatialData();
+        UpdateRoundActiveState();
+
+        if (!fightCharacter.IsRoundActive)
+        {
+            SendIdleInput();
+            return;
+        }
+
         UpdateTimers();
+
+        if (HandleOpeningBehavior())
+            return;
+
+        if (HandlePlayerForwardPressure())
+            return;
+
+        if (HandleBreathingSpace())
+            return;
 
         if (waitingForJumpPunch)
         {
@@ -156,7 +248,7 @@ public class FightCharacterAI : MonoBehaviour
     /// </summary>
     private void AssignDefaultReferences()
     {
-        fightCharacter = GetComponent<FightCharacter>();
+        AssignMissingReferences();
     }
 
     /// <summary>
@@ -164,8 +256,229 @@ public class FightCharacterAI : MonoBehaviour
     /// </summary>
     private void AssignMissingReferences()
     {
-        if (fightCharacter == null)
-            fightCharacter = GetComponent<FightCharacter>();
+        fightCharacter ??= GetComponent<FightCharacter>();
+    }
+
+    /// <summary>
+    /// Detects when a new round starts and begins slower opening behavior
+    /// </summary>
+    private void UpdateRoundActiveState()
+    {
+        bool isRoundActive = fightCharacter.IsRoundActive;
+
+        if (isRoundActive && !wasRoundActive)
+        {
+            ResetAIState();
+            StartOpeningBehavior();
+        }
+
+        wasRoundActive = isRoundActive;
+    }
+
+    private void UpdateSpatialData()
+    {
+        float deltaX = player.position.x - transform.position.x;
+
+        distanceToPlayer = Mathf.Abs(deltaX);
+        directionToPlayer = Mathf.Sign(deltaX);
+    }
+
+    /// <summary>
+    /// Resets AI timers and temporary actions
+    /// </summary>
+    private void ResetAIState()
+    {
+        currentState = AIState.Spacing;
+        lastAction = LastAction.None;
+
+        decisionTimer = 0f;
+        reactionTimer = 0f;
+        blockTimer = 0f;
+        jumpPunchTimer = 0f;
+        blockCooldownTimer = 0f;
+        jumpAttackCooldownTimer = 0f;
+        movementCommitTimer = 0f;
+
+        openingEaseTimer = 0f;
+        openingChoiceTimer = 0f;
+
+        forcedBackAwayTimer = 0f;
+        recoveryPauseTimer = 0f;
+
+        pressureTimer = 0f;
+        pressureBackAwayTimer = 0f;
+
+        distanceToPlayer = 0f;
+        directionToPlayer = 0f;
+
+        attackSequenceCount = 0;
+
+        currentMoveInput = Vector2.zero;
+        openingMoveInput = Vector2.zero;
+
+        pendingDecision = false;
+        waitingForJumpPunch = false;
+        openingBehaviorActive = false;
+
+        if (player != null)
+            previousPlayerX = player.position.x;
+    }
+
+    /// <summary>
+    /// Starts the AI's slower opening behavior
+    /// </summary>
+    private void StartOpeningBehavior()
+    {
+        openingBehaviorActive = true;
+        openingEaseTimer = openingEaseTime;
+        openingChoiceTimer = 0f;
+
+        PickOpeningMovement();
+    }
+
+    /// <summary>
+    /// Chooses whether the AI slowly approaches, waits, or backs away during the round opening
+    /// </summary>
+    private void PickOpeningMovement()
+    {
+        float totalChance = openingSlowApproachChance + openingWaitChance + openingBackAwayChance;
+
+        if (totalChance <= 0f)
+        {
+            openingMoveInput = Vector2.zero;
+            return;
+        }
+
+        float roll = Random.Range(0f, totalChance);
+
+        if (roll < openingSlowApproachChance)
+        {
+            openingMoveInput = new Vector2(GetDirectionTowardPlayer() * openingApproachStrength, 0f);
+        }
+        else if (roll < openingSlowApproachChance + openingWaitChance)
+        {
+            openingMoveInput = Vector2.zero;
+        }
+        else
+        {
+            openingMoveInput = new Vector2(GetDirectionAwayFromPlayer() * openingApproachStrength, 0f);
+        }
+
+        openingChoiceTimer = Random.Range(openingChoiceMinTime, openingChoiceMaxTime);
+    }
+
+    /// <summary>
+    /// Handles slower, less aggressive AI movement at the beginning of a round
+    /// </summary>
+    private bool HandleOpeningBehavior()
+    {
+        if (!openingBehaviorActive)
+            return false;
+
+        openingEaseTimer -= Time.deltaTime;
+        openingChoiceTimer -= Time.deltaTime;
+
+        if (openingEaseTimer <= 0f)
+        {
+            openingBehaviorActive = false;
+            currentMoveInput = Vector2.zero;
+            return false;
+        }
+
+        if (openingChoiceTimer <= 0f)
+        {
+            PickOpeningMovement();
+        }
+
+        SendMovementInput(openingMoveInput);
+        return true;
+    }
+
+    /// <summary>
+    /// Makes the AI give ground when the player walks forward into close range
+    /// </summary>
+    private bool HandlePlayerForwardPressure()
+    {
+        if (!respectPlayerForwardPressure)
+        {
+            previousPlayerX = player.position.x;
+            return false;
+        }
+
+        if (pressureBackAwayTimer > 0f)
+        {
+            previousPlayerX = player.position.x;
+            SendMovementInput(new Vector2(GetDirectionAwayFromPlayer(), 0f));
+            return true;
+        }
+
+        float playerDeltaX = player.position.x - previousPlayerX;
+        previousPlayerX = player.position.x;
+
+        float directionFromPlayerToAI = Mathf.Sign(transform.position.x - player.position.x);
+        bool playerMovingTowardAI = Mathf.Sign(playerDeltaX) == directionFromPlayerToAI;
+        bool playerMovedEnough = Mathf.Abs(playerDeltaX) > playerPressureSpeedThreshold * Time.deltaTime;
+        bool closeEnough = GetAbsDistanceToPlayer() <= pressureRespectDistance;
+
+        if (playerMovingTowardAI && playerMovedEnough && closeEnough)
+        {
+            pressureTimer += Time.deltaTime;
+
+            if (pressureTimer >= pressureReactionTime)
+            {
+                pressureTimer = 0f;
+                pressureBackAwayTimer = pressureBackAwayTime;
+                attackSequenceCount = 0;
+                return true;
+            }
+        }
+        else
+        {
+            pressureTimer = 0f;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Gives the AI breathing space by backing away after pressure or when too close
+    /// </summary>
+    private bool HandleBreathingSpace()
+    {
+        if (recoveryPauseTimer > 0f)
+        {
+            SendIdleInput();
+            return true;
+        }
+
+        if (forcedBackAwayTimer > 0f)
+        {
+            SendMovementInput(new Vector2(GetDirectionAwayFromPlayer(), 0f));
+            return true;
+        }
+
+        if (GetAbsDistanceToPlayer() < emergencyBackAwayDistance)
+        {
+            forcedBackAwayTimer = forcedBackAwayTime;
+            attackSequenceCount = 0;
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Tracks AI pressure and forces a back away after several attacks
+    /// </summary>
+    private void RegisterAttack()
+    {
+        attackSequenceCount++;
+
+        if (attackSequenceCount >= attacksBeforeBackAway)
+        {
+            attackSequenceCount = 0;
+            forcedBackAwayTimer = forcedBackAwayTime;
+        }
     }
 
     /// <summary>
@@ -238,9 +551,7 @@ public class FightCharacterAI : MonoBehaviour
     /// </summary>
     private void ChooseAction()
     {
-        float distance = GetAbsDistanceToPlayer();
-
-        if (distance > attackDistance)
+        if (GetAbsDistanceToPlayer() > attackDistance)
             return;
 
         int standingWeight = standingPunchWeight;
@@ -249,10 +560,10 @@ public class FightCharacterAI : MonoBehaviour
         int blockingWeight = blockWeight;
 
         if (lastAction == LastAction.StandingPunch)
-            standingWeight = Mathf.RoundToInt(standingWeight * 0.5f);
+            standingWeight = ReduceWeight(standingWeight, 0.5f);
 
         if (lastAction == LastAction.CrouchingPunch)
-            crouchingWeight = Mathf.RoundToInt(crouchingWeight * 0.35f);
+            crouchingWeight = ReduceWeight(crouchingWeight, 0.6f);
 
         if (lastAction == LastAction.JumpingPunch)
             jumpingWeight = 0;
@@ -276,29 +587,33 @@ public class FightCharacterAI : MonoBehaviour
 
         int roll = Random.Range(0, totalWeight);
 
-        if (roll < standingWeight)
-        {
-            DoStandingPunch();
+        if (TryUseWeightedAction(ref roll, standingWeight, DoStandingPunch))
             return;
-        }
 
-        roll -= standingWeight;
-
-        if (roll < crouchingWeight)
-        {
-            DoCrouchingPunch();
+        if (TryUseWeightedAction(ref roll, crouchingWeight, DoCrouchingPunch))
             return;
-        }
 
-        roll -= crouchingWeight;
-
-        if (roll < jumpingWeight)
-        {
-            StartJumpAttack();
+        if (TryUseWeightedAction(ref roll, jumpingWeight, StartJumpAttack))
             return;
-        }
 
         StartBlock();
+    }
+
+    private bool TryUseWeightedAction(ref int roll, int weight, System.Action action)
+    {
+        if (roll < weight)
+        {
+            action.Invoke();
+            return true;
+        }
+
+        roll -= weight;
+        return false;
+    }
+
+    private int ReduceWeight(int weight, float multiplier)
+    {
+        return Mathf.RoundToInt(weight * multiplier);
     }
 
     /// <summary>
@@ -308,6 +623,8 @@ public class FightCharacterAI : MonoBehaviour
     {
         lastAction = LastAction.StandingPunch;
         fightCharacter.SetAIInput(Vector2.zero, false, true);
+
+        RegisterAttack();
     }
 
     /// <summary>
@@ -317,6 +634,8 @@ public class FightCharacterAI : MonoBehaviour
     {
         lastAction = LastAction.CrouchingPunch;
         fightCharacter.SetAIInput(new Vector2(0f, -1f), false, true);
+
+        RegisterAttack();
     }
 
     /// <summary>
@@ -332,6 +651,8 @@ public class FightCharacterAI : MonoBehaviour
         jumpAttackCooldownTimer = jumpAttackCooldown;
 
         fightCharacter.SetAIInput(Vector2.zero, true, false);
+
+        RegisterAttack();
     }
 
     /// <summary>
@@ -341,7 +662,7 @@ public class FightCharacterAI : MonoBehaviour
     {
         if (jumpPunchTimer > 0f)
         {
-            fightCharacter.SetAIInput(Vector2.zero, false, false);
+            SendIdleInput();
             return;
         }
 
@@ -367,7 +688,7 @@ public class FightCharacterAI : MonoBehaviour
         float backDirection = GetDirectionAwayFromPlayer();
         currentMoveInput = new Vector2(backDirection, crouchBlock ? -1f : 0f);
 
-        fightCharacter.SetAIInput(currentMoveInput, false, false);
+        SendMovementOnlyInput();
     }
 
     /// <summary>
@@ -379,11 +700,11 @@ public class FightCharacterAI : MonoBehaviour
         {
             currentState = AIState.Spacing;
             currentMoveInput = Vector2.zero;
-            fightCharacter.SetAIInput(Vector2.zero, false, false);
+            SendIdleInput();
             return;
         }
 
-        fightCharacter.SetAIInput(currentMoveInput, false, false);
+        SendMovementOnlyInput();
     }
 
     /// <summary>
@@ -391,7 +712,17 @@ public class FightCharacterAI : MonoBehaviour
     /// </summary>
     private void SendMovementOnlyInput()
     {
-        fightCharacter.SetAIInput(currentMoveInput, false, false);
+        SendMovementInput(currentMoveInput);
+    }
+
+    private void SendIdleInput()
+    {
+        SendMovementInput(Vector2.zero);
+    }
+
+    private void SendMovementInput(Vector2 movement)
+    {
+        fightCharacter.SetAIInput(movement, false, false);
     }
 
     /// <summary>
@@ -411,13 +742,9 @@ public class FightCharacterAI : MonoBehaviour
     /// </summary>
     private bool CanMakeDecision()
     {
-        if (decisionTimer > 0f)
-            return false;
-
-        if (currentState != AIState.Spacing)
-            return false;
-
-        return GetAbsDistanceToPlayer() <= attackDistance;
+        return decisionTimer <= 0f
+            && currentState == AIState.Spacing
+            && GetAbsDistanceToPlayer() <= attackDistance;
     }
 
     /// <summary>
@@ -425,7 +752,7 @@ public class FightCharacterAI : MonoBehaviour
     /// </summary>
     private float GetAbsDistanceToPlayer()
     {
-        return Mathf.Abs(player.position.x - transform.position.x);
+        return distanceToPlayer;
     }
 
     /// <summary>
@@ -433,7 +760,7 @@ public class FightCharacterAI : MonoBehaviour
     /// </summary>
     private float GetDirectionTowardPlayer()
     {
-        return Mathf.Sign(player.position.x - transform.position.x);
+        return directionToPlayer;
     }
 
     /// <summary>
@@ -441,7 +768,7 @@ public class FightCharacterAI : MonoBehaviour
     /// </summary>
     private float GetDirectionAwayFromPlayer()
     {
-        return -Mathf.Sign(player.position.x - transform.position.x);
+        return -directionToPlayer;
     }
 
     /// <summary>
@@ -449,25 +776,33 @@ public class FightCharacterAI : MonoBehaviour
     /// </summary>
     private void UpdateTimers()
     {
-        if (decisionTimer > 0f)
-            decisionTimer -= Time.deltaTime;
+        decisionTimer = TickTimer(decisionTimer);
+        reactionTimer = TickTimer(reactionTimer);
+        blockTimer = TickTimer(blockTimer);
+        jumpPunchTimer = TickTimer(jumpPunchTimer);
+        blockCooldownTimer = TickTimer(blockCooldownTimer);
+        jumpAttackCooldownTimer = TickTimer(jumpAttackCooldownTimer);
+        movementCommitTimer = TickTimer(movementCommitTimer);
+        pressureBackAwayTimer = TickTimer(pressureBackAwayTimer);
 
-        if (reactionTimer > 0f)
-            reactionTimer -= Time.deltaTime;
+        if (forcedBackAwayTimer > 0f)
+        {
+            forcedBackAwayTimer = TickTimer(forcedBackAwayTimer);
 
-        if (blockTimer > 0f)
-            blockTimer -= Time.deltaTime;
+            if (forcedBackAwayTimer <= 0f)
+            {
+                recoveryPauseTimer = recoveryPauseTime;
+            }
+        }
 
-        if (jumpPunchTimer > 0f)
-            jumpPunchTimer -= Time.deltaTime;
+        recoveryPauseTimer = TickTimer(recoveryPauseTimer);
+    }
 
-        if (blockCooldownTimer > 0f)
-            blockCooldownTimer -= Time.deltaTime;
+    private float TickTimer(float timer)
+    {
+        if (timer <= 0f)
+            return 0f;
 
-        if (jumpAttackCooldownTimer > 0f)
-            jumpAttackCooldownTimer -= Time.deltaTime;
-
-        if (movementCommitTimer > 0f)
-            movementCommitTimer -= Time.deltaTime;
+        return timer - Time.deltaTime;
     }
 }

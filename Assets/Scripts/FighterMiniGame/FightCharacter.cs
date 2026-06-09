@@ -80,6 +80,12 @@ public class FightCharacter : MonoBehaviour
     private bool aiPunchPressed;
 
     private bool roundActive = true;
+    private Transform mainCameraTransform;
+
+    public bool IsRoundActive
+    {
+        get { return roundActive; }
+    }
 
     private void Reset()
     {
@@ -89,6 +95,9 @@ public class FightCharacter : MonoBehaviour
     private void Awake()
     {
         AssignMissingReferences();
+
+        if (Camera.main != null)
+            mainCameraTransform = Camera.main.transform;
     }
 
     private void Update()
@@ -131,9 +140,7 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void AssignDefaultReferences()
     {
-        rb = GetComponent<Rigidbody>();
-        input = GetComponent<FighterInput>();
-        health = GetComponent<FighterHealth>();
+        AssignMissingReferences();
     }
 
     /// <summary>
@@ -141,14 +148,9 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void AssignMissingReferences()
     {
-        if (rb == null)
-            rb = GetComponent<Rigidbody>();
-
-        if (input == null)
-            input = GetComponent<FighterInput>();
-
-        if (health == null)
-            health = GetComponent<FighterHealth>();
+        rb ??= GetComponent<Rigidbody>();
+        input ??= GetComponent<FighterInput>();
+        health ??= GetComponent<FighterHealth>();
     }
 
     /// <summary>
@@ -167,12 +169,8 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void ReadActions()
     {
-        if (!controlledByAI && input == null)
+        if (!TryGetCurrentInput(out Vector2 moveInput, out bool jumpPressed, out bool punchPressed))
             return;
-
-        Vector2 moveInput = controlledByAI ? aiMoveInput : input.Move;
-        bool jumpPressed = controlledByAI ? aiJumpPressed : input.JumpPressed;
-        bool punchPressed = controlledByAI ? aiPunchPressed : input.PunchPressed;
 
         bool holdingDown = moveInput.y < -inputDeadZone;
         bool holdingBack = IsHoldingBack(moveInput.x);
@@ -222,20 +220,13 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void Move()
     {
-        if (rb == null)
+        if (rb == null || blockStunTimer > 0f)
             return;
 
-        if (blockStunTimer > 0f)
+        if (!TryGetCurrentInput(out Vector2 moveInput, out _, out _))
             return;
 
-        if (!controlledByAI && input == null)
-            return;
-
-        Vector2 moveInput = controlledByAI ? aiMoveInput : input.Move;
-        float horizontal = moveInput.x;
-
-        if (Mathf.Abs(horizontal) < inputDeadZone)
-            horizontal = 0f;
+        float horizontal = Mathf.Abs(moveInput.x) < inputDeadZone ? 0f : moveInput.x;
 
         if (isCrouching)
             horizontal = 0f;
@@ -245,6 +236,30 @@ public class FightCharacter : MonoBehaviour
         Vector3 velocity = rb.linearVelocity;
         velocity.x = horizontal * currentMoveSpeed;
         rb.linearVelocity = velocity;
+    }
+
+    private bool TryGetCurrentInput(out Vector2 moveInput, out bool jumpPressed, out bool punchPressed)
+    {
+        if (controlledByAI)
+        {
+            moveInput = aiMoveInput;
+            jumpPressed = aiJumpPressed;
+            punchPressed = aiPunchPressed;
+            return true;
+        }
+
+        if (input == null)
+        {
+            moveInput = Vector2.zero;
+            jumpPressed = false;
+            punchPressed = false;
+            return false;
+        }
+
+        moveInput = input.Move;
+        jumpPressed = input.JumpPressed;
+        punchPressed = input.PunchPressed;
+        return true;
     }
 
     /// <summary>
@@ -267,23 +282,21 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void Punch()
     {
-        string punchType;
-
-        if (!isGrounded)
-        {
-            punchType = "Jumping Punch";
-        }
-        else if (isCrouching)
-        {
-            punchType = "Crouching Punch";
-        }
-        else
-        {
-            punchType = "Standing Punch";
-        }
+        string punchType = GetPunchType();
 
         SetTemporaryActionText(punchType);
         TryHitOpponent(punchType);
+    }
+
+    private string GetPunchType()
+    {
+        if (!isGrounded)
+            return "Jumping Punch";
+
+        if (isCrouching)
+            return "Crouching Punch";
+
+        return "Standing Punch";
     }
 
     /// <summary>
@@ -306,9 +319,7 @@ public class FightCharacter : MonoBehaviour
             return;
         }
 
-        FightCharacter opponentCharacter = opponent.GetComponent<FightCharacter>();
-
-        if (opponentCharacter == null)
+        if (!opponent.TryGetComponent(out FightCharacter opponentCharacter))
         {
             Debug.Log("Opponent has no FightCharacter script.");
             return;
@@ -348,9 +359,7 @@ public class FightCharacter : MonoBehaviour
     private void ApplyBlockedAttack(Vector3 attackerPosition)
     {
         if (health != null)
-        {
             health.TakeDamage(blockChipDamage, false);
-        }
 
         ApplyBlockStun();
         ApplyBlockKnockback(attackerPosition);
@@ -390,9 +399,7 @@ public class FightCharacter : MonoBehaviour
     private void UpdateBlockStunTimer()
     {
         if (blockStunTimer > 0f)
-        {
             blockStunTimer -= Time.deltaTime;
-        }
     }
 
     /// <summary>
@@ -463,11 +470,11 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void FaceActionTextToCamera()
     {
-        if (actionText == null || Camera.main == null)
+        if (actionText == null || mainCameraTransform == null)
             return;
 
         actionText.transform.rotation = Quaternion.LookRotation(
-            actionText.transform.position - Camera.main.transform.position
+            actionText.transform.position - mainCameraTransform.position
         );
     }
 
@@ -476,10 +483,7 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private bool IsBlockingAttack(Vector3 attackerPosition)
     {
-        if (!isBlocking)
-            return false;
-
-        return IsAttackFromFront(attackerPosition);
+        return isBlocking && IsAttackFromFront(attackerPosition);
     }
 
     /// <summary>
@@ -510,14 +514,7 @@ public class FightCharacter : MonoBehaviour
         if (opponent == null)
             return;
 
-        if (opponent.position.x > transform.position.x)
-        {
-            facingDirection = 1;
-        }
-        else
-        {
-            facingDirection = -1;
-        }
+        facingDirection = opponent.position.x > transform.position.x ? 1 : -1;
     }
 
     /// <summary>
