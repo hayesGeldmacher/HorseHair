@@ -13,6 +13,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private float blinkAnimationSpeed = 0.5f;
     [SerializeField] private Animator blinkAnimator;
 
+    [Header("Player Settings")]
+    [SerializeField] private EventClick_Environment StartingPoint;
+
     private void OnEnable()
     {
         EventClick.OnObjectClicked += HandleObjectClicked;
@@ -21,6 +24,14 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private void OnDisable()
     {
         EventClick.OnObjectClicked -= HandleObjectClicked;
+    }
+
+    private void Start()
+    {
+        if (StartingPoint != null)
+        {
+            StartingPoint.ForceClick();
+        }
     }
 
     private void HandleObjectClicked(ClickEventData data)

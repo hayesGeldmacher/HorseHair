@@ -169,6 +169,7 @@ MonoBehaviour:
   PlayerCamera: {fileID: 6671725320161104119}
   blinkAnimationSpeed: 0.4
   blinkAnimator: {fileID: 5574424755196377670}
+  StartingPoint: {fileID: 0}
 --- !u!1 &1788094897615104466
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,30 +782,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc55549baedc89041b6ce90479bc7a4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CursorManager
-  cursorAnimationsList:
-  - cursorType: 0
-    frames:
-    - {fileID: 2800000, guid: a17b1e89bfba5a84c8a265ab710eed59, type: 3}
-    frameRate: 0
-    offset: {x: 9, y: 4}
-  - cursorType: 2
-    frames:
-    - {fileID: 2800000, guid: c7b4e11499f44bc46bf8cc7cb092fc4d, type: 3}
-    - {fileID: 2800000, guid: 5f4229f27d4964e4c8b5bceb6b0f4727, type: 3}
-    - {fileID: 2800000, guid: c87fbfa34c99feb4db441ed79d1bfd4b, type: 3}
-    - {fileID: 2800000, guid: 12bbda0d74139f845b6b5f4a05869abc, type: 3}
-    - {fileID: 2800000, guid: 297d513b7dbe5494087f145426eaf9dc, type: 3}
-    frameRate: 0.15
-    offset: {x: 16, y: 16}
-  - cursorType: 3
-    frames:
-    - {fileID: 2800000, guid: d4a368f16dc786a43a896d46f97071c7, type: 3}
-    - {fileID: 2800000, guid: f31f13e6120571a41aefd397740754b4, type: 3}
-    frameRate: 0.15
-    offset: {x: 16, y: 16}
-  - cursorType: 1
-    frames:
-    - {fileID: 2800000, guid: c3fda771f302c4b4d8e7de005003e217, type: 3}
-    - {fileID: 2800000, guid: 84ad5d9135de58c46bec49d50005da3f, type: 3}
-    frameRate: 0.15
-    offset: {x: 16, y: 16}
+  CursorsScriptsList:
+  - {fileID: 11400000, guid: b86e70ff5c50fc846b4ddc9bd7b1afd2, type: 2}
+  - {fileID: 11400000, guid: 351bb3d7c687aa941b410d91509aab7d, type: 2}
+  - {fileID: 11400000, guid: ed86e7d2ef88b7c4583f06c111701776, type: 2}
+  - {fileID: 11400000, guid: 1b7471b55e968c744a2707d5b653fd74, type: 2}
