@@ -7,20 +7,12 @@ public class TeleportClickEventData : ClickEventData
     public float YawClamp;
     public float FollowSpeedX;
     public float FollowSpeedY;
+    public Camera_Environment Camera;
 }   
 
 public class EventClick_Environment : EventClick
 {
-    [SerializeField] private string environmentName = "Environment";
-    [Header("Camera Settings")]
-    [SerializeField, Tooltip("How far can the camera move up and down")]
-    private float _pitchClamp = 20f;
-    [SerializeField, Tooltip("How far can the camera move left and right")]
-    private float _yawClamp = 20f;
-    [SerializeField, Tooltip("How fast the camera follows the cursor horizontally")]
-    private float _followSpeedX = 2f;
-    [SerializeField, Tooltip("How fast the camera follows the cursor vertically")]
-    private float _followSpeedY = 2f;
+    [SerializeField] private Camera_Environment connectedCamera;
 
     protected override void SetType()
     {
@@ -29,15 +21,10 @@ public class EventClick_Environment : EventClick
 
     protected override ClickEventData CreateEventData()
     {
-        return new TeleportClickEventData
+        if (connectedCamera.TeleportClickEventData == null)
         {
-            EnvironmentName = environmentName,
-            PitchClamp = _pitchClamp,
-            YawClamp = _yawClamp,
-            FollowSpeedX = _followSpeedX,
-            FollowSpeedY = _followSpeedY,   
-            ObjectTransform = transform,
-            Source = gameObject
-        };
+            connectedCamera.SetUpEventData();
+        }
+        return connectedCamera.TeleportClickEventData;
     }
 }

@@ -14,7 +14,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private Animator blinkAnimator;
 
     [Header("Player Settings")]
-    [SerializeField] private EventClick_Environment StartingPoint;
+    [SerializeField] private Camera_Environment StartingPoint;
+
+    private Camera_Environment currentCamera;
 
     private void OnEnable()
     {
@@ -30,7 +32,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         if (StartingPoint != null)
         {
-            StartingPoint.ForceClick();
+            StartingPoint.TeleportToSelf();
         }
     }
 
@@ -57,6 +59,10 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private IEnumerator TeleportSequence(TeleportClickEventData data)
     {
+        if (currentCamera != null)
+        {
+            currentCamera.ActivateOrDeactivate(false);
+        }
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
         blinkAnimator.SetTrigger("EyesDown");
 
@@ -70,6 +76,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
             data.FollowSpeedY);
 
         blinkAnimator.SetTrigger("EyesUp");
+        currentCamera = data.Camera;
+        currentCamera.ActivateOrDeactivate(true);
     }
 
     private void InteractWith(ItemClickEventData data)

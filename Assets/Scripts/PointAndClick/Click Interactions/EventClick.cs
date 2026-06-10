@@ -41,6 +41,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         OnObjectClicked?.Invoke(CreateEventData());
         outlineMaterial.SetFloat("_Outline_Show", 0f);
+        OnObjectHovered?.Invoke(ObjectType.None);
     }
 
     public void ForceClick()
