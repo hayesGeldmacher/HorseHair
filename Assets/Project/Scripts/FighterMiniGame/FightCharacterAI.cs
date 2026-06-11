@@ -622,8 +622,7 @@ public class FightCharacterAI : MonoBehaviour
     private void DoStandingPunch()
     {
         lastAction = LastAction.StandingPunch;
-        fightCharacter.SetAIInput(Vector2.zero, false, true);
-
+        fightCharacter.SetAIInput(0f, false, true, false);
         RegisterAttack();
     }
 
@@ -633,7 +632,7 @@ public class FightCharacterAI : MonoBehaviour
     private void DoCrouchingPunch()
     {
         lastAction = LastAction.CrouchingPunch;
-        fightCharacter.SetAIInput(new Vector2(0f, -1f), false, true);
+        fightCharacter.SetAIInput(0f, false, true, true);
 
         RegisterAttack();
     }
@@ -650,7 +649,7 @@ public class FightCharacterAI : MonoBehaviour
         jumpPunchTimer = jumpPunchDelay;
         jumpAttackCooldownTimer = jumpAttackCooldown;
 
-        fightCharacter.SetAIInput(Vector2.zero, true, false);
+        fightCharacter.SetAIInput(0f, true, false, false);
 
         RegisterAttack();
     }
@@ -669,7 +668,7 @@ public class FightCharacterAI : MonoBehaviour
         waitingForJumpPunch = false;
         currentState = AIState.Spacing;
 
-        fightCharacter.SetAIInput(Vector2.zero, false, true);
+        fightCharacter.SetAIInput(0f, false, true, false);
     }
 
     /// <summary>
@@ -722,7 +721,7 @@ public class FightCharacterAI : MonoBehaviour
 
     private void SendMovementInput(Vector2 movement)
     {
-        fightCharacter.SetAIInput(movement, false, false);
+        fightCharacter.SetAIInput(movement.x, false, false, movement.y < -0.25f);
     }
 
     /// <summary>

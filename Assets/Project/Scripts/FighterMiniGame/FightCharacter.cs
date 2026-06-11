@@ -75,9 +75,10 @@ public class FightCharacter : MonoBehaviour
     private float actionTextTimer;
     private float blockStunTimer;
 
-    private Vector2 aiMoveInput;
+    private float aiMoveInput;
     private bool aiJumpPressed;
     private bool aiPunchPressed;
+    private bool aiCrouchHeld;
 
     private bool roundActive = true;
     private Transform mainCameraTransform;
@@ -86,6 +87,8 @@ public class FightCharacter : MonoBehaviour
     {
         get { return roundActive; }
     }
+
+    public event System.Action<FightCharacter, FighterMoveType, FighterMoveResult> MovePerformed;
 
     private void Reset()
     {
@@ -157,11 +160,12 @@ public class FightCharacter : MonoBehaviour
     /// Allows FightCharacterAI to send movement, jump, and punch commands into this fighter
     /// This lets AI fighters use the same movement and combat logic as the player
     /// </summary>
-    public void SetAIInput(Vector2 moveInput, bool jumpPressed, bool punchPressed)
+    public void SetAIInput(float moveInput, bool jumpPressed, bool punchPressed, bool crouchHeld)
     {
         aiMoveInput = moveInput;
         aiJumpPressed = jumpPressed;
         aiPunchPressed = punchPressed;
+        aiCrouchHeld = crouchHeld;
     }
 
     /// <summary>
@@ -169,13 +173,12 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void ReadActions()
     {
-        if (!TryGetCurrentInput(out Vector2 moveInput, out bool jumpPressed, out bool punchPressed))
+        if (!TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool crouchHeld))
             return;
 
-        bool holdingDown = moveInput.y < -inputDeadZone;
-        bool holdingBack = IsHoldingBack(moveInput.x);
+        bool holdingBack = IsHoldingBack(moveInput);
 
-        isCrouching = holdingDown && isGrounded;
+        isCrouching = crouchHeld && isGrounded;
         isBlocking = holdingBack && isGrounded;
 
         if (jumpPressed && isGrounded && !isCrouching && !isBlocking)
@@ -223,10 +226,10 @@ public class FightCharacter : MonoBehaviour
         if (rb == null || blockStunTimer > 0f)
             return;
 
-        if (!TryGetCurrentInput(out Vector2 moveInput, out _, out _))
+        if (!TryGetCurrentInput(out float moveInput, out _, out _, out _))
             return;
 
-        float horizontal = Mathf.Abs(moveInput.x) < inputDeadZone ? 0f : moveInput.x;
+        float horizontal = Mathf.Abs(moveInput) < inputDeadZone ? 0f : moveInput;
 
         if (isCrouching)
             horizontal = 0f;
@@ -238,27 +241,30 @@ public class FightCharacter : MonoBehaviour
         rb.linearVelocity = velocity;
     }
 
-    private bool TryGetCurrentInput(out Vector2 moveInput, out bool jumpPressed, out bool punchPressed)
+    private bool TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool crouchHeld)
     {
         if (controlledByAI)
         {
             moveInput = aiMoveInput;
             jumpPressed = aiJumpPressed;
             punchPressed = aiPunchPressed;
+            crouchHeld = aiCrouchHeld;
             return true;
         }
 
         if (input == null)
         {
-            moveInput = Vector2.zero;
+            moveInput = 0f;
             jumpPressed = false;
             punchPressed = false;
+            crouchHeld = false;
             return false;
         }
 
         moveInput = input.Move;
         jumpPressed = input.JumpPressed;
         punchPressed = input.PunchPressed;
+        crouchHeld = input.CrouchHeld;
         return true;
     }
 
@@ -283,11 +289,32 @@ public class FightCharacter : MonoBehaviour
     private void Punch()
     {
         string punchType = GetPunchType();
+        FighterMoveType moveType = GetMoveType();
 
         SetTemporaryActionText(punchType);
-        TryHitOpponent(punchType);
+
+        FighterMoveResult result = TryHitOpponent(punchType);
+
+        MovePerformed?.Invoke(this, moveType, result);
     }
 
+    /// <summary>
+    /// Determines the type of move based on the fighter's current state
+    /// </summary>
+    private FighterMoveType GetMoveType()
+    {
+        if (!isGrounded)
+            return FighterMoveType.JumpingPunch;
+
+        if (isCrouching)
+            return FighterMoveType.CrouchingPunch;
+
+        return FighterMoveType.StandingPunch;
+    }
+
+    /// <summary>
+    /// Determines the type of punch based on the fighter's current state
+    /// </summary>
     private string GetPunchType()
     {
         if (!isGrounded)
@@ -303,12 +330,12 @@ public class FightCharacter : MonoBehaviour
     /// Checks whether the opponent is in range and sends the attack to the opponent's FightCharacter
     /// This allows blocking, chip damage, block stun, and knockback to work
     /// </summary>
-    private void TryHitOpponent(string punchType)
+    private FighterMoveResult TryHitOpponent(string punchType)
     {
         if (opponent == null)
         {
             Debug.Log("No opponent assigned");
-            return;
+            return FighterMoveResult.Miss;
         }
 
         float distanceToOpponent = Vector3.Distance(transform.position, opponent.position);
@@ -316,16 +343,16 @@ public class FightCharacter : MonoBehaviour
         if (distanceToOpponent > punchRange)
         {
             Debug.Log(punchType + " missed");
-            return;
+            return FighterMoveResult.Miss;
         }
 
         if (!opponent.TryGetComponent(out FightCharacter opponentCharacter))
         {
             Debug.Log("Opponent has no FightCharacter script.");
-            return;
+            return FighterMoveResult.Miss;
         }
 
-        opponentCharacter.ReceiveAttack(punchDamage, transform.position);
+        return opponentCharacter.ReceiveAttack(punchDamage, transform.position);
     }
 
     /// <summary>
@@ -333,22 +360,24 @@ public class FightCharacter : MonoBehaviour
     /// If blocking correctly, applies chip damage, block stun, and small knockback
     /// If not blocking, applies full damage
     /// </summary>
-    public void ReceiveAttack(int damage, Vector3 attackerPosition)
+    public FighterMoveResult ReceiveAttack(int damage, Vector3 attackerPosition)
     {
         if (IsBlockingAttack(attackerPosition))
         {
             ApplyBlockedAttack(attackerPosition);
-            return;
+            return FighterMoveResult.Blocked;
         }
 
         if (health == null)
         {
             Debug.Log(name + " has no FighterHealth script");
-            return;
+            return FighterMoveResult.Miss;
         }
 
         health.TakeDamage(damage, true);
         SetTemporaryActionText("Hit");
+
+        return FighterMoveResult.Hit;
     }
 
     /// <summary>
@@ -405,7 +434,7 @@ public class FightCharacter : MonoBehaviour
     /// <summary>
     /// Updates the action text for normal movement and defensive states
     /// </summary>
-    private void UpdateNormalActionText(Vector2 moveInput)
+    private void UpdateNormalActionText(float moveInput)
     {
         if (actionTextTimer > 0f)
             return;
@@ -426,7 +455,7 @@ public class FightCharacter : MonoBehaviour
         {
             SetActionText("Jumping");
         }
-        else if (Mathf.Abs(moveInput.x) > inputDeadZone)
+        else if (Mathf.Abs(moveInput) > inputDeadZone)
         {
             SetActionText("Walking");
         }

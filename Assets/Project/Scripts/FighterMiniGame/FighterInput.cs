@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class FighterInput : MonoBehaviour
 {
     [Header("Input Actions")]
-    [Tooltip("Reads horizontal and vertical movement input")]
+    [Tooltip("Reads horizontal movement input")]
     [SerializeField] private InputActionReference moveAction;
 
     [Tooltip("Triggered when the player presses the jump input")]
@@ -17,12 +17,14 @@ public class FighterInput : MonoBehaviour
     [Tooltip("Triggered when the player presses the punch input")]
     [SerializeField] private InputActionReference punchAction;
 
+    [Tooltip("Held when the player holds the crouch input")]
+    [SerializeField] private InputActionReference crouchAction;
+
     /// <summary>
     /// Current movement input
     /// X controls left and right movement
-    /// Y controls vertical input, such as crouching when held downward
     /// </summary>
-    public Vector2 Move { get; private set; }
+    public float Move { get; private set; }
 
     /// <summary>
     /// True for one frame when the jump input is pressed
@@ -33,6 +35,11 @@ public class FighterInput : MonoBehaviour
     /// True for one frame when the punch input is pressed
     /// </summary>
     public bool PunchPressed { get; private set; }
+
+    /// <summary>
+    /// True while the crouch input is held
+    /// </summary>
+    public bool CrouchHeld { get; private set; }
 
     private void OnEnable()
     {
@@ -49,6 +56,7 @@ public class FighterInput : MonoBehaviour
     private void Update()
     {
         ReadMovementInput();
+        ReadCrouchInput();
     }
 
     private void LateUpdate()
@@ -69,6 +77,9 @@ public class FighterInput : MonoBehaviour
 
         if (punchAction != null)
             punchAction.action.Enable();
+
+        if (crouchAction != null)
+            crouchAction.action.Enable();
     }
 
     /// <summary>
@@ -84,6 +95,9 @@ public class FighterInput : MonoBehaviour
 
         if (punchAction != null)
             punchAction.action.Disable();
+
+        if (crouchAction != null)
+            crouchAction.action.Disable();
     }
 
     /// <summary>
@@ -119,7 +133,21 @@ public class FighterInput : MonoBehaviour
         if (moveAction == null)
             return;
 
-        Move = moveAction.action.ReadValue<Vector2>();
+        Move = moveAction.action.ReadValue<float>();
+    }
+
+    /// <summary>
+    /// Reads whether the crouch input is currently being held
+    /// </summary>
+    private void ReadCrouchInput()
+    {
+        if (crouchAction == null)
+        {
+            CrouchHeld = false;
+            return;
+        }
+
+        CrouchHeld = crouchAction.action.IsPressed();
     }
 
     /// <summary>
