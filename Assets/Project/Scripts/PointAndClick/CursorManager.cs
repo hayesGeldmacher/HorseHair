@@ -9,6 +9,7 @@ public enum CursorType
     Item,
     NonEssentialItem,
     Environment,
+    Goal,
 }
 
 public class CursorManager : MonoBehaviour
@@ -76,6 +77,9 @@ public class CursorManager : MonoBehaviour
                 break;
             case ObjectType.NEI:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.NonEssentialItem]);
+                break;
+            case ObjectType.Goal:
+                SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Goal]);
                 break;
             default:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Default]);

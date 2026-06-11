@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Camera_Environment : MonoBehaviour
@@ -53,7 +54,7 @@ public class Camera_Environment : MonoBehaviour
             FollowSpeedY = _followSpeedY,
             ObjectTransform = transform,
             Source = gameObject,
-            Camera = this
+            Camera = this,
         };
     }
 }

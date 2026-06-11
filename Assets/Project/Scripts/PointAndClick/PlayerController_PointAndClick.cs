@@ -1,5 +1,7 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -16,16 +18,22 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("Player Settings")]
     [SerializeField] private Camera_Environment StartingPoint;
 
+    [Header("Inventory")]
+    [SerializeField] private EventClick_Item[] Inventory = new EventClick_Item[5];
+    [SerializeField] private Inventory inventoryUI;
+
     private Camera_Environment currentCamera;
 
     private void OnEnable()
     {
         EventClick.OnObjectClicked += HandleObjectClicked;
+        EventClick_GoalItem.GoalCompleted += HandleGoalCompleted;
     }
 
     private void OnDisable()
     {
         EventClick.OnObjectClicked -= HandleObjectClicked;
+        EventClick_GoalItem.GoalCompleted -= HandleGoalCompleted;
     }
 
     private void Start()
@@ -46,8 +54,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
             case ItemClickEventData item:
                 InteractWith(item);
                 break;
-            case NPCClickEventData npc:   
-                TalkTo(npc);
+            case NEIClickEventData nei:
+                TalkAbout(nei);        
+                break;
+            case GoalEventData goal:
+                InteractWith(goal);
                 break;
         }
     }
@@ -82,11 +93,59 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void InteractWith(ItemClickEventData data)
     {
-        Debug.Log(data.ItemName);
+        AddToInventory(data.SourceItem);
     }
 
-    private void TalkTo(NPCClickEventData data)
+    private void InteractWith(GoalEventData data)
     {
-        Debug.Log(data.NPCName);
+        for (int i = 0; i < Inventory.Length; i++)
+        {
+            if (Inventory[i] != null && data.SourceGoal.CollectItem(Inventory[i]))
+            {
+                Inventory[i] = null;
+                inventoryUI.RemoveItem(i);
+            }
+        }
+        data.SourceGoal.CheckGoal();
+    }
+
+    private bool AddToInventory(EventClick_Item item)
+    {
+        for (int i = 0; i < Inventory.Length; i++)
+        {
+            if (Inventory[i] == null)
+            {
+                Inventory[i] = item;
+                inventoryUI.AddItem(item.itemImage, item.itemName, i);
+                return true;
+            }
+        }
+        Debug.Log("Inventory is full");
+        return false;
+    }
+
+    private void TalkAbout(NEIClickEventData data)
+    {
+        Debug.Log(data.NEIName);
+    }
+
+    private void HandleGoalCompleted(GoalCompletionData data)
+    {
+        if (data.IsCompleted)
+        {
+            Debug.Log("Goal Completed!");
+        }
+        else
+        {
+            string neededItems = "Items still needed:";
+            foreach (var item in data.NeededItems)
+            {
+                if (!item.Value)
+                {
+                    neededItems = neededItems + " " + item.Key.itemName;
+                }
+            }
+            Debug.Log(neededItems + ".");
+        }
     }
 }
