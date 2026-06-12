@@ -12,6 +12,7 @@ public class EventClick_NEI : EventClick
     protected override void SetType()
     {
         Type = ObjectType.NEI;
+        Name = neiName;
     }
 
     protected override ClickEventData CreateEventData()

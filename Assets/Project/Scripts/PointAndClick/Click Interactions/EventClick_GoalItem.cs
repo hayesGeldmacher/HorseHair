@@ -31,6 +31,7 @@ public class EventClick_GoalItem : EventClick
         {
             itemCollectionStatus[item] = false;
         }
+        Name = goalName;
     }
 
     protected override ClickEventData CreateEventData()

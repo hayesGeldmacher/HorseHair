@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Camera_Environment : MonoBehaviour
 {
-    [SerializeField] private string environmentName = "Environment";
+    [SerializeField] public string environmentName = "Environment";
     [Header("Camera Settings")]
     [SerializeField, Tooltip("How far can the camera move up and down")]
     private float _pitchClamp = 20f;

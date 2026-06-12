@@ -18,11 +18,19 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("Player Settings")]
     [SerializeField] private Camera_Environment StartingPoint;
 
+    [Header("UI Settings")]
+    [SerializeField] private float FadeDelay = 1f;
+
     [Header("Inventory")]
     [SerializeField] private EventClick_Item[] Inventory = new EventClick_Item[5];
     [SerializeField] private Inventory inventoryUI;
 
+    [Header("Textboxes")]
+    [SerializeField] private TextBox textBox;
+
     private Camera_Environment currentCamera;
+    private Coroutine _hideInventoryCoroutine;
+    private Coroutine _hideTextCoroutine;
 
     private void OnEnable()
     {
@@ -117,6 +125,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
             {
                 Inventory[i] = item;
                 inventoryUI.AddItem(item.itemImage, item.itemName, i);
+                textBox.SetText(item.description);
+                OnOpenInventory();
+                OnShowTextBox();
                 return true;
             }
         }
@@ -126,7 +137,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void TalkAbout(NEIClickEventData data)
     {
-        Debug.Log(data.NEIName);
+        textBox.SetText(data.Description);
+        OnShowTextBox();
     }
 
     private void HandleGoalCompleted(GoalCompletionData data)
@@ -147,5 +159,42 @@ public class PlayerController_PointAndClick : MonoBehaviour
             }
             Debug.Log(neededItems + ".");
         }
+    }
+
+    public void OnShowTextBox()
+    {
+        textBox.ShowTextBox();
+        if (_hideTextCoroutine != null)
+        {
+            StopCoroutine(_hideTextCoroutine);
+        }
+        _hideTextCoroutine = StartCoroutine(HideTextAfterDelay(FadeDelay));
+    }
+
+    private IEnumerator HideTextAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        textBox.HideTextBox();
+        _hideTextCoroutine = null;
+    }
+
+    public void OnOpenInventory()
+    {
+        inventoryUI.ShowInventory();
+
+        if (_hideInventoryCoroutine != null)
+        {
+            StopCoroutine(_hideInventoryCoroutine);
+        }
+        _hideInventoryCoroutine = StartCoroutine(HideInventoryAfterDelay(FadeDelay));
+    }
+
+    private IEnumerator HideInventoryAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        inventoryUI.HideInventory();
+        _hideInventoryCoroutine = null;
     }
 }

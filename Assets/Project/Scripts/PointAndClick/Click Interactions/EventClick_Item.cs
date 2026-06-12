@@ -15,6 +15,7 @@ public class EventClick_Item : EventClick
     protected override void SetType()
     {
         Type = ObjectType.Item;
+        Name = itemName;
     }
 
     protected override ClickEventData CreateEventData()

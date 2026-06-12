@@ -22,10 +22,12 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 {
     [SerializeField] private int OutlineIndex = 1;
     [SerializeField] public string description;
+    [SerializeField] private bool ResetAfterClick = true;
 
     protected ObjectType Type = ObjectType.None;
+    protected string Name = "";
     public static event System.Action<ClickEventData> OnObjectClicked;
-    public static event System.Action<ObjectType> OnObjectHovered;
+    public static event System.Action<ObjectType, string> OnObjectHovered;
     private Material outlineMaterial;
 
     private void Start()
@@ -43,8 +45,11 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerClick(PointerEventData eventData)
     {
         OnObjectClicked?.Invoke(CreateEventData());
-        outlineMaterial.SetFloat("_Outline_Show", 0f);
-        OnObjectHovered?.Invoke(ObjectType.None);
+        if (ResetAfterClick)
+        {
+            OnObjectHovered?.Invoke(ObjectType.None, "");
+            outlineMaterial.SetFloat("_Outline_Show", 0f);
+        }
     }
 
     public void ForceClick()
@@ -65,12 +70,12 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerEnter(PointerEventData eventData)
     {
         outlineMaterial.SetFloat("_Outline_Show", 1f);
-        OnObjectHovered?.Invoke(Type);
+        OnObjectHovered?.Invoke(Type, Name);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         outlineMaterial.SetFloat("_Outline_Show", 0f);
-        OnObjectHovered?.Invoke(ObjectType.None);
+        OnObjectHovered?.Invoke(ObjectType.None, "");
     }
 }
