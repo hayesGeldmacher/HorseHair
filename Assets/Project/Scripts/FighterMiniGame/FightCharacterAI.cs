@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// Opponent AI for the fighting game
-/// Controls spacing, attacking, blocking, jump attacks, round-start easing, breathing space, and player pressure response through FightCharacter input
+/// Controls spacing, attacking, blocking, jump attacks, quickstep, round-start easing, breathing space, and player pressure response through FightCharacter input
 /// </summary>
 public class FightCharacterAI : MonoBehaviour
 {
@@ -12,7 +12,8 @@ public class FightCharacterAI : MonoBehaviour
         Spacing,
         BackingAway,
         Blocking,
-        JumpAttack
+        JumpAttack,
+        Quickstep
     }
 
     private enum LastAction
@@ -21,7 +22,17 @@ public class FightCharacterAI : MonoBehaviour
         StandingPunch,
         CrouchingPunch,
         JumpingPunch,
-        Block
+        StandingKick,
+        CrouchingKick,
+        JumpingKick,
+        Block,
+        Quickstep
+    }
+
+    private enum JumpAttackType
+    {
+        Punch,
+        Kick
     }
 
     [Header("References")]
@@ -79,8 +90,8 @@ public class FightCharacterAI : MonoBehaviour
     [Tooltip("How long the AI holds block")]
     [SerializeField] private float blockHoldTime = 0.35f;
 
-    [Tooltip("Delay between jumping and punching during a jump attack")]
-    [SerializeField] private float jumpPunchDelay = 0.2f;
+    [Tooltip("Delay between jumping and attacking during a jump attack")]
+    [SerializeField] private float jumpAttackDelay = 0.2f;
 
     [Header("Action Cooldowns")]
     [Tooltip("Cooldown after the AI blocks so it does not block repeatedly")]
@@ -88,6 +99,9 @@ public class FightCharacterAI : MonoBehaviour
 
     [Tooltip("Cooldown after the AI jump attacks so it does not jump repeatedly")]
     [SerializeField] private float jumpAttackCooldown = 2.5f;
+
+    [Tooltip("Cooldown after the AI quicksteps so it does not quickstep repeatedly")]
+    [SerializeField] private float aiQuickstepCooldown = 1.25f;
 
     [Header("Behavior Weights")]
     [Tooltip("Higher value means standing punch is more likely")]
@@ -99,8 +113,33 @@ public class FightCharacterAI : MonoBehaviour
     [Tooltip("Higher value means jumping punch is more likely")]
     [SerializeField] private int jumpingPunchWeight = 10;
 
+    [Tooltip("Higher value means standing kick is more likely")]
+    [SerializeField] private int standingKickWeight = 30;
+
+    [Tooltip("Higher value means crouching kick is more likely")]
+    [SerializeField] private int crouchingKickWeight = 15;
+
+    [Tooltip("Higher value means jumping kick is more likely")]
+    [SerializeField] private int jumpingKickWeight = 10;
+
     [Tooltip("Higher value means blocking is more likely")]
     [SerializeField] private int blockWeight = 15;
+
+    [Tooltip("Higher value means quickstep is more likely")]
+    [SerializeField] private int quickstepWeight = 20;
+
+    [Header("Quickstep")]
+    [Tooltip("How long the AI holds the first quickstep tap")]
+    [SerializeField] private float quickstepTapTime = 0.06f;
+
+    [Tooltip("How long the AI releases movement between quickstep taps")]
+    [SerializeField] private float quickstepReleaseTime = 0.06f;
+
+    [Tooltip("How long the AI pauses after sending the quickstep input")]
+    [SerializeField] private float quickstepAfterPauseTime = 0.2f;
+
+    [Tooltip("Chance that the AI quicksteps away from the player instead of toward the player")]
+    [SerializeField] private float quickstepAwayChance = 0.65f;
 
     [Header("Movement Feel")]
     [Tooltip("Prevents the AI from switching left/right movement too rapidly")]
@@ -137,13 +176,15 @@ public class FightCharacterAI : MonoBehaviour
 
     private AIState currentState;
     private LastAction lastAction;
+    private JumpAttackType currentJumpAttackType;
 
     private float decisionTimer;
     private float reactionTimer;
     private float blockTimer;
-    private float jumpPunchTimer;
+    private float jumpAttackTimer;
     private float blockCooldownTimer;
     private float jumpAttackCooldownTimer;
+    private float aiQuickstepCooldownTimer;
     private float movementCommitTimer;
 
     private float openingEaseTimer;
@@ -156,6 +197,10 @@ public class FightCharacterAI : MonoBehaviour
     private float pressureBackAwayTimer;
     private float previousPlayerX;
 
+    private float quickstepInputTimer;
+    private int quickstepPhase;
+    private float quickstepInputDirection;
+
     private float distanceToPlayer;
     private float directionToPlayer;
 
@@ -165,7 +210,7 @@ public class FightCharacterAI : MonoBehaviour
     private Vector2 openingMoveInput;
 
     private bool pendingDecision;
-    private bool waitingForJumpPunch;
+    private bool waitingForJumpAttack;
     private bool openingBehaviorActive;
     private bool wasRoundActive;
 
@@ -209,13 +254,19 @@ public class FightCharacterAI : MonoBehaviour
         if (HandleOpeningBehavior())
             return;
 
+        if (currentState == AIState.Quickstep)
+        {
+            HandleQuickstep();
+            return;
+        }
+
         if (HandlePlayerForwardPressure())
             return;
 
         if (HandleBreathingSpace())
             return;
 
-        if (waitingForJumpPunch)
+        if (waitingForJumpAttack)
         {
             HandleJumpAttack();
             return;
@@ -290,13 +341,15 @@ public class FightCharacterAI : MonoBehaviour
     {
         currentState = AIState.Spacing;
         lastAction = LastAction.None;
+        currentJumpAttackType = JumpAttackType.Punch;
 
         decisionTimer = 0f;
         reactionTimer = 0f;
         blockTimer = 0f;
-        jumpPunchTimer = 0f;
+        jumpAttackTimer = 0f;
         blockCooldownTimer = 0f;
         jumpAttackCooldownTimer = 0f;
+        aiQuickstepCooldownTimer = 0f;
         movementCommitTimer = 0f;
 
         openingEaseTimer = 0f;
@@ -308,6 +361,10 @@ public class FightCharacterAI : MonoBehaviour
         pressureTimer = 0f;
         pressureBackAwayTimer = 0f;
 
+        quickstepInputTimer = 0f;
+        quickstepPhase = 0;
+        quickstepInputDirection = 0f;
+
         distanceToPlayer = 0f;
         directionToPlayer = 0f;
 
@@ -317,7 +374,7 @@ public class FightCharacterAI : MonoBehaviour
         openingMoveInput = Vector2.zero;
 
         pendingDecision = false;
-        waitingForJumpPunch = false;
+        waitingForJumpAttack = false;
         openingBehaviorActive = false;
 
         if (player != null)
@@ -554,53 +611,95 @@ public class FightCharacterAI : MonoBehaviour
         if (GetAbsDistanceToPlayer() > attackDistance)
             return;
 
-        int standingWeight = standingPunchWeight;
-        int crouchingWeight = crouchingPunchWeight;
-        int jumpingWeight = jumpingPunchWeight;
+        int standingPunch = standingPunchWeight;
+        int crouchingPunch = crouchingPunchWeight;
+        int jumpingPunch = jumpingPunchWeight;
+        int standingKick = standingKickWeight;
+        int crouchingKick = crouchingKickWeight;
+        int jumpingKick = jumpingKickWeight;
         int blockingWeight = blockWeight;
+        int quickstep = quickstepWeight;
 
         if (lastAction == LastAction.StandingPunch)
-            standingWeight = ReduceWeight(standingWeight, 0.5f);
+            standingPunch = ReduceWeight(standingPunch, 0.75f);
 
         if (lastAction == LastAction.CrouchingPunch)
-            crouchingWeight = ReduceWeight(crouchingWeight, 0.6f);
+            crouchingPunch = ReduceWeight(crouchingPunch, 0.75f);
 
         if (lastAction == LastAction.JumpingPunch)
-            jumpingWeight = 0;
+            jumpingPunch = 0;
+
+        if (lastAction == LastAction.StandingKick)
+            standingKick = ReduceWeight(standingKick, 0.75f);
+
+        if (lastAction == LastAction.CrouchingKick)
+            crouchingKick = ReduceWeight(crouchingKick, 0.75f);
+
+        if (lastAction == LastAction.JumpingKick)
+            jumpingKick = 0;
 
         if (lastAction == LastAction.Block)
             blockingWeight = 0;
+
+        if (lastAction == LastAction.Quickstep)
+            quickstep = 0;
 
         if (blockCooldownTimer > 0f)
             blockingWeight = 0;
 
         if (jumpAttackCooldownTimer > 0f)
-            jumpingWeight = 0;
+        {
+            jumpingPunch = 0;
+            jumpingKick = 0;
+        }
 
-        int totalWeight = standingWeight + crouchingWeight + jumpingWeight + blockingWeight;
+        if (aiQuickstepCooldownTimer > 0f)
+            quickstep = 0;
+
+        int totalWeight =
+            standingPunch +
+            crouchingPunch +
+            jumpingPunch +
+            standingKick +
+            crouchingKick +
+            jumpingKick +
+            blockingWeight +
+            quickstep;
 
         if (totalWeight <= 0)
-        {
-            DoStandingPunch();
             return;
-        }
 
         int roll = Random.Range(0, totalWeight);
 
-        if (TryUseWeightedAction(ref roll, standingWeight, DoStandingPunch))
+        if (TryUseWeightedAction(ref roll, standingPunch, DoStandingPunch))
             return;
 
-        if (TryUseWeightedAction(ref roll, crouchingWeight, DoCrouchingPunch))
+        if (TryUseWeightedAction(ref roll, crouchingPunch, DoCrouchingPunch))
             return;
 
-        if (TryUseWeightedAction(ref roll, jumpingWeight, StartJumpAttack))
+        if (TryUseWeightedAction(ref roll, jumpingPunch, StartJumpPunch))
             return;
 
-        StartBlock();
+        if (TryUseWeightedAction(ref roll, standingKick, DoStandingKick))
+            return;
+
+        if (TryUseWeightedAction(ref roll, crouchingKick, DoCrouchingKick))
+            return;
+
+        if (TryUseWeightedAction(ref roll, jumpingKick, StartJumpKick))
+            return;
+
+        if (TryUseWeightedAction(ref roll, blockingWeight, StartBlock))
+            return;
+
+        StartQuickstep();
     }
 
     private bool TryUseWeightedAction(ref int roll, int weight, System.Action action)
     {
+        if (weight <= 0)
+            return false;
+
         if (roll < weight)
         {
             action.Invoke();
@@ -622,7 +721,7 @@ public class FightCharacterAI : MonoBehaviour
     private void DoStandingPunch()
     {
         lastAction = LastAction.StandingPunch;
-        fightCharacter.SetAIInput(0f, false, true, false);
+        fightCharacter.SetAIInput(0f, false, true, false, false);
         RegisterAttack();
     }
 
@@ -632,7 +731,7 @@ public class FightCharacterAI : MonoBehaviour
     private void DoCrouchingPunch()
     {
         lastAction = LastAction.CrouchingPunch;
-        fightCharacter.SetAIInput(0f, false, true, true);
+        fightCharacter.SetAIInput(0f, false, true, false, true);
 
         RegisterAttack();
     }
@@ -640,35 +739,81 @@ public class FightCharacterAI : MonoBehaviour
     /// <summary>
     /// Starts a jump, then waits briefly before punching in the air
     /// </summary>
-    private void StartJumpAttack()
+    private void StartJumpPunch()
     {
         currentState = AIState.JumpAttack;
         lastAction = LastAction.JumpingPunch;
+        currentJumpAttackType = JumpAttackType.Punch;
 
-        waitingForJumpPunch = true;
-        jumpPunchTimer = jumpPunchDelay;
+        waitingForJumpAttack = true;
+        jumpAttackTimer = jumpAttackDelay;
         jumpAttackCooldownTimer = jumpAttackCooldown;
 
-        fightCharacter.SetAIInput(0f, true, false, false);
+        fightCharacter.SetAIInput(0f, true, false, false, false);
 
         RegisterAttack();
     }
 
     /// <summary>
-    /// Sends punch input after the jump delay
+    /// Sends punch or kick input after the jump delay
     /// </summary>
     private void HandleJumpAttack()
     {
-        if (jumpPunchTimer > 0f)
+        if (jumpAttackTimer > 0f)
         {
             SendIdleInput();
             return;
         }
 
-        waitingForJumpPunch = false;
+        waitingForJumpAttack = false;
         currentState = AIState.Spacing;
 
-        fightCharacter.SetAIInput(0f, false, true, false);
+        if (currentJumpAttackType == JumpAttackType.Kick)
+        {
+            fightCharacter.SetAIInput(0f, false, false, true, false);
+        }
+        else
+        {
+            fightCharacter.SetAIInput(0f, false, true, false, false);
+        }
+    }
+
+    /// <summary>
+    /// Sends standing kick input
+    /// </summary>
+    private void DoStandingKick()
+    {
+        lastAction = LastAction.StandingKick;
+        fightCharacter.SetAIInput(0f, false, false, true, false);
+        RegisterAttack();
+    }
+
+    /// <summary>
+    ///  Sends crouch plus kick input
+    /// </summary>
+    private void DoCrouchingKick()
+    {
+        lastAction = LastAction.CrouchingKick;
+        fightCharacter.SetAIInput(0f, false, false, true, true);
+        RegisterAttack();
+    }
+
+    /// <summary>
+    /// Starts a jump, then waits briefly before kicking in the air
+    /// </summary>
+    private void StartJumpKick()
+    {
+        currentState = AIState.JumpAttack;
+        lastAction = LastAction.JumpingKick;
+        currentJumpAttackType = JumpAttackType.Kick;
+
+        waitingForJumpAttack = true;
+        jumpAttackTimer = jumpAttackDelay;
+        jumpAttackCooldownTimer = jumpAttackCooldown;
+
+        fightCharacter.SetAIInput(0f, true, false, false, false);
+
+        RegisterAttack();
     }
 
     /// <summary>
@@ -707,6 +852,64 @@ public class FightCharacterAI : MonoBehaviour
     }
 
     /// <summary>
+    /// Starts a quickstep by sending double-tap movement input to FightCharacter
+    /// </summary>
+    private void StartQuickstep()
+    {
+        currentState = AIState.Quickstep;
+        lastAction = LastAction.Quickstep;
+
+        aiQuickstepCooldownTimer = aiQuickstepCooldown;
+
+        bool stepAway = Random.value < quickstepAwayChance;
+        quickstepInputDirection = stepAway ? GetDirectionAwayFromPlayer() : GetDirectionTowardPlayer();
+
+        quickstepPhase = 0;
+        quickstepInputTimer = quickstepTapTime;
+
+        attackSequenceCount = 0;
+
+        fightCharacter.SetAIInput(quickstepInputDirection, false, false, false, false);
+    }
+
+    /// <summary>
+    /// Sends the tap, release, tap sequence needed to trigger FightCharacter quickstep
+    /// </summary>
+    private void HandleQuickstep()
+    {
+        quickstepInputTimer -= Time.deltaTime;
+
+        if (quickstepInputTimer > 0f)
+            return;
+
+        quickstepPhase++;
+
+        switch (quickstepPhase)
+        {
+            case 1:
+                quickstepInputTimer = quickstepReleaseTime;
+                fightCharacter.SetAIInput(0f, false, false, false, false);
+                break;
+
+            case 2:
+                quickstepInputTimer = quickstepTapTime;
+                fightCharacter.SetAIInput(quickstepInputDirection, false, false, false, false);
+                break;
+
+            case 3:
+                quickstepInputTimer = quickstepAfterPauseTime;
+                fightCharacter.SetAIInput(0f, false, false, false, false);
+                break;
+
+            default:
+                currentState = AIState.Spacing;
+                currentMoveInput = Vector2.zero;
+                SendIdleInput();
+                break;
+        }
+    }
+
+    /// <summary>
     /// Sends movement input without jump or punch
     /// </summary>
     private void SendMovementOnlyInput()
@@ -721,7 +924,7 @@ public class FightCharacterAI : MonoBehaviour
 
     private void SendMovementInput(Vector2 movement)
     {
-        fightCharacter.SetAIInput(movement.x, false, false, movement.y < -0.25f);
+        fightCharacter.SetAIInput(movement.x, false, false, false, movement.y < -0.25f);
     }
 
     /// <summary>
@@ -778,9 +981,10 @@ public class FightCharacterAI : MonoBehaviour
         decisionTimer = TickTimer(decisionTimer);
         reactionTimer = TickTimer(reactionTimer);
         blockTimer = TickTimer(blockTimer);
-        jumpPunchTimer = TickTimer(jumpPunchTimer);
+        jumpAttackTimer = TickTimer(jumpAttackTimer);
         blockCooldownTimer = TickTimer(blockCooldownTimer);
         jumpAttackCooldownTimer = TickTimer(jumpAttackCooldownTimer);
+        aiQuickstepCooldownTimer = TickTimer(aiQuickstepCooldownTimer);
         movementCommitTimer = TickTimer(movementCommitTimer);
         pressureBackAwayTimer = TickTimer(pressureBackAwayTimer);
 

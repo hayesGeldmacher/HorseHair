@@ -170,6 +170,7 @@ MonoBehaviour:
   moveAction: {fileID: 3971743194318002108, guid: e0c3a5bbff645d24ab07f1c6b7f5b8bd, type: 3}
   jumpAction: {fileID: -8020877833718507628, guid: e0c3a5bbff645d24ab07f1c6b7f5b8bd, type: 3}
   punchAction: {fileID: -5882644312763210218, guid: e0c3a5bbff645d24ab07f1c6b7f5b8bd, type: 3}
+  kickAction: {fileID: -2434569042550881021, guid: e0c3a5bbff645d24ab07f1c6b7f5b8bd, type: 3}
   crouchAction: {fileID: -5946650741149022378, guid: e0c3a5bbff645d24ab07f1c6b7f5b8bd, type: 3}
 --- !u!114 &2073051923087360164
 MonoBehaviour:
@@ -199,6 +200,8 @@ MonoBehaviour:
   groundCheckDistance: 1.5
   punchDamage: 10
   punchRange: 2
+  kickDamage: 16
+  kickRange: 2
   blockChipDamage: 2
   blockStunTime: 0.35
   blockKnockbackForce: 2
@@ -801,38 +804,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FightCharacterAI
   fightCharacter: {fileID: 8022259651407421388}
   player: {fileID: 5358301379143721012}
-  openingEaseTime: 2
-  openingApproachStrength: 0.35
-  openingSlowApproachChance: 0.6
-  openingWaitChance: 0.25
+  openingEaseTime: 1.5
+  openingApproachStrength: 0.45
+  openingSlowApproachChance: 0.65
+  openingWaitChance: 0.2
   openingBackAwayChance: 0.15
-  openingChoiceMinTime: 0.35
-  openingChoiceMaxTime: 0.8
-  approachDistance: 3.5
-  idealDistance: 1.4
-  tooCloseDistance: 0.9
-  attackDistance: 1.75
-  spacingBuffer: 0.15
-  decisionCooldown: 1.2
-  reactionDelay: 0.18
-  blockHoldTime: 0.6
-  jumpPunchDelay: 0.25
+  openingChoiceMinTime: 0.25
+  openingChoiceMaxTime: 0.6
+  approachDistance: 3
+  idealDistance: 1.2
+  tooCloseDistance: 0.5
+  attackDistance: 1.85
+  spacingBuffer: 0.25
+  decisionCooldown: 0.55
+  reactionDelay: 0.15
+  blockHoldTime: 0.35
+  jumpAttackDelay: 0.18
   blockCooldown: 1.5
-  jumpAttackCooldown: 1.75
-  standingPunchWeight: 50
-  crouchingPunchWeight: 20
-  jumpingPunchWeight: 20
+  jumpAttackCooldown: 2.25
+  standingPunchWeight: 30
+  crouchingPunchWeight: 15
+  jumpingPunchWeight: 5
+  standingKickWeight: 35
+  crouchingKickWeight: 15
+  jumpingKickWeight: 5
   blockWeight: 10
-  movementCommitTime: 0.25
+  movementCommitTime: 0.3
   attacksBeforeBackAway: 5
-  forcedBackAwayTime: 0.65
-  recoveryPauseTime: 0.25
-  emergencyBackAwayDistance: 0.65
+  forcedBackAwayTime: 0.15
+  recoveryPauseTime: 0.1
+  emergencyBackAwayDistance: 0.35
   respectPlayerForwardPressure: 1
-  pressureRespectDistance: 2.25
-  pressureReactionTime: 0.15
-  pressureBackAwayTime: 0.45
-  playerPressureSpeedThreshold: 0.05
+  pressureRespectDistance: 1.25
+  pressureReactionTime: 0.35
+  pressureBackAwayTime: 0.15
+  playerPressureSpeedThreshold: 0.12
 --- !u!114 &8022259651407421388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -861,6 +867,8 @@ MonoBehaviour:
   groundCheckDistance: 1.5
   punchDamage: 10
   punchRange: 2
+  kickDamage: 16
+  kickRange: 2
   blockChipDamage: 2
   blockStunTime: 0.35
   blockKnockbackForce: 2

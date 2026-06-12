@@ -17,6 +17,9 @@ public class FighterInput : MonoBehaviour
     [Tooltip("Triggered when the player presses the punch input")]
     [SerializeField] private InputActionReference punchAction;
 
+    [Tooltip("Triggered when the player presses the kick input")]
+    [SerializeField] private InputActionReference kickAction;
+
     [Tooltip("Held when the player holds the crouch input")]
     [SerializeField] private InputActionReference crouchAction;
 
@@ -40,6 +43,11 @@ public class FighterInput : MonoBehaviour
     /// True while the crouch input is held
     /// </summary>
     public bool CrouchHeld { get; private set; }
+
+    /// <summary>
+    /// True for one frame when the kick input is pressed
+    /// </summary>
+    public bool KickPressed { get; private set; }
 
     private void OnEnable()
     {
@@ -78,6 +86,9 @@ public class FighterInput : MonoBehaviour
         if (punchAction != null)
             punchAction.action.Enable();
 
+        if (kickAction != null)
+            kickAction.action.Enable();
+
         if (crouchAction != null)
             crouchAction.action.Enable();
     }
@@ -96,6 +107,9 @@ public class FighterInput : MonoBehaviour
         if (punchAction != null)
             punchAction.action.Disable();
 
+        if (kickAction != null)
+            kickAction.action.Disable();
+
         if (crouchAction != null)
             crouchAction.action.Disable();
     }
@@ -110,6 +124,9 @@ public class FighterInput : MonoBehaviour
 
         if (punchAction != null)
             punchAction.action.performed += OnPunch;
+
+        if (kickAction != null)
+            kickAction.action.performed += OnKick;
     }
 
     /// <summary>
@@ -123,6 +140,9 @@ public class FighterInput : MonoBehaviour
 
         if (punchAction != null)
             punchAction.action.performed -= OnPunch;
+
+        if (kickAction != null)
+            kickAction.action.performed -= OnKick;
     }
 
     /// <summary>
@@ -157,6 +177,7 @@ public class FighterInput : MonoBehaviour
     {
         JumpPressed = false;
         PunchPressed = false;
+        KickPressed = false;
     }
 
     /// <summary>
@@ -173,5 +194,13 @@ public class FighterInput : MonoBehaviour
     private void OnPunch(InputAction.CallbackContext context)
     {
         PunchPressed = true;
+    }
+
+    /// <summary>
+    /// Called when the kick input action is performed
+    /// </summary>
+    private void OnKick(InputAction.CallbackContext context)
+    {
+        KickPressed = true;
     }
 }

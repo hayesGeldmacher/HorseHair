@@ -40,6 +40,19 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Minimum input value required before movement input is counted")]
     [SerializeField] private float inputDeadZone = 0.25f;
 
+    [Header("Quickstep")]
+    [Tooltip("Horizontal speed applied during a quickstep dodge")]
+    [SerializeField] private float quickstepSpeed = 12f;
+
+    [Tooltip("Duration of the quickstep dodge movement")]
+    [SerializeField] private float quickstepTime = 0.15f;
+
+    [Tooltip("Cooldown time after performing a quickstep before it can be used again")]
+    [SerializeField] private float quickstepCooldown = 0.4f;
+
+    [Tooltip("Maximum time between two taps in the same direction to trigger a quickstep")]
+    [SerializeField] private float doubleTapWindow = 0.25f;
+
     [Header("Ground Check")]
     [Tooltip("Layer used to detect the ground")]
     [SerializeField] private LayerMask groundLayer;
@@ -53,6 +66,12 @@ public class FightCharacter : MonoBehaviour
 
     [Tooltip("Maximum distance required for a punch to hit")]
     [SerializeField] private float punchRange = 1.5f;
+
+    [Tooltip("Damage dealt by a successful kick")]
+    [SerializeField] private int kickDamage = 16;
+
+    [Tooltip("Maximum distance required for a kick to hit")]
+    [SerializeField] private float kickRange = 2f;
 
     [Tooltip("Damage dealt when an attack is blocked Chip damage cannot defeat")]
     [SerializeField] private int blockChipDamage = 2;
@@ -75,9 +94,18 @@ public class FightCharacter : MonoBehaviour
     private float actionTextTimer;
     private float blockStunTimer;
 
+    private float quickstepTimer;
+    private float quickstepCooldownTimer;
+    private float quickstepDirection;
+
+    private float lastTapTime;
+    private float lastTapDirection;
+    private bool wasMovePressed;
+
     private float aiMoveInput;
     private bool aiJumpPressed;
     private bool aiPunchPressed;
+    private bool aiKickPressed;
     private bool aiCrouchHeld;
 
     private bool roundActive = true;
@@ -109,6 +137,7 @@ public class FightCharacter : MonoBehaviour
         UpdateFacingDirection();
         UpdateActionTextTimer();
         UpdateBlockStunTimer();
+        UpdateQuickstepTimers();
 
         if (!roundActive)
         {
@@ -160,11 +189,12 @@ public class FightCharacter : MonoBehaviour
     /// Allows FightCharacterAI to send movement, jump, and punch commands into this fighter
     /// This lets AI fighters use the same movement and combat logic as the player
     /// </summary>
-    public void SetAIInput(float moveInput, bool jumpPressed, bool punchPressed, bool crouchHeld)
+    public void SetAIInput(float moveInput, bool jumpPressed, bool punchPressed, bool kickPressed, bool crouchHeld)
     {
         aiMoveInput = moveInput;
         aiJumpPressed = jumpPressed;
         aiPunchPressed = punchPressed;
+        aiKickPressed = kickPressed;
         aiCrouchHeld = crouchHeld;
     }
 
@@ -173,13 +203,24 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void ReadActions()
     {
-        if (!TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool crouchHeld))
+        if (!TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool kickPressed, out bool crouchHeld))
             return;
+
+        CheckQuickstepInput(moveInput);
 
         bool holdingBack = IsHoldingBack(moveInput);
 
-        isCrouching = crouchHeld && isGrounded;
-        isBlocking = holdingBack && isGrounded;
+        isCrouching = quickstepTimer <= 0f && crouchHeld && isGrounded;
+        isBlocking = quickstepTimer <= 0f && holdingBack && isGrounded;
+
+        if (quickstepTimer > 0f)
+        {
+            isBlocking = false;
+            isCrouching = false;
+
+            ClearAIButtonInputs();
+            return;
+        }
 
         if (jumpPressed && isGrounded && !isCrouching && !isBlocking)
         {
@@ -192,6 +233,13 @@ public class FightCharacter : MonoBehaviour
         if (punchPressed)
         {
             Punch();
+            ClearAIButtonInputs();
+            return;
+        }
+
+        if (kickPressed)
+        {
+            Kick();
             ClearAIButtonInputs();
             return;
         }
@@ -226,7 +274,15 @@ public class FightCharacter : MonoBehaviour
         if (rb == null || blockStunTimer > 0f)
             return;
 
-        if (!TryGetCurrentInput(out float moveInput, out _, out _, out _))
+        if (quickstepTimer > 0f)
+        {
+            Vector3 quickstepVelocity = rb.linearVelocity;
+            quickstepVelocity.x = quickstepDirection * quickstepSpeed;
+            rb.linearVelocity = quickstepVelocity;
+            return;
+        }
+
+        if (!TryGetCurrentInput(out float moveInput, out _, out _, out _, out _))
             return;
 
         float horizontal = Mathf.Abs(moveInput) < inputDeadZone ? 0f : moveInput;
@@ -241,13 +297,88 @@ public class FightCharacter : MonoBehaviour
         rb.linearVelocity = velocity;
     }
 
-    private bool TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool crouchHeld)
+    /// <summary>
+    /// Detects double taps in the same direction to trigger a quickstep dodge
+    /// </summary>
+    private void CheckQuickstepInput(float moveInput)
+    {
+        if (!isGrounded || isCrouching || blockStunTimer > 0f)
+            return;
+
+        if (quickstepCooldownTimer > 0f || quickstepTimer > 0f)
+            return;
+
+        bool movePressed = Mathf.Abs(moveInput) >= inputDeadZone;
+
+        if (movePressed && !wasMovePressed)
+        {
+            float tapDirection = Mathf.Sign(moveInput);
+
+            if (tapDirection == lastTapDirection &&
+                Time.time - lastTapTime <= doubleTapWindow)
+            {
+                StartQuickstep(tapDirection);
+                lastTapTime = 0f;
+                lastTapDirection = 0f;
+            }
+            else
+            {
+                lastTapTime = Time.time;
+                lastTapDirection = tapDirection;
+            }
+        }
+
+        wasMovePressed = movePressed;
+    }
+
+    /// <summary>
+    /// Initiates a quickstep dodge in the specified direction, setting timers for the quickstep duration and cooldown
+    /// </summary>
+    private void StartQuickstep(float direction)
+    {
+        quickstepDirection = direction;
+        quickstepTimer = quickstepTime;
+        quickstepCooldownTimer = quickstepCooldown;
+
+        isBlocking = false;
+        isCrouching = false;
+
+        SetTemporaryActionText(direction == facingDirection ? "Forward Quickstep" : "Back Quickstep");
+    }
+
+    /// <summary>
+    /// Applies quickstep movement for a short duration and counts down the quickstep and cooldown timers
+    /// </summary>
+    private void UpdateQuickstepTimers()
+    {
+        if (quickstepTimer > 0f)
+        {
+            quickstepTimer -= Time.deltaTime;
+
+            if (quickstepTimer <= 0f && rb != null)
+            {
+                Vector3 stopVelocity = rb.linearVelocity;
+                stopVelocity.x = 0f;
+                rb.linearVelocity = stopVelocity;
+            }
+        }
+
+        if (quickstepCooldownTimer > 0f)
+            quickstepCooldownTimer -= Time.deltaTime;
+    }
+
+    /// <summary>
+    /// Determines the current input values from either the player input component or the AI input variables
+    /// </summary>
+    /// <returns></returns>
+    private bool TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool kickPressed, out bool crouchHeld)
     {
         if (controlledByAI)
         {
             moveInput = aiMoveInput;
             jumpPressed = aiJumpPressed;
             punchPressed = aiPunchPressed;
+            kickPressed = aiKickPressed;
             crouchHeld = aiCrouchHeld;
             return true;
         }
@@ -257,6 +388,7 @@ public class FightCharacter : MonoBehaviour
             moveInput = 0f;
             jumpPressed = false;
             punchPressed = false;
+            kickPressed = false;
             crouchHeld = false;
             return false;
         }
@@ -264,6 +396,7 @@ public class FightCharacter : MonoBehaviour
         moveInput = input.Move;
         jumpPressed = input.JumpPressed;
         punchPressed = input.PunchPressed;
+        kickPressed = input.KickPressed;
         crouchHeld = input.CrouchHeld;
         return true;
     }
@@ -293,9 +426,46 @@ public class FightCharacter : MonoBehaviour
 
         SetTemporaryActionText(punchType);
 
-        FighterMoveResult result = TryHitOpponent(punchType);
+        FighterMoveResult result = TryHitOpponent(punchType, punchDamage, punchRange);
 
         MovePerformed?.Invoke(this, moveType, result);
+    }
+
+    /// <summary>
+    /// Determines the current kick type and attempts to hit the opponent
+    /// </summary>
+    private void Kick()
+    {
+        string kickType = GetKickType();
+        FighterMoveType moveType = GetKickMoveType();
+
+        SetTemporaryActionText(kickType);
+
+        FighterMoveResult result = TryHitOpponent(kickType, kickDamage, kickRange);
+
+        MovePerformed?.Invoke(this, moveType, result);
+    }
+
+    private FighterMoveType GetKickMoveType()
+    {
+        if (!isGrounded)
+            return FighterMoveType.JumpingKick;
+
+        if (isCrouching)
+            return FighterMoveType.CrouchingKick;
+
+        return FighterMoveType.StandingKick;
+    }
+
+    private string GetKickType()
+    {
+        if (!isGrounded)
+            return "Jumping Kick";
+
+        if (isCrouching)
+            return "Crouching Kick";
+
+        return "Standing Kick";
     }
 
     /// <summary>
@@ -330,7 +500,7 @@ public class FightCharacter : MonoBehaviour
     /// Checks whether the opponent is in range and sends the attack to the opponent's FightCharacter
     /// This allows blocking, chip damage, block stun, and knockback to work
     /// </summary>
-    private FighterMoveResult TryHitOpponent(string punchType)
+    private FighterMoveResult TryHitOpponent(string attackName, int damage, float range)
     {
         if (opponent == null)
         {
@@ -340,9 +510,9 @@ public class FightCharacter : MonoBehaviour
 
         float distanceToOpponent = Vector3.Distance(transform.position, opponent.position);
 
-        if (distanceToOpponent > punchRange)
+        if (distanceToOpponent > range)
         {
-            Debug.Log(punchType + " missed");
+            Debug.Log(attackName + " missed");
             return FighterMoveResult.Miss;
         }
 
@@ -352,7 +522,7 @@ public class FightCharacter : MonoBehaviour
             return FighterMoveResult.Miss;
         }
 
-        return opponentCharacter.ReceiveAttack(punchDamage, transform.position);
+        return opponentCharacter.ReceiveAttack(damage, transform.position);
     }
 
     /// <summary>
@@ -362,6 +532,11 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     public FighterMoveResult ReceiveAttack(int damage, Vector3 attackerPosition)
     {
+        if (quickstepTimer > 0f)
+        {
+            return FighterMoveResult.Miss;
+        }
+
         if (IsBlockingAttack(attackerPosition))
         {
             ApplyBlockedAttack(attackerPosition);
@@ -570,5 +745,6 @@ public class FightCharacter : MonoBehaviour
 
         aiJumpPressed = false;
         aiPunchPressed = false;
+        aiKickPressed = false;
     }
 }
