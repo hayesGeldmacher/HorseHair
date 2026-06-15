@@ -15,6 +15,7 @@ public class Camera_Environment : MonoBehaviour
     private float _followSpeedY = 2f;
     [SerializeField]
     private EventClick_Environment selfClickEvent;
+    [SerializeField] private GameObject _arrows;
 
     private GameObject Arrows;
     public TeleportClickEventData TeleportClickEventData;
@@ -25,8 +26,7 @@ public class Camera_Environment : MonoBehaviour
         if (TeleportClickEventData == null)
             SetUpEventData();
 
-        Arrows = transform.Find("Arrows").gameObject;
-        connectedClickEvents = Arrows.GetComponentsInChildren<EventClick_Environment>();
+        connectedClickEvents = _arrows.GetComponentsInChildren<EventClick_Environment>();
         ActivateOrDeactivate(false);
     }
     public void TeleportToSelf()
