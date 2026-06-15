@@ -32,6 +32,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private Coroutine _hideInventoryCoroutine;
     private Coroutine _hideTextCoroutine;
 
+    private bool finishedFirstTeleport = false;
+
     private void OnEnable()
     {
         EventClick.OnObjectClicked += HandleObjectClicked;
@@ -54,7 +56,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void HandleObjectClicked(ClickEventData data)
     {
-        AudioManager.instance.PlayInteractSound(); //play interact audio on click  - HG
+
+        if (finishedFirstTeleport) { AudioManager.instance.PlayInteractSound(); } //play interact audio on click  - HG
 
         switch(data)
         {
@@ -75,7 +78,37 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void MoveTo(TeleportClickEventData data)
     {
-        StartCoroutine(TeleportSequence(data));
+        //if this is the first teleport of the scene, play unique blinking animation - HG
+        if (!finishedFirstTeleport)
+        {
+            StartCoroutine(TeleportSequenceFirst(data));
+            finishedFirstTeleport = true;
+        }
+        else { StartCoroutine(TeleportSequence(data)); }
+    }
+
+    //teleport function for unique first blinking animation
+    private IEnumerator TeleportSequenceFirst(TeleportClickEventData data)
+    {
+        if (currentCamera != null)
+        {
+            currentCamera.ActivateOrDeactivate(false);
+        }
+
+        transform.position = data.ObjectTransform.position;
+        transform.rotation = data.ObjectTransform.rotation;
+
+        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+        yield return new WaitForSeconds(0.4f);
+        blinkAnimator.SetTrigger("EyesStart");
+
+
+        PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX,
+            data.FollowSpeedY);
+
+        currentCamera = data.Camera;
+        currentCamera.ActivateOrDeactivate(true);
+
     }
 
     private IEnumerator TeleportSequence(TeleportClickEventData data)

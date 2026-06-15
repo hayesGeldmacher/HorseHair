@@ -94,6 +94,6 @@ public class CursorManager : MonoBehaviour
                 playHover = false;
                 break;
         }
-        if (playHover) { AudioManager.instance.PlayHoverSound(); }
+        if (playHover) { AudioManager.instance.PlayHoverSound(); } //plays a hover sfx when etnering an object hover -HG
     }
 }
