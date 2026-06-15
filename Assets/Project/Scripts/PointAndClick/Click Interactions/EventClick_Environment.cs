@@ -17,6 +17,7 @@ public class EventClick_Environment : EventClick
     protected override void SetType()
     {
         Type = ObjectType.Environment;
+        Name = connectedCamera.environmentName;
     }
 
     protected override ClickEventData CreateEventData()

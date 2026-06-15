@@ -1,8 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Camera_Environment : MonoBehaviour
 {
-    [SerializeField] private string environmentName = "Environment";
+    [SerializeField] public string environmentName = "Environment";
     [Header("Camera Settings")]
     [SerializeField, Tooltip("How far can the camera move up and down")]
     private float _pitchClamp = 20f;
@@ -14,6 +15,7 @@ public class Camera_Environment : MonoBehaviour
     private float _followSpeedY = 2f;
     [SerializeField]
     private EventClick_Environment selfClickEvent;
+    [SerializeField] private GameObject _arrows;
 
     private GameObject Arrows;
     public TeleportClickEventData TeleportClickEventData;
@@ -24,8 +26,7 @@ public class Camera_Environment : MonoBehaviour
         if (TeleportClickEventData == null)
             SetUpEventData();
 
-        Arrows = transform.Find("Arrows").gameObject;
-        connectedClickEvents = Arrows.GetComponentsInChildren<EventClick_Environment>();
+        connectedClickEvents = _arrows.GetComponentsInChildren<EventClick_Environment>();
         ActivateOrDeactivate(false);
     }
     public void TeleportToSelf()
@@ -53,7 +54,7 @@ public class Camera_Environment : MonoBehaviour
             FollowSpeedY = _followSpeedY,
             ObjectTransform = transform,
             Source = gameObject,
-            Camera = this
+            Camera = this,
         };
     }
 }

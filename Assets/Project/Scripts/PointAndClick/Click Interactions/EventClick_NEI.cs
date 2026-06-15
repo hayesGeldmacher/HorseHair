@@ -1,26 +1,28 @@
 using UnityEngine;
 
-public class NPCClickEventData : ClickEventData
+public class NEIClickEventData : ClickEventData
 {
-    public string NPCName;
+    public string NEIName;
 }
 
 public class EventClick_NEI : EventClick
 {
-    [SerializeField] private string propName = "Prop";
+    [SerializeField] private string neiName = "NEI";
 
     protected override void SetType()
     {
         Type = ObjectType.NEI;
+        Name = neiName;
     }
 
     protected override ClickEventData CreateEventData()
     {
-        return new NPCClickEventData
+        return new NEIClickEventData
         {
-            NPCName = propName,
+            NEIName = neiName,
             ObjectTransform = transform,
-            Source = gameObject
+            Source = gameObject,
+            Description = description,
         };
     }
 }

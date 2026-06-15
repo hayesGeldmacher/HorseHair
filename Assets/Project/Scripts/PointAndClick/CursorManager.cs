@@ -9,11 +9,13 @@ public enum CursorType
     Item,
     NonEssentialItem,
     Environment,
+    Goal,
 }
 
 public class CursorManager : MonoBehaviour
 {
     [SerializeField] private List<CursorsScript> CursorsScriptsList;
+    [SerializeField] private ItemBox itemBox;
 
     private Dictionary<CursorType, CursorsScript> _CursorsScriptsDict;
     private CursorsScript _CursorsScript;
@@ -64,21 +66,29 @@ public class CursorManager : MonoBehaviour
         _frameTimer = CursorsScript.frameRate;     
     }
 
-    private void HandleObjectHovered(ObjectType type)
+    private void HandleObjectHovered(ObjectType type, string name)
     {
         switch (type)
         {
             case ObjectType.Environment:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Environment]);
+                itemBox.ShowTextbox(name);
                 break;
             case ObjectType.Item:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Item]);
+                itemBox.ShowTextbox(name);
                 break;
             case ObjectType.NEI:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.NonEssentialItem]);
+                itemBox.ShowTextbox(name);
+                break;
+            case ObjectType.Goal:
+                SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Goal]);
+                itemBox.ShowTextbox(name);
                 break;
             default:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Default]);
+                itemBox.HideTextbox();
                 break;
         }
     }
