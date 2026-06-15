@@ -68,6 +68,8 @@ public class CursorManager : MonoBehaviour
 
     private void HandleObjectHovered(ObjectType type, string name)
     {
+
+        bool playHover = true;
         switch (type)
         {
             case ObjectType.Environment:
@@ -89,7 +91,9 @@ public class CursorManager : MonoBehaviour
             default:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Default]);
                 itemBox.HideTextbox();
+                playHover = false;
                 break;
         }
+        if (playHover) { AudioManager.instance.PlayHoverSound(); }
     }
 }
