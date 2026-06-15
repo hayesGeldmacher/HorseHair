@@ -6,6 +6,7 @@ public class ClickEventData
 {
     public Transform ObjectTransform;
     public GameObject Source;
+    public string Description;
 }
 
 public enum ObjectType
@@ -13,16 +14,20 @@ public enum ObjectType
     None,
     Environment,
     Item,
-    NEI
+    NEI,
+    Goal
 }
 
 public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private int OutlineIndex = 1;
+    [SerializeField] public string description;
+    [SerializeField] private bool ResetAfterClick = true;
 
     protected ObjectType Type = ObjectType.None;
+    protected string Name = "";
     public static event System.Action<ClickEventData> OnObjectClicked;
-    public static event System.Action<ObjectType> OnObjectHovered;
+    public static event System.Action<ObjectType, string> OnObjectHovered;
     private Material outlineMaterial;
 
     private void Start()
@@ -40,8 +45,11 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerClick(PointerEventData eventData)
     {
         OnObjectClicked?.Invoke(CreateEventData());
-        outlineMaterial.SetFloat("_Outline_Show", 0f);
-        OnObjectHovered?.Invoke(ObjectType.None);
+        if (ResetAfterClick)
+        {
+            OnObjectHovered?.Invoke(ObjectType.None, "");
+            outlineMaterial.SetFloat("_Outline_Show", 0f);
+        }
     }
 
     public void ForceClick()
@@ -54,21 +62,20 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         return new ClickEventData
         {
             ObjectTransform = transform,
-            Source = gameObject
+            Source = gameObject,
+            Description = description,
         };
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log($"Pointer entered {gameObject.name}");
         outlineMaterial.SetFloat("_Outline_Show", 1f);
-        OnObjectHovered?.Invoke(Type);
+        OnObjectHovered?.Invoke(Type, Name);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log($"Pointer exited {gameObject.name}");
         outlineMaterial.SetFloat("_Outline_Show", 0f);
-        OnObjectHovered?.Invoke(ObjectType.None);
+        OnObjectHovered?.Invoke(ObjectType.None, "");
     }
 }

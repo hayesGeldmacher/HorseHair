@@ -1,8 +1,9 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Camera_Environment : MonoBehaviour
 {
-    [SerializeField] private string environmentName = "Environment";
+    [SerializeField] public string environmentName = "Environment";
     [Header("Camera Settings")]
     [SerializeField, Tooltip("How far can the camera move up and down")]
     private float _pitchClamp = 20f;
@@ -53,7 +54,7 @@ public class Camera_Environment : MonoBehaviour
             FollowSpeedY = _followSpeedY,
             ObjectTransform = transform,
             Source = gameObject,
-            Camera = this
+            Camera = this,
         };
     }
 }
