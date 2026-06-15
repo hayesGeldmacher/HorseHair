@@ -38,6 +38,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void HandleObjectClicked(ClickEventData data)
     {
+        AudioManager.instance.PlayInteractSound(); //play interact audio on click  - HG
+
         switch(data)
         {
             case TeleportClickEventData point:

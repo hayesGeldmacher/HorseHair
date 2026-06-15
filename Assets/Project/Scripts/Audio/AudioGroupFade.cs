@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AudioManager : MonoBehaviour
+public class AudioGroupFade : MonoBehaviour
 {
     [Header("Background Audio")]
     [Tooltip("should background audio fade in from quiet")]
@@ -41,7 +41,7 @@ public class AudioManager : MonoBehaviour
         float volume;
         generalMixer.GetFloat(backgroundParam, out volume);
 
-        if(volume >= backgroundMax) { volume = backgroundMax; backFadingIn = false; }
+        if (volume >= backgroundMax) { volume = backgroundMax; backFadingIn = false; }
         else
         {
             volume += fadeSpeed * Time.deltaTime;
