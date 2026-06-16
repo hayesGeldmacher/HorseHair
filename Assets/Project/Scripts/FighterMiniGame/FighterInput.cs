@@ -23,31 +23,15 @@ public class FighterInput : MonoBehaviour
     [Tooltip("Held when the player holds the crouch input")]
     [SerializeField] private InputActionReference crouchAction;
 
-    /// <summary>
-    /// Current movement input
-    /// X controls left and right movement
-    /// </summary>
+    [Tooltip("Triggered when the player presses the grab input")]
+    [SerializeField] private InputActionReference grabAction;
+
     public float Move { get; private set; }
-
-    /// <summary>
-    /// True for one frame when the jump input is pressed
-    /// </summary>
     public bool JumpPressed { get; private set; }
-
-    /// <summary>
-    /// True for one frame when the punch input is pressed
-    /// </summary>
     public bool PunchPressed { get; private set; }
-
-    /// <summary>
-    /// True while the crouch input is held
-    /// </summary>
     public bool CrouchHeld { get; private set; }
-
-    /// <summary>
-    /// True for one frame when the kick input is pressed
-    /// </summary>
     public bool KickPressed { get; private set; }
+    public bool GrabPressed { get; private set; }
 
     private void OnEnable()
     {
@@ -72,9 +56,6 @@ public class FighterInput : MonoBehaviour
         ResetOneFrameInputs();
     }
 
-    /// <summary>
-    /// Enables all assigned input actions so they can receive input
-    /// </summary>
     private void EnableInputActions()
     {
         if (moveAction != null)
@@ -91,11 +72,11 @@ public class FighterInput : MonoBehaviour
 
         if (crouchAction != null)
             crouchAction.action.Enable();
+
+        if (grabAction != null)
+            grabAction.action.Enable();
     }
 
-    /// <summary>
-    /// Disables all assigned input actions when this component is inactive
-    /// </summary>
     private void DisableInputActions()
     {
         if (moveAction != null)
@@ -112,11 +93,11 @@ public class FighterInput : MonoBehaviour
 
         if (crouchAction != null)
             crouchAction.action.Disable();
+
+        if (grabAction != null)
+            grabAction.action.Disable();
     }
 
-    /// <summary>
-    /// Subscribes to button input events
-    /// </summary>
     private void SubscribeToInputEvents()
     {
         if (jumpAction != null)
@@ -127,12 +108,11 @@ public class FighterInput : MonoBehaviour
 
         if (kickAction != null)
             kickAction.action.performed += OnKick;
+
+        if (grabAction != null)
+            grabAction.action.performed += OnGrab;
     }
 
-    /// <summary>
-    /// Unsubscribes from input events to prevent duplicate event calls
-    /// if this component is disabled and re-enabled
-    /// </summary>
     private void UnsubscribeFromInputEvents()
     {
         if (jumpAction != null)
@@ -143,11 +123,11 @@ public class FighterInput : MonoBehaviour
 
         if (kickAction != null)
             kickAction.action.performed -= OnKick;
+
+        if (grabAction != null)
+            grabAction.action.performed -= OnGrab;
     }
 
-    /// <summary>
-    /// Reads the current movement value from the assigned move input action
-    /// </summary>
     private void ReadMovementInput()
     {
         if (moveAction == null)
@@ -156,9 +136,6 @@ public class FighterInput : MonoBehaviour
         Move = moveAction.action.ReadValue<float>();
     }
 
-    /// <summary>
-    /// Reads whether the crouch input is currently being held
-    /// </summary>
     private void ReadCrouchInput()
     {
         if (crouchAction == null)
@@ -170,37 +147,31 @@ public class FighterInput : MonoBehaviour
         CrouchHeld = crouchAction.action.IsPressed();
     }
 
-    /// <summary>
-    /// Clears button press flags after other scripts have had a frame to read them
-    /// </summary>
     private void ResetOneFrameInputs()
     {
         JumpPressed = false;
         PunchPressed = false;
         KickPressed = false;
+        GrabPressed = false;
     }
 
-    /// <summary>
-    /// Called when the jump input action is performed
-    /// </summary>
     private void OnJump(InputAction.CallbackContext context)
     {
         JumpPressed = true;
     }
 
-    /// <summary>
-    /// Called when the punch input action is performed
-    /// </summary>
     private void OnPunch(InputAction.CallbackContext context)
     {
         PunchPressed = true;
     }
 
-    /// <summary>
-    /// Called when the kick input action is performed
-    /// </summary>
     private void OnKick(InputAction.CallbackContext context)
     {
         KickPressed = true;
+    }
+
+    private void OnGrab(InputAction.CallbackContext context)
+    {
+        GrabPressed = true;
     }
 }

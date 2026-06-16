@@ -10,5 +10,7 @@ public enum FighterMoveType
     AnyKick,
     StandingKick,
     CrouchingKick,
-    JumpingKick
+    JumpingKick,
+
+    Grab
 }

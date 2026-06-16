@@ -79,9 +79,9 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         UpdateRuleCooldowns();
         UpdateDialogueTimer();
     }
-    // This method is called whenever the fighter performs a move. It records the move and checks if any dialogue rules are triggered
+
     private void OnMovePerformed(
-        FightCharacter fighter,
+        FightCharacter _,
         FighterMoveType moveType,
         FighterMoveResult result)
     {
@@ -90,8 +90,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         CheckRules();
     }
 
-    // This method iterates through all dialogue rules and checks if any of them can be triggered based on the current move history and cooldowns
-    // If a rule is triggered, it displays the corresponding dialogue line
     private void CheckRules()
     {
         foreach (MoveDialogueRule rule in rules)
@@ -107,7 +105,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         }
     }
 
-    // This method checks if a given dialogue rule is eligible to be triggered based on its cooldown and whether it has already been triggered (if it's set to trigger only once)
     private bool CanRuleTrigger(MoveDialogueRule rule)
     {
         if (rule == null)
@@ -124,7 +121,7 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
         return true;
     }
-    // This method checks if the recent move history matches the specified dialogue rule's move and result sequence within the allowed time frame
+
     private bool DoesHistoryMatchRule(MoveDialogueRule rule)
     {
         int sequenceCount = rule.moveSequence.Count;
@@ -157,7 +154,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         return true;
     }
 
-    // This method checks if the actual move type matches the required move type specified in the dialogue rule, taking into account any "Any" or "AnyPunch"/"AnyKick" options
     private bool DoesMoveTypeMatch(FighterMoveType requiredMove, FighterMoveType actualMove)
     {
         if (requiredMove == FighterMoveType.Any)
@@ -183,8 +179,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         return false;
     }
 
-    // This method retrieves the required move result for a specific index in the dialogue rule's result sequence
-    // If the index is out of bounds or the result sequence is not defined, it returns "Any"
     private FighterMoveResult GetRequiredResult(MoveDialogueRule rule, int index)
     {
         if (rule.resultSequence == null)
@@ -196,7 +190,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         return rule.resultSequence[index];
     }
 
-    // This method is responsible for displaying the dialogue line associated with a triggered rule and setting up the cooldown and trigger state for that rule
     private void TriggerDialogue(MoveDialogueRule rule)
     {
         if (dialogueText != null)
@@ -209,33 +202,29 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         rule.hasTriggered = true;
     }
 
-    // This method activates the dialogue UI to make it visible on the screen
     private void ShowDialogue()
     {
         if (dialogueRoot != null)
             dialogueRoot.SetActive(true);
     }
 
-    // This method deactivates the dialogue UI to hide it from the screen
     private void HideDialogue()
     {
         if (dialogueRoot != null)
             dialogueRoot.SetActive(false);
     }
 
-    // This method updates the dialogue timer each frame. If the timer reaches zero, it hides the dialogue
     private void UpdateDialogueTimer()
     {
         if (dialogueTimer <= 0f)
             return;
-        
+
         dialogueTimer -= Time.deltaTime;
 
         if (dialogueTimer <= 0f)
             HideDialogue();
     }
 
-    // This method updates the cooldown timers for all dialogue rules each frame, reducing them by the elapsed time
     private void UpdateRuleCooldowns()
     {
         foreach (MoveDialogueRule rule in rules)
@@ -245,8 +234,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         }
     }
 
-    //  This method removes old move records from the move history that are outside the longest allowed time frame for any dialogue rule,
-    //  ensuring that the move history only contains relevant recent moves
     private void TrimOldMoveHistory()
     {
         float longestAllowedTime = GetLongestRuleTime();
@@ -258,8 +245,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         }
     }
 
-    // This method iterates through all dialogue rules to find the longest maximum sequence time,
-    // which is used to determine how far back in the move history we need to keep records for
     private float GetLongestRuleTime()
     {
         float longestTime = 0f;
@@ -273,7 +258,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         return longestTime;
     }
 
-    // This method can be called to reset all dialogue triggers, clearing the move history, resetting timers, and hiding any active dialogue
     public void ResetDialogueTriggers()
     {
         moveHistory.Clear();
