@@ -15,6 +15,7 @@ public class Tasks
     public TimeOfDay timeOfDay;
     public int TaskNum;
     public EventClick_GoalItem goalItem;
+    public Camera_Environment startingPosition;
 }
 
 public class EventManager : MonoBehaviour
@@ -27,8 +28,8 @@ public class EventManager : MonoBehaviour
     [SerializeField] private string fightingGameScene;
     [SerializeField] private string houseScene;
 
-    private Dictionary<(TimeOfDay, int), EventClick_GoalItem> tasksList = 
-        new Dictionary<(TimeOfDay, int), EventClick_GoalItem>();
+    private Dictionary<(TimeOfDay, int), (EventClick_GoalItem, Camera_Environment)> tasksList = 
+        new Dictionary<(TimeOfDay, int), (EventClick_GoalItem, Camera_Environment)>();
 
     private void OnEnable()
     {
@@ -40,23 +41,29 @@ public class EventManager : MonoBehaviour
         EventClick_GoalItem.GoalCompleted -= HandleGoalCompleted;
     }
 
-    private void Start()
+    private void Awake()
     {
         currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
         currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
 
         foreach (var task in tasks)
         {
-            tasksList[(task.timeOfDay, task.TaskNum)] = task.goalItem;
+            tasksList[(task.timeOfDay, task.TaskNum)] = (task.goalItem, task.startingPosition);
             task.goalItem.Deactivate();
         }
 
+        if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
+            PlayerPrefs.SetString("Environment", tasksList[(currentTimeOfDay, currentTaskNum)].Item2.name);
+    }
+
+    private void Start()
+    {
         StartTask();
     }
 
     private void StartTask()
     {
-        tasksList[(currentTimeOfDay, currentTaskNum)].Activate();
+        tasksList[(currentTimeOfDay, currentTaskNum)].Item1.Activate();
     }
 
     private void HandleGoalCompleted(GoalCompletionData data)
@@ -76,6 +83,8 @@ public class EventManager : MonoBehaviour
 
         PlayerPrefs.SetInt("TaskNum", currentTaskNum);
         PlayerPrefs.SetInt("TimeOfDay", (int)currentTimeOfDay);
+        if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
+            PlayerPrefs.SetString("Environment", tasksList[(currentTimeOfDay, currentTaskNum)].Item2.name);
         PlayerPrefs.Save();
 
         SceneManager.LoadScene(nextSceneName);
@@ -85,6 +94,7 @@ public class EventManager : MonoBehaviour
     public void ResetProgress()
     {
         PlayerPrefs.DeleteKey("TaskNum");
+        PlayerPrefs.DeleteKey("Environment");
         PlayerPrefs.DeleteKey("TimeOfDay");
     }
 }

@@ -14,8 +14,10 @@ public enum ObjectType
     None,
     Environment,
     Item,
-    NEI,
-    Goal
+    NEI, // Non Essential Item
+    Goal,
+    AI, // Animated Item
+    TI, // Transition Item
 }
 
 public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
