@@ -16,7 +16,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private Animator blinkAnimator;
 
     [Header("Player Settings")]
-    [SerializeField] private Camera_Environment StartingPoint;
+    private Camera_Environment StartingPoint;
 
     [Header("UI Settings")]
     [SerializeField] private float FadeDelay = 1f;
@@ -46,6 +46,19 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void Start()
     {
+        string environment = PlayerPrefs.GetString("Environment");
+        if (!string.IsNullOrEmpty(environment))
+        {
+            Camera_Environment[] allEnvironments = FindObjectsByType<Camera_Environment>(FindObjectsInactive.Include);
+            foreach (Camera_Environment env in allEnvironments)
+            {
+                if (env.name == environment)
+                {
+                    StartingPoint = env;
+                    break;
+                }
+            }
+        }
         if (StartingPoint != null)
         {
             StartingPoint.TeleportToSelf();
