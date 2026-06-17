@@ -16,10 +16,25 @@ public class Camera_Environment : MonoBehaviour
     [SerializeField]
     private EventClick_Environment selfClickEvent;
     [SerializeField] private GameObject _arrows;
+    [SerializeField] private GameObject _cameraMesh;
 
     private GameObject Arrows;
     public TeleportClickEventData TeleportClickEventData;
     private EventClick_Environment[] connectedClickEvents;
+
+    private void OnValidate()
+    {
+        if (transform.parent != null)
+        {
+            environmentName = "Camera_" + transform.parent.name;
+            gameObject.name = environmentName;
+        }
+    }
+
+    private void Awake()
+    {
+        _cameraMesh.SetActive(false);
+    }
 
     private void Start()
     {

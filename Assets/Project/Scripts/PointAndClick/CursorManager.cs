@@ -10,6 +10,7 @@ public enum CursorType
     NonEssentialItem,
     Environment,
     Goal,
+    AnimatedItem,
 }
 
 public class CursorManager : MonoBehaviour
@@ -85,6 +86,10 @@ public class CursorManager : MonoBehaviour
                 itemBox.ShowTextbox(name);
                 break;
             case ObjectType.Goal:
+                SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Goal]);
+                itemBox.ShowTextbox(name);
+                break;
+            case ObjectType.AI:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Goal]);
                 itemBox.ShowTextbox(name);
                 break;
