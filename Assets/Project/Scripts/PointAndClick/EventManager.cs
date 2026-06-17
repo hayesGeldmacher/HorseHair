@@ -48,6 +48,8 @@ public class EventManager : MonoBehaviour
 
         foreach (var task in tasks)
         {
+            if (task.goalItem == null || task.startingPosition == null)
+                continue;
             tasksList[(task.timeOfDay, task.TaskNum)] = (task.goalItem, task.startingPosition);
             task.goalItem.Deactivate();
         }
@@ -68,6 +70,8 @@ public class EventManager : MonoBehaviour
 
     private void HandleGoalCompleted(GoalCompletionData data)
     {
+        if (!data.IsCompleted)
+            return;
         string nextSceneName;
         if (currentTimeOfDay == TimeOfDay.Afternoon)
         {
