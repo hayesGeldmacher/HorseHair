@@ -26,8 +26,10 @@ public class Camera_Environment : MonoBehaviour
     {
         if (transform.parent != null)
         {
-            environmentName = "Camera_" + transform.parent.name;
-            gameObject.name = environmentName;
+            // environmentName = "Camera_" + transform.parent.name;
+            //  gameObject.name = environmentName;
+            //commented out above lines so that in-game envrionment name is inspector-editable - HG
+            gameObject.name = "Camera_" + transform.parent.name;
         }
     }
 
