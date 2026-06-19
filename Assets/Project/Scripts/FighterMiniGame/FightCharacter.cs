@@ -142,6 +142,7 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("How long temporary actions stay visible before returning to normal state text")]
     [SerializeField] private float actionTextHoldTime = 0.4f;
 
+    [HideInInspector] public bool isMoving; //for animation script to read player state -HG
     private bool isGrounded;
     private bool isCrouching;
     private bool isBlocking;
@@ -327,6 +328,7 @@ public class FightCharacter : MonoBehaviour
 
     private void Move()
     {
+        isMoving = false;
         if (rb == null || blockStunTimer > 0f || isKnockedDown || isRecovering)
             return;
 
@@ -346,6 +348,7 @@ public class FightCharacter : MonoBehaviour
 
         float horizontal = Mathf.Abs(moveInput) < inputDeadZone ? 0f : moveInput;
         float currentMoveSpeed = moveSpeed;
+        isMoving = Mathf.Abs(moveInput) < inputDeadZone ? false : true; //check if player is moving or still - HG
 
         if (isBlocking)
             currentMoveSpeed = blockMoveSpeed;
