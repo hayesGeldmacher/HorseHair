@@ -13,12 +13,18 @@ public class GoalCompletionData
     public Dictionary<EventClick_Item, bool> NeededItems;
     public EventClick_GoalItem SourceGoal;
     public bool IsCompleted;
+    public string CompletedString;
+    public string NotCompletedString;
+    public string nextTask;
 }
 
 public class EventClick_GoalItem : EventClick
 {
     [SerializeField] private string goalName = "Goal Item";
     [SerializeField] private EventClick_Item[] requiredItems;
+    [SerializeField] private string NotCompletedGoalString = "I still need ";
+    [SerializeField] private string CompletedGoalString = "Perfect, now I should go to school";
+    [SerializeField] private string TaskAfterComplettion = "I should go to school now";
 
     private Dictionary<EventClick_Item, bool> itemCollectionStatus = 
         new Dictionary<EventClick_Item, bool>();
@@ -69,12 +75,24 @@ public class EventClick_GoalItem : EventClick
         bool allCollected = !itemCollectionStatus.ContainsValue(false);
         if (GoalCompleted != null)
         {
+            string neededItems = NotCompletedGoalString;
+            foreach (var item in itemCollectionStatus)
+            {
+                if (!item.Value)
+                {
+                    neededItems = neededItems + ", " + item.Key.itemName;
+                }
+            }
+
             GoalCompleted.Invoke(new GoalCompletionData
             {
                 GoalName = goalName,
                 NeededItems = new Dictionary<EventClick_Item, bool>(itemCollectionStatus),
                 SourceGoal = this,
-                IsCompleted = allCollected
+                IsCompleted = allCollected,
+                CompletedString = CompletedGoalString,
+                NotCompletedString = neededItems,
+                nextTask = TaskAfterComplettion
             });
         }
     }

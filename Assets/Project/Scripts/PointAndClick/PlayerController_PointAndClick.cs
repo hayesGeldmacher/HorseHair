@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController_PointAndClick : MonoBehaviour
 {
@@ -27,6 +29,14 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     [Header("Textboxes")]
     [SerializeField] private TextBox textBox;
+
+    [Header("GoalText")]
+    [SerializeField] private TMP_Text GoalText;
+
+    [Header("Scenes")]
+    [SerializeField] private string fightingGameScene;
+    [SerializeField] private string houseScene;
+    [SerializeField] private float transitionTimerInSeconds;
 
     private Camera_Environment currentCamera;
     private Coroutine _hideInventoryCoroutine;
@@ -61,6 +71,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 }
             }
         }
+        string goalText = PlayerPrefs.GetString("Goal");
+        if (!string.IsNullOrEmpty(goalText))
+        {
+            GoalText.text = goalText;
+        }
         if (StartingPoint != null)
         {
             StartingPoint.TeleportToSelf();
@@ -86,7 +101,49 @@ public class PlayerController_PointAndClick : MonoBehaviour
             case GoalEventData goal:
                 InteractWith(goal);
                 break;
+            case FPBClickEventData fpb:
+                EndDay(fpb);
+                break;
         }
+    }
+
+    private void EndDay(FPBClickEventData fpb)
+    {
+        if (fpb.GoToNextScene)
+        {
+            string scene = "";
+            TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+            if (currentTimeOfDay == TimeOfDay.Morning)
+            {
+                scene = fightingGameScene;
+            }
+            else
+            {
+                scene = houseScene;
+            }
+            StartCoroutine(EndingSequence(fpb.Description, scene));
+        }
+        else
+        {
+            textBox.SetText(fpb.Description);
+            OnShowTextBox();
+        }
+    }
+
+    private IEnumerator EndingSequence(string desc, string scene)
+    {
+        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+        blinkAnimator.SetTrigger("EyesDown");
+
+        yield return new WaitUntil(() =>
+            blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+
+        textBox.SetText(desc);
+        OnShowTextBox();
+
+        yield return new WaitForSeconds(transitionTimerInSeconds);
+
+        SceneManager.LoadScene(scene);
     }
 
     private void MoveTo(TeleportClickEventData data)
@@ -193,29 +250,28 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         if (data.IsCompleted)
         {
-            Debug.Log("Goal Completed!");
+            textBox.SetText(data.CompletedString);
+            OnShowTextBox();
+            GoalText.text = data.nextTask;
         }
         else
         {
-            string neededItems = "Items still needed:";
-            foreach (var item in data.NeededItems)
-            {
-                if (!item.Value)
-                {
-                    neededItems = neededItems + " " + item.Key.itemName;
-                }
-            }
-            Debug.Log(neededItems + ".");
+            textBox.SetText(data.NotCompletedString);
+            OnShowTextBox();
         }
     }
 
     public void OnShowTextBox()
     {
-        textBox.ShowTextBox();
         if (_hideTextCoroutine != null)
         {
             StopCoroutine(_hideTextCoroutine);
+            _hideTextCoroutine = null;
         }
+
+        textBox.HideTextBoxInstant(); // close instantly first
+        textBox.ShowTextBox();        // then show the new text
+
         _hideTextCoroutine = StartCoroutine(HideTextAfterDelay(FadeDelay));
     }
 

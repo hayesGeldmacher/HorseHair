@@ -18,6 +18,7 @@ public enum ObjectType
     Goal,
     AI, // Animated Item
     TI, // Transition Item
+    FPB, // Final Point
 }
 
 public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler

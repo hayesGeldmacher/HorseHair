@@ -16,6 +16,7 @@ public class Tasks
     public int TaskNum;
     public EventClick_GoalItem goalItem;
     public Camera_Environment startingPosition;
+    public string GoalText;
 }
 
 public class EventManager : MonoBehaviour
@@ -24,12 +25,8 @@ public class EventManager : MonoBehaviour
     [SerializeField] private int currentTaskNum = 0;
     [SerializeField] private Tasks[] tasks;
 
-    [Header("Scenes")]
-    [SerializeField] private string fightingGameScene;
-    [SerializeField] private string houseScene;
-
-    private Dictionary<(TimeOfDay, int), (EventClick_GoalItem, Camera_Environment)> tasksList = 
-        new Dictionary<(TimeOfDay, int), (EventClick_GoalItem, Camera_Environment)>();
+    private Dictionary<(TimeOfDay, int), (EventClick_GoalItem, Camera_Environment, string)> tasksList = 
+        new Dictionary<(TimeOfDay, int), (EventClick_GoalItem, Camera_Environment, string)>();
 
     private void OnEnable()
     {
@@ -50,12 +47,15 @@ public class EventManager : MonoBehaviour
         {
             if (task.goalItem == null || task.startingPosition == null)
                 continue;
-            tasksList[(task.timeOfDay, task.TaskNum)] = (task.goalItem, task.startingPosition);
+            tasksList[(task.timeOfDay, task.TaskNum)] = (task.goalItem, task.startingPosition, task.GoalText);
             task.goalItem.Deactivate();
         }
 
         if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
+        {
             PlayerPrefs.SetString("Environment", tasksList[(currentTimeOfDay, currentTaskNum)].Item2.name);
+            PlayerPrefs.SetString("Goal", tasksList[(currentTimeOfDay, currentTaskNum)].Item3);
+        }
     }
 
     private void Start()
@@ -72,26 +72,24 @@ public class EventManager : MonoBehaviour
     {
         if (!data.IsCompleted)
             return;
-        string nextSceneName;
         if (currentTimeOfDay == TimeOfDay.Afternoon)
         {
             currentTaskNum++;
             currentTimeOfDay = TimeOfDay.Morning;
-            nextSceneName = fightingGameScene;
         }
         else
         {
             currentTimeOfDay = TimeOfDay.Afternoon;
-            nextSceneName = houseScene;
         }
 
         PlayerPrefs.SetInt("TaskNum", currentTaskNum);
         PlayerPrefs.SetInt("TimeOfDay", (int)currentTimeOfDay);
         if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
+        {
             PlayerPrefs.SetString("Environment", tasksList[(currentTimeOfDay, currentTaskNum)].Item2.name);
+            PlayerPrefs.SetString("Goal", tasksList[(currentTimeOfDay, currentTaskNum)].Item3);
+        }
         PlayerPrefs.Save();
-
-        SceneManager.LoadScene(nextSceneName);
     }
 
     [ContextMenu("Reset Progress")]
@@ -100,5 +98,6 @@ public class EventManager : MonoBehaviour
         PlayerPrefs.DeleteKey("TaskNum");
         PlayerPrefs.DeleteKey("Environment");
         PlayerPrefs.DeleteKey("TimeOfDay");
+        PlayerPrefs.DeleteKey("Goal");
     }
 }

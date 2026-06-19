@@ -35,6 +35,11 @@ public class TextBox : MonoBehaviour
         StartFade(0f);
     }
 
+    public void HideTextBoxInstant()
+    {
+        fadeGroup.alpha = 0;
+    }
+
     private void StartFade(float targetAlpha)
     {
         if (_fadeCoroutine != null)

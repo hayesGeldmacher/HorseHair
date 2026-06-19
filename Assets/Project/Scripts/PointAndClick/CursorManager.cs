@@ -90,6 +90,10 @@ public class CursorManager : MonoBehaviour
                 itemBox.ShowTextbox(name);
                 break;
             case ObjectType.AI:
+                SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Item]);
+                itemBox.ShowTextbox(name);
+                break;
+            case ObjectType.FPB:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Goal]);
                 itemBox.ShowTextbox(name);
                 break;
