@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System.Collections;       
 
 /// <summary>
 /// Handles start screen, round timing, round wins, bo3 game rules, next-round prompt, and round resets
@@ -86,6 +87,22 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Text used to display the enemy's name on the match screen")]
     [SerializeField] private GameObject enemyNameText;
 
+    [Header("Screen Fade")]
+    [SerializeField] private CanvasGroup fadeCanvasGroup;
+    [SerializeField] private float fadeDuration = 0.4f;
+
+    [Header("Controls Menu")]
+    [SerializeField] private GameObject controlsPanel;
+
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioSource startScreenNoiseSource;
+    [SerializeField] private AudioClip startScreenWhiteNoise;
+    [SerializeField] private AudioClip startButtonClickSFX;
+    [SerializeField] private AudioClip roundWinSFX;
+    [SerializeField] private AudioClip backgroundMusic;
+    [SerializeField] private AudioClip matchWonSFX;
+
     private float currentRoundTime;
     private float startBlinkTimer;
     private float nextRoundBlinkTimer;
@@ -105,10 +122,15 @@ public class FightRoundManager : MonoBehaviour
     private void Start()
     {
         ShowStartScreen();
+
+        controlsPanel?.SetActive(false);
     }
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+            ToggleControlsPanel();
+
         if (waitingForStart)
         {
             UpdateStartScreenBlink();
@@ -136,6 +158,31 @@ public class FightRoundManager : MonoBehaviour
         UpdateRoundTimer();
         CheckForRoundWinner();
     }
+    private void ToggleControlsPanel()
+    {
+        if (controlsPanel == null)
+            return;
+
+        controlsPanel.SetActive(!controlsPanel.activeSelf);
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource is null");
+            return;
+        }
+
+        if (clip == null)
+        {
+            Debug.LogError("AudioClip is null");
+            return;
+        }
+
+        Debug.Log("Playing clip: " + clip.name);
+        audioSource.PlayOneShot(clip, 2f);
+    }
 
     private void ShowStartScreen()
     {
@@ -158,6 +205,13 @@ public class FightRoundManager : MonoBehaviour
         SetNameTextVisible(false);
         SetRoundMessage("");
 
+        if (startScreenNoiseSource != null && startScreenWhiteNoise != null)
+        {
+            startScreenNoiseSource.clip = startScreenWhiteNoise;
+            startScreenNoiseSource.loop = true;
+            startScreenNoiseSource.Play();
+        }
+
         Debug.Log("Start screen shown");
     }
 
@@ -172,6 +226,9 @@ public class FightRoundManager : MonoBehaviour
 
     private void CheckForAnyButtonStart()
     {
+        if (Input.GetKeyDown(KeyCode.Tab))
+            return;
+
         if (!startingRound && Input.anyKeyDown)
             StartMatch();
     }
@@ -190,13 +247,63 @@ public class FightRoundManager : MonoBehaviour
 
     private void StartMatch()
     {
+        if (startScreenNoiseSource != null && startButtonClickSFX != null)
+            startScreenNoiseSource.PlayOneShot(startButtonClickSFX, 2f);
+
+        StartCoroutine(StartMatchFadeRoutine());
+    }
+
+    private IEnumerator StartMatchFadeRoutine()
+    {
         waitingForStart = false;
         startingRound = true;
 
-        SetNameTextVisible(true);
+        yield return FadeScreen(1f);
+
+        yield return new WaitForSeconds(1f);
+
+        if (startScreenNoiseSource != null)
+        {
+            startScreenNoiseSource.Stop();
+            startScreenNoiseSource.loop = false;
+            startScreenNoiseSource.clip = null;
+        }
+
         SetStartScreenVisible(false);
+        SetNameTextVisible(true);
         SetNextRoundPromptVisible(false);
+
         QueueRoundStart();
+
+        yield return FadeScreen(0f);
+
+        if (audioSource != null && backgroundMusic != null)
+        {
+            audioSource.clip = backgroundMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+    }
+
+    private IEnumerator FadeScreen(float targetAlpha)
+    {
+        if (fadeCanvasGroup == null)
+            yield break;
+
+        float startAlpha = fadeCanvasGroup.alpha;
+        float timer = 0f;
+
+        fadeCanvasGroup.blocksRaycasts = true;
+
+        while (timer < fadeDuration)
+        {
+            timer += Time.deltaTime;
+            fadeCanvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, timer / fadeDuration);
+            yield return null;
+        }
+
+        fadeCanvasGroup.alpha = targetAlpha;
+        fadeCanvasGroup.blocksRaycasts = targetAlpha > 0f;
     }
 
     private void StartNextRound()
@@ -321,6 +428,8 @@ public class FightRoundManager : MonoBehaviour
         if (CheckForGameWinner())
             return;
 
+        PlaySound(roundWinSFX);
+
         currentRoundNumber++;
         ShowNextRoundPrompt();
     }
@@ -344,6 +453,15 @@ public class FightRoundManager : MonoBehaviour
 
         if (gameOverPromptText != null)
             gameOverPromptText.gameObject.SetActive(true);
+
+        if (audioSource != null)
+        {
+            audioSource.Stop();
+            audioSource.loop = false;
+            audioSource.clip = null;
+        }
+
+        PlaySound(matchWonSFX);
 
         inputDelayTimer = nextRoundInputDelay;
 
