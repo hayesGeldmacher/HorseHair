@@ -142,6 +142,16 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("How long temporary actions stay visible before returning to normal state text")]
     [SerializeField] private float actionTextHoldTime = 0.4f;
 
+
+    [Header("Sound Effects")]
+    [Tooltip("Sound played when this fighter performs a punch attack")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip attackMissSound;
+    [SerializeField] private AudioClip punchHitSound;
+    [SerializeField] private AudioClip kickHitSound;
+    [SerializeField] private AudioClip blockSound;
+
+
     [HideInInspector] public bool isMoving; //for animation script to read player state -HG
     private bool isGrounded;
     private bool isCrouching;
@@ -183,6 +193,42 @@ public class FightCharacter : MonoBehaviour
     private void Reset()
     {
         AssignMissingReferences();
+    }
+
+    private void PlaySound(AudioClip clip)
+    {
+        Debug.Log("PlaySound called");
+
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource is null");
+            return;
+        }
+
+        if (clip == null)
+        {
+            Debug.LogError("AudioClip is null");
+            return;
+        }
+
+        Debug.Log("Playing clip: " + clip.name);
+        audioSource.PlayOneShot(clip);
+    }
+
+    private void PlayAttackResultSound(FighterMoveResult result, AudioClip hitSound)
+    {
+        if (result == FighterMoveResult.Hit)
+        {
+            PlaySound(hitSound);
+        }
+        else if (result == FighterMoveResult.Blocked)
+        {
+            PlaySound(blockSound);
+        }
+        else if (result == FighterMoveResult.Miss)
+        {
+            PlaySound(attackMissSound);
+        }
     }
 
     private void Awake()
@@ -248,6 +294,7 @@ public class FightCharacter : MonoBehaviour
         rb ??= GetComponent<Rigidbody>();
         input ??= GetComponent<FighterInput>();
         health ??= GetComponent<FighterHealth>();
+        audioSource ??= GetComponent<AudioSource>();
     }
 
     public void SetAIInput(float moveInput, bool jumpPressed, bool punchPressed, bool kickPressed, bool grabPressed, bool crouchHeld)
@@ -483,6 +530,8 @@ public class FightCharacter : MonoBehaviour
 
         FighterMoveResult result = TryHitOpponent(punchType, damage, range, attackHeight);
 
+        PlayAttackResultSound(result, punchHitSound);
+
         MovePerformed?.Invoke(this, moveType, result);
     }
 
@@ -498,6 +547,8 @@ public class FightCharacter : MonoBehaviour
         SetTemporaryActionText(kickType);
 
         FighterMoveResult result = TryHitOpponent(kickType, damage, range, attackHeight);
+
+        PlayAttackResultSound(result, kickHitSound);
 
         MovePerformed?.Invoke(this, moveType, result);
     }
