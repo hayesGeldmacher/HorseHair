@@ -21,7 +21,7 @@ public class Camera_Environment : MonoBehaviour
 
     public TeleportClickEventData TeleportClickEventData;
     private EventClick_Environment[] connectedClickEvents;
-    private EventClick_NEI[] connectedNEI;
+    private EventClick[] connectedItems;
 
     private void OnValidate()
     {
@@ -45,7 +45,7 @@ public class Camera_Environment : MonoBehaviour
             SetUpEventData();
 
         connectedClickEvents = _arrows.GetComponentsInChildren<EventClick_Environment>();
-        connectedNEI = _items.GetComponentsInChildren<EventClick_NEI>();
+        connectedItems = _items.GetComponentsInChildren<EventClick>();
         ActivateOrDeactivate(false);
     }
     public void TeleportToSelf()
@@ -60,7 +60,7 @@ public class Camera_Environment : MonoBehaviour
         {
             clickEvent.gameObject.SetActive(State);
         }
-        foreach (var clickEvent in connectedNEI)
+        foreach (var clickEvent in connectedItems)
         {
             clickEvent.gameObject.SetActive(State);
         }
