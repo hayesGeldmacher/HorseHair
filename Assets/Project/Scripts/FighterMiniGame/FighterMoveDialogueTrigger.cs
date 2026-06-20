@@ -22,6 +22,10 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         [TextArea]
         public string dialogueLine;
 
+        [Range(0f, 1f)]
+        [Tooltip("Chance this dialogue triggers after the sequence matches 1 = always 0.5 = 50 percent 0 = never")]
+        public float triggerChance = 1f;
+
         public float cooldown = 2f;
         public bool triggerOnlyOnce;
 
@@ -99,8 +103,13 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
             if (DoesHistoryMatchRule(rule))
             {
-                TriggerDialogue(rule);
-                return;
+                if (Random.value <= rule.triggerChance)
+                {
+                    TriggerDialogue(rule);
+                    return;
+                }
+
+                rule.cooldownTimer = rule.cooldown;
             }
         }
     }
