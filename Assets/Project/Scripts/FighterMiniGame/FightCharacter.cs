@@ -150,6 +150,10 @@ public class FightCharacter : MonoBehaviour
     [SerializeField] private AudioClip punchHitSound;
     [SerializeField] private AudioClip kickHitSound;
     [SerializeField] private AudioClip blockSound;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip jumpLandSound;
+    [SerializeField] private AudioClip grabSound;
+
 
 
     [HideInInspector] public bool isMoving; //for animation script to read player state -HG
@@ -504,6 +508,7 @@ public class FightCharacter : MonoBehaviour
 
     private void Jump(float moveInput)
     {
+        PlaySound(jumpSound);
         if (rb == null)
             return;
 
@@ -557,6 +562,7 @@ public class FightCharacter : MonoBehaviour
     {
         if (!isGrounded || isCrouching || isBlocking || isKnockedDown || isRecovering)
         {
+            PlaySound(attackMissSound);
             SetTemporaryActionText("Grab Failed");
             MovePerformed?.Invoke(this, FighterMoveType.Grab, FighterMoveResult.Miss);
             return;
@@ -565,6 +571,11 @@ public class FightCharacter : MonoBehaviour
         SetTemporaryActionText("Grab");
 
         FighterMoveResult result = TryGrabOpponent();
+
+        if (result == FighterMoveResult.Hit)
+            PlaySound(grabSound);
+        else
+            PlaySound(attackMissSound);
 
         MovePerformed?.Invoke(this, FighterMoveType.Grab, result);
     }
@@ -1033,12 +1044,17 @@ public class FightCharacter : MonoBehaviour
 
     private void UpdateGrounded()
     {
+        bool wasGrounded = isGrounded;
+
         isGrounded = Physics.Raycast(
             transform.position,
             Vector3.down,
             groundCheckDistance,
             groundLayer
         );
+
+        if (!wasGrounded && isGrounded && roundActive)
+            PlaySound(jumpLandSound);
     }
 
     /// <summary>
