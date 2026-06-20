@@ -48,6 +48,6 @@ public class AudioGroupFade : MonoBehaviour
         }
 
         generalMixer.SetFloat(backgroundParam, volume);
-        Debug.Log("CURRENT VOLUME: " + volume);
+        //Debug.Log("CURRENT VOLUME: " + volume);
     }
 }

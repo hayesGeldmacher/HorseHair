@@ -3347,6 +3347,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3198279117304665761, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3198279117304665761, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: StartingPoint
       value: 
@@ -3354,6 +3362,10 @@ PrefabInstance:
     - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: blinkAnimationSpeed
       value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5712871316776840935, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3394,6 +3406,10 @@ PrefabInstance:
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9116733426156734739, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9116733426156734739, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -3521,7 +3537,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 8c9786d52862a2543b480682922299b1, type: 2}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 65702495048144492, guid: 8bedd9eb22087c04eb200ce545104bba, type: 3}
+    - {fileID: -2572967989333021709, guid: 8bedd9eb22087c04eb200ce545104bba, type: 3}
+    - {fileID: -2921126803141771330, guid: 8bedd9eb22087c04eb200ce545104bba, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8bedd9eb22087c04eb200ce545104bba, type: 3}
@@ -5911,9 +5930,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
+      propertyPath: tasks.Array.data[0].GoalText
+      value: Check
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: tasks.Array.data[0].goalItem
       value: 
       objectReference: {fileID: 1506640459}
+    - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
+      propertyPath: tasks.Array.data[1].GoalText
+      value: Check
+      objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: tasks.Array.data[1].goalItem
       value: 
