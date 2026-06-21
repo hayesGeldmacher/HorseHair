@@ -1,8 +1,5 @@
 using UnityEngine;
 
-
-
-
 public class ClipPitchFade : MonoBehaviour
 {
     [Header("References")]
