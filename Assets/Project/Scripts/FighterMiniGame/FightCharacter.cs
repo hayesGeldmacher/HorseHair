@@ -1074,6 +1074,8 @@ public class FightCharacter : MonoBehaviour
             return;
 
         facingDirection = opponent.position.x > transform.position.x ? 1 : -1;
+
+        FlipModel(facingDirection);
     }
 
     private void UpdateGrounded()
