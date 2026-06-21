@@ -46,7 +46,6 @@ public class DreamLightingManager : MonoBehaviour
     private float previousAmbientIntensity;
     private float ambientLerpTime;
     
-    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -66,7 +65,6 @@ public class DreamLightingManager : MonoBehaviour
 
     private void AmbientUpdate()
     {
-       
         currentAmbientIntensity = Mathf.Lerp(previousAmbientIntensity, targetAmbientIntensity, ambientLerpTime);
         ambientLerpTime += ambientChangeSpeed * Time.deltaTime * 0.1f;
         if(ambientLerpTime >= 1.0f)
