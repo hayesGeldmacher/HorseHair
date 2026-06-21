@@ -1,7 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.Collections;       
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles start screen, round timing, round wins, bo3 game rules, next-round prompt, and round resets
@@ -93,6 +94,11 @@ public class FightRoundManager : MonoBehaviour
 
     [Header("Controls Menu")]
     [SerializeField] private GameObject controlsPanel;
+
+    [Header("Scene Transition")]
+    [SerializeField] private EyelidsFG eyelids;
+    [SerializeField] private string nextSceneName;
+    private bool triggeredTransition = false;
 
     [Header("Sound Effects")]
     [SerializeField] private AudioSource audioSource;
@@ -467,8 +473,18 @@ public class FightRoundManager : MonoBehaviour
 
         SetFightersActive(false);
         SetNextRoundPromptVisible(false);
+        if (!triggeredTransition){
+            triggeredTransition = true;
+            StartCoroutine(TransitionScene()); 
+        }
+      
+    }
 
-        Debug.Log("Game ended");
+    private IEnumerator TransitionScene()
+    {
+        eyelids.TriggerEyesDownAnimation();
+        yield return new WaitForSeconds(2.0f);
+        SceneManager.LoadScene("SCN_DreamSequenceN1");
     }
 
     private void ResetFighters()
