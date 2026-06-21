@@ -128,8 +128,6 @@ public class FightRoundManager : MonoBehaviour
     private void Start()
     {
         ShowStartScreen();
-
-        controlsPanel?.SetActive(false);
     }
 
     private void Update()
