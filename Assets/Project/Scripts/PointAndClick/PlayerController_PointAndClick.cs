@@ -29,6 +29,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     [Header("Textboxes")]
     [SerializeField] private TextBox textBox;
+    [SerializeField] private float thoughtTextDelay = 2.0f;
 
     [Header("GoalText")]
     [SerializeField] private TMP_Text GoalText;
@@ -312,8 +313,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private IEnumerator DisplayTaskStartDialogue()
     {
-        yield return new WaitForSeconds(2.0f);
-        textBox.SetText("I need to do something but I don't remember what... I can press 'tab' to remind myself...");
+        yield return new WaitForSeconds(thoughtTextDelay);
+        string text = PlayerPrefs.GetString("Thoughts");
+        textBox.SetText(text);
         OnShowTextBox();
     }
 }

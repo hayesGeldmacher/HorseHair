@@ -76,13 +76,19 @@ public class EventClick_GoalItem : EventClick
         if (GoalCompleted != null)
         {
             string neededItems = NotCompletedGoalString;
+            List<string> listOfItems = new List<string>();
             foreach (var item in itemCollectionStatus)
             {
                 if (!item.Value)
                 {
-                    neededItems = neededItems + ", " + item.Key.itemName;
+                    listOfItems.Add(item.Key.name);
                 }
             }
+            for (int i = 0; i < listOfItems.Count - 1; i++)
+            {
+                neededItems += listOfItems[i] + ", ";
+            }
+            neededItems += listOfItems[listOfItems.Count - 1] + ".";
 
             GoalCompleted.Invoke(new GoalCompletionData
             {
