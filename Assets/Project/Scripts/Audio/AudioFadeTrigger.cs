@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class AudioFadeTrigger : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    [Header("Pitch")]
+    [SerializeField] private ClipPitchFade fade;
+    [SerializeField] private float pitch;
+    private bool triggered = false;
+    
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (!triggered)
+        {
+            triggered = true;
+            fade.SetTargetPitch(pitch);
+        }
     }
 }

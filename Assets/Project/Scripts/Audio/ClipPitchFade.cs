@@ -31,7 +31,7 @@ public class ClipPitchFade : MonoBehaviour
 
     private void PitchUpdate()
     {
-        currentPitch = Mathf.Lerp(previousPitch,  currentPitch, pitchLerpTime);
+        currentPitch = Mathf.Lerp(previousPitch,  targetPitch, pitchLerpTime);
         pitchLerpTime += pitchChangeSpeed * Time.deltaTime * 0.6f;
         if(pitchLerpTime >= 1.0f)
         {
@@ -46,7 +46,7 @@ public class ClipPitchFade : MonoBehaviour
     {
         previousPitch = currentPitch;
         targetPitch = volume;
-        hasPitchTarget = true;
         pitchLerpTime = 0;
+        hasPitchTarget = true;
     }
 }
