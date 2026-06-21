@@ -24,6 +24,9 @@ public class FightCharacter : MonoBehaviour
     [SerializeField] private Animator fighterAnim;
     [Tooltip("Should fighter shuffle or walk forward")]
     [SerializeField] private bool walkNormal = false;
+    [Tooltip("The physical transform of the fighter's 3D model")]
+    [SerializeField] private Transform fighterModel;
+
 
     [Tooltip("Opponent this fighter faces and attacks")]
     [SerializeField] private Transform opponent;
@@ -651,7 +654,7 @@ public class FightCharacter : MonoBehaviour
         Vector3 defenderPosition = transform.position;
 
         float directionFromAttackerToDefender = Mathf.Sign(defenderPosition.x - attackerPosition.x);
-
+       
         attacker.transform.position = new Vector3(
             defenderPosition.x,
             attackerPosition.y,
@@ -676,6 +679,22 @@ public class FightCharacter : MonoBehaviour
             Vector3 defenderVelocity = rb.linearVelocity;
             defenderVelocity.x = 0f;
             rb.linearVelocity = defenderVelocity;
+        }
+
+        float newDirection = Mathf.Sign(transform.position.x - attacker.transform.position.x);
+        FlipModel(newDirection);
+        attacker.FlipModel(-newDirection);
+    }
+
+    public void FlipModel(float direction)
+    {
+        //flips the fighter model on grab - HG
+        if (fighterModel != null)
+        {
+            Vector3 scale = fighterModel.localScale;
+            scale.x = Mathf.Abs(scale.x); //re-orient
+            scale.x *= direction;
+            if (scale.x != fighterModel.localScale.x) { fighterModel.localScale = scale; }
         }
     }
 

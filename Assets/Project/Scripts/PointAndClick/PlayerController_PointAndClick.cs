@@ -43,6 +43,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private Coroutine _hideTextCoroutine;
 
     private bool finishedFirstTeleport = false;
+    private bool leftBedroom = false; //trigger a dialogue only after leaving the bedroom - HG
     private bool completeTask = false;
 
     private void OnEnable()
@@ -179,7 +180,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         currentCamera = data.Camera;
         currentCamera.ActivateOrDeactivate(true);
-
     }
 
     private IEnumerator TeleportSequence(TeleportClickEventData data)
@@ -203,6 +203,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
         blinkAnimator.SetTrigger("EyesUp");
         currentCamera = data.Camera;
         currentCamera.ActivateOrDeactivate(true);
+
+        if (!leftBedroom)
+        {
+            leftBedroom = true;
+            StartCoroutine(DisplayTaskStartDialogue());
+        }
     }
 
     private void InteractWith(ItemClickEventData data)
@@ -302,5 +308,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         inventoryUI.HideInventory();
         _hideInventoryCoroutine = null;
+    }
+
+    private IEnumerator DisplayTaskStartDialogue()
+    {
+        yield return new WaitForSeconds(2.0f);
+        textBox.SetText("I need to do something but I don't remember what... I can press 'tab' to remind myself...");
+        OnShowTextBox();
     }
 }
