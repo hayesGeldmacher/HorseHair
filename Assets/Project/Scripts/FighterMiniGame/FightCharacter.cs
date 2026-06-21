@@ -17,6 +17,14 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Input component used by the player Leave empty for AI fighters")]
     [SerializeField] private FighterInput input;
 
+    [Header("Animation")]
+    [Tooltip("Should this fighter be animated")]
+    [SerializeField] private bool animateFighter = true;
+    [Tooltip("Animator component used for fighter model")]
+    [SerializeField] private Animator fighterAnim;
+    [Tooltip("Should fighter shuffle or walk forward")]
+    [SerializeField] private bool walkNormal = false;
+
     [Tooltip("Opponent this fighter faces and attacks")]
     [SerializeField] private Transform opponent;
 
@@ -156,7 +164,7 @@ public class FightCharacter : MonoBehaviour
 
 
 
-    [HideInInspector] public bool isMoving; //for animation script to read player state -HG
+    private bool isMoving; //for animation script to read player state -HG
     private bool isGrounded;
     private bool isCrouching;
     private bool isBlocking;
@@ -251,6 +259,8 @@ public class FightCharacter : MonoBehaviour
         UpdateBlockStunTimer();
         UpdateQuickstepTimers();
         UpdateGroundedStateTimers();
+
+        if (animateFighter) { UdpateAnimation(); }
 
         if (!roundActive)
         {
@@ -520,6 +530,8 @@ public class FightCharacter : MonoBehaviour
         rb.linearVelocity = velocity;
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        if (animateFighter) { fighterAnim.SetTrigger("jump"); }
     }
 
     private void Punch()
@@ -538,6 +550,7 @@ public class FightCharacter : MonoBehaviour
         PlayAttackResultSound(result, punchHitSound);
 
         MovePerformed?.Invoke(this, moveType, result);
+        if (animateFighter) { fighterAnim.SetTrigger("punch"); }
     }
 
     private void Kick()
@@ -556,6 +569,8 @@ public class FightCharacter : MonoBehaviour
         PlayAttackResultSound(result, kickHitSound);
 
         MovePerformed?.Invoke(this, moveType, result);
+
+        if (animateFighter) { fighterAnim.SetTrigger("kick"); }
     }
 
     private void Grab()
@@ -1055,6 +1070,15 @@ public class FightCharacter : MonoBehaviour
 
         if (!wasGrounded && isGrounded && roundActive)
             PlaySound(jumpLandSound);
+    }
+
+    /// <summary>
+    /// Updates animation for the fighter based off current state - HG
+    /// </summary>
+    private void UdpateAnimation()
+    {
+        fighterAnim.SetBool("moving", isMoving);
+        fighterAnim.SetBool("walkNormal", walkNormal);
     }
 
     /// <summary>
