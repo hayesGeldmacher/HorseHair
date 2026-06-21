@@ -81,4 +81,9 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         outlineMaterial.SetFloat("_Outline_Show", 0f);
         OnObjectHovered?.Invoke(ObjectType.None, "");
     }
+
+    public virtual void ActivateOrDeactivate(bool activate)
+    {
+        gameObject.SetActive(activate);
+    }
 }

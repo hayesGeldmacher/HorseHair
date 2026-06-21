@@ -40,8 +40,8 @@ public class EventManager : MonoBehaviour
 
     private void Awake()
     {
-        currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
-        currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        currentTaskNum = PlayerPrefs.GetInt("TaskNum", currentTaskNum);
+        currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", (int)currentTimeOfDay);
 
         foreach (var task in tasks)
         {

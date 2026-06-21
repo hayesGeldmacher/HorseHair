@@ -62,7 +62,7 @@ public class Camera_Environment : MonoBehaviour
         }
         foreach (var clickEvent in connectedItems)
         {
-            clickEvent.gameObject.SetActive(State);
+            clickEvent.ActivateOrDeactivate(State);
         }
     }
 

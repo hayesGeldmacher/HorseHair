@@ -37,4 +37,11 @@ public class EventClick_Item : EventClick
         Collected = true;
         gameObject.SetActive(false);
     }
+
+    public override void ActivateOrDeactivate(bool activate)
+    {
+        if (Collected)
+            return;
+        base.ActivateOrDeactivate(activate);
+    }
 }
