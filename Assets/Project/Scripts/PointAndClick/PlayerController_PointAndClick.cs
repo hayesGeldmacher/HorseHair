@@ -43,6 +43,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private Coroutine _hideTextCoroutine;
 
     private bool finishedFirstTeleport = false;
+    private bool completeTask = false;
 
     private void OnEnable()
     {
@@ -109,7 +110,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void EndDay(FPBClickEventData fpb)
     {
-        if (fpb.GoToNextScene)
+        if (completeTask)
         {
             string scene = "";
             TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
@@ -121,11 +122,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
             {
                 scene = houseScene;
             }
-            StartCoroutine(EndingSequence(fpb.Description, scene));
+            StartCoroutine(EndingSequence(fpb.CompleteString, scene));
         }
         else
         {
-            textBox.SetText(fpb.Description);
+            textBox.SetText(fpb.IncompleteString);
             OnShowTextBox();
         }
     }
@@ -253,6 +254,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             textBox.SetText(data.CompletedString);
             OnShowTextBox();
             GoalText.text = data.nextTask;
+            completeTask = true;
         }
         else
         {

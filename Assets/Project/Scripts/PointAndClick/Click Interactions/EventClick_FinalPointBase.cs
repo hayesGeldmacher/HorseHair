@@ -5,6 +5,8 @@ public class FPBClickEventData : ClickEventData
 {
     public string FPBName;
     public bool GoToNextScene;
+    public string CompleteString;
+    public string IncompleteString;
 }
 
 public class EventClick_FinalPointBase : EventClick
@@ -49,6 +51,8 @@ public class EventClick_FinalPointBase : EventClick
             Source = gameObject,
             Description = description,
             GoToNextScene = goToNextScene,
+            CompleteString = CompletedText,
+            IncompleteString = NotCompletedText,
         };
     }
 
