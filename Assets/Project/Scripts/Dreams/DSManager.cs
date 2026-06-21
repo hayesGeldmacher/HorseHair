@@ -10,6 +10,13 @@ public class DSManager : MonoBehaviour
     [SerializeField] private string nextSceneName;
     private bool triggeredSceneEnd = false;
 
+    [Header("Audio")]
+    [SerializeField] private bool fadeBackgroundAudio = false;
+    [SerializeField] private AudioGroupFade audioFade;
+
+    [Header("Animation")]
+    [SerializeField] private EyelidsFG eyelids;
+
     #region Singleton
 
     public static DSManager instance;
@@ -51,8 +58,10 @@ public class DSManager : MonoBehaviour
 
     private IEnumerator EndScene()
     {
-
+        audioFade.SetBackgroundFadeOut();
         yield return new WaitForSeconds(sceneTransitionTime);
+        eyelids.TriggerEyesDownAnimation();
+        yield return new WaitForSeconds(2.0f);
         SceneManager.LoadScene(nextSceneName);
     }
 }

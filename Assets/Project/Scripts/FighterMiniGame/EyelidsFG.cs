@@ -29,4 +29,9 @@ public class EyelidsFG : MonoBehaviour
         blinkAnimator.SetTrigger("EyesStart");
 
     }
+
+    public void TriggerEyesDownAnimation()
+    {
+        blinkAnimator.SetTrigger("EyesDown");
+    }
 }
