@@ -81,14 +81,17 @@ public class EventClick_GoalItem : EventClick
             {
                 if (!item.Value)
                 {
-                    listOfItems.Add(item.Key.name);
+                    listOfItems.Add(item.Key.itemName);
                 }
             }
-            for (int i = 0; i < listOfItems.Count - 1; i++)
+            if (listOfItems.Count > 0)
             {
-                neededItems += listOfItems[i] + ", ";
+                for (int i = 0; i < listOfItems.Count - 1; i++)
+                {
+                    neededItems += listOfItems[i] + ", ";
+                }
+                neededItems += listOfItems[listOfItems.Count - 1] + ".";
             }
-            neededItems += listOfItems[listOfItems.Count - 1] + ".";
 
             GoalCompleted.Invoke(new GoalCompletionData
             {
