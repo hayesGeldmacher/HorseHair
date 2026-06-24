@@ -17,17 +17,6 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Input component used by the player Leave empty for AI fighters")]
     [SerializeField] private FighterInput input;
 
-    [Header("Animation")]
-    [Tooltip("Should this fighter be animated")]
-    [SerializeField] private bool animateFighter = true;
-    [Tooltip("Animator component used for fighter model")]
-    [SerializeField] private Animator fighterAnim;
-    [Tooltip("Should fighter shuffle or walk forward")]
-    [SerializeField] private bool walkNormal = false;
-    [Tooltip("The physical transform of the fighter's 3D model")]
-    [SerializeField] private Transform fighterModel;
-
-
     [Tooltip("Opponent this fighter faces and attacks")]
     [SerializeField] private Transform opponent;
 
@@ -154,6 +143,17 @@ public class FightCharacter : MonoBehaviour
     [SerializeField] private float actionTextHoldTime = 0.4f;
 
 
+    [Header("Animation")]
+    [Tooltip("Should this fighter be animated")]
+    [SerializeField] private bool animateFighter = true;
+    [Tooltip("Animator component used for fighter model")]
+    [SerializeField] private Animator fighterAnim;
+    [Tooltip("Should fighter shuffle or walk forward")]
+    [SerializeField] private bool walkNormal = false;
+    [Tooltip("The physical transform of the fighter's 3D model")]
+    [SerializeField] private Transform fighterModel;
+
+
     [Header("Sound Effects")]
     [Tooltip("Sound played when this fighter performs a punch attack")]
     [SerializeField] private AudioSource audioSource;
@@ -167,7 +167,7 @@ public class FightCharacter : MonoBehaviour
 
 
 
-    private bool isMoving; //for animation script to read player state -HG
+    private bool isShuffling; //for animation script to read player state -HG
     private bool isGrounded;
     private bool isCrouching;
     private bool isBlocking;
@@ -392,7 +392,7 @@ public class FightCharacter : MonoBehaviour
 
     private void Move()
     {
-        isMoving = false;
+        isShuffling = false;
         if (rb == null || blockStunTimer > 0f || isKnockedDown || isRecovering)
             return;
 
@@ -412,7 +412,10 @@ public class FightCharacter : MonoBehaviour
 
         float horizontal = Mathf.Abs(moveInput) < inputDeadZone ? 0f : moveInput;
         float currentMoveSpeed = moveSpeed;
-        isMoving = Mathf.Abs(moveInput) < inputDeadZone ? false : true; //check if player is moving or still - HG
+        if (!isBlocking) //only shuffling is character is moving forward -HG
+        {
+            isShuffling = Mathf.Abs(moveInput) < inputDeadZone ? false : true; //check if player is moving or still - HG
+        }
 
         if (isBlocking)
             currentMoveSpeed = blockMoveSpeed;
@@ -595,6 +598,7 @@ public class FightCharacter : MonoBehaviour
         else
             PlaySound(attackMissSound);
 
+        if (animateFighter){ fighterAnim.SetTrigger("grab"); }   
         MovePerformed?.Invoke(this, FighterMoveType.Grab, result);
     }
 
@@ -637,7 +641,7 @@ public class FightCharacter : MonoBehaviour
         if (attacker == null)
             return FighterMoveResult.Miss;
 
-        if (health != null)
+        if (health != null) { }
             health.TakeDamage(damage, true);
 
         SwitchSidesWithAttacker(attacker);
@@ -852,6 +856,7 @@ public class FightCharacter : MonoBehaviour
         }
 
         health.TakeDamage(damage, true);
+        ApplyDamage();
         ApplyHitPushback(attackerPosition);
         SetTemporaryActionText("Hit");
 
@@ -973,6 +978,11 @@ public class FightCharacter : MonoBehaviour
     {
         isRecovering = false;
         recoveryTimer = 0f;
+    }
+
+    private void ApplyDamage()
+    {
+        if (animateFighter) { fighterAnim.SetTrigger("hurt"); }
     }
 
     private void UpdateNormalActionText(float moveInput)
@@ -1098,8 +1108,12 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void UdpateAnimation()
     {
-        fighterAnim.SetBool("moving", isMoving);
+        fighterAnim.SetBool("shuffling", isShuffling);
         fighterAnim.SetBool("walkNormal", walkNormal);
+        fighterAnim.SetBool("crouching", isCrouching);
+        fighterAnim.SetBool("blocking", isBlocking);
+        fighterAnim.SetBool("jumping", !isGrounded);
+        fighterAnim.SetBool("stunned", isKnockedDown);
     }
 
     /// <summary>
