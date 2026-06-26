@@ -96,7 +96,7 @@ public class EventClick_GoalItem : EventClick
             }
 
             GoalCompleted.Invoke(new GoalCompletionData
-            {
+            {           
                 GoalName = goalName,
                 NeededItems = new Dictionary<EventClick_Item, bool>(itemCollectionStatus),
                 SourceGoal = this,

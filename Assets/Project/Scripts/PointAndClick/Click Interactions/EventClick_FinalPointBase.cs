@@ -50,6 +50,7 @@ public class EventClick_FinalPointBase : EventClick
             ObjectTransform = transform,
             Source = gameObject,
             Description = description,
+            DialogueText = dialogueText,
             GoToNextScene = goToNextScene,
             CompleteString = CompletedText,
             IncompleteString = NotCompletedText,

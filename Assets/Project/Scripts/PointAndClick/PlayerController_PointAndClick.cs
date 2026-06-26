@@ -13,7 +13,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] private CameraController PlayerCamera;
 
-
     [Header("Moving Settings")]
     [SerializeField] private float blinkAnimationSpeed = 0.5f;
     [SerializeField] private Animator blinkAnimator;
@@ -51,6 +50,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private bool finishedFirstTeleport = false;
     private bool leftBedroom = false; //trigger a dialogue only after leaving the bedroom - HG
     private bool completeTask = false;
+
+    public static event System.Action<Boolean> OnTalking;
 
     private void OnEnable()
     {
@@ -129,6 +130,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             {
                 scene = houseScene;
             }
+            //StartCoroutine(EndingSequence(fpb.DialogueText, scene));
             StartCoroutine(EndingSequence(fpb.CompleteString, scene));
         }
         else
@@ -136,6 +138,22 @@ public class PlayerController_PointAndClick : MonoBehaviour
             textBox.SetText(fpb.IncompleteString);
             OnShowTextBox();
         }
+    }
+
+    private IEnumerator EndingSequence(DialogueStorage desc, string scene)
+    {
+        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+        blinkAnimator.SetTrigger("EyesDown");
+
+        yield return new WaitUntil(() =>
+            blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+
+        dialogueText = desc;
+        OpenDialogue();
+
+        yield return new WaitUntil(() => startedDialogue == false);
+
+        SceneManager.LoadScene(scene);
     }
 
     private IEnumerator EndingSequence(string desc, string scene)
@@ -329,7 +347,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
         PlayerCamera.SetFrozen(true);
         dialogueIndex = 0;
         startedDialogue = true;
+        PlayerCamera.rayCaster.enabled = false;
         GoThroughDialogue();
+        OnTalking?.Invoke(true);
     }
 
     public void AdvanceDialogue(InputAction.CallbackContext ctx)
@@ -340,12 +360,20 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void GoThroughDialogue()
     {
+        if (_hideTextCoroutine != null)
+        {
+            StopCoroutine(_hideTextCoroutine);
+            _hideTextCoroutine = null;
+        }
+
         if (dialogueIndex >= dialogueText.dialogue.Length)
         {
             PlayerCamera.SetFrozen(false);
             dialogueIndex = 0;
             startedDialogue = false;
             textBox.HideTextBox();
+            PlayerCamera.rayCaster.enabled = true;
+            OnTalking?.Invoke(false);
         }
         else
         {

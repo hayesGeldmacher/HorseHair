@@ -7,6 +7,7 @@ public class ClickEventData
     public Transform ObjectTransform;
     public GameObject Source;
     public string Description;
+    public DialogueStorage DialogueText;
 }
 
 public enum ObjectType
@@ -19,6 +20,7 @@ public enum ObjectType
     AI, // Animated Item
     TI, // Transition Item
     FPB, // Final Point
+    Talk,
 }
 
 public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -26,6 +28,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] private int OutlineIndex = 1;
     [SerializeField] public string description;
     [SerializeField] private bool ResetAfterClick = true;
+    [SerializeField] protected DialogueStorage dialogueText;
 
     protected ObjectType Type = ObjectType.None;
     protected string Name = "";
@@ -67,6 +70,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             ObjectTransform = transform,
             Source = gameObject,
             Description = description,
+            DialogueText = dialogueText,
         };
     }
 

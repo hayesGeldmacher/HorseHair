@@ -1,6 +1,7 @@
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
@@ -14,6 +15,9 @@ public class CameraController : MonoBehaviour
     private float _followSpeedX = 2f;
     [SerializeField, Tooltip("How fast the camera follows the cursor vertically")]
     private float _followSpeedY = 2f;
+
+    [SerializeField]
+    public PhysicsRaycaster rayCaster;
 
     private Vector2 _screenCenter;
     private Vector2 _mouseInput = Vector2.zero;
@@ -32,7 +36,7 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (isFrozen) return;
+        //if (isFrozen) return;
 
         _currentInput.x = Mathf.Lerp(_currentInput.x, _mouseInput.x, 
             Time.deltaTime * _followSpeedX);
@@ -46,25 +50,25 @@ public class CameraController : MonoBehaviour
 
     public void SetFrozen(bool state)
     {
-        isFrozen = state;
-        if (state)
-        {
-            Cursor.visible = false;
-            frozenPosition = Mouse.current.position.ReadValue();
-        }
-        else
-        {
-            Cursor.visible = true;
-        }
+        //isFrozen = state;
+        //if (state)
+        //{
+        //    Cursor.visible = false;
+        //    frozenPosition = Mouse.current.position.ReadValue();
+        //}
+        //else
+        //{
+        //    Cursor.visible = true;
+        //}
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        if (isFrozen)
-        {
-            Mouse.current.WarpCursorPosition(frozenPosition);
-            return;
-        }
+        //if (isFrozen)
+        //{
+        //    Mouse.current.WarpCursorPosition(frozenPosition);
+        //    return;
+        //}
 
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 offset = new Vector2(

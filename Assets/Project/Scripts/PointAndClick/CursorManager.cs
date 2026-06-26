@@ -11,6 +11,7 @@ public enum CursorType
     Environment,
     Goal,
     AnimatedItem,
+    Talking,
 }
 
 public class CursorManager : MonoBehaviour
@@ -27,11 +28,13 @@ public class CursorManager : MonoBehaviour
     private void OnEnable()
     {
         EventClick.OnObjectHovered += HandleObjectHovered;
+        PlayerController_PointAndClick.OnTalking += PlayerController_PointAndClick_OnTalking;
     }
 
     private void OnDisable()
     {
         EventClick.OnObjectHovered -= HandleObjectHovered;
+        PlayerController_PointAndClick.OnTalking -= PlayerController_PointAndClick_OnTalking;
     }
 
     private void Start()
@@ -104,5 +107,17 @@ public class CursorManager : MonoBehaviour
                 break;
         }
         if (playHover) { AudioManager.instance.PlayHoverSound(); } //plays a hover sfx when etnering an object hover -HG
+    }
+
+    private void PlayerController_PointAndClick_OnTalking(Boolean state)
+    {
+        if (state)
+        {
+            SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Talking]);
+        }
+        else
+        {
+            SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Default]);
+        }
     }
 }
