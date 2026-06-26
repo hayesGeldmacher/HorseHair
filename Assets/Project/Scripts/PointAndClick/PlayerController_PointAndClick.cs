@@ -12,7 +12,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("Camera Settings")]
     [SerializeField] private CameraController PlayerCamera;
 
-
     [Header("Moving Settings")]
     [SerializeField] private float blinkAnimationSpeed = 0.5f;
     [SerializeField] private Animator blinkAnimator;
@@ -38,6 +37,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private string fightingGameScene;
     [SerializeField] private string houseScene;
     [SerializeField] private float transitionTimerInSeconds;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource alarmSource;
 
     private Camera_Environment currentCamera;
     private Coroutine _hideInventoryCoroutine;
@@ -171,7 +173,15 @@ public class PlayerController_PointAndClick : MonoBehaviour
         transform.position = data.ObjectTransform.position;
         transform.rotation = data.ObjectTransform.rotation;
 
-        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+        yield return new WaitForSeconds(1.5f);
+        if(alarmSource != null)
+        {
+            alarmSource.Play();
+            yield return new WaitForSeconds(2.0f);
+        }
+        else { Debug.LogWarning("No alarm clock source slotted in Player!"); }
+
+            blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
         yield return new WaitForSeconds(0.4f);
         blinkAnimator.SetTrigger("EyesStart");
 
