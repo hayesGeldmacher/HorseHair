@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -38,6 +39,10 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private string fightingGameScene;
     [SerializeField] private string houseScene;
     [SerializeField] private float transitionTimerInSeconds;
+
+    [SerializeField] private DialogueStorage dialogueText;
+    private int dialogueIndex = 0;
+    private bool startedDialogue = false;
 
     private Camera_Environment currentCamera;
     private Coroutine _hideInventoryCoroutine;
@@ -317,5 +322,36 @@ public class PlayerController_PointAndClick : MonoBehaviour
         string text = PlayerPrefs.GetString("Thoughts");
         textBox.SetText(text);
         OnShowTextBox();
+    }
+
+    public void OpenDialogue()
+    {
+        PlayerCamera.SetFrozen(true);
+        dialogueIndex = 0;
+        startedDialogue = true;
+        GoThroughDialogue();
+    }
+
+    public void AdvanceDialogue(InputAction.CallbackContext ctx)
+    {
+        if (!startedDialogue || !ctx.started) return;
+        GoThroughDialogue();
+    }
+
+    private void GoThroughDialogue()
+    {
+        if (dialogueIndex >= dialogueText.dialogue.Length)
+        {
+            PlayerCamera.SetFrozen(false);
+            dialogueIndex = 0;
+            startedDialogue = false;
+            textBox.HideTextBox();
+        }
+        else
+        {
+            textBox.SetText(dialogueText.dialogue[dialogueIndex].ToString());
+            textBox.ShowTextBox();
+            dialogueIndex++;
+        }
     }
 }

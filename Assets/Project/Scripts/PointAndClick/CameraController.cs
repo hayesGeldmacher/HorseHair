@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,6 +19,8 @@ public class CameraController : MonoBehaviour
     private Vector2 _mouseInput = Vector2.zero;
     private Vector2 _currentInput = Vector2.zero;
     private CinemachinePanTilt _panTilt;
+    private bool isFrozen = false;
+    private Vector2 frozenPosition;
 
     private void Start()
     {
@@ -29,6 +32,8 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (isFrozen) return;
+
         _currentInput.x = Mathf.Lerp(_currentInput.x, _mouseInput.x, 
             Time.deltaTime * _followSpeedX);
         _currentInput.y = Mathf.Lerp(_currentInput.y, _mouseInput.y, 
@@ -39,8 +44,28 @@ public class CameraController : MonoBehaviour
         _panTilt.TiltAxis.Value = -_currentInput.y * _pitchClamp;
     }
 
+    public void SetFrozen(bool state)
+    {
+        isFrozen = state;
+        if (state)
+        {
+            Cursor.visible = false;
+            frozenPosition = Mouse.current.position.ReadValue();
+        }
+        else
+        {
+            Cursor.visible = true;
+        }
+    }
+
     public void OnLook(InputAction.CallbackContext context)
     {
+        if (isFrozen)
+        {
+            Mouse.current.WarpCursorPosition(frozenPosition);
+            return;
+        }
+
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 offset = new Vector2(
             (mousePos.x - _screenCenter.x) / _screenCenter.x,

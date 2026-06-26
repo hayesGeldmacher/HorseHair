@@ -26,6 +26,8 @@ public class EventClick_GoalItem : EventClick
     [SerializeField] private string CompletedGoalString = "Perfect, now I should go to school";
     [SerializeField] private string TaskAfterComplettion = "I should go to school now";
 
+    [SerializeField] private DialogueStorage test;
+
     private Dictionary<EventClick_Item, bool> itemCollectionStatus = 
         new Dictionary<EventClick_Item, bool>();
     public static event System.Action<GoalCompletionData> GoalCompleted;
