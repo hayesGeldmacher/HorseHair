@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class FighterMoveDialogueTrigger : MonoBehaviour
 {
@@ -21,6 +22,12 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
         [TextArea]
         public string dialogueLine;
+
+        public bool hasBrotherResponse;
+        public float brotherResponseTime = 1.0f;
+
+        [TextArea]
+        public string brotherDialogueLine;
 
         [Range(0f, 1f)]
         [Tooltip("Chance this dialogue triggers after the sequence matches 1 = always 0.5 = 50 percent 0 = never")]
@@ -51,12 +58,17 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
     [SerializeField] private FightCharacter fighterToWatch;
     [SerializeField] private GameObject dialogueRoot;
     [SerializeField] private TMP_Text dialogueText;
+    [SerializeField] private Animator dialogueAnim; //the animator which enables the text visibility - HG
+    [SerializeField] private FighterMoveDialogueTrigger brotherTrigger;
 
     [Header("Dialogue Rules")]
     [SerializeField] private List<MoveDialogueRule> rules = new List<MoveDialogueRule>();
 
     [Header("Display")]
     [SerializeField] private float dialogueVisibleTime = 2f;
+
+    public bool isTalking = false; //is this script talking currently? 
+
 
     private readonly List<MoveRecord> moveHistory = new List<MoveRecord>();
     private float dialogueTimer;
@@ -209,18 +221,48 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         dialogueTimer = dialogueVisibleTime;
         rule.cooldownTimer = rule.cooldown;
         rule.hasTriggered = true;
+
+        if (rule.hasBrotherResponse && brotherTrigger != null)
+        {
+           StartCoroutine(WaitForBrotherResponse(rule));
+        }
+    }
+
+    private IEnumerator WaitForBrotherResponse(MoveDialogueRule rule)
+    {
+        yield return new WaitForSeconds(rule.brotherResponseTime);
+        if (!brotherTrigger.isTalking)
+        {
+            brotherTrigger.TriggerBrotherDialogue(rule.brotherDialogueLine);
+        }
+    }
+
+    public void TriggerBrotherDialogue(string line)
+    {
+        dialogueText.text = line;
+        ShowDialogue();
+
+        dialogueTimer = dialogueVisibleTime;
+
     }
 
     private void ShowDialogue()
     {
-        if (dialogueRoot != null)
-            dialogueRoot.SetActive(true);
+        //  if (dialogueRoot != null)
+        //    dialogueRoot.SetActive(true);
+        if(dialogueAnim != null)
+            dialogueAnim.SetBool("visible", true);
+        isTalking = true;
     }
 
     private void HideDialogue()
     {
-        if (dialogueRoot != null)
-            dialogueRoot.SetActive(false);
+        // if (dialogueRoot != null)
+        //   dialogueRoot.SetActive(false);
+
+        if (dialogueAnim != null)
+            dialogueAnim.SetBool("visible", false);
+        isTalking = false;
     }
 
     private void UpdateDialogueTimer()
