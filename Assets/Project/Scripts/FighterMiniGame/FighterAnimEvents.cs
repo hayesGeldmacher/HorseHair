@@ -15,13 +15,17 @@ public class FighterAnimEvents : MonoBehaviour
 
     public void StartAttack()
     {
+        fightCharacter.StartAttackAnimation(); //confirms attack animation started - AB
+
         //call to fightCharacter function - HG
         //fightCharacter should not be able to move or spam more attack when in attack anim phase - HG
         Debug.Log(fightCharacter.gameObject.name + " started attack animation!");
-    } 
+    }
 
     public void EndAttack()
     {
+        fightCharacter.EndAttackAnimation(); //unlocks attack input once attack animation finishes - AB
+
         Debug.Log(fightCharacter.gameObject.name + " finished attack animation!");
     }
 }

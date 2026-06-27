@@ -195,6 +195,8 @@ public class FightCharacter : MonoBehaviour
     private bool aiCrouchHeld;
     private bool aiGrabPressed;
 
+    private bool isAttackAnimationPlaying; //prevents attack spam while an attack animation is still playing 
+
     private bool roundActive = true;
     private Transform mainCameraTransform;
 
@@ -208,6 +210,21 @@ public class FightCharacter : MonoBehaviour
     private void Reset()
     {
         AssignMissingReferences();
+    }
+
+    public void StartAttackAnimation()
+    {
+        isAttackAnimationPlaying = true; //locks attack input during attack animation 
+    }
+
+    public void EndAttackAnimation()
+    {
+        isAttackAnimationPlaying = false; //unlocks attack input after animation finishes 
+    }
+
+    private bool CanStartAttack()
+    {
+        return !isAttackAnimationPlaying && !isKnockedDown && !isRecovering && blockStunTimer <= 0f; //checks if fighter can start an attack 
     }
 
     private void PlaySound(AudioClip clip)
@@ -542,6 +559,11 @@ public class FightCharacter : MonoBehaviour
 
     private void Punch()
     {
+        if (!CanStartAttack())
+            return;
+
+        StartAttackAnimation(); //locks immediately so button spam cannot restart the animation
+        
         string punchType = GetPunchType();
         FighterMoveType moveType = GetPunchMoveType();
 
@@ -561,6 +583,11 @@ public class FightCharacter : MonoBehaviour
 
     private void Kick()
     {
+        if (!CanStartAttack())
+            return;
+
+        StartAttackAnimation(); //locks immediately so button spam cannot restart the animation
+
         string kickType = GetKickType();
         FighterMoveType moveType = GetKickMoveType();
 
@@ -581,6 +608,9 @@ public class FightCharacter : MonoBehaviour
 
     private void Grab()
     {
+        if (!CanStartAttack())
+            return;
+
         if (!isGrounded || isCrouching || isBlocking || isKnockedDown || isRecovering)
         {
             PlaySound(attackMissSound);
@@ -588,6 +618,8 @@ public class FightCharacter : MonoBehaviour
             MovePerformed?.Invoke(this, FighterMoveType.Grab, FighterMoveResult.Miss);
             return;
         }
+
+        StartAttackAnimation(); //locks immediately so button spam cannot restart the animation 
 
         SetTemporaryActionText("Grab");
 
@@ -598,7 +630,11 @@ public class FightCharacter : MonoBehaviour
         else
             PlaySound(attackMissSound);
 
-        if (animateFighter){ fighterAnim.SetTrigger("grab"); }   
+        if (animateFighter)
+        {
+            fighterAnim.SetTrigger("grab");
+        }
+
         MovePerformed?.Invoke(this, FighterMoveType.Grab, result);
     }
 
