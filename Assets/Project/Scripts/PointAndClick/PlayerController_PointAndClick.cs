@@ -84,6 +84,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             StartingPoint.TeleportToSelf();
         }
+        GoalText.text = "";
     }
 
     private void HandleObjectClicked(ClickEventData data)
@@ -127,6 +128,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         yield return new WaitUntil(() => startedDialogue == false);
 
         task.Giver.ChangeGoalStatus(true);
+        OnOpenInventory();
     }
 
     // ********************************************************************************

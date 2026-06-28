@@ -21,7 +21,7 @@ public class Camera_Environment : MonoBehaviour
 
     public TeleportClickEventData TeleportClickEventData;
     private EventClick_Environment[] connectedClickEvents;
-    private EventClick[] connectedItems;
+    public EventClick[] connectedItems;
 
     private void OnValidate()
     {
@@ -37,6 +37,8 @@ public class Camera_Environment : MonoBehaviour
     private void Awake()
     {
         _cameraMesh.SetActive(false);
+        connectedClickEvents = _arrows.GetComponentsInChildren<EventClick_Environment>();
+        connectedItems = _items.GetComponentsInChildren<EventClick>();
     }
 
     private void Start()
@@ -44,8 +46,6 @@ public class Camera_Environment : MonoBehaviour
         if (TeleportClickEventData == null)
             SetUpEventData();
 
-        connectedClickEvents = _arrows.GetComponentsInChildren<EventClick_Environment>();
-        connectedItems = _items.GetComponentsInChildren<EventClick>();
         ActivateOrDeactivate(false);
     }
     public void TeleportToSelf()

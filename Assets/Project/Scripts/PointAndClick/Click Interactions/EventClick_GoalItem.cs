@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,14 +32,28 @@ public class EventClick_GoalItem : EventClick
     private Dictionary<EventClick_Item, bool> itemCollectionStatus = 
         new Dictionary<EventClick_Item, bool>();
     public static event System.Action<GoalCompletionData> GoalCompleted;
+    public bool Activated = false;
+
+    public void StartTask()
+    {
+        Activated = true;
+        foreach (var item in requiredItems)
+        {
+            item.Activated = true;
+        }
+    }
 
     public override void ActivateOrDeactivate(bool activate)
     {
-        this.gameObject.SetActive(activate);
-        foreach (var item in requiredItems)
+        if (!Activated)
         {
-            item.gameObject.SetActive(activate);
+            activate = false;
         }
+        this.gameObject.SetActive(activate);
+        //foreach (var item in requiredItems)
+        //{
+        //    item.ActivateOrDeactivate(activate);
+        //}
     }
 
     protected override void SetType()

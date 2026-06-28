@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -16,6 +17,7 @@ public class EventClick_FinalPointBase : EventClick
     [SerializeField] private string CompletedText = "Goal Complete";
 
     private bool goToNextScene = false;
+    public bool Activated = false;
 
     private void OnEnable()
     {
@@ -60,5 +62,13 @@ public class EventClick_FinalPointBase : EventClick
     private void HandleGoalCompleted(GoalCompletionData data)
     {
         goToNextScene = data.IsCompleted;
+    }
+
+    public override void ActivateOrDeactivate(bool activate)
+    {
+        if (!Activated)
+            base.ActivateOrDeactivate(false);
+        else
+            base.ActivateOrDeactivate(activate);
     }
 }

@@ -44,7 +44,9 @@ public class EventManager : MonoBehaviour
         foreach (var task in tasks)
         {
             tasksList[(task.timeOfDay, task.TaskNum)] = task.TaskItem;
-            task.TaskItem.ActivateOrDeactivate(false);
+            //task.TaskItem.ChangeTaskStatus(false);
+            //task.TaskItem.ChangeGoalStatus(false);
+            task.TaskItem.task.finalPoint.Activated = false;
         }
 
         if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
@@ -66,6 +68,7 @@ public class EventManager : MonoBehaviour
     private void StartTask()
     {
         tasksList[(currentTimeOfDay, currentTaskNum)].ChangeTaskStatus(true);
+        tasksList[(currentTimeOfDay, currentTaskNum)].task.finalPoint.Activated = true;
     }
 
     private void HandleGoalCompleted(GoalCompletionData data)

@@ -43,11 +43,11 @@ public class EventClick_TaskGiver : EventClick
         };
     }
 
-    public override void ActivateOrDeactivate(bool activate)
-    {
-        ChangeGoalStatus(activate);
-        ChangeTaskStatus(activate);
-    }
+    //public override void ActivateOrDeactivate(bool activate)
+    //{
+    //    ChangeGoalStatus(activate);
+    //    ChangeTaskStatus(activate);
+    //}
 
     public void ChangeTaskStatus(bool status)
     {
@@ -56,7 +56,7 @@ public class EventClick_TaskGiver : EventClick
 
     public void ChangeGoalStatus(bool status)
     {
-        task.goalItem.ActivateOrDeactivate(status);
-        task.finalPoint.ActivateOrDeactivate(status);
+        if (status)
+            task.goalItem.StartTask();
     }
 }
