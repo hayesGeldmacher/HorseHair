@@ -26,6 +26,12 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource hoverSource2; //sound 2 when mouse hovers over an icon
     private bool playedFirstHover = false;
 
+    [Header("Start Task")]
+    [SerializeField] private AudioSource startTaskSource; //sound when a new task PNC sequence begins
+    [SerializeField] private AudioClip morningClip; //clip played for above sound when time of day is morning
+    [SerializeField] private AudioClip afternoonClip; //clip played for above sound when time of day is afternoon
+
+
 
 
     public void PlayInteractSound()
@@ -55,5 +61,14 @@ public class AudioManager : MonoBehaviour
     public float GetRandomPitch()
     {
         return Random.Range(0.8f, 1.1f);
+    }
+
+    public void PlayStartTaskSound(bool isMorning)
+    {
+        if(startTaskSource == null) { Debug.LogWarning("No audio source slotted for start task sound!"); }
+        if (isMorning && morningClip != null) { startTaskSource.clip = morningClip; }
+        else if (!isMorning && afternoonClip != null) { startTaskSource.clip = afternoonClip; }
+
+        startTaskSource.Play();
     }
 }

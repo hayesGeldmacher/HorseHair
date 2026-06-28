@@ -213,6 +213,18 @@ public class PlayerController_PointAndClick : MonoBehaviour
         transform.position = data.ObjectTransform.position;
         transform.rotation = data.ObjectTransform.rotation;
 
+
+        yield return new WaitForSeconds(1.5f);
+        bool isMorning = false;
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        if (currentTimeOfDay == TimeOfDay.Morning)
+        {
+            isMorning = true;
+        }
+
+        AudioManager.instance.PlayStartTaskSound(isMorning);
+        yield return new WaitForSeconds(2.0f);
+
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
         yield return new WaitForSeconds(0.4f);
         blinkAnimator.SetTrigger("EyesStart");
