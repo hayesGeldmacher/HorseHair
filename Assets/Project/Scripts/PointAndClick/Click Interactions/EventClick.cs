@@ -30,6 +30,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] public string description;
     [SerializeField] private bool ResetAfterClick = true;
     [SerializeField] protected DialogueStorage dialogueText;
+    [SerializeField] protected ObjectType resetCursor = ObjectType.None;
 
     protected ObjectType Type = ObjectType.None;
     protected string Name = "";
@@ -54,9 +55,14 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         OnObjectClicked?.Invoke(CreateEventData());
         if (ResetAfterClick)
         {
-            OnObjectHovered?.Invoke(ObjectType.None, "");
-            outlineMaterial.SetFloat("_Outline_Show", 0f);
+            ResetClick();
         }
+    }
+
+    public virtual void ResetClick()
+    {
+        OnObjectHovered?.Invoke(resetCursor, "");
+        outlineMaterial.SetFloat("_Outline_Show", 0f);
     }
 
     public void ForceClick()

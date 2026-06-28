@@ -546,6 +546,7 @@ GameObject:
   - component: {fileID: 7084677945363431872}
   - component: {fileID: 758895102263819641}
   - component: {fileID: 5486129628746571025}
+  - component: {fileID: 725750524427845001}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -617,7 +618,19 @@ MonoBehaviour:
     m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
     m_ActionName: 'Player/Look[/XInputControllerWindows/rightStick,/Mouse/delta,/Touchscreen/delta]'
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5486129628746571025}
+        m_TargetAssemblyTypeName: PlayerController_PointAndClick, Assembly-CSharp
+        m_MethodName: AdvanceDialogue
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 852140f2-7766-474d-8707-702459ba45f3
     m_ActionName: 'Player/Interact[/Keyboard/e,/XInputControllerWindows/buttonNorth]'
   - m_PersistentCalls:
@@ -676,6 +689,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: f6553901-dfe3-4456-a0f9-92bfa83b2326
     m_ActionName: 'Player/OpenInventory[/Keyboard/tab]'
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5486129628746571025}
+        m_TargetAssemblyTypeName: PlayerController_PointAndClick, Assembly-CSharp
+        m_MethodName: OpenDialogue
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 876cddfd-ac11-46a4-8466-6cabbb79655f
+    m_ActionName: 'Player/TestButton[/Keyboard/q]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -708,8 +737,110 @@ MonoBehaviour:
   thoughtTextDelay: 2
   GoalText: {fileID: 7279625971252437074}
   fightingGameScene: SCN_FightingGameTVTest
-  houseScene: SCN_HouseLayout
+  houseScene: SCN_PointAndClickTest
   transitionTimerInSeconds: 2
+  dialogueText:
+    dialogue:
+    - 1
+    - 2
+    - 3
+--- !u!82 &725750524427845001
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427646210545992305}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 8a4d8223ae21d724a9b4ec1ed26322aa, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: ad43ae47f17d47048b322731fcd9feb2, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1788094897615104466
 GameObject:
   m_ObjectHideFlags: 0
@@ -2801,6 +2932,7 @@ MonoBehaviour:
   _yawClamp: 20
   _followSpeedX: 2
   _followSpeedY: 2
+  rayCaster: {fileID: 5452108303933329207}
 --- !u!20 &9116733426156734739
 Camera:
   m_ObjectHideFlags: 0
@@ -2962,6 +3094,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ed86e7d2ef88b7c4583f06c111701776, type: 2}
   - {fileID: 11400000, guid: 1b7471b55e968c744a2707d5b653fd74, type: 2}
   - {fileID: 11400000, guid: e187769279039d3498e853f0aefdd043, type: 2}
+  - {fileID: 11400000, guid: 885bd11cc2d1f35488bfc310785cd28c, type: 2}
   itemBox: {fileID: 3089802061401551266}
 --- !u!1 &8010582665563751061
 GameObject:
