@@ -80,11 +80,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 }
             }
         }
-        string goalText = PlayerPrefs.GetString("Goal");
-        if (!string.IsNullOrEmpty(goalText))
-        {
-            GoalText.text = goalText;
-        }
         if (StartingPoint != null)
         {
             StartingPoint.TeleportToSelf();
@@ -113,9 +108,30 @@ public class PlayerController_PointAndClick : MonoBehaviour
             case FPBClickEventData fpb:
                 EndDay(fpb);
                 break;
+            case TaskClickEventData task:
+                StartCoroutine(StartTask(task));
+                break;
         }
     }
 
+    // ********************************************************************************
+    // Tasks
+    // ********************************************************************************
+    private IEnumerator StartTask(TaskClickEventData task)
+    {
+        GoalText.text = task.Task.GoalText;
+        dialogueText = task.DialogueText;
+        OpenDialogue();
+        task.Giver.ChangeTaskStatus(false);
+
+        yield return new WaitUntil(() => startedDialogue == false);
+
+        task.Giver.ChangeGoalStatus(true);
+    }
+
+    // ********************************************************************************
+    // Final Point
+    // ********************************************************************************
     private void EndDay(FPBClickEventData fpb)
     {
         if (completeTask)
@@ -130,8 +146,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
             {
                 scene = houseScene;
             }
-            //StartCoroutine(EndingSequence(fpb.DialogueText, scene));
-            StartCoroutine(EndingSequence(fpb.CompleteString, scene));
+            StartCoroutine(EndingSequence(fpb.DialogueText, scene));
+            //StartCoroutine(EndingSequence(fpb.CompleteString, scene));
         }
         else
         {
@@ -172,6 +188,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
         SceneManager.LoadScene(scene);
     }
 
+    // ********************************************************************************
+    // Camera Point
+    // ********************************************************************************
     private void MoveTo(TeleportClickEventData data)
     {
         //if this is the first teleport of the scene, play unique blinking animation - HG
@@ -235,22 +254,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
+    // ********************************************************************************
+    // Item
+    // ********************************************************************************
     private void InteractWith(ItemClickEventData data)
     {
         AddToInventory(data.SourceItem);
-    }
-
-    private void InteractWith(GoalEventData data)
-    {
-        for (int i = 0; i < Inventory.Length; i++)
-        {
-            if (Inventory[i] != null && data.SourceGoal.CollectItem(Inventory[i]))
-            {
-                Inventory[i] = null;
-                inventoryUI.RemoveItem(i);
-            }
-        }
-        data.SourceGoal.CheckGoal();
     }
 
     private bool AddToInventory(EventClick_Item item)
@@ -271,12 +280,21 @@ public class PlayerController_PointAndClick : MonoBehaviour
         return false;
     }
 
-    private void TalkAbout(NEIClickEventData data)
+    // ********************************************************************************
+    // Goal
+    // ********************************************************************************
+    private void InteractWith(GoalEventData data)
     {
-        textBox.SetText(data.Description);
-        OnShowTextBox();
+        for (int i = 0; i < Inventory.Length; i++)
+        {
+            if (Inventory[i] != null && data.SourceGoal.CollectItem(Inventory[i]))
+            {
+                Inventory[i] = null;
+                inventoryUI.RemoveItem(i);
+            }
+        }
+        data.SourceGoal.CheckGoal();
     }
-
     private void HandleGoalCompleted(GoalCompletionData data)
     {
         if (data.IsCompleted)
@@ -293,6 +311,18 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
+    // ********************************************************************************
+    // Non Essential Item
+    // ********************************************************************************
+    private void TalkAbout(NEIClickEventData data)
+    {
+        textBox.SetText(data.Description);
+        OnShowTextBox();
+    }
+
+    // ********************************************************************************
+    // Textboxes (Auto)
+    // ********************************************************************************
     public void OnShowTextBox()
     {
         if (_hideTextCoroutine != null)
@@ -315,6 +345,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
         _hideTextCoroutine = null;
     }
 
+    // ********************************************************************************
+    // Inventory
+    // ********************************************************************************
     public void OnOpenInventory()
     {
         inventoryUI.ShowInventory();
@@ -334,6 +367,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
         _hideInventoryCoroutine = null;
     }
 
+    // ********************************************************************************
+    // Starting Thoughts
+    // ********************************************************************************
     private IEnumerator DisplayTaskStartDialogue()
     {
         yield return new WaitForSeconds(thoughtTextDelay);
@@ -342,6 +378,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
         OnShowTextBox();
     }
 
+    // ********************************************************************************
+    // Dialogue Boxes
+    // ********************************************************************************
     public void OpenDialogue()
     {
         PlayerCamera.SetFrozen(true);

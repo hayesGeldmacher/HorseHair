@@ -21,6 +21,7 @@ public enum ObjectType
     TI, // Transition Item
     FPB, // Final Point
     Talk,
+    Task,
 }
 
 public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler

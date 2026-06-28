@@ -14,16 +14,7 @@ public class Tasks
 {
     public TimeOfDay timeOfDay;
     public int TaskNum;
-    public TaskList taskList;
-}
-
-[System.Serializable]
-public class TaskList
-{
-    public EventClick_GoalItem goalItem;
-    public Camera_Environment startingPosition;
-    public string GoalText;
-    public string ThoughtText;
+    public EventClick_TaskGiver TaskItem;
 }
 
 public class EventManager : MonoBehaviour
@@ -32,8 +23,8 @@ public class EventManager : MonoBehaviour
     [SerializeField] private int currentTaskNum = 0;
     [SerializeField] private Tasks[] tasks;
 
-    private Dictionary<(TimeOfDay, int), TaskList> tasksList =
-        new Dictionary<(TimeOfDay, int), TaskList>();
+    private Dictionary<(TimeOfDay, int), EventClick_TaskGiver> tasksList =
+        new Dictionary<(TimeOfDay, int), EventClick_TaskGiver>();
 
     private void OnEnable()
     {
@@ -52,20 +43,18 @@ public class EventManager : MonoBehaviour
 
         foreach (var task in tasks)
         {
-            if (task.taskList.goalItem == null || task.taskList.startingPosition == null)
-                continue;
-            tasksList[(task.timeOfDay, task.TaskNum)] = task.taskList;
-            task.taskList.goalItem.Deactivate();
+            tasksList[(task.timeOfDay, task.TaskNum)] = task.TaskItem;
+            task.TaskItem.ActivateOrDeactivate(false);
         }
 
         if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
         {
             PlayerPrefs.SetString("Environment", 
-                tasksList[(currentTimeOfDay, currentTaskNum)].startingPosition.name);
-            PlayerPrefs.SetString("Goal", 
-                tasksList[(currentTimeOfDay, currentTaskNum)].GoalText);
-            PlayerPrefs.SetString("Thoughts", 
-                tasksList[(currentTimeOfDay, currentTaskNum)].ThoughtText);
+                tasksList[(currentTimeOfDay, currentTaskNum)].task.startingPosition.name);
+            //PlayerPrefs.SetString("Goal", 
+            //    tasksList[(currentTimeOfDay, currentTaskNum)].task.GoalText);
+            PlayerPrefs.SetString("Thoughts",
+                tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
         }
     }
 
@@ -76,7 +65,7 @@ public class EventManager : MonoBehaviour
 
     private void StartTask()
     {
-        tasksList[(currentTimeOfDay, currentTaskNum)].goalItem.Activate();
+        tasksList[(currentTimeOfDay, currentTaskNum)].ChangeTaskStatus(true);
     }
 
     private void HandleGoalCompleted(GoalCompletionData data)
@@ -97,12 +86,12 @@ public class EventManager : MonoBehaviour
         PlayerPrefs.SetInt("TimeOfDay", (int)currentTimeOfDay);
         if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
         {
-            PlayerPrefs.SetString("Environment", 
-                tasksList[(currentTimeOfDay, currentTaskNum)].startingPosition.name);
-            PlayerPrefs.SetString("Goal", 
-                tasksList[(currentTimeOfDay, currentTaskNum)].GoalText);
-            PlayerPrefs.SetString("Thoughts", 
-                tasksList[(currentTimeOfDay, currentTaskNum)].ThoughtText);
+            PlayerPrefs.SetString("Environment",
+                tasksList[(currentTimeOfDay, currentTaskNum)].task.startingPosition.name);
+            //PlayerPrefs.SetString("Goal",
+            //    tasksList[(currentTimeOfDay, currentTaskNum)].task.GoalText);
+            PlayerPrefs.SetString("Thoughts",
+                tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
         }
         PlayerPrefs.Save();
     }

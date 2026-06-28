@@ -100,6 +100,10 @@ public class CursorManager : MonoBehaviour
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Goal]);
                 itemBox.ShowTextbox(name);
                 break;
+            case ObjectType.Task:
+                SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Talking]);
+                itemBox.ShowTextbox(name);
+                break;
             default:
                 SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Default]);
                 itemBox.HideTextbox();

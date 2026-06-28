@@ -32,21 +32,12 @@ public class EventClick_GoalItem : EventClick
         new Dictionary<EventClick_Item, bool>();
     public static event System.Action<GoalCompletionData> GoalCompleted;
 
-    public void Activate()
+    public override void ActivateOrDeactivate(bool activate)
     {
-        this.gameObject.SetActive(true);
-        foreach(var item in requiredItems)
-        {
-            item.gameObject.SetActive(true);
-        }
-    }
-
-    public void Deactivate()
-    {
-        this.gameObject.SetActive(false);
+        this.gameObject.SetActive(activate);
         foreach (var item in requiredItems)
         {
-            item.gameObject.SetActive(false);
+            item.gameObject.SetActive(activate);
         }
     }
 
