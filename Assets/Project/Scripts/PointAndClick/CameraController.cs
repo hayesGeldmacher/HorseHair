@@ -20,8 +20,8 @@ public class CameraController : MonoBehaviour
     public PhysicsRaycaster rayCaster;
 
     private Vector2 _screenCenter;
-    private Vector2 _mouseInput = Vector2.zero;
-    private Vector2 _currentInput = Vector2.zero;
+    public Vector2 _mouseInput = Vector2.zero;
+    public Vector2 _currentInput = Vector2.zero;
     private CinemachinePanTilt _panTilt;
     private bool isFrozen = false;
     private Vector2 frozenPosition;
