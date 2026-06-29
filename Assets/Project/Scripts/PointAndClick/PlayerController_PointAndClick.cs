@@ -140,14 +140,20 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             string scene = "";
             TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+            int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
             if (currentTimeOfDay == TimeOfDay.Morning)
             {
-                scene = fightingGameScene;
+                scene = houseScene;
+                PlayerPrefs.SetInt("TaskNum", currentTaskNum);
+                PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
             }
             else
             {
-                scene = houseScene;
+                scene = fightingGameScene;
+                PlayerPrefs.SetInt("TaskNum", currentTaskNum++);
+                PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
             }
+            PlayerPrefs.Save();
             StartCoroutine(EndingSequence(fpb.DialogueText, scene));
             //StartCoroutine(EndingSequence(fpb.CompleteString, scene));
         }

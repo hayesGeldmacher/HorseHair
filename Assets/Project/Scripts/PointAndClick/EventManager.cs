@@ -73,30 +73,30 @@ public class EventManager : MonoBehaviour
 
     private void HandleGoalCompleted(GoalCompletionData data)
     {
-        if (!data.IsCompleted)
-            return;
-        if (currentTimeOfDay == TimeOfDay.Afternoon)
-        {
-            currentTaskNum++;
-            currentTimeOfDay = TimeOfDay.Morning;
-        }
-        else
-        {
-            currentTimeOfDay = TimeOfDay.Afternoon;
-        }
+        //if (!data.IsCompleted)
+        //    return;
+        //if (currentTimeOfDay == TimeOfDay.Afternoon)
+        //{
+        //    currentTaskNum++;
+        //    currentTimeOfDay = TimeOfDay.Morning;
+        //}
+        //else
+        //{
+        //    currentTimeOfDay = TimeOfDay.Afternoon;
+        //}
 
-        PlayerPrefs.SetInt("TaskNum", currentTaskNum);
-        PlayerPrefs.SetInt("TimeOfDay", (int)currentTimeOfDay);
-        if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
-        {
-            PlayerPrefs.SetString("Environment",
-                tasksList[(currentTimeOfDay, currentTaskNum)].task.startingPosition.name);
-            //PlayerPrefs.SetString("Goal",
-            //    tasksList[(currentTimeOfDay, currentTaskNum)].task.GoalText);
-            PlayerPrefs.SetString("Thoughts",
-                tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
-        }
-        PlayerPrefs.Save();
+        //PlayerPrefs.SetInt("TaskNum", currentTaskNum);
+        //PlayerPrefs.SetInt("TimeOfDay", (int)currentTimeOfDay);
+        //if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
+        //{
+        //    PlayerPrefs.SetString("Environment",
+        //        tasksList[(currentTimeOfDay, currentTaskNum)].task.startingPosition.name);
+        //    //PlayerPrefs.SetString("Goal",
+        //    //    tasksList[(currentTimeOfDay, currentTaskNum)].task.GoalText);
+        //    PlayerPrefs.SetString("Thoughts",
+        //        tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
+        //}
+        //PlayerPrefs.Save();
     }
 
     [ContextMenu("Reset Progress")]
@@ -107,5 +107,6 @@ public class EventManager : MonoBehaviour
         PlayerPrefs.DeleteKey("TimeOfDay");
         PlayerPrefs.DeleteKey("Goal");
         PlayerPrefs.DeleteKey("Thoughts");
+        PlayerPrefs.Save();
     }
 }
