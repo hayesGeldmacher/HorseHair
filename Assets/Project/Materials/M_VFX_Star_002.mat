@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_VFX_Sparks_001
+  m_Name: M_VFX_Star_002
   m_Shader: {fileID: -6465566751694194690, guid: f0bd0f7ba367c9b49882668c8e383c49, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -38,11 +38,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseColor_Map:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 9741042018607eb49986f3bdd0ef98d9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Opacity_Map:
-        m_Texture: {fileID: 2800000, guid: 07436a5f5fe221b42864ecbd35a15d5b, type: 3}
+        m_Texture: {fileID: 2800000, guid: ded13f767417c994e81e0433faf5fce4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Opacity_Mask:
+        m_Texture: {fileID: 2800000, guid: 04ad2094d2d06154e812cfd8fb2548c4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -62,13 +66,15 @@ Material:
     - _BOOLEAN: 0
     - _BaseColor_Intensity: 0
     - _Float: 1
+    - _Opacity_Map_U_Speed: 0
+    - _Opacity_Map_V_Speed: 0
     - _Opacity_UseAlpha: 0
     - _Opacity_UseDepthFade: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _UseAlpha: 1
     m_Colors:
-    - _BaseColor_Tint: {r: 16, g: 16, b: 16, a: 1}
+    - _BaseColor_Tint: {r: 60.23688, g: 43.563046, b: 12.299677, a: 1}
     - _Tint: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
