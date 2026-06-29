@@ -3912,6 +3912,8 @@ GameObject:
   - component: {fileID: 1424983079}
   - component: {fileID: 1424983078}
   - component: {fileID: 1424983081}
+  - component: {fileID: 1424983083}
+  - component: {fileID: 1424983082}
   m_Layer: 0
   m_Name: DoorLight
   m_TagString: Untagged
@@ -4050,6 +4052,126 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!82 &1424983082
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424983077}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 1125275684528089019, guid: 8a4d8223ae21d724a9b4ec1ed26322aa, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1424983083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424983077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f099819c2cab234baa2e52c0f9625fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DoorLightTrigger
+  triggerWaitMin: 15
+  triggerWaitMax: 50
+  currentWait: 0
+  doorOpenTimeMin: 3
+  doorOpenTimeMax: 8
+  maxTriggers: 2
+  currentTriggers: 0
+  doorLightAnim: {fileID: 1424983081}
+  doorSource: {fileID: 1424983082}
+  doorOpenClip: {fileID: 8300000, guid: f986430e581fbeb419867b659c66f977, type: 3}
+  doorCloseClip: {fileID: 8300000, guid: 840db3a13c2907a4bb08be362f636364, type: 3}
 --- !u!1 &1479744028
 GameObject:
   m_ObjectHideFlags: 0
@@ -5330,7 +5452,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 643642821102333026, guid: 448b2ec1c98eba642a88366aeacfe353, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.54
+      value: 8.88
       objectReference: {fileID: 0}
     - target: {fileID: 2895897104379113142, guid: 448b2ec1c98eba642a88366aeacfe353, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5518,7 +5640,7 @@ Transform:
   m_GameObject: {fileID: 1934180639}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.6542451, z: -0, w: 0.7562826}
-  m_LocalPosition: {x: 10.24, y: -0.52172065, z: 55.35}
+  m_LocalPosition: {x: 8.97, y: -0.52172065, z: 55.35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6220,6 +6342,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1424983080}
   - {fileID: 7314968760623419663}
   - {fileID: 7036998812301431472}
   - {fileID: 1806776735}
@@ -6242,4 +6365,3 @@ SceneRoots:
   - {fileID: 1772650482}
   - {fileID: 1261084635}
   - {fileID: 1934180640}
-  - {fileID: 1424983080}
