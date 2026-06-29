@@ -47,6 +47,7 @@ public class EventManager : MonoBehaviour
             //task.TaskItem.ChangeTaskStatus(false);
             //task.TaskItem.ChangeGoalStatus(false);
             task.TaskItem.task.finalPoint.Activated = false;
+            task.TaskItem.Activated = false;
         }
 
         if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
@@ -57,6 +58,7 @@ public class EventManager : MonoBehaviour
             //    tasksList[(currentTimeOfDay, currentTaskNum)].task.GoalText);
             PlayerPrefs.SetString("Thoughts",
                 tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
+            tasksList[(currentTimeOfDay, currentTaskNum)].Activated = true;
         }
     }
 

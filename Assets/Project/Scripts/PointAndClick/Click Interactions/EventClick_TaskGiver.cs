@@ -22,6 +22,7 @@ public class EventClick_TaskGiver : EventClick
 {
     [SerializeField] private string tgName = "TG";
     [SerializeField] public TaskItem task;
+    public bool Activated = false;
 
     protected override void SetType()
     {
@@ -43,11 +44,17 @@ public class EventClick_TaskGiver : EventClick
         };
     }
 
-    //public override void ActivateOrDeactivate(bool activate)
-    //{
-    //    ChangeGoalStatus(activate);
-    //    ChangeTaskStatus(activate);
-    //}
+    public override void ActivateOrDeactivate(bool activate)
+    {
+        if (Activated)
+        {
+            base.ActivateOrDeactivate(activate);
+        }
+        else
+        {
+            base.ActivateOrDeactivate(false);
+        }
+    }
 
     public void ChangeTaskStatus(bool status)
     {
