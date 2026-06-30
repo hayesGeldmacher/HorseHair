@@ -27,6 +27,11 @@ public class TextBox : MonoBehaviour
 
     public void ShowTextBox()
     {
+        StartFade(1f);
+    }
+
+    public void ShowTextBoxInstant()
+    {
         fadeGroup.alpha = 1;
     }
 

@@ -7,14 +7,18 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
     [Header("Camera Settings")]
-    [SerializeField, Tooltip("How far can the camera move up and down")] 
+    [SerializeField, Tooltip("How far can the camera move up and down / How fast the camera moves up and down in 360")] 
     private float _pitchClamp = 20f;
-    [SerializeField, Tooltip("How far can the camera move left and right")] 
+    [SerializeField, Tooltip("How far can the camera move left and right / How fast the camera moves left and right in 360")] 
     private float _yawClamp = 20f;
     [SerializeField, Tooltip("How fast the camera follows the cursor horizontally")]
     private float _followSpeedX = 2f;
     [SerializeField, Tooltip("How fast the camera follows the cursor vertically")]
     private float _followSpeedY = 2f;
+    [SerializeField]
+    private bool full360Camera_x = false;
+    [SerializeField]
+    private bool full360Camera_y = false;
 
     [SerializeField]
     public PhysicsRaycaster rayCaster;
@@ -38,14 +42,28 @@ public class CameraController : MonoBehaviour
     {
         //if (isFrozen) return;
 
-        _currentInput.x = Mathf.Lerp(_currentInput.x, _mouseInput.x, 
+        _currentInput.x = Mathf.Lerp(_currentInput.x, _mouseInput.x,
             Time.deltaTime * _followSpeedX);
-        _currentInput.y = Mathf.Lerp(_currentInput.y, _mouseInput.y, 
+        _currentInput.y = Mathf.Lerp(_currentInput.y, _mouseInput.y,
             Time.deltaTime * _followSpeedY);
 
+        if (full360Camera_x)
+        {
+            _panTilt.PanAxis.Value += _currentInput.x * _yawClamp;
+        }
+        else
+        {
+            _panTilt.PanAxis.Value = _currentInput.x * _yawClamp;
+        }
 
-        _panTilt.PanAxis.Value = _currentInput.x * _yawClamp;
-        _panTilt.TiltAxis.Value = -_currentInput.y * _pitchClamp;
+        if (full360Camera_y)
+        {
+            _panTilt.TiltAxis.Value += -_currentInput.y * _pitchClamp;
+        }
+        else
+        {
+            _panTilt.TiltAxis.Value = -_currentInput.y * _pitchClamp;
+        }
     }
 
     public void SetFrozen(bool state)
@@ -79,11 +97,13 @@ public class CameraController : MonoBehaviour
     }
 
     public void ChangeCameraSettings(float newPitchLimit = 20, float newYawLimit = 20, float newFollowSpeedX = 2, 
-        float newFollowSpeedY = 2)
+        float newFollowSpeedY = 2, bool x_spin_360 = false, bool y_spin_360 = false)
     {
         _pitchClamp = newPitchLimit;
         _yawClamp = newYawLimit;
         _followSpeedX = newFollowSpeedX;
         _followSpeedY = newFollowSpeedY;
+        full360Camera_x = x_spin_360;
+        full360Camera_y = y_spin_360;
     }
 }
