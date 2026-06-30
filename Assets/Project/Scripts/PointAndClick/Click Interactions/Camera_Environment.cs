@@ -14,6 +14,10 @@ public class Camera_Environment : MonoBehaviour
     [SerializeField, Tooltip("How fast the camera follows the cursor vertically")]
     private float _followSpeedY = 2f;
     [SerializeField]
+    private bool full360Camera_x = false;
+    [SerializeField]
+    private bool full360Camera_y = false;
+    [SerializeField]
     private EventClick_Environment selfClickEvent;
     [SerializeField] private GameObject _arrows;
     [SerializeField] private GameObject _items;
@@ -78,6 +82,8 @@ public class Camera_Environment : MonoBehaviour
             ObjectTransform = transform,
             Source = gameObject,
             Camera = this,
+            spin_360_x = full360Camera_x,
+            spin_360_y = full360Camera_y,
         };
     }
 }

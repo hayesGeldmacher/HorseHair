@@ -26,6 +26,8 @@ public class EventManager : MonoBehaviour
     private Dictionary<(TimeOfDay, int), EventClick_TaskGiver> tasksList =
         new Dictionary<(TimeOfDay, int), EventClick_TaskGiver>();
 
+    public static event System.Action<DialogueStorage> ThoughtDialogue;
+
     private void OnEnable()
     {
         EventClick_GoalItem.GoalCompleted += HandleGoalCompleted;
@@ -56,21 +58,22 @@ public class EventManager : MonoBehaviour
                 tasksList[(currentTimeOfDay, currentTaskNum)].task.startingPosition.name);
             //PlayerPrefs.SetString("Goal", 
             //    tasksList[(currentTimeOfDay, currentTaskNum)].task.GoalText);
-            PlayerPrefs.SetString("Thoughts",
-                tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
-            tasksList[(currentTimeOfDay, currentTaskNum)].Activated = true;
+            //PlayerPrefs.SetString("Thoughts",
+            //    tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
+            tasksList[(currentTimeOfDay, currentTaskNum)].Activated = true;           
         }
     }
 
     private void Start()
     {
-        StartTask();
+        StartTask();     
     }
 
     private void StartTask()
     {
         tasksList[(currentTimeOfDay, currentTaskNum)].ChangeTaskStatus(true);
         tasksList[(currentTimeOfDay, currentTaskNum)].task.finalPoint.Activated = true;
+        ThoughtDialogue?.Invoke(tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
     }
 
     private void HandleGoalCompleted(GoalCompletionData data)

@@ -7,6 +7,8 @@ public class TeleportClickEventData : ClickEventData
     public float YawClamp;
     public float FollowSpeedX;
     public float FollowSpeedY;
+    public bool spin_360_x;
+    public bool spin_360_y;
     public Camera_Environment Camera;
 }   
 

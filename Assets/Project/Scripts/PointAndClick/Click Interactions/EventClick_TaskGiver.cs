@@ -8,7 +8,7 @@ public class TaskItem
     public EventClick_FinalPointBase finalPoint;
     public string GoalText;
     public Camera_Environment startingPosition;
-    public string ThoughtText;
+    public DialogueStorage ThoughtText;
 }
 
 public class TaskClickEventData : ClickEventData

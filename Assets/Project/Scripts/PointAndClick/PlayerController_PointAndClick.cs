@@ -57,12 +57,24 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         EventClick.OnObjectClicked += HandleObjectClicked;
         EventClick_GoalItem.GoalCompleted += HandleGoalCompleted;
+        EventManager.ThoughtDialogue += HandleStartEvent;
     }
 
     private void OnDisable()
     {
         EventClick.OnObjectClicked -= HandleObjectClicked;
         EventClick_GoalItem.GoalCompleted -= HandleGoalCompleted;
+        EventManager.ThoughtDialogue -= HandleStartEvent;
+    }
+
+    private void HandleStartEvent(DialogueStorage storage)
+    {
+        dialogueText = storage;
+    }
+
+    private void Awake()
+    {
+        PlayerCamera.rayCaster.enabled = false;
     }
 
     private void Start()
@@ -201,13 +213,15 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     private void MoveTo(TeleportClickEventData data)
     {
-        //if this is the first teleport of the scene, play unique blinking animation - HG
-        if (!finishedFirstTeleport)
-        {
-            StartCoroutine(TeleportSequenceFirst(data));
-            finishedFirstTeleport = true;
-        }
-        else { StartCoroutine(TeleportSequence(data)); }
+        ////if this is the first teleport of the scene, play unique blinking animation - HG
+        //if (!finishedFirstTeleport)
+        //{
+        //    StartCoroutine(TeleportSequenceFirst(data));
+        //    finishedFirstTeleport = true;
+        //}
+        //else { StartCoroutine(TeleportSequence(data)); }
+
+        StartCoroutine(TeleportSequence(data));
     }
 
     //teleport function for unique first blinking animation
@@ -239,7 +253,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
 
         PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX,
-            data.FollowSpeedY);
+            data.FollowSpeedY, data.spin_360_x, data.spin_360_y);
 
         currentCamera = data.Camera;
         currentCamera.ActivateOrDeactivate(true);
@@ -251,19 +265,43 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             currentCamera.ActivateOrDeactivate(false);
         }
-        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
-        blinkAnimator.SetTrigger("EyesDown");
-
-        yield return new WaitUntil(() =>
-        blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
-
         transform.position = data.ObjectTransform.position;
         transform.rotation = data.ObjectTransform.rotation;
 
-        PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX, 
-            data.FollowSpeedY);
+        // Blinking
+        if (!finishedFirstTeleport)
+        {
+            finishedFirstTeleport = true;
 
-        blinkAnimator.SetTrigger("EyesUp");
+            yield return new WaitForSeconds(1.5f);
+            bool isMorning = false;
+            TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+            if (currentTimeOfDay == TimeOfDay.Morning)
+            {
+                isMorning = true;
+            }
+
+            AudioManager.instance.PlayStartTaskSound(isMorning);
+            yield return new WaitForSeconds(2.0f);
+
+            blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+            yield return new WaitForSeconds(0.4f);
+            blinkAnimator.SetTrigger("EyesStart");
+        }
+        else
+        {
+            blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+            blinkAnimator.SetTrigger("EyesDown");
+
+            yield return new WaitUntil(() =>
+            blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+
+            blinkAnimator.SetTrigger("EyesUp");
+        }      
+
+        PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX, 
+            data.FollowSpeedY, data.spin_360_x, data.spin_360_y);
+
         currentCamera = data.Camera;
         currentCamera.ActivateOrDeactivate(true);
 
@@ -393,9 +431,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private IEnumerator DisplayTaskStartDialogue()
     {
         yield return new WaitForSeconds(thoughtTextDelay);
-        string text = PlayerPrefs.GetString("Thoughts");
-        textBox.SetText(text);
-        OnShowTextBox();
+        OpenDialogue();
     }
 
     // ********************************************************************************
