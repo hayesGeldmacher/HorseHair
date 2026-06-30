@@ -124,6 +124,22 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("How long the fighter spends recovering after being grounded")]
     [SerializeField] private float recoveryTime = 0.6f;
 
+    [Header("Super / Special")]
+    [Tooltip("Reference to the super meter component used to track special ability usage")]
+    [SerializeField] private FighterSuperMeter superMeter;
+
+    [Tooltip("Damage dealt by a successful special attack")]
+    [SerializeField] private int specialDamage = 30;
+
+    [Tooltip("Maximum distance required for a special attack to hit")]
+    [SerializeField] private float specialRange = 2.5f;
+
+    [Tooltip("Height of the special attack, either High or Low")]
+    [SerializeField] private AttackHeight specialAttackHeight = AttackHeight.High;
+
+    [Tooltip("Sound played when this fighter performs a special attack")]
+    [SerializeField] private AudioClip specialHitSound;
+
     [Header("Blocking")]
     [Tooltip("Damage dealt when an attack is blocked Chip damage cannot defeat")]
     [SerializeField] private int blockChipDamage = 2;
@@ -194,6 +210,7 @@ public class FightCharacter : MonoBehaviour
     private bool aiKickPressed;
     private bool aiCrouchHeld;
     private bool aiGrabPressed;
+    private bool aiSpecialPressed;
 
     private bool isAttackAnimationPlaying; //prevents attack spam while an attack animation is still playing 
 
@@ -329,9 +346,10 @@ public class FightCharacter : MonoBehaviour
         input ??= GetComponent<FighterInput>();
         health ??= GetComponent<FighterHealth>();
         audioSource ??= GetComponent<AudioSource>();
+        superMeter ??= GetComponent<FighterSuperMeter>();
     }
 
-    public void SetAIInput(float moveInput, bool jumpPressed, bool punchPressed, bool kickPressed, bool grabPressed, bool crouchHeld)
+    public void SetAIInput(float moveInput, bool jumpPressed, bool punchPressed, bool kickPressed, bool grabPressed, bool crouchHeld, bool specialPressed = false)
     {
         aiMoveInput = moveInput;
         aiJumpPressed = jumpPressed;
@@ -339,11 +357,12 @@ public class FightCharacter : MonoBehaviour
         aiKickPressed = kickPressed;
         aiGrabPressed = grabPressed;
         aiCrouchHeld = crouchHeld;
+        aiSpecialPressed = specialPressed;
     }
 
     private void ReadActions()
     {
-        if (!TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool kickPressed, out bool grabPressed, out bool crouchHeld))
+        if (!TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool kickPressed, out bool grabPressed, out bool specialPressed, out bool crouchHeld))
             return;
 
         CheckQuickstepInput(moveInput);
@@ -366,6 +385,13 @@ public class FightCharacter : MonoBehaviour
         {
             Jump(moveInput);
             SetTemporaryActionText("Jump");
+            ClearAIButtonInputs();
+            return;
+        }
+
+        if (specialPressed)
+        {
+            Special();
             ClearAIButtonInputs();
             return;
         }
@@ -424,7 +450,7 @@ public class FightCharacter : MonoBehaviour
         if (!isGrounded)
             return;
 
-        if (!TryGetCurrentInput(out float moveInput, out _, out _, out _, out _, out _))
+        if (!TryGetCurrentInput(out float moveInput, out _, out _, out _, out _, out _, out _))
             return;
 
         float horizontal = Mathf.Abs(moveInput) < inputDeadZone ? 0f : moveInput;
@@ -505,7 +531,7 @@ public class FightCharacter : MonoBehaviour
             quickstepCooldownTimer -= Time.deltaTime;
     }
 
-    private bool TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool kickPressed, out bool grabPressed, out bool crouchHeld)
+    private bool TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool kickPressed, out bool grabPressed, out bool specialPressed, out bool crouchHeld)
     {
         if (controlledByAI)
         {
@@ -514,6 +540,7 @@ public class FightCharacter : MonoBehaviour
             punchPressed = aiPunchPressed;
             kickPressed = aiKickPressed;
             grabPressed = aiGrabPressed;
+            specialPressed = aiSpecialPressed;
             crouchHeld = aiCrouchHeld;
             return true;
         }
@@ -525,6 +552,7 @@ public class FightCharacter : MonoBehaviour
             punchPressed = false;
             kickPressed = false;
             grabPressed = false;
+            specialPressed = false;
             crouchHeld = false;
             return false;
         }
@@ -534,6 +562,7 @@ public class FightCharacter : MonoBehaviour
         punchPressed = input.PunchPressed;
         kickPressed = input.KickPressed;
         grabPressed = input.GrabPressed;
+        specialPressed = input.SpecialPressed;
         crouchHeld = input.CrouchHeld;
 
         return true;
@@ -638,6 +667,45 @@ public class FightCharacter : MonoBehaviour
         MovePerformed?.Invoke(this, FighterMoveType.Grab, result);
     }
 
+    private void Special()
+    {
+        if (!CanStartAttack())
+            return;
+
+        if (superMeter == null)
+        {
+            Debug.Log(name + " has no FighterSuperMeter script.");
+            SetTemporaryActionText("No Super Meter");
+            return;
+        }
+
+        if (!superMeter.TrySpendSpecial())
+        {
+            SetTemporaryActionText("No Specials Left");
+            PlaySound(attackMissSound);
+            MovePerformed?.Invoke(this, FighterMoveType.Special, FighterMoveResult.Miss);
+            return;
+        }
+
+        StartAttackAnimation();
+
+        SetTemporaryActionText("Special");
+
+        FighterMoveResult result = TryHitOpponent(
+            "Special",
+            specialDamage,
+            specialRange,
+            specialAttackHeight
+        );
+
+        PlayAttackResultSound(result, specialHitSound != null ? specialHitSound : kickHitSound);
+
+      if (animateFighter && fighterAnim != null)
+            fighterAnim.SetTrigger("special"); 
+
+        MovePerformed?.Invoke(this, FighterMoveType.Special, result);
+    }
+
     private FighterMoveResult TryGrabOpponent()
     {
         if (opponent == null)
@@ -677,8 +745,13 @@ public class FightCharacter : MonoBehaviour
         if (attacker == null)
             return FighterMoveResult.Miss;
 
-        if (health != null) { }
-            health.TakeDamage(damage, true);
+        if (health == null)
+        {
+            Debug.Log(name + " has no FighterHealth script.");
+            return FighterMoveResult.Miss;
+        }
+
+        health.TakeDamage(damage, true);
 
         SwitchSidesWithAttacker(attacker);
         ApplyGroundedState();
@@ -994,7 +1067,7 @@ public class FightCharacter : MonoBehaviour
 
     private void CheckForManualRecovery()
     {
-        if (!TryGetCurrentInput(out _, out _, out bool punchPressed, out bool kickPressed, out _, out _))
+        if (!TryGetCurrentInput(out _, out _, out bool punchPressed, out bool kickPressed, out _, out _, out _))
             return;
 
         if (punchPressed || kickPressed)
@@ -1164,5 +1237,6 @@ public class FightCharacter : MonoBehaviour
         aiPunchPressed = false;
         aiKickPressed = false;
         aiGrabPressed = false;
+        aiSpecialPressed = false;
     }
 }

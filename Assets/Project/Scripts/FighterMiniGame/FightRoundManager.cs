@@ -56,6 +56,14 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Enemy health component")]
     [SerializeField] private FighterHealth enemyHealth;
 
+    [Header("Super Meter References")]
+
+    [Tooltip("Player super meter component")]
+    [SerializeField] private FighterSuperMeter playerSuperMeter;
+
+    [Tooltip("Enemy super meter component")]
+    [SerializeField] private FighterSuperMeter enemySuperMeter;
+
     [Header("Round Reset Positions")]
     [Tooltip("Player position at the start of each round")]
     [SerializeField] private Transform playerStartPoint;
@@ -590,6 +598,12 @@ public class FightRoundManager : MonoBehaviour
 
         if (enemyHealth != null)
             enemyHealth.ResetHealth();
+
+        if (playerSuperMeter != null)
+            playerSuperMeter.ResetSuper();
+
+        if (enemySuperMeter != null)
+            enemySuperMeter.ResetSuper();
 
         ResetFighterPosition(playerCharacter, playerRigidbody, playerStartPoint);
         ResetFighterPosition(enemyCharacter, enemyRigidbody, enemyStartPoint);
