@@ -166,12 +166,17 @@ MonoBehaviour:
   fighterToWatch: {fileID: 644139990}
   dialogueRoot: {fileID: 4261066953104633814}
   dialogueText: {fileID: 8475191548923179014}
+  dialogueAnim: {fileID: 0}
+  brotherTrigger: {fileID: 0}
   rules:
   - ruleName: Punch Combo
     moveSequence: 010000000100000001000000
     resultSequence: 010000000100000001000000
     maxSequenceTime: 3
     dialogueLine: 'What a punch combo! '
+    hasBrotherResponse: 0
+    brotherResponseTime: 1
+    brotherDialogueLine: 
     triggerChance: 1
     cooldown: 5
     triggerOnlyOnce: 1
@@ -182,12 +187,16 @@ MonoBehaviour:
     resultSequence: 
     maxSequenceTime: 3
     dialogueLine: Test Triggered!
+    hasBrotherResponse: 0
+    brotherResponseTime: 1
+    brotherDialogueLine: 
     triggerChance: 1
     cooldown: 5
     triggerOnlyOnce: 1
     cooldownTimer: 0
     hasTriggered: 0
   dialogueVisibleTime: 2
+  isTalking: 0
 --- !u!1 &67698780
 GameObject:
   m_ObjectHideFlags: 0
@@ -3827,7 +3836,7 @@ MonoBehaviour:
   highHitHeight: 2.5
   midHitHeight: 1.2
   lowHitHeight: 0.3
-  hitForwardOffset: 0
+  hitForwardOffset: -1
   highBlockHeight: 2.5
   midBlockHeight: 1.2
   lowBlockHeight: 0.3
