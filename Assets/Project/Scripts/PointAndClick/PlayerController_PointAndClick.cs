@@ -265,8 +265,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             currentCamera.ActivateOrDeactivate(false);
         }
-        transform.position = data.ObjectTransform.position;
-        transform.rotation = data.ObjectTransform.rotation;
 
         // Blinking
         if (!finishedFirstTeleport)
@@ -297,7 +295,10 @@ public class PlayerController_PointAndClick : MonoBehaviour
             blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
 
             blinkAnimator.SetTrigger("EyesUp");
-        }      
+        }
+
+        transform.position = data.ObjectTransform.position;
+        transform.rotation = data.ObjectTransform.rotation;
 
         PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX, 
             data.FollowSpeedY, data.spin_360_x, data.spin_360_y);
