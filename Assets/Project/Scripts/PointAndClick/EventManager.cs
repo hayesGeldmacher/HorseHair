@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public enum TimeOfDay
 {
     Morning,
-    Afternoon
+    Afternoon,
 }
 
 [System.Serializable]
