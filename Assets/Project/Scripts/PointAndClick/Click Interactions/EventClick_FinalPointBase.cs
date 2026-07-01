@@ -15,6 +15,7 @@ public class EventClick_FinalPointBase : EventClick
     [SerializeField] private string fpbName = "FPB";
     [SerializeField] private string NotCompletedText = "Goal Not Completed";
     [SerializeField] private string CompletedText = "Goal Complete";
+   
 
     private bool goToNextScene = false;
     public bool Activated = false;
