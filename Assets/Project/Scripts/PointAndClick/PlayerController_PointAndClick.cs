@@ -43,6 +43,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private DialogueStorage dialogueText;
     [SerializeField] private bool CanBeFastForwaded = false;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource finishTaskSource; //sound played when task is completed and player leaves PNC segment 
+    [SerializeField] private AudioClip finishMorningClip; //clip played for above when morning task is finished
+    [SerializeField] private AudioClip finishAfternoonClip; //clip played for above when afternoon task is finished
+
     private int dialogueIndex = 0;
     private bool startedDialogue = false;
     private int altDialogueIndex = 0;
@@ -207,6 +212,13 @@ public class PlayerController_PointAndClick : MonoBehaviour
         dialogueText = desc;
         OpenDialogue();
 
+        //play corresponding audio - HG
+        bool isMorning = false;
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        if (currentTimeOfDay == TimeOfDay.Morning) { isMorning = true; }
+        AudioManager.instance.PlayTaskFinishSound(isMorning);
+        Debug.Log("Transition timer was activated!");
+
         yield return new WaitUntil(() => startedDialogue == false);
 
         SceneManager.LoadScene(scene);
@@ -219,12 +231,19 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         yield return new WaitUntil(() =>
             blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+        
 
         textBox.SetText(desc);
         OnShowTextBox();
 
+        //play corresponding audio - HG
+        bool isMorning = false;
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        if(currentTimeOfDay == TimeOfDay.Morning) { isMorning = true; }
+        AudioManager.instance.PlayTaskFinishSound(isMorning);
+        Debug.Log("Transition timer was activated!");
         yield return new WaitForSeconds(transitionTimerInSeconds);
-
+        
         SceneManager.LoadScene(scene);
     }
 
@@ -511,5 +530,15 @@ public class PlayerController_PointAndClick : MonoBehaviour
             textBox.ShowTextBoxTextCrawl(dialogueText.dialogueSpeed);
             dialogueIndex++;
         }
+    }
+
+    // ********************************************************************************
+    // Audio
+    // ********************************************************************************
+    public void PlayTaskFinishSound(bool isMorning)
+    {
+        if (finishTaskSource == null) { Debug.LogWarning("No audio source slotted for finish task sound!"); return; }
+        if (isMorning && finishMorningClip != false) { finishTaskSource.clip = finishMorningClip; }
+        if (!isMorning && finishAfternoonClip != null) { finishTaskSource.clip = finishAfternoonClip; }
     }
 }

@@ -1843,6 +1843,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1821390391}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: ResetAfterClick
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.finalPoint
       value: 
       objectReference: {fileID: 2087362322}
@@ -1856,20 +1860,20 @@ PrefabInstance:
       objectReference: {fileID: 792618375}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: 'Hey pal, whaddya want? '
+      value: 'Hey pal, could you do me a favor? '
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: I'm fine, but could you do me a quick favor?
+      value: I've got my hands tied in here, and the downstairs bathroom could really
+        use a good scrubbing
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: I've got my hands tied in here, and downstairs bathroom could really
-        use a good scrubbing
+      value: 'Why don''t you get to scrubbin? '
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: 'dialogueText.dialogue.Array.data[3]'
@@ -1893,19 +1897,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: 'dialogueText.alternativeDialogue.Array.data[0]'
-      value: test 1
+      value: You'll need a rag. I'm  sure there's one upstairs...
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: 'dialogueText.alternativeDialogue.Array.data[1]'
-      value: test 2
+      value: 'You can''t clean without chemicals! Did you check the crawlspace? '
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: 'dialogueText.alternativeDialogue.Array.data[2]'
-      value: test 3
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4518672925211160668, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_Enabled
@@ -2744,6 +2748,108 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 375254528}
   m_CullTransparentMesh: 1
+--- !u!1 &393700446 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1427646210545992305, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+  m_PrefabInstance: {fileID: 599920571}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &393700451
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393700446}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 8a4d8223ae21d724a9b4ec1ed26322aa, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &397139510
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3510,6 +3616,103 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4037758204535912445, guid: 5b6a437a0eeeeac4b850195ccb0de986, type: 3}
   m_PrefabInstance: {fileID: 4126759894535420244}
   m_PrefabAsset: {fileID: 0}
+--- !u!82 &594538892
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 594538881}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: d120a68dfa7abf94b96a8808996a8508, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &599920571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3522,6 +3725,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: finishTaskSource
+      value: 
+      objectReference: {fileID: 393700451}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: finishMorningClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d120a68dfa7abf94b96a8808996a8508, type: 3}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: finishAfternoonClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d120a68dfa7abf94b96a8808996a8508, type: 3}
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.594
@@ -3565,7 +3780,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1427646210545992305, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 393700451}
   m_SourcePrefab: {fileID: 100100000, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
 --- !u!1001 &606844022
 PrefabInstance:
@@ -4953,6 +5171,18 @@ PrefabInstance:
       propertyPath: 'dialogueText.alternativeDialogue.Array.data[2]'
       value: t3
       objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.alternativeDialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: 'task.ThoughtText.alternativeDialogue.Array.data[0]'
+      value: 'Did you get my cereal? '
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: 'task.ThoughtText.alternativeDialogue.Array.data[1]'
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4518672925211160668, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -5752,6 +5982,7 @@ Transform:
   - {fileID: 397139511}
   - {fileID: 2050171652}
   - {fileID: 903586200}
+  - {fileID: 1429641486}
   - {fileID: 1206904183}
   - {fileID: 662204453}
   - {fileID: 1699991348}
@@ -6514,19 +6745,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: School was fun
+      value: '"Alright class, pencils down!"'
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: 1
+      value: 'Hey, you wanna hang tonight? '
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: 2
+      value: 'Naw, sorry,  I gotta make dinner for Jesse. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: 'dialogueText.dialogue.Array.data[3]'
+      value: Some other time for sure though dude...
       objectReference: {fileID: 0}
     - target: {fileID: 2291255322109271705, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8911,7 +9146,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 6bd20f8e334e19a4290a4efa2d1ca1ab, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.756
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -9039,12 +9274,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1429641484}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.13, y: 5.813, z: -7.805}
+  m_LocalRotation: {x: -0.0000000018626449, y: 0.00000008940696, z: -0.000000005587935, w: 1}
+  m_LocalPosition: {x: 2.579, y: 4.96, z: -5.358}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 901476067}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1484534123
 PrefabInstance:
@@ -11671,7 +11906,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: description
-      value: I'm not supposed to go in there...
+      value: I bet dad's still sleeping...
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11703,7 +11938,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: d37a09a1a7d0333428bd265587d3ce3d, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.885
   m_Pitch: 0.95
   Loop: 1
@@ -16765,6 +17000,18 @@ PrefabInstance:
       propertyPath: startTaskSource
       value: 
       objectReference: {fileID: 1876408566}
+    - target: {fileID: 3504866561246769410, guid: 5b6a437a0eeeeac4b850195ccb0de986, type: 3}
+      propertyPath: finishTaskSource
+      value: 
+      objectReference: {fileID: 594538892}
+    - target: {fileID: 3504866561246769410, guid: 5b6a437a0eeeeac4b850195ccb0de986, type: 3}
+      propertyPath: finishMorningClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d120a68dfa7abf94b96a8808996a8508, type: 3}
+    - target: {fileID: 3504866561246769410, guid: 5b6a437a0eeeeac4b850195ccb0de986, type: 3}
+      propertyPath: finishAfternoonClip
+      value: 
+      objectReference: {fileID: 8300000, guid: d120a68dfa7abf94b96a8808996a8508, type: 3}
     - target: {fileID: 4037758204535912445, guid: 5b6a437a0eeeeac4b850195ccb0de986, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.93914
@@ -16825,6 +17072,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4342673160593674184, guid: 5b6a437a0eeeeac4b850195ccb0de986, type: 3}
       insertIndex: -1
       addedObject: {fileID: 594538888}
+    - targetCorrespondingSourceObject: {fileID: 4342673160593674184, guid: 5b6a437a0eeeeac4b850195ccb0de986, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 594538892}
     - targetCorrespondingSourceObject: {fileID: 2290291297452332055, guid: 5b6a437a0eeeeac4b850195ccb0de986, type: 3}
       insertIndex: -1
       addedObject: {fileID: 253133257}
@@ -19710,4 +19960,3 @@ SceneRoots:
   - {fileID: 1674634417}
   - {fileID: 1691109112}
   - {fileID: 606844022}
-  - {fileID: 1429641486}

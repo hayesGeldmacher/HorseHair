@@ -31,8 +31,10 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip morningClip; //clip played for above sound when time of day is morning
     [SerializeField] private AudioClip afternoonClip; //clip played for above sound when time of day is afternoon
 
-
-
+    [Header("Audio")]
+    [SerializeField] private AudioSource finishTaskSource; //sound played when task is completed and player leaves PNC segment 
+    [SerializeField] private AudioClip finishMorningClip; //clip played for above when morning task is finished
+    [SerializeField] private AudioClip finishAfternoonClip; //clip played for above when afternoon task is finished
 
     public void PlayInteractSound()
     {
@@ -65,10 +67,19 @@ public class AudioManager : MonoBehaviour
 
     public void PlayStartTaskSound(bool isMorning)
     {
-        if(startTaskSource == null) { Debug.LogWarning("No audio source slotted for start task sound!"); }
+        if(startTaskSource == null) { Debug.LogWarning("No audio source slotted for start task sound!"); return; }
         if (isMorning && morningClip != null) { startTaskSource.clip = morningClip; }
         else if (!isMorning && afternoonClip != null) { startTaskSource.clip = afternoonClip; }
 
         startTaskSource.Play();
+    }
+
+    public void PlayTaskFinishSound(bool isMorning)
+    {
+        if(finishTaskSource == null) { Debug.LogWarning("No audio source slotted for finish task sound!"); return; }
+        if(isMorning && finishMorningClip != false) { finishTaskSource.clip = finishMorningClip; }
+        if (!isMorning && afternoonClip != null) { finishTaskSource.clip = finishAfternoonClip; }
+
+        finishTaskSource.Play();
     }
 }
