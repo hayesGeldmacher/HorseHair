@@ -39,9 +39,13 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private string houseScene;
     [SerializeField] private float transitionTimerInSeconds;
 
+    [Header("Dialogue Settings")]
     [SerializeField] private DialogueStorage dialogueText;
+    [SerializeField] private bool CanBeFastForwaded = false;
+
     private int dialogueIndex = 0;
     private bool startedDialogue = false;
+    private int altDialogueIndex = 0;
 
     private Camera_Environment currentCamera;
     private Coroutine _hideInventoryCoroutine;
@@ -132,15 +136,31 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     private IEnumerator StartTask(TaskClickEventData task)
     {
-        GoalText.text = task.Task.GoalText;
-        dialogueText = task.DialogueText;
-        OpenDialogue();
-        task.Giver.ChangeTaskStatus(false);
+        if (task.DialogueText.useAltDialogue)
+        {
+            dialogueText = task.DialogueText;
+            dialogueText.dialogue = new string[] { dialogueText.alternativeDialogue[altDialogueIndex] };
+            OpenDialogue();
+            task.Giver.ChangeTaskStatus(false);
 
-        yield return new WaitUntil(() => startedDialogue == false);
+            yield return new WaitUntil(() => startedDialogue == false);
 
-        task.Giver.ChangeGoalStatus(true);
-        OnOpenInventory();
+            altDialogueIndex = Mathf.Min(altDialogueIndex + 1, dialogueText.alternativeDialogue.Length - 1); ;
+            task.Giver.ChangeTaskStatus(true);
+        }
+        else
+        {
+            GoalText.text = task.Task.GoalText;
+            dialogueText = task.DialogueText;
+            OpenDialogue();
+            task.Giver.ChangeTaskStatus(false);
+
+            yield return new WaitUntil(() => startedDialogue == false);
+
+            task.Giver.ChangeGoalStatus(true);
+            OnOpenInventory();
+            task.Giver.ChangeTaskStatus(true);
+        }
     }
 
     // ********************************************************************************
@@ -456,6 +476,20 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void GoThroughDialogue()
     {
+        if (textBox.completeTextCrawl == false)
+        {
+            if (CanBeFastForwaded)
+            {
+                textBox.ShowTextBoxInstant();
+                textBox.completeTextCrawl = true;
+                return;
+            }
+            else
+            {
+                return;
+            }
+        }
+
         if (_hideTextCoroutine != null)
         {
             StopCoroutine(_hideTextCoroutine);
@@ -474,7 +508,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         else
         {
             textBox.SetText(dialogueText.dialogue[dialogueIndex].ToString());
-            textBox.ShowTextBox();
+            textBox.ShowTextBoxTextCrawl(dialogueText.dialogueSpeed);
             dialogueIndex++;
         }
     }

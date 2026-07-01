@@ -22,7 +22,15 @@ public class EventClick_TaskGiver : EventClick
 {
     [SerializeField] private string tgName = "TG";
     [SerializeField] public TaskItem task;
+    [SerializeField] private EventClick_NEI Alternative_NEI;
     public bool Activated = false;
+    private bool Talked = false;
+
+    private void Awake()
+    {
+        if (Activated && Alternative_NEI != null)
+            Alternative_NEI.ActivateOrDeactivate(false);
+    }
 
     protected override void SetType()
     {
@@ -32,6 +40,11 @@ public class EventClick_TaskGiver : EventClick
 
     protected override ClickEventData CreateEventData()
     {
+        dialogueText.useAltDialogue = Talked;
+        if (!Talked)
+        {
+            Talked = true;
+        }
         return new TaskClickEventData
         {
             TaskName = tgName,
@@ -52,6 +65,8 @@ public class EventClick_TaskGiver : EventClick
         }
         else
         {
+            if (Alternative_NEI != null)
+                Alternative_NEI.ActivateOrDeactivate(activate);
             base.ActivateOrDeactivate(false);
         }
     }

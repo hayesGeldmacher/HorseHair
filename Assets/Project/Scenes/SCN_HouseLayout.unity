@@ -1839,6 +1839,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2060583479}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: Alternative_NEI
+      value: 
+      objectReference: {fileID: 1821390391}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.finalPoint
       value: 
       objectReference: {fileID: 2087362322}
@@ -1886,6 +1890,22 @@ PrefabInstance:
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: 'task.ThoughtText.dialogue.Array.data[2]'
       value: I should go check on him in his room...
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: 'dialogueText.alternativeDialogue.Array.data[0]'
+      value: test 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: 'dialogueText.alternativeDialogue.Array.data[1]'
+      value: test 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: 'dialogueText.alternativeDialogue.Array.data[2]'
+      value: test 3
       objectReference: {fileID: 0}
     - target: {fileID: 4518672925211160668, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_Enabled
@@ -4865,6 +4885,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1506640459}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: Alternative_NEI
+      value: 
+      objectReference: {fileID: 1904914336}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.finalPoint
       value: 
       objectReference: {fileID: 954482164}
@@ -4912,6 +4936,22 @@ PrefabInstance:
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: 'task.ThoughtText.dialogue.Array.data[2]'
       value: I should go on check him...
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: 'dialogueText.alternativeDialogue.Array.data[0]'
+      value: t1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: 'dialogueText.alternativeDialogue.Array.data[1]'
+      value: t2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: 'dialogueText.alternativeDialogue.Array.data[2]'
+      value: t3
       objectReference: {fileID: 0}
     - target: {fileID: 4518672925211160668, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_Enabled
@@ -11623,7 +11663,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3764532326570402451, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: neiName
@@ -11748,6 +11788,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1821390391 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
+  m_PrefabInstance: {fileID: 1821390387}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1821390389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf3987bf05db244d9eca3ec74830566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventClick_NPC
 --- !u!1001 &1834029963
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12394,7 +12445,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3764532326570402451, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: neiName
@@ -12414,6 +12465,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
   m_PrefabInstance: {fileID: 1904914334}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1904914336 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
+  m_PrefabInstance: {fileID: 1904914334}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf3987bf05db244d9eca3ec74830566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventClick_NPC
 --- !u!65 &1915618862
 BoxCollider:
   m_ObjectHideFlags: 0
