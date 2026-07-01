@@ -8,6 +8,7 @@ public class NEIClickEventData : ClickEventData
 public class EventClick_NEI : EventClick
 {
     [SerializeField] private string neiName = "NEI";
+    public bool Activated = true;
 
     protected override void SetType()
     {
@@ -24,5 +25,17 @@ public class EventClick_NEI : EventClick
             Source = gameObject,
             Description = description,
         };
+    }
+
+    public override void ActivateOrDeactivate(bool activate)
+    {
+        if (Activated)
+        {
+            base.ActivateOrDeactivate(activate);
+        }
+        else
+        {
+            base.ActivateOrDeactivate(false);
+        }
     }
 }
