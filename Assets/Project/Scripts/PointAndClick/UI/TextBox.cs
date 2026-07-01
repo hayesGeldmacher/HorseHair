@@ -6,6 +6,7 @@ using UnityEngine;
 public class TextBox : MonoBehaviour
 {
     [SerializeField] private TMP_Text _text;
+    [SerializeField] private TMP_Text _nameText;
     [SerializeField] private CanvasGroup fadeGroup;
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float TextCrawlCooldown = 0.0f;
@@ -17,6 +18,11 @@ public class TextBox : MonoBehaviour
     private void Start()
     {
         fadeGroup.alpha = 0;
+    }
+
+    public void SetName(string name)
+    {
+        _nameText.text = name;
     }
 
     public void SetText(string text)

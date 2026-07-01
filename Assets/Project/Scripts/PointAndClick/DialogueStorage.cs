@@ -1,10 +1,19 @@
+using JetBrains.Annotations;
+using System.Collections.Generic;
 using UnityEngine;
+
+[System.Serializable]
+public class Talking
+{
+    public string name;
+    public string dialogue;
+}
 
 [System.Serializable]
 public class DialogueStorage
 {
-    public string[] dialogue;
+    public List<Talking> dialogue;
     public float dialogueSpeed = 10f;
-    public string[] alternativeDialogue;
+    public List<Talking> alternativeDialogue;
     public bool useAltDialogue = false;
 }

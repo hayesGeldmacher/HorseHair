@@ -1847,10 +1847,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2087362322}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: task.ThoughtText
-      value: I should go check on Dad. He should be in his room.
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.startingPosition
       value: 
       objectReference: {fileID: 792618375}
@@ -1859,53 +1855,92 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: 'Hey pal, whaddya want? '
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: I'm fine, but could you do me a quick favor?
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: I've got my hands tied in here, and downstairs bathroom could really
-        use a good scrubbing
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[3]'
-      value: Get to it, pal!
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'task.ThoughtText.dialogue.Array.data[0]'
-      value: Dinner was... just okay.
+      propertyPath: dialogueText.dialogue.Array.data[0].name
+      value: Dad
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'task.ThoughtText.dialogue.Array.data[1]'
-      value: I didn't expect dad to get up and leave so fast, though.
+      propertyPath: dialogueText.dialogue.Array.data[1].name
+      value: Dad
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'task.ThoughtText.dialogue.Array.data[2]'
-      value: I should go check on him in his room...
+      propertyPath: dialogueText.dialogue.Array.data[2].name
+      value: Dad
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[3].name
+      value: Dad
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.alternativeDialogue.Array.data[0]'
-      value: test 1
+      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
+      value: Hey pal, whaddya want?
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.alternativeDialogue.Array.data[1]'
-      value: test 2
+      propertyPath: dialogueText.dialogue.Array.data[1].dialogue
+      value: I'm fine, but could you do me a quick favor?
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.alternativeDialogue.Array.data[2]'
-      value: test 3
+      propertyPath: dialogueText.dialogue.Array.data[2].dialogue
+      value: I've got my hands tied in here, and downstair's bathroom needs a cleaning.
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[3].dialogue
+      value: Get to it, pal!
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[0].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[1].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[2].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[0].dialogue
+      value: Dinner was...just okay.
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[1].dialogue
+      value: I didn't expect dad to get up and leave so fast.
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[2].dialogue
+      value: I should go check on him in his room.
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[0].name
+      value: Dad
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[1].name
+      value: Dad
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[2].name
+      value: Dad
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[0].dialogue
+      value: Have ya clean the bathroom yet?
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[1].dialogue
+      value: Stop botherin me!
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[2].dialogue
+      value: ...
       objectReference: {fileID: 0}
     - target: {fileID: 4518672925211160668, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_Enabled
@@ -2524,16 +2559,28 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: Man I'm tired
+      propertyPath: dialogueText.dialogue.Array.data[0].name
+      value: Jesse
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: Testing 1
+      propertyPath: dialogueText.dialogue.Array.data[1].name
+      value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: Testing 2
+      propertyPath: dialogueText.dialogue.Array.data[2].name
+      value: Jesse
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
+      value: Dude, you're changing channel too fast - I was watching that!
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[1].dialogue
+      value: I just wanted to check the news real quick, chill out.
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[2].dialogue
+      value: I'm sick of the news anyways, let's just play the damn game.
       objectReference: {fileID: 0}
     - target: {fileID: 2291255322109271705, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: m_LocalScale.x
@@ -3522,6 +3569,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6851880381595463477, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 39.917
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851880381595463477, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -10.72
+      objectReference: {fileID: 0}
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.594
@@ -3561,6 +3616,22 @@ PrefabInstance:
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8652937310383403861, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_fontSize
+      value: 30.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 8726123716786946260, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -59.6583
+      objectReference: {fileID: 0}
+    - target: {fileID: 8726123716786946260, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -259.99304
+      objectReference: {fileID: 0}
+    - target: {fileID: 8726123716786946260, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 49.238495
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4893,10 +4964,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 954482164}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: task.ThoughtText
-      value: Uhhh...what a morning. I should probably check on Jesse,
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.startingPosition
       value: 
       objectReference: {fileID: 397139513}
@@ -4905,53 +4972,93 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: Morning Bro.
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: 'Do you wanna turn that down a bit? '
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: 'Nah, I''m good. If you''re headed downstairs, can you make me some
-        cereal? '
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[3]'
-      value: Asshole...
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'task.ThoughtText.dialogue.Array.data[0]'
-      value: 'It''s early. Fuck. '
+      propertyPath: dialogueText.dialogue.Array.data[0].name
+      value: Jesse
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'task.ThoughtText.dialogue.Array.data[1]'
-      value: 'Is that music coming from Jesse''s room? '
+      propertyPath: dialogueText.dialogue.Array.data[1].name
+      value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'task.ThoughtText.dialogue.Array.data[2]'
-      value: I should go on check him...
+      propertyPath: dialogueText.dialogue.Array.data[2].name
+      value: Jesse
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[3].name
+      value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.alternativeDialogue.Array.data[0]'
-      value: t1
+      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
+      value: Morning Bro.
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.alternativeDialogue.Array.data[1]'
-      value: t2
+      propertyPath: dialogueText.dialogue.Array.data[1].dialogue
+      value: Do you wanna turn that down a bit?
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.alternativeDialogue.Array.data[2]'
-      value: t3
+      propertyPath: dialogueText.dialogue.Array.data[2].dialogue
+      value: Nah, I'm good. If you're headed downstairs, can you make me some Cereal?
+        Thanks, bro.
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[3].dialogue
+      value: Asshole..
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[0].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[1].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[2].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[0].dialogue
+      value: It's early. Fuck.
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[1].dialogue
+      value: Is that music coming from Jesse's room?
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[2].dialogue
+      value: I should go check on him...
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[0].name
+      value: Jesse
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[1].name
+      value: Jesse
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[2].name
+      value: Jesse
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[0].dialogue
+      value: You got that Cereal done?
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[1].dialogue
+      value: Whatcha want?
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[2].dialogue
+      value: ...
       objectReference: {fileID: 0}
     - target: {fileID: 4518672925211160668, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_Enabled
@@ -5006,22 +5113,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
---- !u!4 &822885712 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7238570223526959167, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-  m_PrefabInstance: {fileID: 822885711}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &822885713 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-  m_PrefabInstance: {fileID: 822885711}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96794354b4deb84cad79b63964d2b65, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EventClick_TaskGiver
 --- !u!4 &827094419 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 714299772151755328, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
@@ -6417,7 +6508,7 @@ PrefabInstance:
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: tasks.Array.data[0].TaskItem
       value: 
-      objectReference: {fileID: 822885713}
+      objectReference: {fileID: 966868564306158306}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: tasks.Array.data[0].goalItem
       value: 
@@ -6514,19 +6605,47 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: School was fun
+      propertyPath: dialogueText.dialogue.Array.data[0].name
+      value: Teacher
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: 1
+      propertyPath: dialogueText.dialogue.Array.data[1].name
+      value: Friend
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: 2
+      propertyPath: dialogueText.dialogue.Array.data[2].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[3].name
+      value: Friend
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[4].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
+      value: Alright class, pencils down!
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[1].dialogue
+      value: ...Hey man, you wanna hang out with us tonight?
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[2].dialogue
+      value: nah, I gotta go home and make dinner for Jesse
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[3].dialogue
+      value: How about after? We were gonna go into the city for a bit...
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[4].dialogue
+      value: Sorry dude, I'm just not feeling it - some other time for sure though...
       objectReference: {fileID: 0}
     - target: {fileID: 2291255322109271705, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -7475,7 +7594,7 @@ PrefabInstance:
       addedObject: {fileID: 1251024482}
     - targetCorrespondingSourceObject: {fileID: 714299772151755328, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 822885712}
+      addedObject: {fileID: 7238570224315229552}
     - targetCorrespondingSourceObject: {fileID: 714299772151755328, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1904914335}
@@ -15118,6 +15237,17 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &966868564306158306 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+  m_PrefabInstance: {fileID: 822885711}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96794354b4deb84cad79b63964d2b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventClick_TaskGiver
 --- !u!33 &1048724833972888582
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -18526,6 +18656,11 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!4 &7238570224315229552 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7238570223526959167, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+  m_PrefabInstance: {fileID: 822885711}
+  m_PrefabAsset: {fileID: 0}
 --- !u!33 &7275681496585436917
 MeshFilter:
   m_ObjectHideFlags: 0
