@@ -144,13 +144,14 @@ public class PlayerController_PointAndClick : MonoBehaviour
         if (task.DialogueText.useAltDialogue)
         {
             dialogueText = task.DialogueText;
-            dialogueText.dialogue = new string[] { dialogueText.alternativeDialogue[altDialogueIndex] };
+            dialogueText.dialogue = new List<Talking>();
+            dialogueText.dialogue.Add(dialogueText.alternativeDialogue[altDialogueIndex]);
             OpenDialogue();
             task.Giver.ChangeTaskStatus(false);
 
             yield return new WaitUntil(() => startedDialogue == false);
 
-            altDialogueIndex = Mathf.Min(altDialogueIndex + 1, dialogueText.alternativeDialogue.Length - 1); ;
+            altDialogueIndex = Mathf.Min(altDialogueIndex + 1, dialogueText.alternativeDialogue.Count - 1);
             task.Giver.ChangeTaskStatus(true);
         }
         else
@@ -368,6 +369,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             {
                 Inventory[i] = item;
                 inventoryUI.AddItem(item.itemImage, item.itemName, i);
+                textBox.SetName("Me");
                 textBox.SetText(item.description);
                 OnOpenInventory();
                 OnShowTextBox();
@@ -397,6 +399,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         if (data.IsCompleted)
         {
+            textBox.SetName("Me");
             textBox.SetText(data.CompletedString);
             OnShowTextBox();
             GoalText.text = data.nextTask;
@@ -404,6 +407,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         else
         {
+            textBox.SetName("Me");
             textBox.SetText(data.NotCompletedString);
             OnShowTextBox();
         }
@@ -414,6 +418,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     private void TalkAbout(NEIClickEventData data)
     {
+        textBox.SetName("Me");
         textBox.SetText(data.Description);
         OnShowTextBox();
     }
@@ -515,7 +520,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             _hideTextCoroutine = null;
         }
 
-        if (dialogueIndex >= dialogueText.dialogue.Length)
+        if (dialogueIndex >= dialogueText.dialogue.Count)
         {
             PlayerCamera.SetFrozen(false);
             dialogueIndex = 0;
@@ -526,7 +531,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         else
         {
-            textBox.SetText(dialogueText.dialogue[dialogueIndex].ToString());
+            textBox.SetText(dialogueText.dialogue[dialogueIndex].dialogue);
+            textBox.SetName(dialogueText.dialogue[dialogueIndex].name);
             textBox.ShowTextBoxTextCrawl(dialogueText.dialogueSpeed);
             dialogueIndex++;
         }

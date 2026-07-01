@@ -29,7 +29,10 @@ public class EventClick_TaskGiver : EventClick
     private void Awake()
     {
         if (Activated && Alternative_NEI != null)
+        {
             Alternative_NEI.ActivateOrDeactivate(false);
+            Alternative_NEI.Activated = false;
+        }
     }
 
     protected override void SetType()

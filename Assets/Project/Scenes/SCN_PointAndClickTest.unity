@@ -752,10 +752,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2085094119}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: task.ThoughtText
-      value: Test Test
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.startingPosition
       value: 
       objectReference: {fileID: 305091246}
@@ -764,16 +760,76 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: Seriosly
+      propertyPath: task.ThoughtText.dialogue.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: Dont
+      propertyPath: dialogueText.dialogue.Array.data[0].name
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: Worry
+      propertyPath: dialogueText.dialogue.Array.data[1].name
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[2].name
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
+      value: test 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[1].dialogue
+      value: test 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[2].dialogue
+      value: ' test 3'
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[0].name
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[1].name
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[2].name
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[0].dialogue
+      value: check
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[1].dialogue
+      value: check 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[2].dialogue
+      value: check 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[0].name
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[1].name
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[0].dialogue
+      value: t1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[1].dialogue
+      value: t2
       objectReference: {fileID: 0}
     - target: {fileID: 7238570223526959167, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1867,60 +1923,76 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3300707003380131111}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: task.ThoughtText
-      value: Test Test
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.startingPosition
       value: 
       objectReference: {fileID: 810050405}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: task.ThoughtText.dialogueSpeed
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: Hello Bro
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: Testing 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: Testing 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'task.ThoughtText.dialogue.Array.data[0]'
-      value: check
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'task.ThoughtText.dialogue.Array.data[1]'
-      value: check 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: dialogueText.alternativeDialogue.Array.size
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.alternativeDialogue.Array.data[0]'
-      value: Test 1
+      propertyPath: dialogueText.dialogue.Array.data[0].name
+      value: Jesse
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.alternativeDialogue.Array.data[1]'
-      value: Test 2
+      propertyPath: dialogueText.dialogue.Array.data[1].name
+      value: Jesse
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
-      propertyPath: 'dialogueText.alternativeDialogue.Array.data[2]'
-      value: Test 3
+      propertyPath: dialogueText.dialogue.Array.data[2].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
+      value: Hey Pal
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[1].dialogue
+      value: Screw You
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[2].dialogue
+      value: Screw You too
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[0].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[1].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[2].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[0].dialogue
+      value: Dinner was whatever
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[1].dialogue
+      value: I did I did
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[2].dialogue
+      value: Where wa yant
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[0].name
+      value: Jesse
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[0].dialogue
+      value: Go Away
       objectReference: {fileID: 0}
     - target: {fileID: 7238570223526959167, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2142,24 +2214,32 @@ PrefabInstance:
       value: SCN_PointAndClickTest
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: ResetAfterClick
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: fightingGameScene
       value: SCN_FightingGameTVTest
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: Goal 1
+      propertyPath: dialogueText.dialogue.Array.data[0].name
+      value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: Goal 2
+      propertyPath: dialogueText.dialogue.Array.data[1].name
+      value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: Goal Completed
+      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
+      value: Meeeeee
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[1].dialogue
+      value: adassadasddas
       objectReference: {fileID: 0}
     - target: {fileID: 2291255322109271705, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2286,16 +2366,28 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[0]'
-      value: Goal 1
+      propertyPath: dialogueText.dialogue.Array.data[0].name
+      value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[1]'
-      value: Goal 2
+      propertyPath: dialogueText.dialogue.Array.data[1].name
+      value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: 'dialogueText.dialogue.Array.data[2]'
-      value: Goal Completed
+      propertyPath: dialogueText.dialogue.Array.data[2].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
+      value: adsdsaasdasd
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[1].dialogue
+      value: adasds
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[2].dialogue
+      value: adssasdadadad
       objectReference: {fileID: 0}
     - target: {fileID: 2291255322109271705, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2494,14 +2586,6 @@ PrefabInstance:
     - target: {fileID: 1427646210545992305, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 6671725320161104119, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
-      propertyPath: full360Camera
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6671725320161104119, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
-      propertyPath: full360Camera_x
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalPosition.x
