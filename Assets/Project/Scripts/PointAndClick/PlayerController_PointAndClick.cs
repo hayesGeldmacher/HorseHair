@@ -214,9 +214,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
         OpenDialogue();
 
         //play corresponding audio - HG
-        bool isMorning = false;
+        bool isMorning = true;
         TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
-        if (currentTimeOfDay == TimeOfDay.Morning) { isMorning = true; }
+        if (currentTimeOfDay == TimeOfDay.Morning) { isMorning = false; }
         AudioManager.instance.PlayTaskFinishSound(isMorning);
         Debug.Log("Transition timer was activated!");
 
@@ -238,9 +238,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
         OnShowTextBox();
 
         //play corresponding audio - HG
-        bool isMorning = false;
+        bool isMorning = true;
         TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
-        if(currentTimeOfDay == TimeOfDay.Morning) { isMorning = true; }
+        if(currentTimeOfDay == TimeOfDay.Morning) { isMorning = false; }
         AudioManager.instance.PlayTaskFinishSound(isMorning);
         Debug.Log("Transition timer was activated!");
         yield return new WaitForSeconds(transitionTimerInSeconds);
