@@ -2076,12 +2076,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2365530896385543874, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1388324149}
+    - targetCorrespondingSourceObject: {fileID: 2365530896385543874, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1388324150}
     - targetCorrespondingSourceObject: {fileID: 6364283120059024961, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1173407402}
     - targetCorrespondingSourceObject: {fileID: 6364283120059024961, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1173407403}
+    - targetCorrespondingSourceObject: {fileID: 6364283120059024961, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1173407404}
   m_SourcePrefab: {fileID: 100100000, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
 --- !u!4 &685552051 stripped
 Transform:
@@ -3650,6 +3656,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FighterSuperMeter
   maxSpecialUses: 3
   superBar: {fileID: 247595925}
+--- !u!114 &1173407404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070777508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 845059bb714430849a2ee01ec4c5b348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterVFXController
+  fightCharacter: {fileID: 1173407397}
+  opponentTransform: {fileID: 644139987}
+  hitVFX: {fileID: 6592293310488346239, guid: 0638f4bb7b6ff054f99bc91124ca6522, type: 3}
+  blockVFX: {fileID: 8908868823933046587, guid: 35cea451fa429154d89ff6e1a61d1a69, type: 3}
+  VFXScale: 2
+  VFXDestroyDelay: 2
+  worldPositionOffset: {x: 0, y: 0, z: -5}
+  highHitHeight: 2.5
+  midHitHeight: 1.2
+  lowHitHeight: 0.3
+  hitForwardOffset: 0
+  highBlockHeight: 2.5
+  midBlockHeight: 1.2
+  lowBlockHeight: 0.3
+  blockForwardOffset: 0
 --- !u!1001 &1201961544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4210,6 +4243,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FighterSuperMeter
   maxSpecialUses: 3
   superBar: {fileID: 1748472277}
+--- !u!114 &1388324150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1388324145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 845059bb714430849a2ee01ec4c5b348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterVFXController
+  fightCharacter: {fileID: 644139990}
+  opponentTransform: {fileID: 1173407394}
+  hitVFX: {fileID: 6592293310488346239, guid: 0638f4bb7b6ff054f99bc91124ca6522, type: 3}
+  blockVFX: {fileID: 8908868823933046587, guid: 35cea451fa429154d89ff6e1a61d1a69, type: 3}
+  VFXScale: 2
+  VFXDestroyDelay: 2
+  worldPositionOffset: {x: 0, y: 0, z: -5}
+  highHitHeight: 2.5
+  midHitHeight: 1.2
+  lowHitHeight: 0.3
+  hitForwardOffset: -1
+  highBlockHeight: 2.5
+  midBlockHeight: 1.2
+  lowBlockHeight: 0.3
+  blockForwardOffset: -1
 --- !u!1 &1424983077
 GameObject:
   m_ObjectHideFlags: 0
@@ -6684,6 +6744,9 @@ MonoBehaviour:
   startTaskSource: {fileID: 0}
   morningClip: {fileID: 0}
   afternoonClip: {fileID: 0}
+  finishTaskSource: {fileID: 0}
+  finishMorningClip: {fileID: 0}
+  finishAfternoonClip: {fileID: 0}
 --- !u!81 &8294815343259491573
 AudioListener:
   m_ObjectHideFlags: 0
