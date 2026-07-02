@@ -26,6 +26,7 @@ public class FightCharacterAI : MonoBehaviour
         CrouchingKick,
         JumpingKick,
         Grab,
+        Special,
         Block,
         Quickstep
     }
@@ -107,6 +108,9 @@ public class FightCharacterAI : MonoBehaviour
     [Tooltip("Cooldown after the AI grabs so it does not grab repeatedly")]
     [SerializeField] private float grabCooldown = 2f;
 
+    [Tooltip("Cooldown after the AI attempts a special so it does not repeatedly use specials")]
+    [SerializeField] private float specialCooldown = 4f;
+
     [Tooltip("Cooldown after the AI quicksteps so it does not quickstep repeatedly")]
     [SerializeField] private float aiQuickstepCooldown = 1.25f;
 
@@ -131,6 +135,9 @@ public class FightCharacterAI : MonoBehaviour
 
     [Tooltip("Higher value means grab is more likely")]
     [SerializeField] private int grabWeight = 10;
+
+    [Tooltip("Higher value means the AI is more likely to attempt its special attack")]
+    [SerializeField] private int specialWeight = 12;
 
     [Tooltip("Higher value means blocking is more likely")]
     [SerializeField] private int blockWeight = 15;
@@ -195,6 +202,7 @@ public class FightCharacterAI : MonoBehaviour
     private float blockCooldownTimer;
     private float jumpAttackCooldownTimer;
     private float grabCooldownTimer;
+    private float specialCooldownTimer;
     private float aiQuickstepCooldownTimer;
     private float movementCommitTimer;
 
@@ -344,6 +352,7 @@ public class FightCharacterAI : MonoBehaviour
         grabCooldownTimer = 0f;
         aiQuickstepCooldownTimer = 0f;
         movementCommitTimer = 0f;
+        specialCooldownTimer = 0f;
 
         openingEaseTimer = 0f;
         openingChoiceTimer = 0f;
@@ -581,6 +590,7 @@ public class FightCharacterAI : MonoBehaviour
         int crouchingKick = crouchingKickWeight;
         int jumpingKick = jumpingKickWeight;
         int grab = grabWeight;
+        int special = specialWeight;
         int blockingWeight = blockWeight;
         int quickstep = quickstepWeight;
 
@@ -605,6 +615,9 @@ public class FightCharacterAI : MonoBehaviour
         if (lastAction == LastAction.Grab)
             grab = 0;
 
+        if (lastAction == LastAction.Special)
+            special = 0;
+
         if (lastAction == LastAction.Block)
             blockingWeight = 0;
 
@@ -623,6 +636,9 @@ public class FightCharacterAI : MonoBehaviour
         if (grabCooldownTimer > 0f || GetAbsDistanceToPlayer() > grabDistance)
             grab = 0;
 
+        if (specialCooldownTimer > 0f)
+            special = 0;
+
         if (aiQuickstepCooldownTimer > 0f)
             quickstep = 0;
 
@@ -634,6 +650,7 @@ public class FightCharacterAI : MonoBehaviour
             crouchingKick +
             jumpingKick +
             grab +
+            special +
             blockingWeight +
             quickstep;
 
@@ -661,6 +678,9 @@ public class FightCharacterAI : MonoBehaviour
             return;
 
         if (TryUseWeightedAction(ref roll, grab, DoGrab))
+            return;
+
+        if (TryUseWeightedAction(ref roll, special, DoSpecial))
             return;
 
         if (TryUseWeightedAction(ref roll, blockingWeight, StartBlock))
@@ -774,6 +794,24 @@ public class FightCharacterAI : MonoBehaviour
         grabCooldownTimer = grabCooldown;
 
         fightCharacter.SetAIInput(0f, false, false, false, true, false);
+
+        RegisterAttack();
+    }
+
+    private void DoSpecial()
+    {
+        lastAction = LastAction.Special;
+        specialCooldownTimer = specialCooldown;
+
+        fightCharacter.SetAIInput(
+            0f,    
+            false,  
+            false,  
+            false,  
+            false, 
+            false,  
+            true   
+        );
 
         RegisterAttack();
     }
@@ -920,6 +958,7 @@ public class FightCharacterAI : MonoBehaviour
         blockCooldownTimer = TickTimer(blockCooldownTimer);
         jumpAttackCooldownTimer = TickTimer(jumpAttackCooldownTimer);
         grabCooldownTimer = TickTimer(grabCooldownTimer);
+        specialCooldownTimer = TickTimer(specialCooldownTimer);
         aiQuickstepCooldownTimer = TickTimer(aiQuickstepCooldownTimer);
         movementCommitTimer = TickTimer(movementCommitTimer);
         pressureBackAwayTimer = TickTimer(pressureBackAwayTimer);

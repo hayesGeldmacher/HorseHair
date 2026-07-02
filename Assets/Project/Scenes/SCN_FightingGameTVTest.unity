@@ -1838,24 +1838,84 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: grabWeight
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: blockWeight
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: grabDistance
       value: 1.85
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: idealDistance
-      value: 2
+      value: 1.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: reactionDelay
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: specialWeight
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: quickstepWeight
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: decisionCooldown
-      value: 0.8
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: tooCloseDistance
+      value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpingKickWeight
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: recoveryPauseTime
-      value: 0.2
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: forcedBackAwayTime
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpingPunchWeight
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: movementCommitTime
+      value: 0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingKickWeight
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingKickWeight
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingPunchWeight
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingPunchWeight
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: attacksBeforeBackAway
-      value: 2
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: emergencyBackAwayDistance
+      value: 0.45
       objectReference: {fileID: 0}
     - target: {fileID: 2008083490643853329, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: m_IsActive
@@ -2055,7 +2115,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: cae16cf6173e51f48bf1b0bf60f32de7, type: 3}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: moveSpeed
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: blockSound
@@ -2100,6 +2160,10 @@ PrefabInstance:
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: blockMoveSpeed
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: quickstepSpeed
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: attackMissSound
