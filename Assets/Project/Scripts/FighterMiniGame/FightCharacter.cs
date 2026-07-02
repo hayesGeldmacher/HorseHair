@@ -712,6 +712,8 @@ public class FightCharacter : MonoBehaviour
         isBlocking = false;
         isCrouching = false;
 
+        if (animateFighter) { fighterAnim.SetTrigger("quickStep"); }
+
         SetTemporaryActionText(direction == facingDirection ? "Forward Quickstep" : "Back Quickstep");
     }
 
