@@ -1,8 +1,11 @@
+using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem.Users;
 
 public class CameraController : MonoBehaviour
 {
@@ -30,12 +33,16 @@ public class CameraController : MonoBehaviour
     private bool isFrozen = false;
     private Vector2 frozenPosition;
 
+    [SerializeField] private VirtualMouseInput VM;
+    private bool UseMouse = false;
+
     private void Start()
     {
         _screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Cursor.lockState = CursorLockMode.Confined;
         Mouse.current.WarpCursorPosition(_screenCenter);
         _panTilt = GetComponent<CinemachinePanTilt>();
+        Switch();
     }
 
     private void LateUpdate()
@@ -105,5 +112,29 @@ public class CameraController : MonoBehaviour
         _followSpeedY = newFollowSpeedY;
         full360Camera_x = x_spin_360;
         full360Camera_y = y_spin_360;
+    }
+
+    public void SwitchControls(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.started) return;
+        Switch();
+    }
+
+    private void Switch()
+    {
+        if (UseMouse)
+        {
+            if (VM.m_SystemMouse != null)
+                InputSystem.EnableDevice(VM.m_SystemMouse);
+            VM.UseGamePad = false;
+        }
+        else
+        {
+            if (VM.m_SystemMouse != null)
+                InputSystem.DisableDevice(VM.m_SystemMouse);
+            VM.UseGamePad = true;
+            VM.virtualMouse.MakeCurrent();
+        }
+        UseMouse = !UseMouse;        
     }
 }
