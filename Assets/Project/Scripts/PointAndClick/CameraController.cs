@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Cinemachine;
@@ -34,7 +36,26 @@ public class CameraController : MonoBehaviour
     private Vector2 frozenPosition;
 
     [SerializeField] private VirtualMouseInput VM;
+    [SerializeField] private PlayerInput playerInput;
+    private const string gamepadScheme = "Gamepad";
+    private const string mouseScheme = "Keyboard&Mouse";
+
     private bool UseMouse = false;
+    private string previousControlScheme;
+    private Coroutine enableDeviceCoroutine;
+
+    [SerializeField] private float EnableDeviceDelay = 0.3f;
+    private bool mouseEnabled = true;
+
+    private void OnEnable()
+    {
+        InputSystem.onActionChange += OnActionChange;
+    }
+
+    private void OnDisable()
+    {
+        InputSystem.onActionChange -= OnActionChange;
+    }
 
     private void Start()
     {
@@ -43,6 +64,11 @@ public class CameraController : MonoBehaviour
         Mouse.current.WarpCursorPosition(_screenCenter);
         _panTilt = GetComponent<CinemachinePanTilt>();
         Switch();
+    }
+
+    private void Update()
+    {
+        //Debug.Log( playerInput.currentControlScheme);
     }
 
     private void LateUpdate()
@@ -75,26 +101,10 @@ public class CameraController : MonoBehaviour
 
     public void SetFrozen(bool state)
     {
-        //isFrozen = state;
-        //if (state)
-        //{
-        //    Cursor.visible = false;
-        //    frozenPosition = Mouse.current.position.ReadValue();
-        //}
-        //else
-        //{
-        //    Cursor.visible = true;
-        //}
     }
 
     public void OnLook(InputAction.CallbackContext context)
     {
-        //if (isFrozen)
-        //{
-        //    Mouse.current.WarpCursorPosition(frozenPosition);
-        //    return;
-        //}
-
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 offset = new Vector2(
             (mousePos.x - _screenCenter.x) / _screenCenter.x,
@@ -122,11 +132,13 @@ public class CameraController : MonoBehaviour
 
     private void Switch()
     {
-        if (UseMouse)
+        if (!UseMouse)
         {
             if (VM.m_SystemMouse != null)
                 InputSystem.EnableDevice(VM.m_SystemMouse);
             VM.UseGamePad = false;
+            VM.m_SystemMouse.MakeCurrent();
+            UseMouse = true;
         }
         else
         {
@@ -134,7 +146,79 @@ public class CameraController : MonoBehaviour
                 InputSystem.DisableDevice(VM.m_SystemMouse);
             VM.UseGamePad = true;
             VM.virtualMouse.MakeCurrent();
+            UseMouse = false;
+        }      
+    }
+
+    private void OnActionChange(object obj, InputActionChange change)
+    {
+        if (change != InputActionChange.ActionPerformed) return;
+
+        var action = obj as InputAction;
+        var device = action?.activeControl?.device;
+        if (device == null) return;
+
+        // Ignore the synthetic virtual mouse - it's not "real" user input
+        if (device == VM.virtualMouse) return;
+
+        bool isGamepadInput = device is Gamepad;
+        bool isMouseOrKeyboardInput = device is Mouse;
+
+        if (isGamepadInput)
+        {
+            mouseEnabled = false;
+            EnableDevice();
         }
-        UseMouse = !UseMouse;        
+        if (isMouseOrKeyboardInput)
+        {
+            mouseEnabled = true;
+            StopAllCoroutines();
+        }
+
+        if (isGamepadInput && UseMouse)
+        {
+            if (VM.m_SystemMouse != null)
+                InputSystem.DisableDevice(VM.m_SystemMouse);
+            VM.UseGamePad = true;
+            VM.virtualMouse.MakeCurrent();
+            UseMouse = false;
+        }
+        else if (isMouseOrKeyboardInput && !UseMouse)
+        {
+            if (device is Mouse mouse && mouse.delta.ReadValue().sqrMagnitude < 0.01f)
+                return; // too small to count as intentional mouse movement
+
+            if (VM.m_SystemMouse != null)
+                InputSystem.EnableDevice(VM.m_SystemMouse);
+            VM.UseGamePad = false;
+            VM.m_SystemMouse.MakeCurrent();
+            UseMouse = true;
+        }
+    }
+
+    public void EnableDevice()
+    {
+        if (enableDeviceCoroutine != null)
+        {
+            StopCoroutine(enableDeviceCoroutine);
+        }
+        enableDeviceCoroutine = StartCoroutine(EnableDeviceAfterDelay());
+    }
+
+    private IEnumerator EnableDeviceAfterDelay()
+    { 
+        yield return new WaitForSeconds(EnableDeviceDelay);
+        if (mouseEnabled != true)
+        {
+            enableDeviceCoroutine = null;
+            mouseEnabled = true;
+            StopAllCoroutines();
+
+            if (VM.m_SystemMouse != null)
+                InputSystem.EnableDevice(VM.m_SystemMouse);
+            VM.UseGamePad = false;
+            VM.m_SystemMouse.MakeCurrent();
+            UseMouse = true;
+        }
     }
 }
