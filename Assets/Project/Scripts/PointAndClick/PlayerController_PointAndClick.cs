@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,7 +12,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
 {
     [Header("Camera Settings")]
     [SerializeField] private CameraController PlayerCamera;
-
 
     [Header("Moving Settings")]
     [SerializeField] private float blinkAnimationSpeed = 0.5f;
@@ -29,6 +29,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     [Header("Textboxes")]
     [SerializeField] private TextBox textBox;
+    [SerializeField] private float thoughtTextDelay = 2.0f;
 
     [Header("GoalText")]
     [SerializeField] private TMP_Text GoalText;
@@ -38,22 +39,51 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private string houseScene;
     [SerializeField] private float transitionTimerInSeconds;
 
+    [Header("Dialogue Settings")]
+    [SerializeField] private DialogueStorage dialogueText;
+    [SerializeField] private bool CanBeFastForwaded = false;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource finishTaskSource; //sound played when task is completed and player leaves PNC segment 
+    [SerializeField] private AudioClip finishMorningClip; //clip played for above when morning task is finished
+    [SerializeField] private AudioClip finishAfternoonClip; //clip played for above when afternoon task is finished
+
+    private int dialogueIndex = 0;
+    private bool startedDialogue = false;
+    private int altDialogueIndex = 0;
+
     private Camera_Environment currentCamera;
     private Coroutine _hideInventoryCoroutine;
     private Coroutine _hideTextCoroutine;
 
     private bool finishedFirstTeleport = false;
+    private bool leftBedroom = false; //trigger a dialogue only after leaving the bedroom - HG
+    private bool completeTask = false;
+
+    public static event System.Action<Boolean> OnTalking;
 
     private void OnEnable()
     {
         EventClick.OnObjectClicked += HandleObjectClicked;
         EventClick_GoalItem.GoalCompleted += HandleGoalCompleted;
+        EventManager.ThoughtDialogue += HandleStartEvent;
     }
 
     private void OnDisable()
     {
         EventClick.OnObjectClicked -= HandleObjectClicked;
         EventClick_GoalItem.GoalCompleted -= HandleGoalCompleted;
+        EventManager.ThoughtDialogue -= HandleStartEvent;
+    }
+
+    private void HandleStartEvent(DialogueStorage storage)
+    {
+        dialogueText = storage;
+    }
+
+    private void Awake()
+    {
+        PlayerCamera.rayCaster.enabled = false;
     }
 
     private void Start()
@@ -71,15 +101,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 }
             }
         }
-        string goalText = PlayerPrefs.GetString("Goal");
-        if (!string.IsNullOrEmpty(goalText))
-        {
-            GoalText.text = goalText;
-        }
         if (StartingPoint != null)
         {
             StartingPoint.TeleportToSelf();
         }
+        GoalText.text = "";
     }
 
     private void HandleObjectClicked(ClickEventData data)
@@ -104,30 +130,99 @@ public class PlayerController_PointAndClick : MonoBehaviour
             case FPBClickEventData fpb:
                 EndDay(fpb);
                 break;
+            case TaskClickEventData task:
+                StartCoroutine(StartTask(task));
+                break;
         }
     }
 
-    private void EndDay(FPBClickEventData fpb)
+    // ********************************************************************************
+    // Tasks
+    // ********************************************************************************
+    private IEnumerator StartTask(TaskClickEventData task)
     {
-        if (fpb.GoToNextScene)
+        if (task.DialogueText.useAltDialogue)
         {
-            string scene = "";
-            TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
-            if (currentTimeOfDay == TimeOfDay.Morning)
-            {
-                scene = fightingGameScene;
-            }
-            else
-            {
-                scene = houseScene;
-            }
-            StartCoroutine(EndingSequence(fpb.Description, scene));
+            dialogueText = task.DialogueText;
+            dialogueText.dialogue = new List<Talking>();
+            dialogueText.dialogue.Add(dialogueText.alternativeDialogue[altDialogueIndex]);
+            OpenDialogue();
+            task.Giver.ChangeTaskStatus(false);
+
+            yield return new WaitUntil(() => startedDialogue == false);
+
+            altDialogueIndex = Mathf.Min(altDialogueIndex + 1, dialogueText.alternativeDialogue.Count - 1);
+            task.Giver.ChangeTaskStatus(true);
         }
         else
         {
-            textBox.SetText(fpb.Description);
+            GoalText.text = task.Task.GoalText;
+            dialogueText = task.DialogueText;
+            OpenDialogue();
+            task.Giver.ChangeTaskStatus(false);
+
+            yield return new WaitUntil(() => startedDialogue == false);
+
+            task.Giver.ChangeGoalStatus(true);
+            OnOpenInventory();
+            task.Giver.ChangeTaskStatus(true);
+        }
+    }
+
+    // ********************************************************************************
+    // Final Point
+    // ********************************************************************************
+    private void EndDay(FPBClickEventData fpb)
+    {
+        if (completeTask)
+        {
+            string scene = "";
+            TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+            int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
+            if (currentTimeOfDay == TimeOfDay.Morning)
+            {
+                scene = houseScene;
+                PlayerPrefs.SetInt("TaskNum", currentTaskNum);
+                PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
+            }
+            else
+            {
+                scene = fightingGameScene;
+                PlayerPrefs.SetInt("TaskNum", currentTaskNum++);
+                PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
+            }
+            PlayerPrefs.Save();
+            StartCoroutine(EndingSequence(fpb.DialogueText, scene));
+            //StartCoroutine(EndingSequence(fpb.CompleteString, scene));
+        }
+        else
+        {
+            textBox.SetText(fpb.IncompleteString);
             OnShowTextBox();
         }
+    }
+
+    private IEnumerator EndingSequence(DialogueStorage desc, string scene)
+    {
+        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+        blinkAnimator.SetTrigger("EyesDown");
+
+        yield return new WaitUntil(() =>
+            blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+
+        dialogueText = desc;
+        OpenDialogue();
+
+        //play corresponding audio - HG
+        bool isMorning = true;
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        if (currentTimeOfDay == TimeOfDay.Morning) { isMorning = false; }
+        AudioManager.instance.PlayTaskFinishSound(isMorning);
+        Debug.Log("Transition timer was activated!");
+
+        yield return new WaitUntil(() => startedDialogue == false);
+
+        SceneManager.LoadScene(scene);
     }
 
     private IEnumerator EndingSequence(string desc, string scene)
@@ -137,24 +232,36 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         yield return new WaitUntil(() =>
             blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+        
 
         textBox.SetText(desc);
         OnShowTextBox();
 
+        //play corresponding audio - HG
+        bool isMorning = true;
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        if(currentTimeOfDay == TimeOfDay.Morning) { isMorning = false; }
+        AudioManager.instance.PlayTaskFinishSound(isMorning);
+        Debug.Log("Transition timer was activated!");
         yield return new WaitForSeconds(transitionTimerInSeconds);
-
+        
         SceneManager.LoadScene(scene);
     }
 
+    // ********************************************************************************
+    // Camera Point
+    // ********************************************************************************
     private void MoveTo(TeleportClickEventData data)
     {
-        //if this is the first teleport of the scene, play unique blinking animation - HG
-        if (!finishedFirstTeleport)
-        {
-            StartCoroutine(TeleportSequenceFirst(data));
-            finishedFirstTeleport = true;
-        }
-        else { StartCoroutine(TeleportSequence(data)); }
+        ////if this is the first teleport of the scene, play unique blinking animation - HG
+        //if (!finishedFirstTeleport)
+        //{
+        //    StartCoroutine(TeleportSequenceFirst(data));
+        //    finishedFirstTeleport = true;
+        //}
+        //else { StartCoroutine(TeleportSequence(data)); }
+
+        StartCoroutine(TeleportSequence(data));
     }
 
     //teleport function for unique first blinking animation
@@ -168,17 +275,28 @@ public class PlayerController_PointAndClick : MonoBehaviour
         transform.position = data.ObjectTransform.position;
         transform.rotation = data.ObjectTransform.rotation;
 
+
+        yield return new WaitForSeconds(1.5f);
+        bool isMorning = false;
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        if (currentTimeOfDay == TimeOfDay.Morning)
+        {
+            isMorning = true;
+        }
+
+        AudioManager.instance.PlayStartTaskSound(isMorning);
+        yield return new WaitForSeconds(2.0f);
+
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
         yield return new WaitForSeconds(0.4f);
         blinkAnimator.SetTrigger("EyesStart");
 
 
         PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX,
-            data.FollowSpeedY);
+            data.FollowSpeedY, data.spin_360_x, data.spin_360_y);
 
         currentCamera = data.Camera;
         currentCamera.ActivateOrDeactivate(true);
-
     }
 
     private IEnumerator TeleportSequence(TeleportClickEventData data)
@@ -187,28 +305,84 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             currentCamera.ActivateOrDeactivate(false);
         }
-        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
-        blinkAnimator.SetTrigger("EyesDown");
 
-        yield return new WaitUntil(() =>
-        blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+        // Blinking
+        if (!finishedFirstTeleport)
+        {
+            finishedFirstTeleport = true;
+
+            yield return new WaitForSeconds(1.5f);
+            bool isMorning = false;
+            TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+            if (currentTimeOfDay == TimeOfDay.Morning)
+            {
+                isMorning = true;
+            }
+
+            AudioManager.instance.PlayStartTaskSound(isMorning);
+            yield return new WaitForSeconds(2.0f);
+
+            blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+            yield return new WaitForSeconds(0.4f);
+            blinkAnimator.SetTrigger("EyesStart");
+        }
+        else
+        {
+            blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+            blinkAnimator.SetTrigger("EyesDown");
+
+            yield return new WaitUntil(() =>
+            blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+
+            blinkAnimator.SetTrigger("EyesUp");
+        }
 
         transform.position = data.ObjectTransform.position;
         transform.rotation = data.ObjectTransform.rotation;
 
         PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX, 
-            data.FollowSpeedY);
+            data.FollowSpeedY, data.spin_360_x, data.spin_360_y);
 
-        blinkAnimator.SetTrigger("EyesUp");
         currentCamera = data.Camera;
         currentCamera.ActivateOrDeactivate(true);
+
+        if (!leftBedroom)
+        {
+            leftBedroom = true;
+            StartCoroutine(DisplayTaskStartDialogue());
+        }
     }
 
+    // ********************************************************************************
+    // Item
+    // ********************************************************************************
     private void InteractWith(ItemClickEventData data)
     {
         AddToInventory(data.SourceItem);
     }
 
+    private bool AddToInventory(EventClick_Item item)
+    {
+        for (int i = 0; i < Inventory.Length; i++)
+        {
+            if (Inventory[i] == null)
+            {
+                Inventory[i] = item;
+                inventoryUI.AddItem(item.itemImage, item.itemName, i);
+                textBox.SetName("Me");
+                textBox.SetText(item.description);
+                OnOpenInventory();
+                OnShowTextBox();
+                return true;
+            }
+        }
+        Debug.Log("Inventory is full");
+        return false;
+    }
+
+    // ********************************************************************************
+    // Goal
+    // ********************************************************************************
     private void InteractWith(GoalEventData data)
     {
         for (int i = 0; i < Inventory.Length; i++)
@@ -221,46 +395,37 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         data.SourceGoal.CheckGoal();
     }
-
-    private bool AddToInventory(EventClick_Item item)
-    {
-        for (int i = 0; i < Inventory.Length; i++)
-        {
-            if (Inventory[i] == null)
-            {
-                Inventory[i] = item;
-                inventoryUI.AddItem(item.itemImage, item.itemName, i);
-                textBox.SetText(item.description);
-                OnOpenInventory();
-                OnShowTextBox();
-                return true;
-            }
-        }
-        Debug.Log("Inventory is full");
-        return false;
-    }
-
-    private void TalkAbout(NEIClickEventData data)
-    {
-        textBox.SetText(data.Description);
-        OnShowTextBox();
-    }
-
     private void HandleGoalCompleted(GoalCompletionData data)
     {
         if (data.IsCompleted)
         {
+            textBox.SetName("Me");
             textBox.SetText(data.CompletedString);
             OnShowTextBox();
             GoalText.text = data.nextTask;
+            completeTask = true;
         }
         else
         {
+            textBox.SetName("Me");
             textBox.SetText(data.NotCompletedString);
             OnShowTextBox();
         }
     }
 
+    // ********************************************************************************
+    // Non Essential Item
+    // ********************************************************************************
+    private void TalkAbout(NEIClickEventData data)
+    {
+        textBox.SetName("Me");
+        textBox.SetText(data.Description);
+        OnShowTextBox();
+    }
+
+    // ********************************************************************************
+    // Textboxes (Auto)
+    // ********************************************************************************
     public void OnShowTextBox()
     {
         if (_hideTextCoroutine != null)
@@ -283,6 +448,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
         _hideTextCoroutine = null;
     }
 
+    // ********************************************************************************
+    // Inventory
+    // ********************************************************************************
     public void OnOpenInventory()
     {
         inventoryUI.ShowInventory();
@@ -300,5 +468,83 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         inventoryUI.HideInventory();
         _hideInventoryCoroutine = null;
+    }
+
+    // ********************************************************************************
+    // Starting Thoughts
+    // ********************************************************************************
+    private IEnumerator DisplayTaskStartDialogue()
+    {
+        yield return new WaitForSeconds(thoughtTextDelay);
+        OpenDialogue();
+    }
+
+    // ********************************************************************************
+    // Dialogue Boxes
+    // ********************************************************************************
+    public void OpenDialogue()
+    {
+        PlayerCamera.SetFrozen(true);
+        dialogueIndex = 0;
+        startedDialogue = true;
+        PlayerCamera.rayCaster.enabled = false;
+        GoThroughDialogue();
+        OnTalking?.Invoke(true);
+    }
+
+    public void AdvanceDialogue(InputAction.CallbackContext ctx)
+    {
+        if (!startedDialogue || !ctx.started) return;
+        GoThroughDialogue();
+    }
+
+    private void GoThroughDialogue()
+    {
+        if (textBox.completeTextCrawl == false)
+        {
+            if (CanBeFastForwaded)
+            {
+                textBox.ShowTextBoxInstant();
+                textBox.completeTextCrawl = true;
+                return;
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        if (_hideTextCoroutine != null)
+        {
+            StopCoroutine(_hideTextCoroutine);
+            _hideTextCoroutine = null;
+        }
+
+        if (dialogueIndex >= dialogueText.dialogue.Count)
+        {
+            PlayerCamera.SetFrozen(false);
+            dialogueIndex = 0;
+            startedDialogue = false;
+            textBox.HideTextBox();
+            PlayerCamera.rayCaster.enabled = true;
+            OnTalking?.Invoke(false);
+        }
+        else
+        {
+            textBox.SetText(dialogueText.dialogue[dialogueIndex].dialogue);
+            textBox.SetName(dialogueText.dialogue[dialogueIndex].name);
+            textBox.ShowTextBoxTextCrawl(dialogueText.dialogueSpeed);
+            dialogueIndex++;
+        }
+    }
+
+    // ********************************************************************************
+    // Audio
+    // ********************************************************************************
+    public void PlayTaskFinishSound(bool isMorning)
+    {
+        if (finishTaskSource == null) { Debug.LogWarning("No audio source slotted for finish task sound!"); return; }
+        if (isMorning && finishMorningClip != false) { finishTaskSource.clip = finishMorningClip; }
+        if (!isMorning && finishAfternoonClip != null) { finishTaskSource.clip = finishAfternoonClip; }
     }
 }

@@ -11,6 +11,7 @@ public class EventClick_Item : EventClick
     [SerializeField] public string itemName = "Item";
     [SerializeField] public Sprite itemImage;
     public bool Collected = false;
+    public bool Activated = false;
 
     protected override void SetType()
     {
@@ -36,5 +37,15 @@ public class EventClick_Item : EventClick
     {
         Collected = true;
         gameObject.SetActive(false);
+    }
+
+    public override void ActivateOrDeactivate(bool activate)
+    {
+        if (Collected)
+            return;
+        if (!Activated)
+            base.ActivateOrDeactivate(false);
+        else
+            base.ActivateOrDeactivate(activate);
     }
 }

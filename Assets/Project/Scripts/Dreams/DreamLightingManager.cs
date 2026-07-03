@@ -3,6 +3,13 @@ using UnityEngine;
 public class DreamLightingManager : MonoBehaviour
 {
 
+    /// <summary>
+    /// Controls the directional and ambient lighting intensity, inteded for use during the dream sequences
+    /// Smoothly lerps current lighting settings to target lighting settings based on speed variables in inspector
+    /// Triggered by a script called DreamLightingTrigger
+    /// Apply DreamLightingTrigger to object with collision trigger to change lighting in scene - HG
+    /// </summary>
+
     #region Singleton
 
     public static DreamLightingManager instance;
@@ -22,28 +29,31 @@ public class DreamLightingManager : MonoBehaviour
 
     [Header("Directional Light")]
     [SerializeField] private Light directionalLight;
-    [SerializeField] private float currentDirectionalIntensity;
-    [SerializeField] private float targetDirectionalIntensity;
-    [SerializeField] private bool hasDirectionalTarget = false;
+    [SerializeField] private float directionalChangeSpeed = 1.0f;
+
+    private float currentDirectionalIntensity;
+    private float targetDirectionalIntensity;
+    private bool hasDirectionalTarget = false;
+    private float previousDirectionalIntensity;
+    private float directionalLerpTime;
 
     [Header("Ambient Light")]
-    private float startAmbientIntensity;
     [SerializeField] private float ambientChangeSpeed = 1.0f;
-    [SerializeField] private float currentAmbientIntensity;
-    [SerializeField] private float targetAmbientIntensity;
-    [SerializeField] private bool hasAmbientTarget = false;
-    [SerializeField] private float previousAmbientIntensity;
+
+    private float currentAmbientIntensity;
+    private float targetAmbientIntensity;
+    private bool hasAmbientTarget = false;
+    private float previousAmbientIntensity;
     private float ambientLerpTime;
-    
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        startAmbientIntensity = RenderSettings.ambientIntensity;
-        currentAmbientIntensity = startAmbientIntensity;
-        previousAmbientIntensity = startAmbientIntensity;
-       // RenderSettings.ambientIntensity = 1.0f;
+        currentAmbientIntensity = RenderSettings.ambientIntensity;
+        previousAmbientIntensity = currentAmbientIntensity;
 
+        currentDirectionalIntensity = directionalLight.intensity;
+        previousDirectionalIntensity = currentDirectionalIntensity;
     }
 
     // Update is called once per frame
@@ -55,20 +65,29 @@ public class DreamLightingManager : MonoBehaviour
 
     private void AmbientUpdate()
     {
-       
+        currentAmbientIntensity = Mathf.Lerp(previousAmbientIntensity, targetAmbientIntensity, ambientLerpTime);
+        ambientLerpTime += ambientChangeSpeed * Time.deltaTime * 0.1f;
         if(ambientLerpTime >= 1.0f)
         {
-
+            hasAmbientTarget = false;
+            ambientLerpTime = 1.0f;
         }
-        float newAmbience = Mathf.Lerp(previousAmbientIntensity, targetAmbientIntensity, ambientLerpTime);
 
-        ambientLerpTime += ambientChangeSpeed * Time.deltaTime * 0.1f;
-
+        RenderSettings.ambientIntensity = currentAmbientIntensity;
+        RenderSettings.reflectionIntensity = currentAmbientIntensity;
     }
 
     private void DirectionalUpdate()
     {
+        currentDirectionalIntensity = Mathf.Lerp(previousDirectionalIntensity, targetDirectionalIntensity, directionalLerpTime);
+        directionalLerpTime += directionalChangeSpeed * Time.deltaTime * 0.1f;
+        if(directionalLerpTime >= 1.0f)
+        {
+            hasDirectionalTarget = false;
+            directionalLerpTime = 1.0f;
+        }
 
+        directionalLight.intensity = currentDirectionalIntensity;
     }
 
     public void SetAmbientTarget(float intensity)
@@ -76,13 +95,15 @@ public class DreamLightingManager : MonoBehaviour
         targetAmbientIntensity = intensity;
         hasAmbientTarget = true;
         previousAmbientIntensity = currentAmbientIntensity;
+        ambientLerpTime = 0;
     }
 
     public void SetDirectionalTarget(float intensity) 
     { 
         targetDirectionalIntensity = intensity;
         hasDirectionalTarget = true;
-
+        previousDirectionalIntensity = currentDirectionalIntensity;
+        directionalLerpTime = 0;
 
     }
     

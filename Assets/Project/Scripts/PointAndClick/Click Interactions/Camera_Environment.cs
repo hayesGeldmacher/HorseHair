@@ -14,6 +14,10 @@ public class Camera_Environment : MonoBehaviour
     [SerializeField, Tooltip("How fast the camera follows the cursor vertically")]
     private float _followSpeedY = 2f;
     [SerializeField]
+    private bool full360Camera_x = false;
+    [SerializeField]
+    private bool full360Camera_y = false;
+    [SerializeField]
     private EventClick_Environment selfClickEvent;
     [SerializeField] private GameObject _arrows;
     [SerializeField] private GameObject _items;
@@ -21,7 +25,7 @@ public class Camera_Environment : MonoBehaviour
 
     public TeleportClickEventData TeleportClickEventData;
     private EventClick_Environment[] connectedClickEvents;
-    private EventClick_NEI[] connectedNEI;
+    public EventClick[] connectedItems;
 
     private void OnValidate()
     {
@@ -37,6 +41,8 @@ public class Camera_Environment : MonoBehaviour
     private void Awake()
     {
         _cameraMesh.SetActive(false);
+        connectedClickEvents = _arrows.GetComponentsInChildren<EventClick_Environment>();
+        connectedItems = _items.GetComponentsInChildren<EventClick>();
     }
 
     private void Start()
@@ -44,8 +50,6 @@ public class Camera_Environment : MonoBehaviour
         if (TeleportClickEventData == null)
             SetUpEventData();
 
-        connectedClickEvents = _arrows.GetComponentsInChildren<EventClick_Environment>();
-        connectedNEI = _items.GetComponentsInChildren<EventClick_NEI>();
         ActivateOrDeactivate(false);
     }
     public void TeleportToSelf()
@@ -60,9 +64,9 @@ public class Camera_Environment : MonoBehaviour
         {
             clickEvent.gameObject.SetActive(State);
         }
-        foreach (var clickEvent in connectedNEI)
+        foreach (var clickEvent in connectedItems)
         {
-            clickEvent.gameObject.SetActive(State);
+            clickEvent.ActivateOrDeactivate(State);
         }
     }
 
@@ -78,6 +82,8 @@ public class Camera_Environment : MonoBehaviour
             ObjectTransform = transform,
             Source = gameObject,
             Camera = this,
+            spin_360_x = full360Camera_x,
+            spin_360_y = full360Camera_y,
         };
     }
 }

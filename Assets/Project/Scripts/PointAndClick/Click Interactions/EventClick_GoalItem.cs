@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,26 +27,33 @@ public class EventClick_GoalItem : EventClick
     [SerializeField] private string CompletedGoalString = "Perfect, now I should go to school";
     [SerializeField] private string TaskAfterComplettion = "I should go to school now";
 
+    [SerializeField] private DialogueStorage test;
+
     private Dictionary<EventClick_Item, bool> itemCollectionStatus = 
         new Dictionary<EventClick_Item, bool>();
     public static event System.Action<GoalCompletionData> GoalCompleted;
+    public bool Activated = false;
 
-    public void Activate()
+    public void StartTask()
     {
-        this.gameObject.SetActive(true);
-        foreach(var item in requiredItems)
+        Activated = true;
+        foreach (var item in requiredItems)
         {
-            item.gameObject.SetActive(true);
+            item.Activated = true;
         }
     }
 
-    public void Deactivate()
+    public override void ActivateOrDeactivate(bool activate)
     {
-        this.gameObject.SetActive(false);
-        foreach (var item in requiredItems)
+        if (!Activated)
         {
-            item.gameObject.SetActive(false);
+            activate = false;
         }
+        this.gameObject.SetActive(activate);
+        //foreach (var item in requiredItems)
+        //{
+        //    item.ActivateOrDeactivate(activate);
+        //}
     }
 
     protected override void SetType()
@@ -76,16 +84,25 @@ public class EventClick_GoalItem : EventClick
         if (GoalCompleted != null)
         {
             string neededItems = NotCompletedGoalString;
+            List<string> listOfItems = new List<string>();
             foreach (var item in itemCollectionStatus)
             {
                 if (!item.Value)
                 {
-                    neededItems = neededItems + ", " + item.Key.itemName;
+                    listOfItems.Add(item.Key.itemName);
                 }
+            }
+            if (listOfItems.Count > 0)
+            {
+                for (int i = 0; i < listOfItems.Count - 1; i++)
+                {
+                    neededItems += listOfItems[i] + ", ";
+                }
+                neededItems += listOfItems[listOfItems.Count - 1] + ".";
             }
 
             GoalCompleted.Invoke(new GoalCompletionData
-            {
+            {           
                 GoalName = goalName,
                 NeededItems = new Dictionary<EventClick_Item, bool>(itemCollectionStatus),
                 SourceGoal = this,

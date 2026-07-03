@@ -7,6 +7,7 @@ public class ClickEventData
     public Transform ObjectTransform;
     public GameObject Source;
     public string Description;
+    public DialogueStorage DialogueText;
 }
 
 public enum ObjectType
@@ -19,6 +20,8 @@ public enum ObjectType
     AI, // Animated Item
     TI, // Transition Item
     FPB, // Final Point
+    Talk,
+    Task,
 }
 
 public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
@@ -26,6 +29,8 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] private int OutlineIndex = 1;
     [SerializeField] public string description;
     [SerializeField] private bool ResetAfterClick = true;
+    [SerializeField] protected DialogueStorage dialogueText;
+    [SerializeField] protected ObjectType resetCursor = ObjectType.None;
 
     protected ObjectType Type = ObjectType.None;
     protected string Name = "";
@@ -50,9 +55,14 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         OnObjectClicked?.Invoke(CreateEventData());
         if (ResetAfterClick)
         {
-            OnObjectHovered?.Invoke(ObjectType.None, "");
-            outlineMaterial.SetFloat("_Outline_Show", 0f);
+            ResetClick();
         }
+    }
+
+    public virtual void ResetClick()
+    {
+        OnObjectHovered?.Invoke(resetCursor, "");
+        outlineMaterial.SetFloat("_Outline_Show", 0f);
     }
 
     public void ForceClick()
@@ -67,6 +77,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             ObjectTransform = transform,
             Source = gameObject,
             Description = description,
+            DialogueText = dialogueText,
         };
     }
 
@@ -80,5 +91,10 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     {
         outlineMaterial.SetFloat("_Outline_Show", 0f);
         OnObjectHovered?.Invoke(ObjectType.None, "");
+    }
+
+    public virtual void ActivateOrDeactivate(bool activate)
+    {
+        gameObject.SetActive(activate);
     }
 }

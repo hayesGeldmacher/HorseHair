@@ -1,7 +1,8 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using System.Collections;       
+using System.Collections;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Handles start screen, round timing, round wins, bo3 game rules, next-round prompt, and round resets
@@ -55,6 +56,14 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Enemy health component")]
     [SerializeField] private FighterHealth enemyHealth;
 
+    [Header("Super Meter References")]
+
+    [Tooltip("Player super meter component")]
+    [SerializeField] private FighterSuperMeter playerSuperMeter;
+
+    [Tooltip("Enemy super meter component")]
+    [SerializeField] private FighterSuperMeter enemySuperMeter;
+
     [Header("Round Reset Positions")]
     [Tooltip("Player position at the start of each round")]
     [SerializeField] private Transform playerStartPoint;
@@ -75,6 +84,9 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Text used to display round and game messages")]
     [SerializeField] private TMP_Text roundMessageText;
 
+    [Tooltip("Text used to display center-screen round begin and victor messages")]
+    [SerializeField] private TMP_Text centerMessageText;
+
     [Tooltip("Icon used to display the player's round wins")]
     [SerializeField] private Image[] playerWinIcons;
 
@@ -91,8 +103,24 @@ public class FightRoundManager : MonoBehaviour
     [SerializeField] private CanvasGroup fadeCanvasGroup;
     [SerializeField] private float fadeDuration = 0.4f;
 
+    [Header("Round Intro")]
+    [SerializeField] private GameObject loadingIcon;
+    [SerializeField] private float roundIntroBlackTime = 1f;
+    [SerializeField] private float roundBeginTextTime = 2f;
+
+    [Header("Round End Presentation")]
+    [SerializeField] private float roundEndSlowMotionScale = 0.25f;
+    [SerializeField] private float roundEndPresentationTime = 4f;
+    [SerializeField] private string playerDisplayName = "Player";
+    [SerializeField] private string enemyDisplayName = "Enemy";
+
     [Header("Controls Menu")]
     [SerializeField] private GameObject controlsPanel;
+
+    [Header("Scene Transition")]
+    [SerializeField] private EyelidsFG eyelids;
+    [SerializeField] private string nextSceneName;
+    private bool triggeredTransition = false;
 
     [Header("Sound Effects")]
     [SerializeField] private AudioSource audioSource;
@@ -119,11 +147,12 @@ public class FightRoundManager : MonoBehaviour
     private bool roundActive;
     private bool gameOver;
 
+    private Coroutine roundIntroCoroutine;
+    private Coroutine roundEndCoroutine;
+
     private void Start()
     {
         ShowStartScreen();
-
-        controlsPanel?.SetActive(false);
     }
 
     private void Update()
@@ -158,6 +187,13 @@ public class FightRoundManager : MonoBehaviour
         UpdateRoundTimer();
         CheckForRoundWinner();
     }
+
+    private void OnDisable()
+    {
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+    }
+
     private void ToggleControlsPanel()
     {
         if (controlsPanel == null)
@@ -188,12 +224,22 @@ public class FightRoundManager : MonoBehaviour
     {
         CancelInvoke(nameof(StartRound));
 
+        if (roundIntroCoroutine != null)
+            StopCoroutine(roundIntroCoroutine);
+
+        if (roundEndCoroutine != null)
+            StopCoroutine(roundEndCoroutine);
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
         waitingForStart = true;
         waitingForNextRound = false;
         waitingForGameOverInput = false;
         startingRound = false;
         roundActive = false;
         gameOver = false;
+        triggeredTransition = false;
 
         ResetMatchState();
         ResetFighters();
@@ -204,6 +250,13 @@ public class FightRoundManager : MonoBehaviour
         SetNextRoundPromptVisible(false);
         SetNameTextVisible(false);
         SetRoundMessage("");
+        SetCenterMessage("");
+
+        if (gameOverPromptText != null)
+            gameOverPromptText.gameObject.SetActive(false);
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(false);
 
         if (startScreenNoiseSource != null && startScreenWhiteNoise != null)
         {
@@ -275,8 +328,6 @@ public class FightRoundManager : MonoBehaviour
 
         QueueRoundStart();
 
-        yield return FadeScreen(0f);
-
         if (audioSource != null && backgroundMusic != null)
         {
             audioSource.clip = backgroundMusic;
@@ -317,8 +368,41 @@ public class FightRoundManager : MonoBehaviour
 
     private void QueueRoundStart()
     {
+        CancelInvoke(nameof(StartRound));
+
+        if (roundIntroCoroutine != null)
+            StopCoroutine(roundIntroCoroutine);
+
+        roundIntroCoroutine = StartCoroutine(RoundIntroRoutine());
+    }
+
+    private IEnumerator RoundIntroRoutine()
+    {
         SetFightersActive(false);
-        Invoke(nameof(StartRound), startInputLockoutTime);
+        startingRound = true;
+        roundActive = false;
+
+        SetCenterMessage("");
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(true);
+
+        yield return FadeScreen(1f);
+        yield return new WaitForSeconds(roundIntroBlackTime);
+
+        ResetFighters();
+        UpdateAllUI();
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(false);
+
+        yield return FadeScreen(0f);
+
+        SetCenterMessage("ROUND " + currentRoundNumber + ", BEGIN!");
+
+        yield return new WaitForSeconds(roundBeginTextTime);
+
+        StartRound();
     }
 
     private void ShowNextRoundPrompt()
@@ -364,11 +448,11 @@ public class FightRoundManager : MonoBehaviour
         roundActive = true;
         currentRoundTime = roundTimeSeconds;
 
-        ResetFighters();
         SetFightersActive(true);
         UpdateAllUI();
 
         SetNextRoundPromptVisible(false);
+        SetCenterMessage("");
         SetRoundMessage("Round " + currentRoundNumber);
 
         Debug.Log("Round " + currentRoundNumber + " started.");
@@ -415,6 +499,14 @@ public class FightRoundManager : MonoBehaviour
         if (!roundActive)
             return;
 
+        if (roundEndCoroutine != null)
+            StopCoroutine(roundEndCoroutine);
+
+        roundEndCoroutine = StartCoroutine(RoundEndRoutine(roundWinner));
+    }
+
+    private IEnumerator RoundEndRoutine(FightCharacter roundWinner)
+    {
         roundActive = false;
         SetFightersActive(false);
 
@@ -425,10 +517,23 @@ public class FightRoundManager : MonoBehaviour
 
         UpdateRoundWinText();
 
-        if (CheckForGameWinner())
-            return;
+        Time.timeScale = roundEndSlowMotionScale;
+        Time.fixedDeltaTime = 0.02f * Time.timeScale;
+
+        string winnerName = roundWinner == playerCharacter ? playerDisplayName : enemyDisplayName;
+        SetCenterMessage(winnerName + " is VICTOR!");
 
         PlaySound(roundWinSFX);
+
+        yield return new WaitForSecondsRealtime(roundEndPresentationTime);
+
+        Time.timeScale = 1f;
+        Time.fixedDeltaTime = 0.02f;
+
+        SetCenterMessage("");
+
+        if (CheckForGameWinner())
+            yield break;
 
         currentRoundNumber++;
         ShowNextRoundPrompt();
@@ -468,7 +573,22 @@ public class FightRoundManager : MonoBehaviour
         SetFightersActive(false);
         SetNextRoundPromptVisible(false);
 
-        Debug.Log("Game ended");
+        if (!triggeredTransition)
+        {
+            triggeredTransition = true;
+            StartCoroutine(TransitionScene());
+        }
+    }
+
+    private IEnumerator TransitionScene()
+    {
+        eyelids.TriggerEyesDownAnimation();
+        yield return new WaitForSeconds(2.0f);
+
+        if (!string.IsNullOrWhiteSpace(nextSceneName))
+            SceneManager.LoadScene(nextSceneName);
+        else
+            SceneManager.LoadScene("SCN_DreamSequenceN1");
     }
 
     private void ResetFighters()
@@ -478,6 +598,12 @@ public class FightRoundManager : MonoBehaviour
 
         if (enemyHealth != null)
             enemyHealth.ResetHealth();
+
+        if (playerSuperMeter != null)
+            playerSuperMeter.ResetSuper();
+
+        if (enemySuperMeter != null)
+            enemySuperMeter.ResetSuper();
 
         ResetFighterPosition(playerCharacter, playerRigidbody, playerStartPoint);
         ResetFighterPosition(enemyCharacter, enemyRigidbody, enemyStartPoint);
@@ -579,6 +705,12 @@ public class FightRoundManager : MonoBehaviour
     {
         if (roundMessageText != null)
             roundMessageText.text = message;
+    }
+
+    private void SetCenterMessage(string message)
+    {
+        if (centerMessageText != null)
+            centerMessageText.text = message;
     }
 
     private float TickTimer(float timer)

@@ -26,12 +26,17 @@ public class FighterInput : MonoBehaviour
     [Tooltip("Triggered when the player presses the grab input")]
     [SerializeField] private InputActionReference grabAction;
 
+    [Tooltip("Troggered when the plaeyr presses the special input")]
+    [SerializeField] private InputActionReference specialAction;
+
     public float Move { get; private set; }
     public bool JumpPressed { get; private set; }
     public bool PunchPressed { get; private set; }
     public bool CrouchHeld { get; private set; }
     public bool KickPressed { get; private set; }
     public bool GrabPressed { get; private set; }
+
+    public bool SpecialPressed { get; private set; }
 
     private void OnEnable()
     {
@@ -75,6 +80,11 @@ public class FighterInput : MonoBehaviour
 
         if (grabAction != null)
             grabAction.action.Enable();
+
+        if(specialAction != null)
+        {
+            specialAction.action.Enable();
+        }
     }
 
     private void DisableInputActions()
@@ -96,6 +106,11 @@ public class FighterInput : MonoBehaviour
 
         if (grabAction != null)
             grabAction.action.Disable();
+
+        if (specialAction != null)
+        {
+            specialAction.action.Disable();
+        }
     }
 
     private void SubscribeToInputEvents()
@@ -111,6 +126,9 @@ public class FighterInput : MonoBehaviour
 
         if (grabAction != null)
             grabAction.action.performed += OnGrab;
+
+        if (specialAction != null)
+            specialAction.action.performed += OnSpecial;
     }
 
     private void UnsubscribeFromInputEvents()
@@ -126,6 +144,9 @@ public class FighterInput : MonoBehaviour
 
         if (grabAction != null)
             grabAction.action.performed -= OnGrab;
+
+        if (specialAction != null)
+            specialAction.action.performed -= OnSpecial;
     }
 
     private void ReadMovementInput()
@@ -153,6 +174,7 @@ public class FighterInput : MonoBehaviour
         PunchPressed = false;
         KickPressed = false;
         GrabPressed = false;
+        SpecialPressed = false;
     }
 
     private void OnJump(InputAction.CallbackContext context)
@@ -173,5 +195,10 @@ public class FighterInput : MonoBehaviour
     private void OnGrab(InputAction.CallbackContext context)
     {
         GrabPressed = true;
+    }
+
+    private void OnSpecial(InputAction.CallbackContext context)
+    {
+        SpecialPressed = true;
     }
 }
