@@ -174,39 +174,117 @@ MonoBehaviour:
     moveSequence: 020000000200000002000000
     resultSequence: 010000000100000001000000
     maxSequenceTime: 3
-    dialogueLine: 'What a punch combo! '
-    hasBrotherResponse: 0
-    brotherResponseTime: 1
-    brotherDialogueLine: 
-    triggerChance: 1
-    cooldown: 5
-    triggerOnlyOnce: 1
-    cooldownTimer: 0
-    hasTriggered: 0
-  - ruleName: Grabbed
-    moveSequence: 09000000
-    resultSequence: 
-    maxSequenceTime: 3
-    dialogueLine: I got your ass dude!
+    dialogueLine: 3 in a row? learn to block bro
     hasBrotherResponse: 1
     brotherResponseTime: 1
-    brotherDialogueLine: I'm gonna KILL you...
+    brotherDialogueLine: I'm trying
     triggerChance: 1
     cooldown: 5
     triggerOnlyOnce: 1
     cooldownTimer: 0
     hasTriggered: 0
-  - ruleName: Punched
-    moveSequence: 05000000
-    resultSequence: 
+  - ruleName: Triple Block
+    moveSequence: 000000000000000000000000
+    resultSequence: 030000000300000003000000
     maxSequenceTime: 3
-    dialogueLine: Kicked!
+    dialogueLine: Bro, do something, push a button
     hasBrotherResponse: 0
     brotherResponseTime: 1
     brotherDialogueLine: 
     triggerChance: 1
     cooldown: 5
     triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Fancy Combo
+    moveSequence: 010000000500000001000000
+    resultSequence: 010000000100000001000000
+    maxSequenceTime: 3
+    dialogueLine: I am simply better
+    hasBrotherResponse: 1
+    brotherResponseTime: 1
+    brotherDialogueLine: No fair! You know the combos
+    triggerChance: 1
+    cooldown: 5
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Crouch Combo
+    moveSequence: 070000000700000007000000
+    resultSequence: 010000000100000001000000
+    maxSequenceTime: 3
+    dialogueLine: You are awful
+    hasBrotherResponse: 1
+    brotherResponseTime: 1
+    brotherDialogueLine: Shut up!
+    triggerChance: 1
+    cooldown: 5
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Miss Grab
+    moveSequence: 09000000
+    resultSequence: 02000000
+    maxSequenceTime: 3
+    dialogueLine: Oops
+    hasBrotherResponse: 1
+    brotherResponseTime: 1
+    brotherDialogueLine: You suck
+    triggerChance: 0.35
+    cooldown: 5
+    triggerOnlyOnce: 0
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: One Two
+    moveSequence: 0100000005000000
+    resultSequence: 0100000001000000
+    maxSequenceTime: 3
+    dialogueLine: Good old 1 - 2
+    hasBrotherResponse: 1
+    brotherResponseTime: 1
+    brotherDialogueLine: Cheater
+    triggerChance: 0.6
+    cooldown: 5
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Whiff
+    moveSequence: 000000000000000000000000
+    resultSequence: 020000000200000002000000
+    maxSequenceTime: 3
+    dialogueLine: I suck
+    hasBrotherResponse: 0
+    brotherResponseTime: 1
+    brotherDialogueLine: 
+    triggerChance: 0.6
+    cooldown: 10
+    triggerOnlyOnce: 0
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Greed
+    moveSequence: 000000000000000000000000
+    resultSequence: 030000000300000001000000
+    maxSequenceTime: 3
+    dialogueLine: Being greedy?
+    hasBrotherResponse: 1
+    brotherResponseTime: 1
+    brotherDialogueLine: I'm going to kill you
+    triggerChance: 1
+    cooldown: 10
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Hit
+    moveSequence: 00000000
+    resultSequence: 01000000
+    maxSequenceTime: 3
+    dialogueLine: Bam
+    hasBrotherResponse: 0
+    brotherResponseTime: 1
+    brotherDialogueLine: 
+    triggerChance: 0.05
+    cooldown: 15
+    triggerOnlyOnce: 0
     cooldownTimer: 0
     hasTriggered: 0
   dialogueVisibleTime: 2
@@ -2435,7 +2513,111 @@ MonoBehaviour:
   dialogueText: {fileID: 1625339006}
   dialogueAnim: {fileID: 284590063}
   brotherTrigger: {fileID: 53929660}
-  rules: []
+  rules:
+  - ruleName: Punch Combo
+    moveSequence: 020000000200000002000000
+    resultSequence: 010000000100000001000000
+    maxSequenceTime: 0
+    dialogueLine: Yes yes yes
+    hasBrotherResponse: 1
+    brotherResponseTime: 2
+    brotherDialogueLine: Stop mashing
+    triggerChance: 1
+    cooldown: 5
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Flying Kick
+    moveSequence: 000000000000000008000000
+    resultSequence: 000000000000000001000000
+    maxSequenceTime: 0
+    dialogueLine: Big hit!
+    hasBrotherResponse: 1
+    brotherResponseTime: 2
+    brotherDialogueLine: That move is bullshit
+    triggerChance: 1
+    cooldown: 5
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Fancy Combo
+    moveSequence: 000000000500000001000000
+    resultSequence: 010000000100000001000000
+    maxSequenceTime: 0
+    dialogueLine: Holy shit
+    hasBrotherResponse: 1
+    brotherResponseTime: 2
+    brotherDialogueLine: Lanugage.. dumbass
+    triggerChance: 1
+    cooldown: 5
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Whiff
+    moveSequence: 000000000000000000000000
+    resultSequence: 020000000200000002000000
+    maxSequenceTime: 0
+    dialogueLine: Can you move forward please?
+    hasBrotherResponse: 0
+    brotherResponseTime: 2
+    brotherDialogueLine: 
+    triggerChance: 0.5
+    cooldown: 5
+    triggerOnlyOnce: 0
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Crouch Combo
+    moveSequence: 070000000700000007000000
+    resultSequence: 010000000100000001000000
+    maxSequenceTime: 0
+    dialogueLine: You are awful
+    hasBrotherResponse: 1
+    brotherResponseTime: 2
+    brotherDialogueLine: As if
+    triggerChance: 1
+    cooldown: 5
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Grab Hit
+    moveSequence: 09000000
+    resultSequence: 01000000
+    maxSequenceTime: 0
+    dialogueLine: Gotcha
+    hasBrotherResponse: 0
+    brotherResponseTime: 2
+    brotherDialogueLine: 
+    triggerChance: 0.45
+    cooldown: 5
+    triggerOnlyOnce: 0
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Two One
+    moveSequence: 0500000001000000
+    resultSequence: 0100000001000000
+    maxSequenceTime: 0
+    dialogueLine: A taste of your own medicine
+    hasBrotherResponse: 0
+    brotherResponseTime: 2
+    brotherDialogueLine: 
+    triggerChance: 0.6
+    cooldown: 5
+    triggerOnlyOnce: 0
+    cooldownTimer: 0
+    hasTriggered: 0
+  - ruleName: Hit
+    moveSequence: 00000000
+    resultSequence: 01000000
+    maxSequenceTime: 0
+    dialogueLine: Yes
+    hasBrotherResponse: 0
+    brotherResponseTime: 2
+    brotherDialogueLine: 
+    triggerChance: 0.05
+    cooldown: 5
+    triggerOnlyOnce: 0
+    cooldownTimer: 0
+    hasTriggered: 0
   dialogueVisibleTime: 2
   isTalking: 0
 --- !u!1 &794750409
