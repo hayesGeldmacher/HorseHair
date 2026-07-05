@@ -5,13 +5,10 @@ public class FighterVFXController : MonoBehaviour
     [Header("References")]
     [SerializeField] private FightCharacter fightCharacter;
     [SerializeField] private Transform opponentTransform;
-    [SerializeField] private FighterVFXSpawnPoints opponentVFXPoints;
 
     [Header("VFX Prefabs")]
     [SerializeField] private GameObject hitVFX;
     [SerializeField] private GameObject blockVFX;
-    [SerializeField] private GameObject grabVFX;
-    [SerializeField] private GameObject specialVFX;
 
     [Header("VFX Scale")]
     [SerializeField] private float VFXScale = 2f;
@@ -19,57 +16,52 @@ public class FighterVFXController : MonoBehaviour
     [Header("VFX Cleanup")]
     [SerializeField] private float VFXDestroyDelay = 2f;
 
-    [Header("World Offset")]
-    [Tooltip("Offset to apply to the spawn position of the VFX in world space.")]
-    [SerializeField] private Vector3 worldPositionOffset = Vector3.zero;
+    [Header("World Position Offset")]
+    [SerializeField] private Vector3 worldPositionOffset = new Vector3(0f, 0f, -5f);
+
+    [Header("Hit Position Settings")]
+    [SerializeField] private float highHitHeight = 2.5f;
+    [SerializeField] private float midHitHeight = 1.2f;
+    [SerializeField] private float lowHitHeight = 0.3f;
+
+    [Tooltip("How far in front of the defender the hit VFX appears.")]
+    [SerializeField] private float hitForwardOffset = 0f;
+
+    [Header("Block Position Settings")]
+    [SerializeField] private float highBlockHeight = 2.5f;
+    [SerializeField] private float midBlockHeight = 1.2f;
+    [SerializeField] private float lowBlockHeight = 0.3f;
+
+    [Tooltip("How far in front of the defender the block VFX appears.")]
+    [SerializeField] private float blockForwardOffset = 0f;
 
     private void Reset()
     {
         fightCharacter = GetComponent<FightCharacter>();
     }
 
-    private void Awake()
-    {
-        AssignMissingReferences();
-    }
-
     private void OnEnable()
     {
-        AssignMissingReferences();
-
         if (fightCharacter != null)
+        {
             fightCharacter.MovePerformed += OnMovePerformed;
+        }
     }
 
     private void OnDisable()
     {
         if (fightCharacter != null)
-            fightCharacter.MovePerformed -= OnMovePerformed;
-    }
-
-    private void AssignMissingReferences()
-    {
-        if (fightCharacter == null)
-            fightCharacter = GetComponent<FightCharacter>();
-
-        if (opponentVFXPoints == null && opponentTransform != null)
         {
-            opponentVFXPoints = opponentTransform.GetComponent<FighterVFXSpawnPoints>();
-
-            if (opponentVFXPoints == null)
-                opponentVFXPoints = opponentTransform.GetComponentInChildren<FighterVFXSpawnPoints>();
+            fightCharacter.MovePerformed -= OnMovePerformed;
         }
     }
 
     private void OnMovePerformed(FightCharacter attacker, FighterMoveType moveType, FighterMoveResult result)
     {
-        AssignMissingReferences();
-
         if (result == FighterMoveResult.Hit)
         {
             Vector3 spawnPosition = GetHitSpawnPosition(moveType);
-            GameObject prefab = GetHitPrefab(moveType);
-            SpawnVFX(prefab, spawnPosition);
+            SpawnVFX(hitVFX, spawnPosition);
         }
         else if (result == FighterMoveResult.Blocked)
         {
@@ -80,49 +72,91 @@ public class FighterVFXController : MonoBehaviour
 
     private Vector3 GetHitSpawnPosition(FighterMoveType moveType)
     {
-        if (opponentVFXPoints != null)
-        {
-            Transform point = opponentVFXPoints.GetHitPoint(moveType);
-            return point.position;
-        }
+        Transform defender = GetDefenderTransform();
 
-        return GetFallbackDefenderPosition();
+        float height = GetHitHeight(moveType);
+        Vector3 directionToAttacker = GetDirectionFromDefenderToAttacker(defender);
+
+        return defender.position + Vector3.up * height + directionToAttacker * hitForwardOffset;
     }
 
     private Vector3 GetBlockSpawnPosition(FighterMoveType moveType)
     {
-        if (opponentVFXPoints != null)
-        {
-            Transform point = opponentVFXPoints.GetBlockPoint(moveType);
-            return point.position;
-        }
+        Transform defender = GetDefenderTransform();
 
-        return GetFallbackDefenderPosition();
+        float height = GetBlockHeight(moveType);
+        Vector3 directionToAttacker = GetDirectionFromDefenderToAttacker(defender);
+
+        return defender.position + Vector3.up * height + directionToAttacker * blockForwardOffset;
     }
 
-    private GameObject GetHitPrefab(FighterMoveType moveType)
+    private float GetHitHeight(FighterMoveType moveType)
     {
-        if (moveType == FighterMoveType.Grab && grabVFX != null)
-            return grabVFX;
+        switch (moveType)
+        {
+            case FighterMoveType.CrouchingPunch:
+            case FighterMoveType.CrouchingKick:
+                return lowHitHeight;
 
-        if (moveType == FighterMoveType.Special && specialVFX != null)
-            return specialVFX;
+            case FighterMoveType.StandingKick:
+                return midHitHeight;
 
-        return hitVFX;
+            case FighterMoveType.StandingPunch:
+            case FighterMoveType.JumpingPunch:
+            case FighterMoveType.JumpingKick:
+            default:
+                return highHitHeight;
+        }
     }
 
-    private Vector3 GetFallbackDefenderPosition()
+    private float GetBlockHeight(FighterMoveType moveType)
+    {
+        switch (moveType)
+        {
+            case FighterMoveType.CrouchingPunch:
+            case FighterMoveType.CrouchingKick:
+                return lowBlockHeight;
+
+            case FighterMoveType.StandingKick:
+                return midBlockHeight;
+
+            case FighterMoveType.StandingPunch:
+            case FighterMoveType.JumpingPunch:
+            case FighterMoveType.JumpingKick:
+            default:
+                return highBlockHeight;
+        }
+    }
+
+    private Transform GetDefenderTransform()
     {
         if (opponentTransform != null)
-            return opponentTransform.position;
+        {
+            return opponentTransform;
+        }
 
-        return transform.position;
+        return transform;
+    }
+
+    private Vector3 GetDirectionFromDefenderToAttacker(Transform defender)
+    {
+        Vector3 direction = transform.position - defender.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.001f)
+        {
+            direction = transform.forward;
+        }
+
+        return direction.normalized;
     }
 
     private void SpawnVFX(GameObject prefab, Vector3 spawnPosition)
     {
         if (prefab == null)
+        {
             return;
+        }
 
         spawnPosition += worldPositionOffset;
 

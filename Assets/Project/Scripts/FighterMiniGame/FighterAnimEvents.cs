@@ -2,47 +2,28 @@ using UnityEngine;
 
 public class FighterAnimEvents : MonoBehaviour
 {
+
     /// <summary>
     /// Communicates to fighter from animations
     /// attached to same fighter body as the fighter animator
-    /// tells the fighter when character has finished attacking, hit, grabbed, et cet.
+    /// tells the fighter when character has started, finished attacking, et cet.
     /// </summary>
 
     [Header("References")]
     [SerializeField] private FightCharacter fightCharacter;
 
-    private void Reset()
+
+    public void StartAttack()
     {
-        fightCharacter = GetComponentInParent<FightCharacter>();
-    }
+        fightCharacter.StartAttackAnimation(); //confirms attack animation started - AB
 
-    private void Awake()
-    {
-        if (fightCharacter == null)
-            fightCharacter = GetComponentInParent<FightCharacter>();
-    }
-
-    public void PerformAttackHit()
-    {
-        if (fightCharacter == null)
-            return;
-
-        fightCharacter.PerformAttackHit(); //applies punch kick or special hit at the animation contact frame - AB
-    }
-
-    public void PerformGrabHit()
-    {
-        if (fightCharacter == null)
-            return;
-
-        fightCharacter.PerformGrabHit(); //applies grab at the animation contact frame - AB
+        //call to fightCharacter function - HG
+        //fightCharacter should not be able to move or spam more attack when in attack anim phase - HG
+        Debug.Log(fightCharacter.gameObject.name + " started attack animation!");
     }
 
     public void EndAttack()
     {
-        if (fightCharacter == null)
-            return;
-
         fightCharacter.EndAttackAnimation(); //unlocks attack input once attack animation finishes - AB
 
         Debug.Log(fightCharacter.gameObject.name + " finished attack animation!");

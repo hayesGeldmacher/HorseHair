@@ -13,8 +13,6 @@ public enum AttackHeight
 
 public class FightCharacter : MonoBehaviour
 {
-    #region Inspector References
-
     [Header("References")]
     [Tooltip("Input component used by the player Leave empty for AI fighters")]
     [SerializeField] private FighterInput input;
@@ -34,10 +32,6 @@ public class FightCharacter : MonoBehaviour
     [Header("Control Type")]
     [Tooltip("Turn this on for AI-controlled fighters Leave it off for the player")]
     [SerializeField] private bool controlledByAI;
-
-    #endregion
-
-    #region Movement Settings
 
     [Header("Movement")]
     [Tooltip("Horizontal movement speed")]
@@ -74,10 +68,6 @@ public class FightCharacter : MonoBehaviour
 
     [Tooltip("Distance used by the downward ground check raycast")]
     [SerializeField] private float groundCheckDistance = 0.6f;
-
-    #endregion
-
-    #region Combat Settings
 
     [Header("Combat")]
     [Header("Punch Attacks")]
@@ -164,31 +154,25 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Force applied to the opponent after a normal attack lands")]
     [SerializeField] private float hitPushbackForce = 3f;
 
-    #endregion
-
-    #region UI Animation And Sound Settings
-
     [Header("Action Text")]
     [Tooltip("How long temporary actions stay visible before returning to normal state text")]
     [SerializeField] private float actionTextHoldTime = 0.4f;
 
+
     [Header("Animation")]
     [Tooltip("Should this fighter be animated")]
     [SerializeField] private bool animateFighter = true;
-
     [Tooltip("Animator component used for fighter model")]
     [SerializeField] private Animator fighterAnim;
-
     [Tooltip("Should fighter shuffle or walk forward")]
     [SerializeField] private bool walkNormal = false;
-
     [Tooltip("The physical transform of the fighter's 3D model")]
     [SerializeField] private Transform fighterModel;
+
 
     [Header("Sound Effects")]
     [Tooltip("Sound played when this fighter performs a punch attack")]
     [SerializeField] private AudioSource audioSource;
-
     [SerializeField] private AudioClip attackMissSound;
     [SerializeField] private AudioClip punchHitSound;
     [SerializeField] private AudioClip kickHitSound;
@@ -197,9 +181,7 @@ public class FightCharacter : MonoBehaviour
     [SerializeField] private AudioClip jumpLandSound;
     [SerializeField] private AudioClip grabSound;
 
-    #endregion
 
-    #region Runtime State
 
     private bool isShuffling; //for animation script to read player state -HG
     private bool isGrounded;
@@ -209,7 +191,6 @@ public class FightCharacter : MonoBehaviour
     private bool isRecovering;
 
     private int facingDirection = 1;
-
     private float actionTextTimer;
     private float blockStunTimer;
     private float groundedTimer;
@@ -231,25 +212,10 @@ public class FightCharacter : MonoBehaviour
     private bool aiGrabPressed;
     private bool aiSpecialPressed;
 
-    private string pendingAttackName;
-    private FighterMoveType pendingMoveType;
-    private int pendingAttackDamage;
-    private float pendingAttackRange;
-    private AttackHeight pendingAttackHeight;
-    private AudioClip pendingHitSound;
-    private bool hasPendingAttack;
-
-    private bool hasPendingGrab;
-
     private bool isAttackAnimationPlaying; //prevents attack spam while an attack animation is still playing 
 
     private bool roundActive = true;
-
     private Transform mainCameraTransform;
-
-    #endregion
-
-    #region Public API
 
     public bool IsRoundActive
     {
@@ -258,27 +224,9 @@ public class FightCharacter : MonoBehaviour
 
     public event System.Action<FightCharacter, FighterMoveType, FighterMoveResult> MovePerformed;
 
-    public void SetAIInput(float moveInput, bool jumpPressed, bool punchPressed, bool kickPressed, bool grabPressed, bool crouchHeld, bool specialPressed = false)
+    private void Reset()
     {
-        aiMoveInput = moveInput;
-        aiJumpPressed = jumpPressed;
-        aiPunchPressed = punchPressed;
-        aiKickPressed = kickPressed;
-        aiGrabPressed = grabPressed;
-        aiCrouchHeld = crouchHeld;
-        aiSpecialPressed = specialPressed;
-    }
-
-    public void SetRoundActive(bool isActive)
-    {
-        roundActive = isActive;
-
-        if (!roundActive && rb != null)
-        {
-            Vector3 velocity = rb.linearVelocity;
-            velocity.x = 0f;
-            rb.linearVelocity = velocity;
-        }
+        AssignMissingReferences();
     }
 
     public void StartAttackAnimation()
@@ -289,129 +237,47 @@ public class FightCharacter : MonoBehaviour
     public void EndAttackAnimation()
     {
         isAttackAnimationPlaying = false; //unlocks attack input after animation finishes 
-
-        hasPendingAttack = false;
-        hasPendingGrab = false;
     }
 
-    public void PerformAttackHit()
+    private bool CanStartAttack()
     {
-        if (!hasPendingAttack)
-            return;
-
-        hasPendingAttack = false;
-
-        FighterMoveResult result = TryHitOpponent(
-            pendingAttackName,
-            pendingAttackDamage,
-            pendingAttackRange,
-            pendingAttackHeight
-        );
-
-        PlayAttackResultSound(result, pendingHitSound);
-
-        MovePerformed?.Invoke(this, pendingMoveType, result);
+        return !isAttackAnimationPlaying && !isKnockedDown && !isRecovering && blockStunTimer <= 0f; //checks if fighter can start an attack 
     }
 
-    public void PerformGrabHit()
+    private void PlaySound(AudioClip clip)
     {
-        if (!hasPendingGrab)
+        Debug.Log("PlaySound called");
+
+        if (audioSource == null)
+        {
+            Debug.LogError("AudioSource is null");
             return;
+        }
 
-        hasPendingGrab = false;
+        if (clip == null)
+        {
+            Debug.LogError("AudioClip is null");
+            return;
+        }
 
-        FighterMoveResult result = TryGrabOpponent();
+        Debug.Log("Playing clip: " + clip.name);
+        audioSource.PlayOneShot(clip);
+    }
 
+    private void PlayAttackResultSound(FighterMoveResult result, AudioClip hitSound)
+    {
         if (result == FighterMoveResult.Hit)
-            PlaySound(grabSound);
-        else
+        {
+            PlaySound(hitSound);
+        }
+        else if (result == FighterMoveResult.Blocked)
+        {
+            PlaySound(blockSound);
+        }
+        else if (result == FighterMoveResult.Miss)
+        {
             PlaySound(attackMissSound);
-
-        MovePerformed?.Invoke(this, FighterMoveType.Grab, result);
-    }
-
-    public FighterMoveResult ReceiveGrab(FightCharacter attacker, int damage)
-    {
-        if (isKnockedDown || isRecovering)
-            return FighterMoveResult.Miss;
-
-        if (quickstepTimer > 0f)
-            return FighterMoveResult.Miss;
-
-        if (attacker == null)
-            return FighterMoveResult.Miss;
-
-        if (health == null)
-        {
-            Debug.Log(name + " has no FighterHealth script.");
-            return FighterMoveResult.Miss;
         }
-
-        health.TakeDamage(damage, true);
-
-        SwitchSidesWithAttacker(attacker);
-        ApplyGroundedState();
-
-        SetTemporaryActionText("Grabbed");
-
-        return FighterMoveResult.Hit;
-    }
-
-    /// <summary>
-    /// If blocking correctly, applies chip damage, block stun, and small knockback.
-    /// If not blocking, applies full damage.
-    /// </summary>
-    public FighterMoveResult ReceiveAttack(int damage, Vector3 attackerPosition, AttackHeight attackHeight)
-    {
-        if (isKnockedDown)
-            return FighterMoveResult.Miss;
-
-        if (quickstepTimer > 0f)
-            return FighterMoveResult.Miss;
-
-        if (IsBlockingAttack(attackerPosition, attackHeight))
-        {
-            ApplyBlockedAttack(attackerPosition);
-            return FighterMoveResult.Blocked;
-        }
-
-        if (health == null)
-        {
-            Debug.Log(name + " has no FighterHealth script");
-            return FighterMoveResult.Miss;
-        }
-
-        health.TakeDamage(damage, true);
-        ApplyDamage();
-        ApplyHitPushback(attackerPosition);
-        SetTemporaryActionText("Hit");
-
-        return FighterMoveResult.Hit;
-    }
-
-    public void FlipModel(float direction)
-    {
-        //flips the fighter model on grab - HG
-        if (fighterModel != null)
-        {
-            Vector3 scale = fighterModel.localScale;
-            scale.x = Mathf.Abs(scale.x); //re-orient
-            scale.x *= direction;
-
-            if (scale.x != fighterModel.localScale.x)
-            {
-                fighterModel.localScale = scale;
-            }
-        }
-    }
-
-    #endregion
-
-    #region Unity Lifecycle
-
-    private void Reset()
-    {
-        AssignMissingReferences();
     }
 
     private void Awake()
@@ -431,10 +297,7 @@ public class FightCharacter : MonoBehaviour
         UpdateQuickstepTimers();
         UpdateGroundedStateTimers();
 
-        if (animateFighter)
-        {
-            UdpateAnimation();
-        }
+        if (animateFighter) { UdpateAnimation(); }
 
         if (!roundActive)
         {
@@ -477,10 +340,6 @@ public class FightCharacter : MonoBehaviour
         FaceActionTextToCamera();
     }
 
-    #endregion
-
-    #region Setup
-
     private void AssignMissingReferences()
     {
         rb ??= GetComponent<Rigidbody>();
@@ -490,9 +349,16 @@ public class FightCharacter : MonoBehaviour
         superMeter ??= GetComponent<FighterSuperMeter>();
     }
 
-    #endregion
-
-    #region Input Reading
+    public void SetAIInput(float moveInput, bool jumpPressed, bool punchPressed, bool kickPressed, bool grabPressed, bool crouchHeld, bool specialPressed = false)
+    {
+        aiMoveInput = moveInput;
+        aiJumpPressed = jumpPressed;
+        aiPunchPressed = punchPressed;
+        aiKickPressed = kickPressed;
+        aiGrabPressed = grabPressed;
+        aiCrouchHeld = crouchHeld;
+        aiSpecialPressed = specialPressed;
+    }
 
     private void ReadActions()
     {
@@ -555,66 +421,21 @@ public class FightCharacter : MonoBehaviour
         ClearAIButtonInputs();
     }
 
-    private bool TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool kickPressed, out bool grabPressed, out bool specialPressed, out bool crouchHeld)
+    public void SetRoundActive(bool isActive)
     {
-        if (controlledByAI)
+        roundActive = isActive;
+
+        if (!roundActive && rb != null)
         {
-            moveInput = aiMoveInput;
-            jumpPressed = aiJumpPressed;
-            punchPressed = aiPunchPressed;
-            kickPressed = aiKickPressed;
-            grabPressed = aiGrabPressed;
-            specialPressed = aiSpecialPressed;
-            crouchHeld = aiCrouchHeld;
-            return true;
+            Vector3 velocity = rb.linearVelocity;
+            velocity.x = 0f;
+            rb.linearVelocity = velocity;
         }
-
-        if (input == null)
-        {
-            moveInput = 0f;
-            jumpPressed = false;
-            punchPressed = false;
-            kickPressed = false;
-            grabPressed = false;
-            specialPressed = false;
-            crouchHeld = false;
-            return false;
-        }
-
-        moveInput = input.Move;
-        jumpPressed = input.JumpPressed;
-        punchPressed = input.PunchPressed;
-        kickPressed = input.KickPressed;
-        grabPressed = input.GrabPressed;
-        specialPressed = input.SpecialPressed;
-        crouchHeld = input.CrouchHeld;
-
-        return true;
     }
-
-    /// <summary>
-    /// Movement input is not cleared because the AI may need to keep holding a direction
-    /// </summary>
-    private void ClearAIButtonInputs()
-    {
-        if (!controlledByAI)
-            return;
-
-        aiJumpPressed = false;
-        aiPunchPressed = false;
-        aiKickPressed = false;
-        aiGrabPressed = false;
-        aiSpecialPressed = false;
-    }
-
-    #endregion
-
-    #region Movement
 
     private void Move()
     {
         isShuffling = false;
-
         if (rb == null || blockStunTimer > 0f || isKnockedDown || isRecovering)
             return;
 
@@ -634,7 +455,6 @@ public class FightCharacter : MonoBehaviour
 
         float horizontal = Mathf.Abs(moveInput) < inputDeadZone ? 0f : moveInput;
         float currentMoveSpeed = moveSpeed;
-
         if (!isBlocking) //only shuffling is character is moving forward -HG
         {
             isShuffling = Mathf.Abs(moveInput) < inputDeadZone ? false : true; //check if player is moving or still - HG
@@ -648,28 +468,6 @@ public class FightCharacter : MonoBehaviour
         Vector3 velocity = rb.linearVelocity;
         velocity.x = horizontal * currentMoveSpeed;
         rb.linearVelocity = velocity;
-    }
-
-    private void Jump(float moveInput)
-    {
-        PlaySound(jumpSound);
-
-        if (rb == null)
-            return;
-
-        float jumpHorizontalDirection = Mathf.Abs(moveInput) < inputDeadZone ? 0f : Mathf.Sign(moveInput);
-
-        Vector3 velocity = rb.linearVelocity;
-        velocity.y = 0f;
-        velocity.x = jumpHorizontalDirection * moveSpeed;
-        rb.linearVelocity = velocity;
-
-        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
-        if (animateFighter)
-        {
-            fighterAnim.SetTrigger("jump");
-        }
     }
 
     private void CheckQuickstepInput(float moveInput)
@@ -712,8 +510,6 @@ public class FightCharacter : MonoBehaviour
         isBlocking = false;
         isCrouching = false;
 
-        if (animateFighter) { fighterAnim.SetTrigger("quickStep"); }
-
         SetTemporaryActionText(direction == facingDirection ? "Forward Quickstep" : "Back Quickstep");
     }
 
@@ -735,9 +531,60 @@ public class FightCharacter : MonoBehaviour
             quickstepCooldownTimer -= Time.deltaTime;
     }
 
-    #endregion
+    private bool TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool kickPressed, out bool grabPressed, out bool specialPressed, out bool crouchHeld)
+    {
+        if (controlledByAI)
+        {
+            moveInput = aiMoveInput;
+            jumpPressed = aiJumpPressed;
+            punchPressed = aiPunchPressed;
+            kickPressed = aiKickPressed;
+            grabPressed = aiGrabPressed;
+            specialPressed = aiSpecialPressed;
+            crouchHeld = aiCrouchHeld;
+            return true;
+        }
 
-    #region Combat Actions
+        if (input == null)
+        {
+            moveInput = 0f;
+            jumpPressed = false;
+            punchPressed = false;
+            kickPressed = false;
+            grabPressed = false;
+            specialPressed = false;
+            crouchHeld = false;
+            return false;
+        }
+
+        moveInput = input.Move;
+        jumpPressed = input.JumpPressed;
+        punchPressed = input.PunchPressed;
+        kickPressed = input.KickPressed;
+        grabPressed = input.GrabPressed;
+        specialPressed = input.SpecialPressed;
+        crouchHeld = input.CrouchHeld;
+
+        return true;
+    }
+
+    private void Jump(float moveInput)
+    {
+        PlaySound(jumpSound);
+        if (rb == null)
+            return;
+
+        float jumpHorizontalDirection = Mathf.Abs(moveInput) < inputDeadZone ? 0f : Mathf.Sign(moveInput);
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.y = 0f;
+        velocity.x = jumpHorizontalDirection * moveSpeed;
+        rb.linearVelocity = velocity;
+
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+        if (animateFighter) { fighterAnim.SetTrigger("jump"); }
+    }
 
     private void Punch()
     {
@@ -745,7 +592,7 @@ public class FightCharacter : MonoBehaviour
             return;
 
         StartAttackAnimation(); //locks immediately so button spam cannot restart the animation
-
+        
         string punchType = GetPunchType();
         FighterMoveType moveType = GetPunchMoveType();
 
@@ -755,17 +602,12 @@ public class FightCharacter : MonoBehaviour
 
         SetTemporaryActionText(punchType);
 
-        StorePendingAttack(
-            punchType,
-            moveType,
-            damage,
-            range,
-            attackHeight,
-            punchHitSound
-        );
+        FighterMoveResult result = TryHitOpponent(punchType, damage, range, attackHeight);
 
-        if (animateFighter && fighterAnim != null)
-            fighterAnim.SetTrigger("punch");
+        PlayAttackResultSound(result, punchHitSound);
+
+        MovePerformed?.Invoke(this, moveType, result);
+        if (animateFighter) { fighterAnim.SetTrigger("punch"); }
     }
 
     private void Kick()
@@ -784,17 +626,13 @@ public class FightCharacter : MonoBehaviour
 
         SetTemporaryActionText(kickType);
 
-        StorePendingAttack(
-            kickType,
-            moveType,
-            damage,
-            range,
-            attackHeight,
-            kickHitSound
-        );
+        FighterMoveResult result = TryHitOpponent(kickType, damage, range, attackHeight);
 
-        if (animateFighter && fighterAnim != null)
-            fighterAnim.SetTrigger("kick");
+        PlayAttackResultSound(result, kickHitSound);
+
+        MovePerformed?.Invoke(this, moveType, result);
+
+        if (animateFighter) { fighterAnim.SetTrigger("kick"); }
     }
 
     private void Grab()
@@ -812,14 +650,21 @@ public class FightCharacter : MonoBehaviour
 
         StartAttackAnimation(); //locks immediately so button spam cannot restart the animation 
 
-        hasPendingGrab = true;
-
         SetTemporaryActionText("Grab");
 
-        if (animateFighter && fighterAnim != null)
+        FighterMoveResult result = TryGrabOpponent();
+
+        if (result == FighterMoveResult.Hit)
+            PlaySound(grabSound);
+        else
+            PlaySound(attackMissSound);
+
+        if (animateFighter)
         {
             fighterAnim.SetTrigger("grab");
         }
+
+        MovePerformed?.Invoke(this, FighterMoveType.Grab, result);
     }
 
     private void Special()
@@ -846,68 +691,19 @@ public class FightCharacter : MonoBehaviour
 
         SetTemporaryActionText("Special");
 
-        StorePendingAttack(
+        FighterMoveResult result = TryHitOpponent(
             "Special",
-            FighterMoveType.Special,
             specialDamage,
             specialRange,
-            specialAttackHeight,
-            specialHitSound != null ? specialHitSound : kickHitSound
+            specialAttackHeight
         );
 
-        if (animateFighter && fighterAnim != null)
-            fighterAnim.SetTrigger("special");
-    }
+        PlayAttackResultSound(result, specialHitSound != null ? specialHitSound : kickHitSound);
 
-    private bool CanStartAttack()
-    {
-        return !isAttackAnimationPlaying && !isKnockedDown && !isRecovering && blockStunTimer <= 0f; //checks if fighter can start an attack 
-    }
+      if (animateFighter && fighterAnim != null)
+            fighterAnim.SetTrigger("special"); 
 
-    private void StorePendingAttack(
-        string attackName,
-        FighterMoveType moveType,
-        int damage,
-        float range,
-        AttackHeight attackHeight,
-        AudioClip hitSound)
-    {
-        pendingAttackName = attackName;
-        pendingMoveType = moveType;
-        pendingAttackDamage = damage;
-        pendingAttackRange = range;
-        pendingAttackHeight = attackHeight;
-        pendingHitSound = hitSound;
-        hasPendingAttack = true;
-    }
-
-    #endregion
-
-    #region Combat Resolution
-
-    private FighterMoveResult TryHitOpponent(string attackName, int damage, float range, AttackHeight attackHeight)
-    {
-        if (opponent == null)
-        {
-            Debug.Log("No opponent assigned");
-            return FighterMoveResult.Miss;
-        }
-
-        float distanceToOpponent = Vector3.Distance(transform.position, opponent.position);
-
-        if (distanceToOpponent > range)
-        {
-            Debug.Log(attackName + " missed");
-            return FighterMoveResult.Miss;
-        }
-
-        if (!opponent.TryGetComponent(out FightCharacter opponentCharacter))
-        {
-            Debug.Log("Opponent has no FightCharacter script.");
-            return FighterMoveResult.Miss;
-        }
-
-        return opponentCharacter.ReceiveAttack(damage, transform.position, attackHeight);
+        MovePerformed?.Invoke(this, FighterMoveType.Special, result);
     }
 
     private FighterMoveResult TryGrabOpponent()
@@ -938,13 +734,40 @@ public class FightCharacter : MonoBehaviour
     /// <summary>
     /// Grabs ignore block, deal damage, switch the fighters' positions, and put this fighter into grounded state.
     /// </summary>
+    public FighterMoveResult ReceiveGrab(FightCharacter attacker, int damage)
+    {
+        if (isKnockedDown || isRecovering)
+            return FighterMoveResult.Miss;
+
+        if (quickstepTimer > 0f)
+            return FighterMoveResult.Miss;
+
+        if (attacker == null)
+            return FighterMoveResult.Miss;
+
+        if (health == null)
+        {
+            Debug.Log(name + " has no FighterHealth script.");
+            return FighterMoveResult.Miss;
+        }
+
+        health.TakeDamage(damage, true);
+
+        SwitchSidesWithAttacker(attacker);
+        ApplyGroundedState();
+
+        SetTemporaryActionText("Grabbed");
+
+        return FighterMoveResult.Hit;
+    }
+
     private void SwitchSidesWithAttacker(FightCharacter attacker)
     {
         Vector3 attackerPosition = attacker.transform.position;
         Vector3 defenderPosition = transform.position;
 
         float directionFromAttackerToDefender = Mathf.Sign(defenderPosition.x - attackerPosition.x);
-
+       
         attacker.transform.position = new Vector3(
             defenderPosition.x,
             attackerPosition.y,
@@ -976,65 +799,17 @@ public class FightCharacter : MonoBehaviour
         attacker.FlipModel(-newDirection);
     }
 
-    /// <summary>
-    /// Chip damage cannot defeat the fighter.
-    /// </summary>
-    private void ApplyBlockedAttack(Vector3 attackerPosition)
+    public void FlipModel(float direction)
     {
-        if (health != null)
-            health.TakeDamage(blockChipDamage, false);
-
-        ApplyBlockStun();
-        ApplyBlockKnockback(attackerPosition);
-
-        SetTemporaryActionText("Blocked");
-        Debug.Log(name + " blocked the attack and took chip damage.");
-    }
-
-    private void ApplyDamage()
-    {
-        if (animateFighter)
+        //flips the fighter model on grab - HG
+        if (fighterModel != null)
         {
-            fighterAnim.SetTrigger("hurt");
+            Vector3 scale = fighterModel.localScale;
+            scale.x = Mathf.Abs(scale.x); //re-orient
+            scale.x *= direction;
+            if (scale.x != fighterModel.localScale.x) { fighterModel.localScale = scale; }
         }
     }
-
-    private void ApplyBlockStun()
-    {
-        blockStunTimer = blockStunTime;
-    }
-
-    private void ApplyBlockKnockback(Vector3 attackerPosition)
-    {
-        if (rb == null)
-            return;
-
-        float directionAwayFromAttacker = Mathf.Sign(transform.position.x - attackerPosition.x);
-
-        Vector3 velocity = rb.linearVelocity;
-        velocity.x = 0f;
-        rb.linearVelocity = velocity;
-
-        rb.AddForce(Vector3.right * directionAwayFromAttacker * blockKnockbackForce, ForceMode.Impulse);
-    }
-
-    private void ApplyHitPushback(Vector3 attackerPosition)
-    {
-        if (rb == null)
-            return;
-
-        float directionAwayFromAttacker = Mathf.Sign(transform.position.x - attackerPosition.x);
-
-        Vector3 velocity = rb.linearVelocity;
-        velocity.x = 0f;
-        rb.linearVelocity = velocity;
-
-        rb.AddForce(Vector3.right * directionAwayFromAttacker * hitPushbackForce, ForceMode.Impulse);
-    }
-
-    #endregion
-
-    #region Attack Type Helpers
 
     private FighterMoveType GetPunchMoveType()
     {
@@ -1091,17 +866,6 @@ public class FightCharacter : MonoBehaviour
         return standingPunchDamage;
     }
 
-    private int GetKickDamage()
-    {
-        if (!isGrounded)
-            return jumpingKickDamage;
-
-        if (isCrouching)
-            return crouchingKickDamage;
-
-        return standingKickDamage;
-    }
-
     private float GetPunchRange()
     {
         if (!isGrounded)
@@ -1111,6 +875,17 @@ public class FightCharacter : MonoBehaviour
             return crouchingPunchRange;
 
         return standingPunchRange;
+    }
+
+    private int GetKickDamage()
+    {
+        if (!isGrounded)
+            return jumpingKickDamage;
+
+        if (isCrouching)
+            return crouchingKickDamage;
+
+        return standingKickDamage;
     }
 
     private float GetKickRange()
@@ -1140,45 +915,116 @@ public class FightCharacter : MonoBehaviour
         return AttackHeight.High;
     }
 
-    #endregion
-
-    #region Defensive State Helpers
-
-    private bool IsBlockingAttack(Vector3 attackerPosition, AttackHeight attackHeight)
+    private FighterMoveResult TryHitOpponent(string attackName, int damage, float range, AttackHeight attackHeight)
     {
-        return isBlocking
-            && IsAttackFromFront(attackerPosition)
-            && IsBlockingCorrectHeight(attackHeight);
+        if (opponent == null)
+        {
+            Debug.Log("No opponent assigned");
+            return FighterMoveResult.Miss;
+        }
+
+        float distanceToOpponent = Vector3.Distance(transform.position, opponent.position);
+
+        if (distanceToOpponent > range)
+        {
+            Debug.Log(attackName + " missed");
+            return FighterMoveResult.Miss;
+        }
+
+        if (!opponent.TryGetComponent(out FightCharacter opponentCharacter))
+        {
+            Debug.Log("Opponent has no FightCharacter script.");
+            return FighterMoveResult.Miss;
+        }
+
+        return opponentCharacter.ReceiveAttack(damage, transform.position, attackHeight);
     }
 
     /// <summary>
-    /// Standing block blocks high attacks, Crouching block blocks low attacks
+    /// If blocking correctly, applies chip damage, block stun, and small knockback.
+    /// If not blocking, applies full damage.
     /// </summary>
-    private bool IsBlockingCorrectHeight(AttackHeight attackHeight)
+    public FighterMoveResult ReceiveAttack(int damage, Vector3 attackerPosition, AttackHeight attackHeight)
     {
-        if (isCrouching)
-            return attackHeight == AttackHeight.Low;
+        if (isKnockedDown)
+            return FighterMoveResult.Miss;
 
-        return attackHeight == AttackHeight.High;
+        if (quickstepTimer > 0f)
+            return FighterMoveResult.Miss;
+
+        if (IsBlockingAttack(attackerPosition, attackHeight))
+        {
+            ApplyBlockedAttack(attackerPosition);
+            return FighterMoveResult.Blocked;
+        }
+
+        if (health == null)
+        {
+            Debug.Log(name + " has no FighterHealth script");
+            return FighterMoveResult.Miss;
+        }
+
+        health.TakeDamage(damage, true);
+        ApplyDamage();
+        ApplyHitPushback(attackerPosition);
+        SetTemporaryActionText("Hit");
+
+        return FighterMoveResult.Hit;
     }
 
-    private bool IsAttackFromFront(Vector3 attackerPosition)
+    /// <summary>
+    /// Chip damage cannot defeat the fighter.
+    /// </summary>
+    private void ApplyBlockedAttack(Vector3 attackerPosition)
     {
-        float directionToAttacker = Mathf.Sign(attackerPosition.x - transform.position.x);
-        return directionToAttacker == facingDirection;
+        if (health != null)
+            health.TakeDamage(blockChipDamage, false);
+
+        ApplyBlockStun();
+        ApplyBlockKnockback(attackerPosition);
+
+        SetTemporaryActionText("Blocked");
+        Debug.Log(name + " blocked the attack and took chip damage.");
     }
 
-    private bool IsHoldingBack(float horizontalInput)
+    private void ApplyBlockStun()
     {
-        if (Mathf.Abs(horizontalInput) < inputDeadZone)
-            return false;
-
-        return Mathf.Sign(horizontalInput) != facingDirection;
+        blockStunTimer = blockStunTime;
     }
 
-    #endregion
+    private void ApplyBlockKnockback(Vector3 attackerPosition)
+    {
+        if (rb == null)
+            return;
 
-    #region Knockdown And Recovery
+        float directionAwayFromAttacker = Mathf.Sign(transform.position.x - attackerPosition.x);
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = 0f;
+        rb.linearVelocity = velocity;
+
+        rb.AddForce(Vector3.right * directionAwayFromAttacker * blockKnockbackForce, ForceMode.Impulse);
+    }
+
+    private void ApplyHitPushback(Vector3 attackerPosition)
+    {
+        if (rb == null)
+            return;
+
+        float directionAwayFromAttacker = Mathf.Sign(transform.position.x - attackerPosition.x);
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = 0f;
+        rb.linearVelocity = velocity;
+
+        rb.AddForce(Vector3.right * directionAwayFromAttacker * hitPushbackForce, ForceMode.Impulse);
+    }
+
+    private void UpdateBlockStunTimer()
+    {
+        if (blockStunTimer > 0f)
+            blockStunTimer -= Time.deltaTime;
+    }
 
     private void ApplyGroundedState()
     {
@@ -1243,44 +1089,10 @@ public class FightCharacter : MonoBehaviour
         recoveryTimer = 0f;
     }
 
-    #endregion
-
-    #region State Updates
-
-    private void UpdateFacingDirection()
+    private void ApplyDamage()
     {
-        if (opponent == null)
-            return;
-
-        facingDirection = opponent.position.x > transform.position.x ? 1 : -1;
-
-        FlipModel(facingDirection);
+        if (animateFighter) { fighterAnim.SetTrigger("hurt"); }
     }
-
-    private void UpdateGrounded()
-    {
-        bool wasGrounded = isGrounded;
-
-        isGrounded = Physics.Raycast(
-            transform.position,
-            Vector3.down,
-            groundCheckDistance,
-            groundLayer
-        );
-
-        if (!wasGrounded && isGrounded && roundActive)
-            PlaySound(jumpLandSound);
-    }
-
-    private void UpdateBlockStunTimer()
-    {
-        if (blockStunTimer > 0f)
-            blockStunTimer -= Time.deltaTime;
-    }
-
-    #endregion
-
-    #region Action Text
 
     private void UpdateNormalActionText(float moveInput)
     {
@@ -1343,9 +1155,62 @@ public class FightCharacter : MonoBehaviour
         );
     }
 
-    #endregion
+    private bool IsBlockingAttack(Vector3 attackerPosition, AttackHeight attackHeight)
+    {
+        return isBlocking
+            && IsAttackFromFront(attackerPosition)
+            && IsBlockingCorrectHeight(attackHeight);
+    }
 
-    #region Animation
+    /// <summary>
+    /// Standing block blocks high attacks, Crouching block blocks low attacks
+    /// </summary>
+    private bool IsBlockingCorrectHeight(AttackHeight attackHeight)
+    {
+        if (isCrouching)
+            return attackHeight == AttackHeight.Low;
+
+        return attackHeight == AttackHeight.High;
+    }
+
+    private bool IsAttackFromFront(Vector3 attackerPosition)
+    {
+        float directionToAttacker = Mathf.Sign(attackerPosition.x - transform.position.x);
+        return directionToAttacker == facingDirection;
+    }
+
+    private bool IsHoldingBack(float horizontalInput)
+    {
+        if (Mathf.Abs(horizontalInput) < inputDeadZone)
+            return false;
+
+        return Mathf.Sign(horizontalInput) != facingDirection;
+    }
+
+    private void UpdateFacingDirection()
+    {
+        if (opponent == null)
+            return;
+
+        facingDirection = opponent.position.x > transform.position.x ? 1 : -1;
+
+        FlipModel(facingDirection);
+    }
+
+    private void UpdateGrounded()
+    {
+        bool wasGrounded = isGrounded;
+
+        isGrounded = Physics.Raycast(
+            transform.position,
+            Vector3.down,
+            groundCheckDistance,
+            groundLayer
+        );
+
+        if (!wasGrounded && isGrounded && roundActive)
+            PlaySound(jumpLandSound);
+    }
 
     /// <summary>
     /// Updates animation for the fighter based off current state - HG
@@ -1360,45 +1225,18 @@ public class FightCharacter : MonoBehaviour
         fighterAnim.SetBool("stunned", isKnockedDown);
     }
 
-    #endregion
-
-    #region Audio
-
-    private void PlaySound(AudioClip clip)
+    /// <summary>
+    /// Movement input is not cleared because the AI may need to keep holding a direction
+    /// </summary>
+    private void ClearAIButtonInputs()
     {
-        Debug.Log("PlaySound called");
-
-        if (audioSource == null)
-        {
-            Debug.LogError("AudioSource is null");
+        if (!controlledByAI)
             return;
-        }
 
-        if (clip == null)
-        {
-            Debug.LogError("AudioClip is null");
-            return;
-        }
-
-        Debug.Log("Playing clip: " + clip.name);
-        audioSource.PlayOneShot(clip);
+        aiJumpPressed = false;
+        aiPunchPressed = false;
+        aiKickPressed = false;
+        aiGrabPressed = false;
+        aiSpecialPressed = false;
     }
-
-    private void PlayAttackResultSound(FighterMoveResult result, AudioClip hitSound)
-    {
-        if (result == FighterMoveResult.Hit)
-        {
-            PlaySound(hitSound);
-        }
-        else if (result == FighterMoveResult.Blocked)
-        {
-            PlaySound(blockSound);
-        }
-        else if (result == FighterMoveResult.Miss)
-        {
-            PlaySound(attackMissSound);
-        }
-    }
-
-    #endregion
 }

@@ -172,8 +172,6 @@ MonoBehaviour:
   punchAction: {fileID: -5882644312763210218, guid: e0c3a5bbff645d24ab07f1c6b7f5b8bd, type: 3}
   kickAction: {fileID: -2434569042550881021, guid: e0c3a5bbff645d24ab07f1c6b7f5b8bd, type: 3}
   crouchAction: {fileID: -5946650741149022378, guid: e0c3a5bbff645d24ab07f1c6b7f5b8bd, type: 3}
-  grabAction: {fileID: 0}
-  specialAction: {fileID: 0}
 --- !u!114 &2073051923087360164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,56 +192,20 @@ MonoBehaviour:
   controlledByAI: 0
   moveSpeed: 5
   blockMoveSpeed: 2.5
-  crouchMoveSpeed: 2.5
   jumpForce: 4
   inputDeadZone: 0.25
-  quickstepSpeed: 12
-  quickstepTime: 0.15
-  quickstepCooldown: 0.4
-  doubleTapWindow: 0.25
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
   groundCheckDistance: 1.5
-  standingPunchDamage: 10
-  standingPunchRange: 1.5
-  crouchingPunchDamage: 8
-  crouchingPunchRange: 1.2
-  jumpingPunchDamage: 12
-  jumpingPunchRange: 1.6
-  standingKickDamage: 16
-  standingKickRange: 2
-  crouchingKickDamage: 14
-  crouchingKickRange: 1.8
-  jumpingKickDamage: 18
-  jumpingKickRange: 2.1
-  grabDamage: 6
-  grabRange: 2
-  grabSideSwitchOffset: 1
-  groundedTime: 3
-  recoveryTime: 0.6
-  superMeter: {fileID: 0}
-  specialDamage: 30
-  specialRange: 2.5
-  specialAttackHeight: 0
-  specialHitSound: {fileID: 0}
+  punchDamage: 10
+  punchRange: 2
+  kickDamage: 16
+  kickRange: 2
   blockChipDamage: 2
   blockStunTime: 0.35
   blockKnockbackForce: 2
-  hitPushbackForce: 3
   actionTextHoldTime: 0.4
-  animateFighter: 1
-  fighterAnim: {fileID: 0}
-  walkNormal: 0
-  fighterModel: {fileID: 0}
-  audioSource: {fileID: 0}
-  attackMissSound: {fileID: 0}
-  punchHitSound: {fileID: 0}
-  kickHitSound: {fileID: 0}
-  blockSound: {fileID: 0}
-  jumpSound: {fileID: 0}
-  jumpLandSound: {fileID: 0}
-  grabSound: {fileID: 0}
 --- !u!114 &651248732830399710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -773,8 +735,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2101551262792922484}
   - component: {fileID: 8925130552955207623}
-  - component: {fileID: 8022259651407421388}
   - component: {fileID: 1921400400505178447}
+  - component: {fileID: 8022259651407421388}
   - component: {fileID: 8722556594474876061}
   - component: {fileID: 8872796724990347723}
   m_Layer: 0
@@ -828,76 +790,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 112
   m_CollisionDetection: 1
---- !u!114 &8022259651407421388
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6364283120059024961}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f6f338a2f67e1c4ca9c63c802977b84, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FightCharacter
-  input: {fileID: 0}
-  opponent: {fileID: 5358301379143721012}
-  rb: {fileID: 8925130552955207623}
-  health: {fileID: 8722556594474876061}
-  actionText: {fileID: 4702401013456389567}
-  controlledByAI: 1
-  moveSpeed: 5
-  blockMoveSpeed: 2.5
-  crouchMoveSpeed: 2.5
-  jumpForce: 4
-  inputDeadZone: 0.25
-  quickstepSpeed: 12
-  quickstepTime: 0.15
-  quickstepCooldown: 0.4
-  doubleTapWindow: 0.25
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  groundCheckDistance: 1.5
-  standingPunchDamage: 10
-  standingPunchRange: 1.5
-  crouchingPunchDamage: 8
-  crouchingPunchRange: 1.2
-  jumpingPunchDamage: 12
-  jumpingPunchRange: 1.6
-  standingKickDamage: 16
-  standingKickRange: 2
-  crouchingKickDamage: 14
-  crouchingKickRange: 1.8
-  jumpingKickDamage: 18
-  jumpingKickRange: 2.1
-  grabDamage: 6
-  grabRange: 2
-  grabSideSwitchOffset: 1
-  groundedTime: 3
-  recoveryTime: 0.6
-  superMeter: {fileID: 0}
-  specialDamage: 30
-  specialRange: 2.5
-  specialAttackHeight: 0
-  specialHitSound: {fileID: 0}
-  blockChipDamage: 2
-  blockStunTime: 0.35
-  blockKnockbackForce: 2
-  hitPushbackForce: 3
-  actionTextHoldTime: 0.4
-  animateFighter: 1
-  fighterAnim: {fileID: 0}
-  walkNormal: 0
-  fighterModel: {fileID: 0}
-  audioSource: {fileID: 0}
-  attackMissSound: {fileID: 0}
-  punchHitSound: {fileID: 0}
-  kickHitSound: {fileID: 0}
-  blockSound: {fileID: 0}
-  jumpSound: {fileID: 0}
-  jumpLandSound: {fileID: 0}
-  grabSound: {fileID: 0}
 --- !u!114 &1921400400505178447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -923,7 +815,6 @@ MonoBehaviour:
   idealDistance: 1.2
   tooCloseDistance: 0.5
   attackDistance: 1.85
-  grabDistance: 1.1
   spacingBuffer: 0.25
   decisionCooldown: 0.55
   reactionDelay: 0.15
@@ -931,23 +822,13 @@ MonoBehaviour:
   jumpAttackDelay: 0.18
   blockCooldown: 1.5
   jumpAttackCooldown: 2.25
-  grabCooldown: 2
-  specialCooldown: 4
-  aiQuickstepCooldown: 1.25
   standingPunchWeight: 30
   crouchingPunchWeight: 15
   jumpingPunchWeight: 5
   standingKickWeight: 35
   crouchingKickWeight: 15
   jumpingKickWeight: 5
-  grabWeight: 10
-  specialWeight: 12
   blockWeight: 10
-  quickstepWeight: 20
-  quickstepTapTime: 0.06
-  quickstepReleaseTime: 0.06
-  quickstepAfterPauseTime: 0.2
-  quickstepAwayChance: 0.65
   movementCommitTime: 0.3
   attacksBeforeBackAway: 5
   forcedBackAwayTime: 0.15
@@ -958,6 +839,40 @@ MonoBehaviour:
   pressureReactionTime: 0.35
   pressureBackAwayTime: 0.15
   playerPressureSpeedThreshold: 0.12
+--- !u!114 &8022259651407421388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6364283120059024961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f6f338a2f67e1c4ca9c63c802977b84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FightCharacter
+  input: {fileID: 0}
+  opponent: {fileID: 5358301379143721012}
+  rb: {fileID: 8925130552955207623}
+  health: {fileID: 8722556594474876061}
+  actionText: {fileID: 4702401013456389567}
+  controlledByAI: 1
+  moveSpeed: 5
+  blockMoveSpeed: 2.5
+  jumpForce: 4
+  inputDeadZone: 0.25
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
+  groundCheckDistance: 1.5
+  punchDamage: 10
+  punchRange: 2
+  kickDamage: 16
+  kickRange: 2
+  blockChipDamage: 2
+  blockStunTime: 0.35
+  blockKnockbackForce: 2
+  actionTextHoldTime: 0.4
 --- !u!114 &8722556594474876061
 MonoBehaviour:
   m_ObjectHideFlags: 0
