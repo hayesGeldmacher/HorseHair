@@ -6,40 +6,40 @@ public class NEIClickEventData : ClickEventData
     public string NEIName;
 }
 
-[System.Serializable]
-public class NEITimeSetting
-{
-    public TimeOfDay timeOfDay;
-    public int TaskNum;
-}
+//[System.Serializable]
+//public class NEITimeSetting
+//{
+//    public TimeOfDay timeOfDay;
+//    public int TaskNum;
+//}
 
 public class EventClick_NEI : EventClick
 {
     [SerializeField] private string neiName = "NEI";
     public bool Activated = true;
 
-    [Header("NEI Settings")]
-    [SerializeField] private bool AvailableEveryDay = true;
-    [SerializeField] private List<NEITimeSetting> activeTimeOfDays = new List<NEITimeSetting>();
+    //[Header("NEI Settings")]
+    //[SerializeField] private bool AvailableEveryDay = true;
+    //[SerializeField] private List<NEITimeSetting> activeTimeOfDays = new List<NEITimeSetting>();
 
-    private void Awake()
-    {
-        if (!AvailableEveryDay)
-        {
-            bool isActive = false;
-            TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", (int)TimeOfDay.Morning);
-            int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
-            foreach (var timeSetting in activeTimeOfDays)
-            {
-                if (timeSetting.timeOfDay == currentTimeOfDay && timeSetting.TaskNum == currentTaskNum)
-                {
-                    isActive = true;
-                    break;
-                }
-            }
-            Activated = isActive;
-        }
-    }
+    //private void Awake()
+    //{
+    //    if (!AvailableEveryDay)
+    //    {
+    //        bool isActive = false;
+    //        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", (int)TimeOfDay.Morning);
+    //        int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
+    //        foreach (var timeSetting in activeTimeOfDays)
+    //        {
+    //            if (timeSetting.timeOfDay == currentTimeOfDay && timeSetting.TaskNum == currentTaskNum)
+    //            {
+    //                isActive = true;
+    //                break;
+    //            }
+    //        }
+    //        Activated = isActive;
+    //    }
+    //}
 
     protected override void SetType()
     {

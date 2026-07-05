@@ -4959,6 +4959,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1c91f80591967bc4c9ab0dc44de761dc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 728879003}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 1c91f80591967bc4c9ab0dc44de761dc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 728879004}
   m_SourcePrefab: {fileID: 100100000, guid: 1c91f80591967bc4c9ab0dc44de761dc, type: 3}
 --- !u!4 &367672735 stripped
 Transform:
@@ -9505,7 +9508,7 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: c20b56d7c3689264db88c5388e7ced3f, type: 3}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: walkNormal
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: audioSource
@@ -9515,6 +9518,10 @@ PrefabInstance:
       propertyPath: fighterAnim
       value: 
       objectReference: {fileID: 728879003}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: fighterModel
+      value: 
+      objectReference: {fileID: 367672735}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: kickHitSound
       value: 
@@ -10195,6 +10202,19 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &728879004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 728879002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 710d6198584916b47ae9a85f14378bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterAnimEvents
+  fightCharacter: {fileID: 2047719968}
 --- !u!1001 &728890834
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25183,6 +25203,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f1911785f3470ee4382888b695c8ab0c, type: 3}
   m_PrefabInstance: {fileID: 2037580598}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2047719968 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+  m_PrefabInstance: {fileID: 685552050}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f6f338a2f67e1c4ca9c63c802977b84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FightCharacter
 --- !u!1001 &2049373736
 PrefabInstance:
   m_ObjectHideFlags: 0
