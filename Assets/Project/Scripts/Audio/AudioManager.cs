@@ -123,6 +123,7 @@ public class AudioManager : MonoBehaviour
         }
 
         AudioSource chosenSource = dialogueSources[0];
+      
         int sourceIndex = 0;
         foreach (AudioSource source in dialogueSources)
         {
@@ -136,6 +137,7 @@ public class AudioManager : MonoBehaviour
             sourceIndex++;
         }
 
+        chosenSource.clip = clip;
         chosenSource.pitch = Random.Range(0.8f, 1.2f);
         chosenSource.Play();
 

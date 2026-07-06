@@ -11,10 +11,10 @@ public class TextBox : MonoBehaviour
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float TextCrawlCooldown = 0.0f;
 
-    [Range(8, 25)]
+    [Range(10, 60)]
     [SerializeField] private int baseCharsPerSound; //how many characters type before audio plays - HG
 
-    [Range(0, 5)]
+    [Range(0, 10)]
     [SerializeField] private int charsVariance; //range of random varianace in chars before audio plays -HG
 
     public bool completeTextCrawl = true;
