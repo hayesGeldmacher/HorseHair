@@ -603,7 +603,7 @@ Transform:
   m_GameObject: {fileID: 193284429}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0.45, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1784,7 +1784,7 @@ Transform:
   m_GameObject: {fileID: 674427625}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0.57, z: 0}
+  m_LocalPosition: {x: 0, y: 0.57, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1815,7 +1815,7 @@ Transform:
   m_GameObject: {fileID: 674640330}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.09, y: 0.68, z: 0}
+  m_LocalPosition: {x: 0, y: 0.68, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2160,6 +2160,10 @@ PrefabInstance:
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: blockMoveSpeed
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: controlledByAI
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: quickstepSpeed
@@ -3170,7 +3174,7 @@ Transform:
   m_GameObject: {fileID: 945309110}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3865,15 +3869,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterVFXController
   fightCharacter: {fileID: 1173407397}
+  selfVFXPoints: {fileID: 2137288683}
   opponentTransform: {fileID: 644139987}
   opponentVFXPoints: {fileID: 1791711311}
   hitVFX: {fileID: 6592293310488346239, guid: 0638f4bb7b6ff054f99bc91124ca6522, type: 3}
   blockVFX: {fileID: 8908868823933046587, guid: 35cea451fa429154d89ff6e1a61d1a69, type: 3}
-  grabVFX: {fileID: 0}
-  specialVFX: {fileID: 0}
-  VFXScale: 2
+  grabVFX: {fileID: 2456027089344887678, guid: 9ff671d87f7af3a4893db8b3ea327bbc, type: 3}
+  specialVFX: {fileID: 5459122460926401373, guid: 367a9ed3dfd50c0448c00fab79de74cc, type: 3}
+  normalVFXScale: 2
+  specialVFXScale: 1
   VFXDestroyDelay: 2
-  worldPositionOffset: {x: 0, y: 0, z: -5}
+  specialVFXDelay: 0
+  debugSpecialVFX: 0
 --- !u!1001 &1201961544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4115,7 +4122,7 @@ Transform:
   m_GameObject: {fileID: 1304464194}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.14, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4311,7 +4318,7 @@ Transform:
   m_GameObject: {fileID: 1379513487}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.12, y: 1.24, z: 0}
+  m_LocalPosition: {x: 0, y: 1.24, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4524,15 +4531,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterVFXController
   fightCharacter: {fileID: 644139990}
+  selfVFXPoints: {fileID: 1791711311}
   opponentTransform: {fileID: 1173407394}
   opponentVFXPoints: {fileID: 2137288683}
   hitVFX: {fileID: 6592293310488346239, guid: 0638f4bb7b6ff054f99bc91124ca6522, type: 3}
   blockVFX: {fileID: 8908868823933046587, guid: 35cea451fa429154d89ff6e1a61d1a69, type: 3}
-  grabVFX: {fileID: 0}
-  specialVFX: {fileID: 0}
-  VFXScale: 2
+  grabVFX: {fileID: 2456027089344887678, guid: 9ff671d87f7af3a4893db8b3ea327bbc, type: 3}
+  specialVFX: {fileID: 4586329794484353582, guid: 8cfa4552b1ac14044b9f6e67821d4e6f, type: 3}
+  normalVFXScale: 2
+  specialVFXScale: 1.5
   VFXDestroyDelay: 2
-  worldPositionOffset: {x: 0, y: 0, z: -5}
+  specialVFXDelay: 0.25
+  debugSpecialVFX: 0
 --- !u!1 &1424983077
 GameObject:
   m_ObjectHideFlags: 0
@@ -4830,7 +4840,7 @@ Transform:
   m_GameObject: {fileID: 1431391668}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.17, y: 1.23, z: 0}
+  m_LocalPosition: {x: 0, y: 1.23, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4988,7 +4998,7 @@ Transform:
   m_GameObject: {fileID: 1511724260}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.16, y: -0.15, z: 0}
+  m_LocalPosition: {x: 0, y: -0.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6609,7 +6619,7 @@ Transform:
   m_GameObject: {fileID: 1958718799}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.1, y: 0.69, z: 0}
+  m_LocalPosition: {x: 0, y: 0.69, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

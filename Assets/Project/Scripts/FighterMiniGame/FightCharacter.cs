@@ -1418,7 +1418,7 @@ public class FightCharacter : MonoBehaviour
     /// <summary>
     /// Updates animation for the fighter based off current state - HG
     /// </summary>
-    private void UdpateAnimation()
+    private void UpdateAnimation()
     {
         fighterAnim.SetBool("shuffling", isShuffling);
         fighterAnim.SetBool("walkNormal", walkNormal);
