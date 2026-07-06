@@ -45,11 +45,11 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip finishAfternoonClip; //clip played for above when afternoon task is finished
 
     [Header("Dialogue")]
-    [SerializeField] private AudioSource dialogueSource1;
-    [SerializeField] private AudioSource dialogueSource2;
+    [SerializeField] private AudioSource[] dialogueSources;
     [SerializeField] private AudioClip[] playerClips; //index 0
     [SerializeField] private AudioClip[] brotherClips; //index 1
     [SerializeField] private AudioClip[] dadClips; //index 2
+    private int lastPlayedSource = 0;
 
     public void PlayInteractSound()
     {
@@ -122,11 +122,22 @@ public class AudioManager : MonoBehaviour
                 break;
         }
 
-        AudioSource source; 
-        source = (dialogueSource1.isPlaying) ? dialogueSource2 : dialogueSource1; 
+        AudioSource chosenSource = dialogueSources[0];
+        int sourceIndex = 0;
+        foreach (AudioSource source in dialogueSources)
+        {
+            if (lastPlayedSource != sourceIndex)
+            {
+                lastPlayedSource = sourceIndex;
+                chosenSource = source;
+                break;
+            }
 
-        source.pitch = Random.Range(0.8f, 1.2f);
-        source.Play();
+            sourceIndex++;
+        }
+
+        chosenSource.pitch = Random.Range(0.8f, 1.2f);
+        chosenSource.Play();
 
         Debug.Log("Displayed Audio!");
     }
