@@ -1,6 +1,14 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
+public enum DialogueSound
+{
+    Player,
+    Brother,
+    Dad,
+    Other,
+}
+
 public class AudioManager : MonoBehaviour
 {
     #region Singleton
@@ -90,21 +98,21 @@ public class AudioManager : MonoBehaviour
         finishTaskSource.Play();
     }
 
-    public void PlayDialogueSound(int dialogueIndex)
+    public void PlayDialogueSound(DialogueSound sound)
     {
         AudioClip clip = null;
         int audioIndex = 0;
-        switch (dialogueIndex)
+        switch (sound)
         {
-            case 0:
+            case DialogueSound.Player:
                 audioIndex = Random.Range(0, playerClips.Length);
                 clip = playerClips[audioIndex];
                 break;
-            case 1:
+            case DialogueSound.Brother:
                 audioIndex = Random.Range(0, brotherClips.Length);
                 clip = brotherClips[audioIndex];
                 break;
-            case 2:
+            case DialogueSound.Dad:
                 audioIndex = Random.Range(0, dadClips.Length);
                 clip = dadClips[audioIndex];
                 break;

@@ -7,6 +7,7 @@ public class Talking
 {
     public string name;
     public string dialogue;
+    public DialogueSound sound;
 }
 
 [System.Serializable]

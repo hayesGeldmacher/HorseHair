@@ -46,13 +46,13 @@ public class TextBox : MonoBehaviour
         StartFade(1f);
     }
 
-    public void ShowTextBoxTextCrawl(float speed)
+    public void ShowTextBoxTextCrawl(float speed, DialogueSound sound)
     {
         completeTextCrawl = false;
-        CrawlCouroutine = StartCoroutine(CrawlText(speed));
+        CrawlCouroutine = StartCoroutine(CrawlText(speed, sound));
     }
 
-    private IEnumerator CrawlText(float speed)
+    private IEnumerator CrawlText(float speed, DialogueSound sound)
     {
         StartFade(1f);
         float totalTime = _text.text.Length / speed;
@@ -74,7 +74,7 @@ public class TextBox : MonoBehaviour
             playedCharacters += (_text.text.Length - totalCharacters);
             if(playedCharacters >= charactersPerSound)
             {
-                AudioManager.instance.PlayDialogueSound(0);
+                AudioManager.instance.PlayDialogueSound(sound);
                 playedCharacters = 0;
                 totalCharacters = _text.text.Length;
             }

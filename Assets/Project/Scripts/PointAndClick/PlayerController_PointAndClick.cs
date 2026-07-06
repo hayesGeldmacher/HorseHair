@@ -533,7 +533,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             textBox.SetText(dialogueText.dialogue[dialogueIndex].dialogue);
             textBox.SetName(dialogueText.dialogue[dialogueIndex].name);
-            textBox.ShowTextBoxTextCrawl(dialogueText.dialogueSpeed);
+            textBox.ShowTextBoxTextCrawl(dialogueText.dialogueSpeed, dialogueText.dialogue[dialogueIndex].sound);
             dialogueIndex++;
         }
     }
