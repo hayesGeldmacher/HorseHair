@@ -11,8 +11,11 @@ public class TextBox : MonoBehaviour
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float TextCrawlCooldown = 0.0f;
 
-    [Range(8, 25f)]
-    [SerializeField] private int charactersPerSound; //how many characters type before audio plays - HG
+    [Range(8, 25)]
+    [SerializeField] private int baseCharsPerSound; //how many characters type before audio plays - HG
+
+    [Range(0, 5)]
+    [SerializeField] private int charsVariance; //range of random varianace in chars before audio plays -HG
 
     public bool completeTextCrawl = true;
     private Coroutine CrawlCouroutine;
@@ -72,7 +75,10 @@ public class TextBox : MonoBehaviour
            
             //play dialogue sound based on how many characters hve been typed to screen - HG
             playedCharacters += (_text.text.Length - totalCharacters);
-            if(playedCharacters >= charactersPerSound)
+            
+            int totalChars = baseCharsPerSound + (UnityEngine.Random.Range(-charsVariance, charsVariance));
+
+            if(playedCharacters >= totalChars)
             {
                 AudioManager.instance.PlayDialogueSound(sound);
                 playedCharacters = 0;
