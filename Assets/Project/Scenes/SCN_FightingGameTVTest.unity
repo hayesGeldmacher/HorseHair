@@ -2219,6 +2219,8 @@ PrefabInstance:
     - {fileID: 2008083490643853329, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
     - {fileID: 3289189412805065387, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
     - {fileID: 3574938111061422815, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+    - {fileID: 3077625611696120811, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+    - {fileID: 8002647457330118874, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5358301379143721012, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       insertIndex: -1
@@ -4262,13 +4264,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FightCameraFollow
   player: {fileID: 644139987}
   enemy: {fileID: 1173407394}
-  horizontalDeadZone: 0.8
-  edgePadding: 0.35
+  horizontalScreenZone: 0.78
+  verticalScreenZone: 0.72
+  horizontalPadding: 0.8
+  verticalPadding: 1.2
+  followVertically: 1
+  verticalOffset: 1.2
   followSmoothTime: 0.18
   maxFollowSpeed: 12
-  useCameraBounds: 1
+  useDynamicZoom: 1
+  minOrthographicSize: 4.5
+  maxOrthographicSize: 7
+  minFieldOfView: 35
+  maxFieldOfView: 60
+  zoomSmoothTime: 0.25
+  useHorizontalBounds: 1
   visibleStageMinX: -11
   visibleStageMaxX: 11
+  useVerticalBounds: 0
+  visibleStageMinY: -2
+  visibleStageMaxY: 10
+  defaultShakeDuration: 0.12
+  defaultShakeStrength: 0.12
 --- !u!1 &1379513487
 GameObject:
   m_ObjectHideFlags: 0

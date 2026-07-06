@@ -817,12 +817,12 @@ AnimatorStateMachine:
   m_AnyStateTransitions: []
   m_EntryTransitions: []
   m_StateMachineTransitions:
-  - first: {fileID: -1155886616012941387}
-    second: []
   - first: {fileID: 6539867971523427092}
     second:
     - {fileID: 7070190735994877786}
   - first: {fileID: -2435390347020312208}
+    second: []
+  - first: {fileID: -1155886616012941387}
     second: []
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 310, y: 1110, z: 0}
@@ -2239,6 +2239,18 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   - m_Name: quickStep
     m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: recoverySpeed
+    m_Type: 1
+    m_DefaultFloat: 1
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: recovering
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
