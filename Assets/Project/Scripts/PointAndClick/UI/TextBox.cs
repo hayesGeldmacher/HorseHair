@@ -10,6 +10,10 @@ public class TextBox : MonoBehaviour
     [SerializeField] private CanvasGroup fadeGroup;
     [SerializeField] private float fadeDuration = 0.5f;
     [SerializeField] private float TextCrawlCooldown = 0.0f;
+
+    [Range(8, 25f)]
+    [SerializeField] private int charactersPerSound; //how many characters type before audio plays - HG
+
     public bool completeTextCrawl = true;
     private Coroutine CrawlCouroutine;
     private Coroutine _fadeCoroutine;
@@ -58,11 +62,23 @@ public class TextBox : MonoBehaviour
 
         yield return new WaitUntil(() => fadeGroup.alpha >= 1f);
 
+        int playedCharacters = 0;
+        int totalCharacters = 0;
         while (elapsedTime < totalTime)
         {
             elapsedTime += Time.deltaTime;
             float alpha = Mathf.Lerp(0f, 1f, elapsedTime / totalTime);
             _text.text = new string(textChars, 0, Mathf.FloorToInt(alpha * textChars.Length));
+           
+            //play dialogue sound based on how many characters hve been typed to screen - HG
+            playedCharacters += (_text.text.Length - totalCharacters);
+            if(playedCharacters >= charactersPerSound)
+            {
+                AudioManager.instance.PlayDialogueSound(0);
+                playedCharacters = 0;
+                totalCharacters = _text.text.Length;
+            }
+
             yield return null;
         }
         _text.text = textStorage;

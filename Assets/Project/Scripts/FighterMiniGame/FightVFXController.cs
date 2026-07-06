@@ -1,47 +1,67 @@
+using System.Collections;
 using UnityEngine;
 
 public class FighterVFXController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private FightCharacter fightCharacter;
+
+    [Tooltip("This fighter's own VFX spawn points. Used for Special VFX.")]
+    [SerializeField] private FighterVFXSpawnPoints selfVFXPoints;
+
+    [Tooltip("Opponent transform. Used for normal hit / block / grab VFX.")]
     [SerializeField] private Transform opponentTransform;
+
+    [Tooltip("Opponent's VFX spawn points. Used for normal hit / block / grab VFX.")]
+    [SerializeField] private FighterVFXSpawnPoints opponentVFXPoints;
 
     [Header("VFX Prefabs")]
     [SerializeField] private GameObject hitVFX;
     [SerializeField] private GameObject blockVFX;
 
-    [Header("VFX Scale")]
-    [SerializeField] private float VFXScale = 2f;
+    [Header("Normal VFX Scale")]
+    [Tooltip("Scale multiplier for normal hit, block, and grab VFX.")]
+    [SerializeField] private float normalVFXScale = 2f;
+
+    [Header("Special VFX Scale")]
+    [Tooltip("Scale multiplier for special attack VFX.")]
+    [SerializeField] private float specialVFXScale = 2f;
 
     [Header("VFX Cleanup")]
     [SerializeField] private float VFXDestroyDelay = 2f;
 
-    [Header("World Position Offset")]
-    [SerializeField] private Vector3 worldPositionOffset = new Vector3(0f, 0f, -5f);
+    [Header("Special VFX")]
+    [Tooltip("Delay before spawning the special attack VFX.")]
+    [SerializeField] private float specialVFXDelay = 0f;
 
-    [Header("Hit Position Settings")]
-    [SerializeField] private float highHitHeight = 2.5f;
-    [SerializeField] private float midHitHeight = 1.2f;
-    [SerializeField] private float lowHitHeight = 0.3f;
+    [SerializeField] private bool debugSpecialVFX = false;
 
-    [Tooltip("How far in front of the defender the hit VFX appears.")]
-    [SerializeField] private float hitForwardOffset = 0f;
-
-    [Header("Block Position Settings")]
-    [SerializeField] private float highBlockHeight = 2.5f;
-    [SerializeField] private float midBlockHeight = 1.2f;
-    [SerializeField] private float lowBlockHeight = 0.3f;
-
-    [Tooltip("How far in front of the defender the block VFX appears.")]
-    [SerializeField] private float blockForwardOffset = 0f;
+    private FighterSuperMeter fighterSuperMeter;
+    private int lastSpecialUses = -1;
+    private Coroutine specialVFXCoroutine;
 
     private void Reset()
     {
         fightCharacter = GetComponent<FightCharacter>();
+        fighterSuperMeter = GetComponent<FighterSuperMeter>();
+
+        selfVFXPoints = GetComponent<FighterVFXSpawnPoints>();
+
+        if (selfVFXPoints == null)
+            selfVFXPoints = GetComponentInChildren<FighterVFXSpawnPoints>();
+    }
+
+    private void Awake()
+    {
+        AssignMissingReferences();
+        CacheCurrentSpecialUses();
     }
 
     private void OnEnable()
     {
+        AssignMissingReferences();
+        CacheCurrentSpecialUses();
+
         if (fightCharacter != null)
         {
             fightCharacter.MovePerformed += OnMovePerformed;
@@ -51,43 +71,154 @@ public class FighterVFXController : MonoBehaviour
     private void OnDisable()
     {
         if (fightCharacter != null)
+            fightCharacter.MovePerformed -= OnMovePerformed;
+
+        if (specialVFXCoroutine != null)
+        {
+            StopCoroutine(specialVFXCoroutine);
+            specialVFXCoroutine = null;
+        }
+    }
+
+    private void AssignMissingReferences()
+    {
+        if (fightCharacter == null)
+            fightCharacter = GetComponent<FightCharacter>();
+
+        if (fighterSuperMeter == null)
+            fighterSuperMeter = GetComponent<FighterSuperMeter>();
+
+        if (fighterSuperMeter == null)
+            fighterSuperMeter = GetComponentInChildren<FighterSuperMeter>();
+
+        if (selfVFXPoints == null)
+            selfVFXPoints = GetComponent<FighterVFXSpawnPoints>();
+
+        if (selfVFXPoints == null)
+            selfVFXPoints = GetComponentInChildren<FighterVFXSpawnPoints>();
+
+        if (opponentVFXPoints == null && opponentTransform != null)
         {
             fightCharacter.MovePerformed -= OnMovePerformed;
         }
     }
 
+    private void CacheCurrentSpecialUses()
+    {
+        if (fighterSuperMeter == null)
+            return;
+
+        lastSpecialUses = fighterSuperMeter.GetCurrentSpecialUses();
+    }
+
     private void OnMovePerformed(FightCharacter attacker, FighterMoveType moveType, FighterMoveResult result)
     {
+        AssignMissingReferences();
+
+        if (moveType == FighterMoveType.Special)
+        {
+            HandleSpecialVFX();
+            return;
+        }
+
         if (result == FighterMoveResult.Hit)
         {
-            Vector3 spawnPosition = GetHitSpawnPosition(moveType);
-            SpawnVFX(hitVFX, spawnPosition);
+            Vector3 spawnPosition = GetOpponentHitSpawnPosition(moveType);
+            GameObject prefab = GetHitPrefab(moveType);
+            SpawnNormalVFX(prefab, spawnPosition);
         }
         else if (result == FighterMoveResult.Blocked)
         {
-            Vector3 spawnPosition = GetBlockSpawnPosition(moveType);
-            SpawnVFX(blockVFX, spawnPosition);
+            Vector3 spawnPosition = GetOpponentBlockSpawnPosition(moveType);
+            SpawnNormalVFX(blockVFX, spawnPosition);
         }
     }
 
-    private Vector3 GetHitSpawnPosition(FighterMoveType moveType)
+    private void HandleSpecialVFX()
     {
-        Transform defender = GetDefenderTransform();
+        if (fighterSuperMeter == null)
+        {
+            if (debugSpecialVFX)
+                Debug.LogWarning(gameObject.name + " has no FighterSuperMeter. Special VFX will not spawn.");
 
-        float height = GetHitHeight(moveType);
-        Vector3 directionToAttacker = GetDirectionFromDefenderToAttacker(defender);
+            return;
+        }
 
-        return defender.position + Vector3.up * height + directionToAttacker * hitForwardOffset;
+        int currentSpecialUses = fighterSuperMeter.GetCurrentSpecialUses();
+
+        bool superMeterWasSpent = currentSpecialUses < lastSpecialUses;
+
+        if (debugSpecialVFX)
+        {
+            Debug.Log(
+                gameObject.name +
+                " Special VFX check. Last Uses: " +
+                lastSpecialUses +
+                ", Current Uses: " +
+                currentSpecialUses +
+                ", Was Spent: " +
+                superMeterWasSpent
+            );
+        }
+
+        lastSpecialUses = currentSpecialUses;
+
+        if (!superMeterWasSpent)
+            return;
+
+        StartSpecialVFXSpawn();
     }
 
-    private Vector3 GetBlockSpawnPosition(FighterMoveType moveType)
+    private void StartSpecialVFXSpawn()
+    {
+        if (specialVFXCoroutine != null)
+            StopCoroutine(specialVFXCoroutine);
+
+        specialVFXCoroutine = StartCoroutine(SpawnSpecialVFXAfterDelay());
+    }
+
+    private IEnumerator SpawnSpecialVFXAfterDelay()
+    {
+        if (specialVFXDelay > 0f)
+            yield return new WaitForSeconds(specialVFXDelay);
+
+        SpawnSpecialVFX();
+
+        specialVFXCoroutine = null;
+    }
+
+    private void SpawnSpecialVFX()
+    {
+        Vector3 spawnPosition = GetSelfSpecialSpawnPosition();
+        SpawnSpecialVFX(specialVFX, spawnPosition);
+
+        if (debugSpecialVFX)
+            Debug.Log(gameObject.name + " spawned Special VFX.");
+    }
+
+    private Vector3 GetSelfSpecialSpawnPosition()
+    {
+        if (selfVFXPoints != null)
+        {
+            Transform point = selfVFXPoints.GetHitPoint(FighterMoveType.Special);
+            return point.position;
+        }
+
+        return transform.position;
+    }
+
+    private Vector3 GetOpponentHitSpawnPosition(FighterMoveType moveType)
     {
         Transform defender = GetDefenderTransform();
 
-        float height = GetBlockHeight(moveType);
-        Vector3 directionToAttacker = GetDirectionFromDefenderToAttacker(defender);
+        return GetFallbackOpponentPosition();
+    }
 
-        return defender.position + Vector3.up * height + directionToAttacker * blockForwardOffset;
+    private Vector3 GetOpponentBlockSpawnPosition(FighterMoveType moveType)
+    {
+        Transform defender = GetDefenderTransform();
+
+        return GetFallbackOpponentPosition();
     }
 
     private float GetHitHeight(FighterMoveType moveType)
@@ -98,37 +229,11 @@ public class FighterVFXController : MonoBehaviour
             case FighterMoveType.CrouchingKick:
                 return lowHitHeight;
 
-            case FighterMoveType.StandingKick:
-                return midHitHeight;
-
-            case FighterMoveType.StandingPunch:
-            case FighterMoveType.JumpingPunch:
-            case FighterMoveType.JumpingKick:
-            default:
-                return highHitHeight;
-        }
+        return hitVFX;
+    }
     }
 
-    private float GetBlockHeight(FighterMoveType moveType)
-    {
-        switch (moveType)
-        {
-            case FighterMoveType.CrouchingPunch:
-            case FighterMoveType.CrouchingKick:
-                return lowBlockHeight;
-
-            case FighterMoveType.StandingKick:
-                return midBlockHeight;
-
-            case FighterMoveType.StandingPunch:
-            case FighterMoveType.JumpingPunch:
-            case FighterMoveType.JumpingKick:
-            default:
-                return highBlockHeight;
-        }
-    }
-
-    private Transform GetDefenderTransform()
+    private Vector3 GetFallbackOpponentPosition()
     {
         if (opponentTransform != null)
         {
@@ -151,20 +256,30 @@ public class FighterVFXController : MonoBehaviour
         return direction.normalized;
     }
 
-    private void SpawnVFX(GameObject prefab, Vector3 spawnPosition)
+    private void SpawnNormalVFX(GameObject prefab, Vector3 spawnPosition)
     {
         if (prefab == null)
         {
             return;
         }
 
-        spawnPosition += worldPositionOffset;
+        Quaternion spawnRotation = Quaternion.identity;
+
+        GameObject vfxInstance = Instantiate(prefab, spawnPosition, spawnRotation);
+        vfxInstance.transform.localScale *= normalVFXScale;
+
+        Destroy(vfxInstance, VFXDestroyDelay);
+    }
+
+    private void SpawnSpecialVFX(GameObject prefab, Vector3 spawnPosition)
+    {
+        if (prefab == null)
+            return;
 
         Quaternion spawnRotation = Quaternion.identity;
 
         GameObject vfxInstance = Instantiate(prefab, spawnPosition, spawnRotation);
-
-        vfxInstance.transform.localScale *= VFXScale;
+        vfxInstance.transform.localScale *= specialVFXScale;
 
         Destroy(vfxInstance, VFXDestroyDelay);
     }
