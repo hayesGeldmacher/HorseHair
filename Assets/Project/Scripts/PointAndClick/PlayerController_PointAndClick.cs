@@ -537,4 +537,14 @@ public class PlayerController_PointAndClick : MonoBehaviour
             dialogueIndex++;
         }
     }
+
+    // ********************************************************************************
+    // Audio
+    // ********************************************************************************
+    public void PlayTaskFinishSound(bool isMorning)
+    {
+        if (finishTaskSource == null) { Debug.LogWarning("No audio source slotted for finish task sound!"); return; }
+        if (isMorning && finishMorningClip != false) { finishTaskSource.clip = finishMorningClip; }
+        if (!isMorning && finishAfternoonClip != null) { finishTaskSource.clip = finishAfternoonClip; }
+    }
 }
