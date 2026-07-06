@@ -28,10 +28,11 @@ public class EventClick_TaskGiver : EventClick
 
     private void Awake()
     {
-        if (Activated && Alternative_NEI != null)
+        if (Alternative_NEI != null)
         {
             Alternative_NEI.ActivateOrDeactivate(false);
-            Alternative_NEI.Activated = false;
+            if (Activated)
+                Alternative_NEI.Activated = false;
         }
     }
 
