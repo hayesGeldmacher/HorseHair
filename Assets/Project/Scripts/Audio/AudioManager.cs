@@ -36,6 +36,13 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip finishMorningClip; //clip played for above when morning task is finished
     [SerializeField] private AudioClip finishAfternoonClip; //clip played for above when afternoon task is finished
 
+    [Header("Dialogue")]
+    [SerializeField] private AudioSource dialogueSource1;
+    [SerializeField] private AudioSource dialogueSource2;
+    [SerializeField] private AudioClip[] playerClips; //index 0
+    [SerializeField] private AudioClip[] brotherClips; //index 1
+    [SerializeField] private AudioClip[] dadClips; //index 2
+
     public void PlayInteractSound()
     {
         if(interactSource != null)
@@ -81,5 +88,38 @@ public class AudioManager : MonoBehaviour
         if (!isMorning && afternoonClip != null) { finishTaskSource.clip = finishAfternoonClip; }
 
         finishTaskSource.Play();
+    }
+
+    public void PlayDialogueSound(int dialogueIndex)
+    {
+        AudioClip clip = null;
+        int audioIndex = 0;
+        switch (dialogueIndex)
+        {
+            case 0:
+                audioIndex = Random.Range(0, playerClips.Length);
+                clip = playerClips[audioIndex];
+                break;
+            case 1:
+                audioIndex = Random.Range(0, brotherClips.Length);
+                clip = brotherClips[audioIndex];
+                break;
+            case 2:
+                audioIndex = Random.Range(0, dadClips.Length);
+                clip = dadClips[audioIndex];
+                break;
+            default:
+                audioIndex = Random.Range(0, playerClips.Length);
+                clip = playerClips[audioIndex];
+                break;
+        }
+
+        AudioSource source; 
+        source = (dialogueSource1.isPlaying) ? dialogueSource2 : dialogueSource1; 
+
+        source.pitch = Random.Range(0.8f, 1.2f);
+        source.Play();
+
+        Debug.Log("Displayed Audio!");
     }
 }
