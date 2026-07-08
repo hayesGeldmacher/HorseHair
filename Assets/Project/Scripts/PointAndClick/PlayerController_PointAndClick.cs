@@ -484,7 +484,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     public void OpenDialogue()
     {
-        PlayerCamera.SetFrozen(true);
         dialogueIndex = 0;
         startedDialogue = true;
         PlayerCamera.rayCaster.enabled = false;
@@ -522,7 +521,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         if (dialogueIndex >= dialogueText.dialogue.Count)
         {
-            PlayerCamera.SetFrozen(false);
             dialogueIndex = 0;
             startedDialogue = false;
             textBox.HideTextBox();

@@ -66,15 +66,8 @@ public class CameraController : MonoBehaviour
         Switch();
     }
 
-    private void Update()
-    {
-        //Debug.Log( playerInput.currentControlScheme);
-    }
-
     private void LateUpdate()
     {
-        //if (isFrozen) return;
-
         _currentInput.x = Mathf.Lerp(_currentInput.x, _mouseInput.x,
             Time.deltaTime * _followSpeedX);
         _currentInput.y = Mathf.Lerp(_currentInput.y, _mouseInput.y,
@@ -97,10 +90,6 @@ public class CameraController : MonoBehaviour
         {
             _panTilt.TiltAxis.Value = -_currentInput.y * _pitchClamp;
         }
-    }
-
-    public void SetFrozen(bool state)
-    {
     }
 
     public void OnLook(InputAction.CallbackContext context)
@@ -158,7 +147,6 @@ public class CameraController : MonoBehaviour
         var device = action?.activeControl?.device;
         if (device == null) return;
 
-        // Ignore the synthetic virtual mouse - it's not "real" user input
         if (device == VM.virtualMouse) return;
 
         bool isGamepadInput = device is Gamepad;
@@ -186,7 +174,7 @@ public class CameraController : MonoBehaviour
         else if (isMouseOrKeyboardInput && !UseMouse)
         {
             if (device is Mouse mouse && mouse.delta.ReadValue().sqrMagnitude < 0.01f)
-                return; // too small to count as intentional mouse movement
+                return;
 
             if (VM.m_SystemMouse != null)
                 InputSystem.EnableDevice(VM.m_SystemMouse);
