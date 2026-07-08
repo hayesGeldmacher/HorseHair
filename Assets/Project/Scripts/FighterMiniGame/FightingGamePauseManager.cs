@@ -137,6 +137,7 @@ public class FightingGamePauseManager : MonoBehaviour
         }
 
         controlsPanel.SetActive(true);
+        fightingGamePauseScreen.SetActive(false);
         SelectMenuItem(firstControlsSelection);
     }
 

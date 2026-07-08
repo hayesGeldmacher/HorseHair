@@ -884,11 +884,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1791711310}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!223 &213548286 stripped
-Canvas:
-  m_CorrespondingSourceObject: {fileID: 7491268056600734311, guid: d004c45dccf5b4444b4ef45b05a7b8fd, type: 3}
-  m_PrefabInstance: {fileID: 9018066788846919836}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &231121847
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4566,6 +4561,42 @@ MonoBehaviour:
   VFXDestroyDelay: 2
   specialVFXDelay: 0
   debugSpecialVFX: 0
+--- !u!1 &1197576165 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7133249064254135832, guid: d004c45dccf5b4444b4ef45b05a7b8fd, type: 3}
+  m_PrefabInstance: {fileID: 9018066788846919836}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1197576167 stripped
+MeshCollider:
+  m_CorrespondingSourceObject: {fileID: 4692505795598227484, guid: d004c45dccf5b4444b4ef45b05a7b8fd, type: 3}
+  m_PrefabInstance: {fileID: 9018066788846919836}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &1197576168 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2573976771124943907, guid: d004c45dccf5b4444b4ef45b05a7b8fd, type: 3}
+  m_PrefabInstance: {fileID: 9018066788846919836}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1197576170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197576165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a0c8de190af7044b2b9271cfe20249, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RenderTextureUIInput
+  sourceCanvas: {fileID: 2108522884}
+  sourceUICamera: {fileID: 1346963761}
+  sourceTexture: {fileID: 8400000, guid: 34397b366fa660a4181c194d9d8460a8, type: 2}
+  screenCollider: {fileID: 1197576167}
+  screenRenderer: {fileID: 1197576168}
+  textureProperty: _BaseMap
+  applyMaterialTilingAndOffset: 1
+  flipX: 0
+  flipY: 0
 --- !u!1001 &1201961544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4950,9 +4981,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FightingGamePauseManager
   fightingGameFolder: {fileID: 1699308458}
   fightingGamePauseScreen: {fileID: 782489000}
-  pauseMenuPanel: {fileID: 0}
   controlsPanel: {fileID: 287091029}
-  showDebugLogs: 1
+  firstPauseSelection: {fileID: 0}
+  firstControlsSelection: {fileID: 0}
 --- !u!4 &1265532784
 Transform:
   m_ObjectHideFlags: 0
@@ -8394,8 +8425,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54a0c8de190af7044b2b9271cfe20249, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RenderTextureUIInput
-  renderTextureCanvas: {fileID: 213548286}
-  renderTexture: {fileID: 8400000, guid: 34397b366fa660a4181c194d9d8460a8, type: 2}
+  sourceCanvas: {fileID: 0}
+  sourceUICamera: {fileID: 0}
+  sourceTexture: {fileID: 0}
+  screenCollider: {fileID: 0}
+  screenRenderer: {fileID: 0}
+  textureProperty: _BaseMap
+  applyMaterialTilingAndOffset: 1
+  flipX: 0
+  flipY: 0
+--- !u!64 &2076441114
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076441108}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &2108522881
 GameObject:
   m_ObjectHideFlags: 0
@@ -8572,6 +8632,7 @@ GameObject:
   - component: {fileID: 3916660544120190121}
   - component: {fileID: 8294815343259491573}
   - component: {fileID: 8294815343259491574}
+  - component: {fileID: 8294815343259491575}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -8825,6 +8886,22 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &8294815343259491575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2827840929947947679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!114 &8475191548923179014 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6531668628338674314, guid: 63f32d1c414a6334a923b1a8497f1f0e, type: 3}
@@ -8907,6 +8984,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2837443423341784941, guid: d004c45dccf5b4444b4ef45b05a7b8fd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2076441112}
+    - targetCorrespondingSourceObject: {fileID: 2837443423341784941, guid: d004c45dccf5b4444b4ef45b05a7b8fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2076441114}
+    - targetCorrespondingSourceObject: {fileID: 7133249064254135832, guid: d004c45dccf5b4444b4ef45b05a7b8fd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1197576170}
   m_SourcePrefab: {fileID: 100100000, guid: d004c45dccf5b4444b4ef45b05a7b8fd, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
