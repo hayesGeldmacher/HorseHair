@@ -5,11 +5,14 @@ using UnityEngine.UI;
 
 public class FightingGamePauseManager : MonoBehaviour
 {
-    [SerializeField] private GameObject fightingGameFolder;
+    [Header("Fighting Game")]
+    [SerializeField] private GameObject fightingGameParent;
 
+    [Header("Pause UI")]
     [SerializeField] private GameObject fightingGamePauseScreen;
     [SerializeField] private GameObject controlsPanel;
 
+    [Header("Default UI Selection")]
     [SerializeField] private Selectable firstPauseSelection;
     [SerializeField] private Selectable firstControlsSelection;
 
@@ -26,9 +29,6 @@ public class FightingGamePauseManager : MonoBehaviour
 
     private AudioSource[] audioSources;
     private bool[] audioWasPlaying;
-
-    private ParticleSystem[] particleSystems;
-    private bool[] particleWasPlaying;
 
     private Coroutine selectionCoroutine;
 
@@ -52,6 +52,12 @@ public class FightingGamePauseManager : MonoBehaviour
         {
             TogglePause();
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape) ||
+            Input.GetKeyDown(KeyCode.JoystickButton1))
+        {
+            GoBack();
+        }
     }
 
     public void TogglePause()
@@ -68,7 +74,7 @@ public class FightingGamePauseManager : MonoBehaviour
 
     private void PauseFightingGame()
     {
-        if (fightingGameFolder == null ||
+        if (fightingGameParent == null ||
             fightingGamePauseScreen == null)
         {
             return;
@@ -131,49 +137,71 @@ public class FightingGamePauseManager : MonoBehaviour
 
     public void ShowControls()
     {
-        if (!IsPaused || controlsPanel == null)
+        if (!IsPaused ||
+            controlsPanel == null ||
+            fightingGamePauseScreen == null)
         {
             return;
         }
 
-        controlsPanel.SetActive(true);
         fightingGamePauseScreen.SetActive(false);
+        controlsPanel.SetActive(true);
+
         SelectMenuItem(firstControlsSelection);
     }
 
     public void HideControls()
     {
-        if (!IsPaused || controlsPanel == null)
+        if (!IsPaused ||
+            controlsPanel == null ||
+            fightingGamePauseScreen == null)
         {
             return;
         }
 
         controlsPanel.SetActive(false);
+        fightingGamePauseScreen.SetActive(true);
+
         SelectMenuItem(firstPauseSelection);
+    }
+
+    public void GoBack()
+    {
+        if (!IsPaused)
+        {
+            return;
+        }
+
+        if (controlsPanel != null &&
+            controlsPanel.activeInHierarchy)
+        {
+            HideControls();
+        }
+        else
+        {
+            ResumeGame();
+        }
     }
 
     private void FindFightingGameComponents()
     {
         scripts =
-            fightingGameFolder.GetComponentsInChildren<MonoBehaviour>(true);
+            fightingGameParent.GetComponentsInChildren<MonoBehaviour>(true);
 
         animators =
-            fightingGameFolder.GetComponentsInChildren<Animator>(true);
+            fightingGameParent.GetComponentsInChildren<Animator>(true);
 
         rigidbodies =
-            fightingGameFolder.GetComponentsInChildren<Rigidbody2D>(true);
+            fightingGameParent.GetComponentsInChildren<Rigidbody2D>(true);
 
         audioSources =
-            fightingGameFolder.GetComponentsInChildren<AudioSource>(true);
+            fightingGameParent.GetComponentsInChildren<AudioSource>(true);
 
-        particleSystems =
-            fightingGameFolder.GetComponentsInChildren<ParticleSystem>(true);
 
         previousScriptStates = new bool[scripts.Length];
         previousAnimatorSpeeds = new float[animators.Length];
         previousRigidbodyStates = new bool[rigidbodies.Length];
         audioWasPlaying = new bool[audioSources.Length];
-        particleWasPlaying = new bool[particleSystems.Length];
     }
 
     private void PauseScripts()
@@ -194,7 +222,8 @@ public class FightingGamePauseManager : MonoBehaviour
 
     private void ResumeScripts()
     {
-        if (scripts == null)
+        if (scripts == null ||
+            previousScriptStates == null)
         {
             return;
         }
@@ -237,11 +266,6 @@ public class FightingGamePauseManager : MonoBehaviour
             return true;
         }
 
-        if (script.GetComponentInParent<Canvas>(true) != null)
-        {
-            return true;
-        }
-
         if (script is EventSystem)
         {
             return true;
@@ -252,7 +276,12 @@ public class FightingGamePauseManager : MonoBehaviour
             return true;
         }
 
-        if (IsInsidePauseScreen(script.transform))
+        if (script.GetComponentInParent<Canvas>(true) != null)
+        {
+            return true;
+        }
+
+        if (IsInsidePauseUI(script.transform))
         {
             return true;
         }
@@ -268,7 +297,7 @@ public class FightingGamePauseManager : MonoBehaviour
 
             if (animator == null ||
                 IsUIObject(animator.transform) ||
-                IsInsidePauseScreen(animator.transform))
+                IsInsidePauseUI(animator.transform))
             {
                 continue;
             }
@@ -280,7 +309,8 @@ public class FightingGamePauseManager : MonoBehaviour
 
     private void ResumeAnimators()
     {
-        if (animators == null)
+        if (animators == null ||
+            previousAnimatorSpeeds == null)
         {
             return;
         }
@@ -291,7 +321,7 @@ public class FightingGamePauseManager : MonoBehaviour
 
             if (animator == null ||
                 IsUIObject(animator.transform) ||
-                IsInsidePauseScreen(animator.transform))
+                IsInsidePauseUI(animator.transform))
             {
                 continue;
             }
@@ -318,7 +348,8 @@ public class FightingGamePauseManager : MonoBehaviour
 
     private void ResumePhysics()
     {
-        if (rigidbodies == null)
+        if (rigidbodies == null ||
+            previousRigidbodyStates == null)
         {
             return;
         }
@@ -356,7 +387,8 @@ public class FightingGamePauseManager : MonoBehaviour
 
     private void ResumeAudio()
     {
-        if (audioSources == null)
+        if (audioSources == null ||
+            audioWasPlaying == null)
         {
             return;
         }
@@ -365,12 +397,14 @@ public class FightingGamePauseManager : MonoBehaviour
         {
             AudioSource audioSource = audioSources[i];
 
-            if (audioSource != null && audioWasPlaying[i])
+            if (audioSource != null &&
+                audioWasPlaying[i])
             {
                 audioSource.UnPause();
             }
         }
     }
+
 
     private bool IsUIObject(Transform objectTransform)
     {
@@ -378,19 +412,40 @@ public class FightingGamePauseManager : MonoBehaviour
                objectTransform.GetComponentInParent<Canvas>(true) != null;
     }
 
-    private bool IsInsidePauseScreen(Transform objectTransform)
+    private bool IsInsidePauseUI(Transform objectTransform)
     {
-        if (fightingGamePauseScreen == null ||
-            objectTransform == null)
+        if (objectTransform == null)
         {
             return false;
         }
 
-        Transform pauseScreenTransform =
-            fightingGamePauseScreen.transform;
+        if (IsInsideObject(objectTransform, fightingGamePauseScreen))
+        {
+            return true;
+        }
 
-        return objectTransform == pauseScreenTransform ||
-               objectTransform.IsChildOf(pauseScreenTransform);
+        if (IsInsideObject(objectTransform, controlsPanel))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool IsInsideObject(
+        Transform objectTransform,
+        GameObject parentObject)
+    {
+        if (objectTransform == null ||
+            parentObject == null)
+        {
+            return false;
+        }
+
+        Transform parentTransform = parentObject.transform;
+
+        return objectTransform == parentTransform ||
+               objectTransform.IsChildOf(parentTransform);
     }
 
     private void SelectMenuItem(Selectable target)
