@@ -25,6 +25,7 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private bool full360Camera_y = false;
 
+    [Header("Tester Settings")]
     [SerializeField]
     public PhysicsRaycaster rayCaster;
 

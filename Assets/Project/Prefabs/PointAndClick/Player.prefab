@@ -829,10 +829,13 @@ MonoBehaviour:
     dialogue:
     - name: 
       dialogue: 
+      sound: 0
     - name: 
       dialogue: 
+      sound: 0
     - name: 
       dialogue: 
+      sound: 0
     dialogueSpeed: 10
     alternativeDialogue: []
     useAltDialogue: 0
@@ -2980,6 +2983,8 @@ MonoBehaviour:
   fadeGroup: {fileID: 3280570002974308948}
   fadeDuration: 0.5
   TextCrawlCooldown: 0
+  baseCharsPerSound: 0
+  charsVariance: 0
   completeTextCrawl: 1
 --- !u!225 &3280570002974308948
 CanvasGroup:
@@ -3405,7 +3410,7 @@ MonoBehaviour:
   _mouseInput: {x: 0, y: 0}
   _currentInput: {x: 0, y: 0}
   VM: {fileID: 2016740054232122092}
-  playerInput: {fileID: 0}
+  playerInput: {fileID: 758895102263819641}
   EnableDeviceDelay: 0.3
 --- !u!20 &9116733426156734739
 Camera:
