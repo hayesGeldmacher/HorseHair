@@ -22,9 +22,6 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("How fast the press any button text blinks")]
     [SerializeField] private float blinkSpeed = 2f;
 
-    [Tooltip("Small delay after pressing any button before fighter control turns on")]
-    [SerializeField] private float startInputLockoutTime = 0.25f;
-
     [Header("Next Round Prompt")]
     [Tooltip("Text shown between rounds to wait for player input")]
     [SerializeField] private TMP_Text nextRoundPromptText;
