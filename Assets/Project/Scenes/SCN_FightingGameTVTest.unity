@@ -2422,8 +2422,16 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: leftWallX
+      value: -7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: grabWeight
       value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: rightWallX
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: blockWeight
@@ -2466,6 +2474,10 @@ PrefabInstance:
       value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: cornerBackAwayTime
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: forcedBackAwayTime
       value: 0.4
       objectReference: {fileID: 0}
@@ -2498,6 +2510,14 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: cornerPressureDistance
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: backOffWhenPlayerCornered
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: emergencyBackAwayDistance
       value: 0.45
       objectReference: {fileID: 0}
@@ -2513,6 +2533,10 @@ PrefabInstance:
       propertyPath: grabSound
       value: 
       objectReference: {fileID: 8300000, guid: de27a224f2afbaa4fa1985defd7f8e4c, type: 3}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpForce
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpSound
       value: 
@@ -2594,12 +2618,28 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: manualRecoveryTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: standingPunchRange
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: blockKnockbackForce
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: crouchingPunchRange
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: attackerBlockRecoilForce
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2101551262792922484, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.7600002
       objectReference: {fileID: 0}
     - target: {fileID: 2365530896385543874, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: m_IsActive
@@ -2661,6 +2701,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5358301379143721012, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -2.24
+      objectReference: {fileID: 0}
     - target: {fileID: 5596309499952174359, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: grabAction
       value: 
@@ -2694,12 +2738,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: de27a224f2afbaa4fa1985defd7f8e4c, type: 3}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpForce
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpSound
       value: 
       objectReference: {fileID: 8300000, guid: cae16cf6173e51f48bf1b0bf60f32de7, type: 3}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: moveSpeed
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: blockSound
@@ -2786,7 +2834,15 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: blockKnockbackForce
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: crouchingPunchRange
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: attackerBlockRecoilForce
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8037240979521133309, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
@@ -7433,7 +7489,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 643642821102333026, guid: 448b2ec1c98eba642a88366aeacfe353, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 8.88
+      value: 9.5
       objectReference: {fileID: 0}
     - target: {fileID: 2895897104379113142, guid: 448b2ec1c98eba642a88366aeacfe353, type: 3}
       propertyPath: m_LocalPosition.x

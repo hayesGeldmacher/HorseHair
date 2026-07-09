@@ -191,6 +191,31 @@ public class FightCharacterAI : MonoBehaviour
     [Tooltip("Minimum player movement speed needed to count as forward pressure")]
     [SerializeField] private float playerPressureSpeedThreshold = 0.05f;
 
+    [Header("Corner Pressure Mercy")]
+    [Tooltip("If true, the AI backs away when the player is trapped near a wall")]
+    [SerializeField] private bool backOffWhenPlayerCornered = true;
+
+    [Tooltip("X position of the left wall")]
+    [SerializeField] private float leftWallX = -7f;
+
+    [Tooltip("X position of the right wall")]
+    [SerializeField] private float rightWallX = 7f;
+
+    [Tooltip("How close the player must be to a wall to count as cornered")]
+    [SerializeField] private float playerCornerDistance = 1f;
+
+    [Tooltip("How close the AI must be to the player before it backs off")]
+    [SerializeField] private float cornerPressureDistance = 1.4f;
+
+    [Tooltip("How long the AI walks away from the cornered player")]
+    [SerializeField] private float cornerBackAwayTime = 1.25f;
+
+    [Tooltip("How long the AI pauses after backing away")]
+    [SerializeField] private float cornerSurveyTime = 0.75f;
+
+    [Tooltip("Cooldown before the AI can back off from the corner again")]
+    [SerializeField] private float cornerMercyCooldown = 3f;
+
     private AIState currentState;
     private LastAction lastAction;
     private JumpAttackType currentJumpAttackType;
@@ -215,6 +240,10 @@ public class FightCharacterAI : MonoBehaviour
     private float pressureTimer;
     private float pressureBackAwayTimer;
     private float previousPlayerX;
+
+    private float cornerBackAwayTimer;
+    private float cornerSurveyTimer;
+    private float cornerMercyCooldownTimer;
 
     private float quickstepInputTimer;
     private int quickstepPhase;
@@ -278,6 +307,12 @@ public class FightCharacterAI : MonoBehaviour
             HandleQuickstep();
             return;
         }
+
+        if (HandleCornerPressureMercy())
+            return;
+
+        if (HandlePlayerForwardPressure())
+            return;
 
         if (HandlePlayerForwardPressure())
             return;
@@ -371,6 +406,10 @@ public class FightCharacterAI : MonoBehaviour
         directionToPlayer = 0f;
 
         attackSequenceCount = 0;
+
+        cornerBackAwayTimer = 0f;
+        cornerSurveyTimer = 0f;
+        cornerMercyCooldownTimer = 0f;
 
         currentMoveInput = Vector2.zero;
         openingMoveInput = Vector2.zero;
@@ -480,6 +519,57 @@ public class FightCharacterAI : MonoBehaviour
         else
         {
             pressureTimer = 0f;
+        }
+
+        return false;
+    }
+
+    private bool HandleCornerPressureMercy()
+    {
+        if (!backOffWhenPlayerCornered)
+            return false;
+
+        if (cornerBackAwayTimer > 0f)
+        {
+            currentState = AIState.BackingAway;
+            SendMovementInput(new Vector2(GetDirectionAwayFromPlayer(), 0f));
+            return true;
+        }
+
+        if (cornerSurveyTimer > 0f)
+        {
+            currentState = AIState.Spacing;
+            SendIdleInput();
+            return true;
+        }
+
+        if (cornerMercyCooldownTimer > 0f)
+            return false;
+
+        bool playerNearLeftWall = player.position.x <= leftWallX + playerCornerDistance;
+        bool playerNearRightWall = player.position.x >= rightWallX - playerCornerDistance;
+
+        if (!playerNearLeftWall && !playerNearRightWall)
+            return false;
+
+        bool aiIsCloseEnough = GetAbsDistanceToPlayer() <= cornerPressureDistance;
+
+        bool aiIsPressuringLeftCorner = playerNearLeftWall && transform.position.x > player.position.x;
+        bool aiIsPressuringRightCorner = playerNearRightWall && transform.position.x < player.position.x;
+
+        if (aiIsCloseEnough && (aiIsPressuringLeftCorner || aiIsPressuringRightCorner))
+        {
+            cornerBackAwayTimer = cornerBackAwayTime;
+            cornerMercyCooldownTimer = cornerMercyCooldown;
+
+            pendingDecision = false;
+            waitingForJumpAttack = false;
+            attackSequenceCount = 0;
+
+            currentState = AIState.BackingAway;
+
+            SendMovementInput(new Vector2(GetDirectionAwayFromPlayer(), 0f));
+            return true;
         }
 
         return false;
@@ -972,6 +1062,20 @@ public class FightCharacterAI : MonoBehaviour
         }
 
         recoveryPauseTimer = TickTimer(recoveryPauseTimer);
+
+        cornerMercyCooldownTimer = TickTimer(cornerMercyCooldownTimer);
+
+        if (cornerBackAwayTimer > 0f)
+        {
+            cornerBackAwayTimer = TickTimer(cornerBackAwayTimer);
+
+            if (cornerBackAwayTimer <= 0f)
+                cornerSurveyTimer = cornerSurveyTime;
+        }
+        else
+        {
+            cornerSurveyTimer = TickTimer(cornerSurveyTimer);
+        }
     }
 
     private float TickTimer(float timer)

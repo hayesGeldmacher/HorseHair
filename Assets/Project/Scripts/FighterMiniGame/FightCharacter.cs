@@ -165,6 +165,9 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Small knockback applied after blocking an attack")]
     [SerializeField] private float blockKnockbackForce = 2f;
 
+    [Tooltip("Pushback applied to the attacker when their attack is blocked")]
+    [SerializeField] private float attackerBlockRecoilForce = 4f;
+
     [Header("Hit Pushback")]
     [Tooltip("Force applied to the opponent after a normal attack lands")]
     [SerializeField] private float hitPushbackForce = 3f;
@@ -193,6 +196,31 @@ public class FightCharacter : MonoBehaviour
 
     [Tooltip("The physical transform of the fighter's 3D model")]
     [SerializeField] private Transform fighterModel;
+
+    [Header("Attack Animation Speeds")]
+    [Tooltip("Animation speed for standing punch")]
+    [SerializeField] private float standingPunchAnimationSpeed = 1.25f;
+
+    [Tooltip("Animation speed for crouching punch")]
+    [SerializeField] private float crouchingPunchAnimationSpeed = 1.35f;
+
+    [Tooltip("Animation speed for jumping punch")]
+    [SerializeField] private float jumpingPunchAnimationSpeed = 1.15f;
+
+    [Tooltip("Animation speed for standing kick")]
+    [SerializeField] private float standingKickAnimationSpeed = 0.9f;
+
+    [Tooltip("Animation speed for crouching kick")]
+    [SerializeField] private float crouchingKickAnimationSpeed = 1f;
+
+    [Tooltip("Animation speed for jumping kick")]
+    [SerializeField] private float jumpingKickAnimationSpeed = 0.85f;
+
+    [Tooltip("Animation speed for grab")]
+    [SerializeField] private float grabAnimationSpeed = 0.9f;
+
+    [Tooltip("Animation speed for special")]
+    [SerializeField] private float specialAnimationSpeed = 0.75f;
 
     [Header("Sound Effects")]
     [Tooltip("Sound played when this fighter performs a punch attack")]
@@ -389,14 +417,54 @@ public class FightCharacter : MonoBehaviour
     public void StartAttackAnimation()
     {
         isAttackAnimationPlaying = true; //locks attack input during attack animation 
+
+        if (rb != null && isGrounded)
+        {
+            Vector3 velocity = rb.linearVelocity;
+            velocity.x = 0f;
+            rb.linearVelocity = velocity;
+        }
     }
 
     public void EndAttackAnimation()
     {
         isAttackAnimationPlaying = false; //unlocks attack input after animation finishes 
 
+        if (fighterAnim != null)
+            fighterAnim.speed = 1f;
+
         hasPendingAttack = false;
         hasPendingGrab = false;
+    }
+
+    private void SetAttackAnimationSpeed(float speed)
+    {
+        if (fighterAnim == null)
+            return;
+
+        fighterAnim.speed = speed;
+    }
+
+    private float GetPunchAnimationSpeed()
+    {
+        if (!isGrounded)
+            return jumpingPunchAnimationSpeed;
+
+        if (isCrouching)
+            return crouchingPunchAnimationSpeed;
+
+        return standingPunchAnimationSpeed;
+    }
+
+    private float GetKickAnimationSpeed()
+    {
+        if (!isGrounded)
+            return jumpingKickAnimationSpeed;
+
+        if (isCrouching)
+            return crouchingKickAnimationSpeed;
+
+        return standingKickAnimationSpeed;
     }
 
     public void PerformAttackHit()
@@ -464,7 +532,7 @@ public class FightCharacter : MonoBehaviour
     /// If blocking correctly, applies chip damage, block stun, and small knockback.
     /// If not blocking, applies full damage.
     /// </summary>
-    public FighterMoveResult ReceiveAttack(int damage, Vector3 attackerPosition, AttackHeight attackHeight)
+    public FighterMoveResult ReceiveAttack(int damage, Vector3 attackerPosition, AttackHeight attackHeight, FightCharacter attacker)
     {
         if (isKnockedDown)
             return FighterMoveResult.Miss;
@@ -472,9 +540,9 @@ public class FightCharacter : MonoBehaviour
         if (quickstepTimer > 0f)
             return FighterMoveResult.Miss;
 
-        if (IsBlockingAttack(attackerPosition, attackHeight))
+        if (IsBlockingAttack(attackerPosition))
         {
-            ApplyBlockedAttack(attackerPosition);
+            ApplyBlockedAttack(attackerPosition, attacker);
             return FighterMoveResult.Blocked;
         }
 
@@ -704,7 +772,7 @@ public class FightCharacter : MonoBehaviour
     {
         isShuffling = false;
 
-        if (rb == null || blockStunTimer > 0f || isKnockedDown || isRecovering)
+        if (rb == null || blockStunTimer > 0f || isKnockedDown || isRecovering || isAttackAnimationPlaying)
             return;
 
         if (quickstepTimer > 0f)
@@ -881,7 +949,10 @@ public class FightCharacter : MonoBehaviour
         );
 
         if (animateFighter && fighterAnim != null)
+        {
+            SetAttackAnimationSpeed(GetPunchAnimationSpeed());
             fighterAnim.SetTrigger("punch");
+        }
     }
 
     private void Kick()
@@ -908,7 +979,10 @@ public class FightCharacter : MonoBehaviour
         );
 
         if (animateFighter && fighterAnim != null)
+        {
+            SetAttackAnimationSpeed(GetKickAnimationSpeed());
             fighterAnim.SetTrigger("kick");
+        }
     }
 
     private void Grab()
@@ -929,6 +1003,7 @@ public class FightCharacter : MonoBehaviour
 
         if (animateFighter && fighterAnim != null)
         {
+            SetAttackAnimationSpeed(grabAnimationSpeed);
             fighterAnim.SetTrigger("grab");
         }
     }
@@ -963,7 +1038,10 @@ public class FightCharacter : MonoBehaviour
         );
 
         if (animateFighter && fighterAnim != null)
+        {
+            SetAttackAnimationSpeed(specialAnimationSpeed);
             fighterAnim.SetTrigger("special");
+        }
     }
 
     private bool CanStartAttack()
@@ -1014,7 +1092,7 @@ public class FightCharacter : MonoBehaviour
             return FighterMoveResult.Miss;
         }
 
-        return opponentCharacter.ReceiveAttack(damage, transform.position, attackHeight);
+        return opponentCharacter.ReceiveAttack(damage, transform.position, attackHeight, this);
     }
 
     private FighterMoveResult TryGrabOpponent()
@@ -1086,13 +1164,16 @@ public class FightCharacter : MonoBehaviour
     /// <summary>
     /// Chip damage cannot defeat the fighter.
     /// </summary>
-    private void ApplyBlockedAttack(Vector3 attackerPosition)
+    private void ApplyBlockedAttack(Vector3 attackerPosition, FightCharacter attacker)
     {
         if (health != null)
             health.TakeDamage(blockChipDamage, false);
 
         ApplyBlockStun();
         ApplyBlockKnockback(attackerPosition);
+
+        if (attacker != null)
+            attacker.ApplyBlockRecoil(transform.position);
 
         Debug.Log(name + " blocked the attack and took chip damage.");
     }
@@ -1118,10 +1199,20 @@ public class FightCharacter : MonoBehaviour
         float directionAwayFromAttacker = Mathf.Sign(transform.position.x - attackerPosition.x);
 
         Vector3 velocity = rb.linearVelocity;
-        velocity.x = 0f;
+        velocity.x = directionAwayFromAttacker * blockKnockbackForce;
         rb.linearVelocity = velocity;
+    }
 
-        rb.AddForce(Vector3.right * directionAwayFromAttacker * blockKnockbackForce, ForceMode.Impulse);
+    private void ApplyBlockRecoil(Vector3 blockerPosition)
+    {
+        if (rb == null)
+            return;
+
+        float directionAwayFromBlocker = Mathf.Sign(transform.position.x - blockerPosition.x);
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = directionAwayFromBlocker * attackerBlockRecoilForce;
+        rb.linearVelocity = velocity;
     }
 
     private void ApplyHitPushback(Vector3 attackerPosition)
@@ -1250,22 +1341,10 @@ public class FightCharacter : MonoBehaviour
 
     #region Defensive State Helpers
 
-    private bool IsBlockingAttack(Vector3 attackerPosition, AttackHeight attackHeight)
+    private bool IsBlockingAttack(Vector3 attackerPosition)
     {
         return isBlocking
-            && IsAttackFromFront(attackerPosition)
-            && IsBlockingCorrectHeight(attackHeight);
-    }
-
-    /// <summary>
-    /// Standing block blocks high attacks, Crouching block blocks low attacks
-    /// </summary>
-    private bool IsBlockingCorrectHeight(AttackHeight attackHeight)
-    {
-        if (isCrouching)
-            return attackHeight == AttackHeight.Low;
-
-        return attackHeight == AttackHeight.High;
+            && IsAttackFromFront(attackerPosition);
     }
 
     private bool IsAttackFromFront(Vector3 attackerPosition)
