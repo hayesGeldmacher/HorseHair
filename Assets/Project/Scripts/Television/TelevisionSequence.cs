@@ -1,6 +1,24 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.Video;
+
+
+
+[System.Serializable]
+public struct Channel 
+{
+    public VideoClip video;
+    public AudioClip audio;
+}
+
+[System.Serializable]
+public struct Video
+{
+    public VideoPlayer player;
+    public MeshRenderer renderer;
+}
+
 
 public class TelevisionSequence : MonoBehaviour
 {
@@ -9,8 +27,9 @@ public class TelevisionSequence : MonoBehaviour
     /// before starting the fighting game
     /// </summary>
 
+    [SerializeField] private int channelIndex = 0;
 
-    [Header("Annimation")]
+    [Header("Animation")]
     [SerializeField] private Animator remoteAnim;
     [SerializeField] private Animator tvAnim;
 
@@ -19,6 +38,27 @@ public class TelevisionSequence : MonoBehaviour
 
     [SerializeField] private GameObject televisionScreen;
 
+
+    //basic structure for this:
+    //2 video players 
+    /// <summary>
+    /// 1 player is the main, the other is the cache
+    /// 
+    /// when we are ready to swap:
+    /// - let the cache load a new clip in its videoplayer
+    /// when the cache is ready, simple disable the mesh renderer for the first cache and enable for teh second
+    /// 
+    /// as soon as they are swapped, we start prepping the video in the next cache!
+    /// </summary>
+
+    [Header("Video References")]
+    [SerializeField] private Video vp;
+    [SerializeField] private Video cache;
+
+    [Header("Audio References")]
+    [SerializeField] private AudioSource tvAudio;
+
+    public Channel[] channels;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,6 +77,10 @@ public class TelevisionSequence : MonoBehaviour
                 {
                     startedTelevision = true;
                     StartTelevision();
+                }
+                else
+                {
+                    ProgressChannels();
                 }
             }
         }
@@ -62,5 +106,28 @@ public class TelevisionSequence : MonoBehaviour
     public void ProgressChannels()
     {
         remoteAnim.SetTrigger("press");
+        channelIndex++;
+        if(channelIndex + 1 > channels.Length) { channelIndex = 0; }
+
+        LoadVideo();
+    }
+
+    private void LoadVideo()
+    {
+
+        Video main = vp;
+        Video backup = cache;
+       
+        vp = backup;
+        cache = vp;
+
+        main.renderer.enabled = true;
+        backup.renderer.enabled = false;
+
+        int backupIndex = (channelIndex + 1 > channels.Length) ? 0 : channelIndex + 1;
+
+        //now, load the backup!
+        backup.player.clip = channels[backupIndex].video;
+        tvAudio.clip = channels[channelIndex].audio;
     }
 }
