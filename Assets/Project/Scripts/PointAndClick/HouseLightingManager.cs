@@ -40,8 +40,6 @@ public class HouseLightingManager : MonoBehaviour
     private Vector3 directionalRotA = new Vector3(10, -90, -60);
     private Vector3 directionalRotM = new Vector3(57, -270, -60);
 
-
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
