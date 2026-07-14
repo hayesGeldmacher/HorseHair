@@ -9,7 +9,7 @@ public class ScareManager : MonoBehaviour
     void Awake()
     {
 
-        onScaresEnabled += EnableScares;
+        onScaresEnabled += ScaresEnabled;
 
         if (instance != null)
         {
@@ -43,7 +43,7 @@ public class ScareManager : MonoBehaviour
     }
 
 
-    public void EnableScares()
+    public void CallScares()
     {
         onScaresEnabled?.Invoke();
     }

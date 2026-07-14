@@ -249,7 +249,8 @@ public class TelevisionSequence : MonoBehaviour
         televisionScreen.SetActive(false);
         gameScreen.SetActive(true);
         fightManager.SetGameActive();
-        if(ScareManager.instance != null) { ScareManager.instance.EnableScares(); }
+    
+        if(ScareManager.instance != null) { ScareManager.instance.CallScares(); }
     }
 
     //testing function for skipping the television
@@ -262,5 +263,7 @@ public class TelevisionSequence : MonoBehaviour
         gameScreen.SetActive(true);
         fightManager.SetGameActive();
         remoteAnim.gameObject.SetActive(false);
+
+        if (ScareManager.instance != null) { ScareManager.instance.CallScares(); }
     }
 }
