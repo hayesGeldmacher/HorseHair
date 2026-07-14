@@ -38,6 +38,9 @@ public class TelevisionSequence : MonoBehaviour
     [Header("Animation")]
     [SerializeField] private Animator remoteAnim;
     [SerializeField] private Animator tvAnim;
+    [SerializeField] private Animator controllerAnimPlayer;
+    [SerializeField] private Animator controllerAnimBrother;
+
 
     [SerializeField] private Animator textureAnimController;
 
@@ -45,12 +48,18 @@ public class TelevisionSequence : MonoBehaviour
     private bool startedTelevision = false;
 
     [SerializeField] private GameObject televisionScreen;
+    [SerializeField] private GameObject gameScreen;
+    [SerializeField] private FightRoundManager fightManager;
 
     [Header("Clicks Cooldown")]
     [SerializeField] private float clickCooldown = 1; //how long does player need to wait before clicking to change channel? 
     private float currentCooldown = 0;
+    [SerializeField] private int totalClicks = 4;
+    [SerializeField] private int currentClicks = 0;
 
     private bool calledChannelChange = false;
+    [SerializeField] private bool calledEndSequence = false;
+    [SerializeField] private bool skipTelevision = false;
 
 
     //basic structure for this:
@@ -76,14 +85,17 @@ public class TelevisionSequence : MonoBehaviour
 
     void Awake()
     {
-     
+        if (skipTelevision) { SkipTelevision(); }
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        LoadBackupOnStart();
-        StartCoroutine(BeginTelevisionScene());
+        if (!skipTelevision)
+        {
+            LoadBackupOnStart();
+            StartCoroutine(BeginTelevisionScene());
+        }
     }
 
     // Update is called once per frame
@@ -107,7 +119,14 @@ public class TelevisionSequence : MonoBehaviour
                 }
                 else if(!calledChannelChange)
                 {
-                    StartCoroutine(ProgressChannels());
+                    if(currentClicks < totalClicks)
+                    {
+                         StartCoroutine(ProgressChannels());
+                    }
+                    else
+                    {
+                        CallEndTelevisionSequence();
+                    }
                 }
             }
         }
@@ -134,6 +153,7 @@ public class TelevisionSequence : MonoBehaviour
 
     private IEnumerator ProgressChannels()
     {
+        currentClicks++;
         calledChannelChange = true;
         currentCooldown = clickCooldown;
         remoteAnim.SetTrigger("press");
@@ -205,5 +225,43 @@ public class TelevisionSequence : MonoBehaviour
         tvAudio.clip = newChannel.audio;
         tvAudio.Play();
         calledChannelChange = false;
+    }
+
+
+    private void CallEndTelevisionSequence()
+    {
+        if (!calledEndSequence)
+        {
+            calledEndSequence = true;
+            StartCoroutine(EndTelevisionSequence());
+        }
+    }
+
+    private IEnumerator EndTelevisionSequence()
+    {
+        tvAudio.Stop();
+        tvAnim.SetTrigger("off");
+        yield return new WaitForSeconds(0.5f);
+        remoteAnim.SetTrigger("gone");
+
+        yield return new WaitForSeconds(2.0f);
+        controllerAnimBrother.SetTrigger("equip");
+        yield return new WaitForSeconds(1.0f);
+        controllerAnimPlayer.SetTrigger("equip");
+        televisionScreen.SetActive(false);
+        gameScreen.SetActive(true);
+        fightManager.SetGameActive();
+    }
+
+    //testing function for skipping the television
+    private void SkipTelevision()
+    {
+        tvAudio.Stop();
+        controllerAnimBrother.SetTrigger("equip");
+        controllerAnimPlayer.SetTrigger("equip");
+        televisionScreen.SetActive(false);
+        gameScreen.SetActive(true);
+        fightManager.SetGameActive();
+        remoteAnim.gameObject.SetActive(false);
     }
 }

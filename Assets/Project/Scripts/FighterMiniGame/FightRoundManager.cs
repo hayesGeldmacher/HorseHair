@@ -717,4 +717,10 @@ public class FightRoundManager : MonoBehaviour
     {
         return Mathf.Max(0f, timer - Time.deltaTime);
     }
+
+    //called from TelevisionSequence to begin the fighting game - HG
+    public void SetGameActive()
+    {
+        gameCanStart = true;
+    }
 }

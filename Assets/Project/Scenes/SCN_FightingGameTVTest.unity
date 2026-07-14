@@ -3724,11 +3724,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 69e90200cedef6246b619c3f43d9b76c, type: 3}
       propertyPath: m_Name
-      value: handController (1)
+      value: controllerBrother
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 69e90200cedef6246b619c3f43d9b76c, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4569,6 +4569,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &892047101 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+  m_PrefabInstance: {fileID: 163829508}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 892047096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32517884923db9349bddfdd783b6d409, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FightRoundManager
 --- !u!1 &940438336 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2870564343441937886, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
@@ -5368,9 +5379,15 @@ MonoBehaviour:
   backupIndex: 1
   remoteAnim: {fileID: 1583278211}
   tvAnim: {fileID: 1719609914}
+  controllerAnimPlayer: {fileID: 2009227588}
+  controllerAnimBrother: {fileID: 757928347}
   textureAnimController: {fileID: 1967096229}
-  televisionScreen: {fileID: 0}
+  televisionScreen: {fileID: 1719609908}
+  gameScreen: {fileID: 1197576165}
+  fightManager: {fileID: 892047101}
   clickCooldown: 1
+  totalClicks: 4
+  currentClicks: 0
   vp:
     player: {fileID: 1858477879}
     renderer: {fileID: 1858477881}
@@ -10886,6 +10903,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5071470460692048403, guid: 046da85c2bdd9194fa3cb371a81fd158, type: 3}
   m_PrefabInstance: {fileID: 2342705474969028466}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &2009227588 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 503124388425832490, guid: 046da85c2bdd9194fa3cb371a81fd158, type: 3}
+  m_PrefabInstance: {fileID: 2342705474969028466}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2012891134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11482,7 +11504,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5560444909248311465, guid: 046da85c2bdd9194fa3cb371a81fd158, type: 3}
       propertyPath: m_Name
-      value: handController
+      value: controllePlayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 5560444909248311465, guid: 046da85c2bdd9194fa3cb371a81fd158, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
