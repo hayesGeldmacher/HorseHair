@@ -4,25 +4,29 @@ using System.Collections;
 using UnityEngine.Video;
 
 /// <summary>
-/// This is not fucking fast enough - I think we will just need to create a few different video players that each render on or off...
+/// This script is responsible for managing the television channel sequence that occurs each night
+/// before starting the fighting game. Manages the start of the scene, changing channels, and transitioning to the fighting game.
 /// </summary>
 
+//struct for holding a single 'channel' for the television
 [System.Serializable]
 public struct Channel 
 {
-    public bool isTexture;
-    public RuntimeAnimatorController textureAnim;
-    public VideoClip video;
-    public AudioClip audio;
+    public bool isTexture; //yes for animated texture channels, no for video player channels
+    public RuntimeAnimatorController textureAnim; //only assign for texture channels
+    public VideoClip video; //only assign for video channels
+    public AudioClip audio; //audio to play for channel, assign for both texture and videos
 }
 
+//struct for holding video player system
+//two Videos in total - a 'main' player and a 'cache' player
+//references swap back and forth to consistently pre-load videos before the channel switches
 [System.Serializable]
 public struct Video
 {
-    public VideoPlayer player;
-    public MeshRenderer renderer;
+    public VideoPlayer player; //video player component 
+    public MeshRenderer renderer; //mesh renderer component, on same transform as above video player
 }
-
 
 
 public class TelevisionSequence : MonoBehaviour
@@ -32,30 +36,31 @@ public class TelevisionSequence : MonoBehaviour
     /// before starting the fighting game
     /// </summary>
 
-    [SerializeField] private int channelIndex = 0;
-    [SerializeField] private int backupIndex = 1;
+    private int channelIndex = 0; //index for the current channel
+    private int backupIndex = 1; //index for the next channel in sequence, for pre-loading videos
 
-    [Header("Animation")]
-    [SerializeField] private Animator remoteAnim;
-    [SerializeField] private Animator tvAnim;
-    [SerializeField] private Animator controllerAnimPlayer;
-    [SerializeField] private Animator controllerAnimBrother;
+    [Header("Animation References")]
+    [SerializeField] private Animator tvAnim; //animator for the channel TV screen
+    [SerializeField] private Animator textureAnimController; //animator for the texture video canvas image
+    [SerializeField] private Animator remoteAnim; //animator for the remote control model
+    [SerializeField] private Animator controllerAnimPlayer; //animator for the player game controller model
+    [SerializeField] private Animator controllerAnimBrother; //animator for the brother game controller model
 
-
-    [SerializeField] private Animator textureAnimController;
-
-    private bool canInteract = false;
-    private bool startedTelevision = false;
-
+    [Header("Reference Fields")]
     [SerializeField] private GameObject televisionScreen;
     [SerializeField] private GameObject gameScreen;
     [SerializeField] private FightRoundManager fightManager;
+
+
+    private bool canInteract = false; //manages interact cooldown for changing channels
+    private bool startedTelevision = false; //tracks if the tv has been enabled yet
+
 
     [Header("Clicks Cooldown")]
     [SerializeField] private float clickCooldown = 1; //how long does player need to wait before clicking to change channel? 
     private float currentCooldown = 0;
     [SerializeField] private int totalClicks = 4;
-    [SerializeField] private int currentClicks = 0;
+    private int currentClicks = 0;
 
     private bool calledChannelChange = false;
     [SerializeField] private bool calledEndSequence = false;
