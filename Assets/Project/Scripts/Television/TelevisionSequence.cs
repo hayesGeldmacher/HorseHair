@@ -38,7 +38,7 @@ public class TelevisionSequence : MonoBehaviour
     /// 
     [Header("Skip Sequence")]
     [Tooltip("Skip straight to fighting game.")]
-    private bool skipTelevision = false //skip the television sequence, straight to fighting game
+    [SerializeField] private bool skipTelevision = false; //skip the television sequence, straight to fighting game
 
     private int channelIndex = 0; //index for the current channel
     private int backupIndex = 1; //index for the next channel in sequence, for pre-loading videos
@@ -200,9 +200,6 @@ public class TelevisionSequence : MonoBehaviour
             cache.renderer.enabled = false;
             cache.player.Stop();
 
-
-     
-
             vp.renderer.enabled = true;
             if (vp.player.isPrepared)
             {
@@ -214,9 +211,6 @@ public class TelevisionSequence : MonoBehaviour
             {
                 Debug.LogWarning("WARNING! player named: " + vp.player.gameObject.name + "is not prepared!");
             }
-
-
-
         }
             backupIndex = channelIndex + 1;
             if(backupIndex + 1 > channels.Length) {  backupIndex = 0; }
@@ -255,6 +249,7 @@ public class TelevisionSequence : MonoBehaviour
         televisionScreen.SetActive(false);
         gameScreen.SetActive(true);
         fightManager.SetGameActive();
+        if(ScareManager.instance != null) { ScareManager.instance.EnableScares(); }
     }
 
     //testing function for skipping the television

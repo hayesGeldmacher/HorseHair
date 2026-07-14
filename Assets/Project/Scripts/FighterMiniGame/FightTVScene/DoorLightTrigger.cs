@@ -23,9 +23,16 @@ public class DoorLightTrigger : MonoBehaviour
     [SerializeField] private AudioClip doorOpenClip;
     [SerializeField] private AudioClip doorCloseClip;
 
+    private bool active = false;
+
     private float GetRandomWait()
     {
         return Random.Range(triggerWaitMin, triggerWaitMax);
+    }
+
+    private void Awake()
+    {
+        ScareManager.instance.onScaresEnabled += SetActive;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -37,7 +44,7 @@ public class DoorLightTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(currentTriggers >= maxTriggers) { return; }
+        if(currentTriggers >= maxTriggers || !active) { return; }
         if(currentWait <= 0)
         {
             currentWait = GetRandomWait();
@@ -69,5 +76,11 @@ public class DoorLightTrigger : MonoBehaviour
         doorSource.pitch = Random.Range(0.9f, 1.1f);
         doorSource.Play();
         doorLightAnim.SetTrigger("close");
+    }
+
+    public void SetActive()
+    {
+        active = true;
+        Debug.Log("Door Light Trigger is Active!");
     }
 }
