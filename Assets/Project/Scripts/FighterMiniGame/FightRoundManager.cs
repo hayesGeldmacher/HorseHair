@@ -147,6 +147,8 @@ public class FightRoundManager : MonoBehaviour
     private Coroutine roundIntroCoroutine;
     private Coroutine roundEndCoroutine;
 
+    private bool gameCanStart = false;
+
     private void Start()
     {
         ShowStartScreen();
@@ -276,7 +278,8 @@ public class FightRoundManager : MonoBehaviour
 
     private void CheckForAnyButtonStart()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+        
+        if (Input.GetKeyDown(KeyCode.Tab) || !gameCanStart)
             return;
 
         if (!startingRound && Input.anyKeyDown)
