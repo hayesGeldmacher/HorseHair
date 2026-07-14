@@ -3,8 +3,34 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
+public class DialogueTrigger
+{
+    [TextArea]
+    public string dialogueLine;
+    public bool fromJesse = false;
+
+    public bool hasBrotherResponse;
+    public float brotherResponseTime = 1.0f;
+
+    [TextArea]
+    public string brotherDialogueLine;
+
+    [Range(0f, 1f)]
+    [Tooltip("Chance this dialogue triggers after the sequence matches 1 = always 0.5 = 50 percent 0 = never")]
+    public float triggerChance = 1f;
+
+    public float cooldown = 2f;
+    public bool triggerOnlyOnce;
+
+    [HideInInspector] public float cooldownTimer;
+    [HideInInspector] public bool hasTriggered;
+}
+
+
 public class FighterMoveDialogueTrigger : MonoBehaviour
 {
+
     [System.Serializable]
     public class MoveDialogueRule
     {
@@ -20,24 +46,8 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         [Tooltip("How quickly the sequence must happen")]
         public float maxSequenceTime = 3f;
 
-        [TextArea]
-        public string dialogueLine;
-
-        public bool hasBrotherResponse;
-        public float brotherResponseTime = 1.0f;
-
-        [TextArea]
-        public string brotherDialogueLine;
-
-        [Range(0f, 1f)]
-        [Tooltip("Chance this dialogue triggers after the sequence matches 1 = always 0.5 = 50 percent 0 = never")]
-        public float triggerChance = 1f;
-
-        public float cooldown = 2f;
-        public bool triggerOnlyOnce;
-
-        [HideInInspector] public float cooldownTimer;
-        [HideInInspector] public bool hasTriggered;
+        public DialogueTrigger trigger;
+  
     }
 
     private struct MoveRecord
@@ -115,13 +125,13 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
             if (DoesHistoryMatchRule(rule))
             {
-                if (Random.value <= rule.triggerChance)
+                if (Random.value <= rule.trigger.triggerChance)
                 {
-                    TriggerDialogue(rule);
+                    TriggerDialogue(rule.trigger);
                     return;
                 }
 
-                rule.cooldownTimer = rule.cooldown;
+                rule.trigger.cooldownTimer = rule.trigger.cooldown;
             }
         }
     }
@@ -134,10 +144,10 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         if (rule.moveSequence == null || rule.moveSequence.Count == 0)
             return false;
 
-        if (rule.cooldownTimer > 0f)
+        if (rule.trigger.cooldownTimer > 0f)
             return false;
 
-        if (rule.triggerOnlyOnce && rule.hasTriggered)
+        if (rule.trigger.triggerOnlyOnce && rule.trigger.hasTriggered)
             return false;
 
         return true;
@@ -211,29 +221,34 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         return rule.resultSequence[index];
     }
 
-    private void TriggerDialogue(MoveDialogueRule rule)
+    public void TriggerChannelDialogue()
+    {
+
+    }
+
+    private void TriggerDialogue(DialogueTrigger trigger)
     {
         if (dialogueText != null)
-            dialogueText.text = rule.dialogueLine;
+            dialogueText.text = trigger.dialogueLine;
 
         ShowDialogue();
 
         dialogueTimer = dialogueVisibleTime;
-        rule.cooldownTimer = rule.cooldown;
-        rule.hasTriggered = true;
+        trigger.cooldownTimer = trigger.cooldown;
+        trigger.hasTriggered = true;
 
-        if (rule.hasBrotherResponse && brotherTrigger != null)
+        if (trigger.hasBrotherResponse && brotherTrigger != null)
         {
-           StartCoroutine(WaitForBrotherResponse(rule));
+           StartCoroutine(WaitForBrotherResponse(trigger));
         }
     }
 
-    private IEnumerator WaitForBrotherResponse(MoveDialogueRule rule)
+    private IEnumerator WaitForBrotherResponse(DialogueTrigger trigger)
     {
-        yield return new WaitForSeconds(rule.brotherResponseTime);
+        yield return new WaitForSeconds(trigger.brotherResponseTime);
         if (!brotherTrigger.isTalking)
         {
-            brotherTrigger.TriggerBrotherDialogue(rule.brotherDialogueLine);
+            brotherTrigger.TriggerBrotherDialogue(trigger.brotherDialogueLine);
         }
     }
 
@@ -280,8 +295,8 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
     {
         foreach (MoveDialogueRule rule in rules)
         {
-            if (rule.cooldownTimer > 0f)
-                rule.cooldownTimer -= Time.deltaTime;
+            if (rule.trigger.cooldownTimer > 0f)
+                rule.trigger.cooldownTimer -= Time.deltaTime;
         }
     }
 
@@ -316,8 +331,8 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
         foreach (MoveDialogueRule rule in rules)
         {
-            rule.cooldownTimer = 0f;
-            rule.hasTriggered = false;
+            rule.trigger.cooldownTimer = 0f;
+            rule.trigger.hasTriggered = false;
         }
 
         HideDialogue();

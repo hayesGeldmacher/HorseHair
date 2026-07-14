@@ -8,6 +8,22 @@ using UnityEngine.Video;
 /// before starting the fighting game. Manages the start of the scene, changing channels, and transitioning to the fighting game.
 /// </summary>
 
+[System.Serializable]
+public class ChannelDialogue
+{
+    [TextArea]
+    public string dialogueLine;
+
+    public bool playFromJesse = false;
+    public bool hasBrotherResponse;
+    public float brotherResponseTime  = 1.0f;
+
+    [TextArea]
+    public string brotherLine;
+
+}
+
+
 //struct for holding a single 'channel' for the television
 [System.Serializable]
 public struct Channel 
@@ -16,6 +32,11 @@ public struct Channel
     public RuntimeAnimatorController textureAnim; //only assign for texture channels
     public VideoClip video; //only assign for video channels
     public AudioClip audio; //audio to play for channel, assign for both texture and videos
+
+    public bool hasDialogue;
+    public ChannelDialogue channelDialogue;
+
+
 }
 
 //struct for holding video player system
@@ -67,6 +88,10 @@ public class TelevisionSequence : MonoBehaviour
     private float currentCooldown = 0;
     [SerializeField] private int totalClicks = 4; //how times does player change channels before ending tv sequence? 
     private int currentClicks = 0;
+
+    [Header("Dialogue References")]
+    [SerializeField] private FighterMoveDialogueTrigger playerTrigger;
+    [SerializeField] private FighterMoveDialogueTrigger jesseTrigger;
 
     [Header("Wait Times")]
     [Tooltip("how long for remote to leave.")]
