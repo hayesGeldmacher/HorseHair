@@ -3,30 +3,6 @@ using TMPro;
 using UnityEngine;
 using System.Collections;
 
-[System.Serializable]
-public class DialogueTrigger
-{
-    [TextArea]
-    public string dialogueLine;
-    public bool fromJesse = false;
-
-    public bool hasBrotherResponse;
-    public float brotherResponseTime = 1.0f;
-
-    [TextArea]
-    public string brotherDialogueLine;
-
-    [Range(0f, 1f)]
-    [Tooltip("Chance this dialogue triggers after the sequence matches 1 = always 0.5 = 50 percent 0 = never")]
-    public float triggerChance = 1f;
-
-    public float cooldown = 2f;
-    public bool triggerOnlyOnce;
-
-    [HideInInspector] public float cooldownTimer;
-    [HideInInspector] public bool hasTriggered;
-}
-
 
 public class FighterMoveDialogueTrigger : MonoBehaviour
 {
@@ -221,12 +197,7 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         return rule.resultSequence[index];
     }
 
-    public void TriggerChannelDialogue()
-    {
-
-    }
-
-    private void TriggerDialogue(DialogueTrigger trigger)
+    public void TriggerDialogue(DialogueTrigger trigger)
     {
         if (dialogueText != null)
             dialogueText.text = trigger.dialogueLine;

@@ -6461,8 +6461,8 @@ MonoBehaviour:
   tvAudio: {fileID: 1646422925}
   clickCooldown: 1
   totalClicks: 4
-  playerTrigger: {fileID: 0}
-  jesseTrigger: {fileID: 0}
+  playerTrigger: {fileID: 53929660}
+  jesseTrigger: {fileID: 774963578}
   remoteWait: 0.5
   controllerWaitBrother: 2
   controllerWaitPlayer: 0.5
@@ -6472,45 +6472,65 @@ MonoBehaviour:
     video: {fileID: 32900000, guid: f870a76dd556a3b4d8954d0d7de3f052, type: 3}
     audio: {fileID: 8300000, guid: b9c63aa47ed6f104d97debcffb1d4010, type: 3}
     hasDialogue: 0
-    channelDialogue:
+    trigger:
       dialogueLine: 
-      playFromJesse: 0
+      fromJesse: 0
       hasBrotherResponse: 0
       brotherResponseTime: 1
-      brotherLine: 
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
   - isTexture: 0
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: 3c781a2aeb0629f44afe3a01defac210, type: 3}
     audio: {fileID: 8300000, guid: 078fca522297d4c49b81f20e825ea14f, type: 3}
-    hasDialogue: 0
-    channelDialogue:
-      dialogueLine: 
-      playFromJesse: 0
-      hasBrotherResponse: 0
+    hasDialogue: 1
+    trigger:
+      dialogueLine: I always liked these old Westerns...
+      fromJesse: 1
+      hasBrotherResponse: 1
       brotherResponseTime: 1
-      brotherLine: 
+      brotherDialogueLine: Nah, not enough action for me...
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
   - isTexture: 0
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac9778d9d8578e84681bd2e81a122e12, type: 3}
     audio: {fileID: 8300000, guid: e7c7c1e76c8f5a449947968cfc3df6e3, type: 3}
     hasDialogue: 0
-    channelDialogue:
+    trigger:
       dialogueLine: 
-      playFromJesse: 0
+      fromJesse: 0
       hasBrotherResponse: 0
       brotherResponseTime: 1
-      brotherLine: 
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
   - isTexture: 1
     textureAnim: {fileID: 9100000, guid: f2ab1cfc8f13255488e499ac776f65df, type: 2}
     video: {fileID: 32900000, guid: ac9778d9d8578e84681bd2e81a122e12, type: 3}
     audio: {fileID: 8300000, guid: 88c754c96aa91814fb82b0030f7484bd, type: 3}
     hasDialogue: 0
-    channelDialogue:
+    trigger:
       dialogueLine: 
-      playFromJesse: 0
+      fromJesse: 0
       hasBrotherResponse: 0
       brotherResponseTime: 1
-      brotherLine: 
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
 --- !u!4 &1111314899
 Transform:
   m_ObjectHideFlags: 0
@@ -12426,6 +12446,50 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1 &2108218057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2108218059}
+  - component: {fileID: 2108218058}
+  m_Layer: 0
+  m_Name: DialogueManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2108218058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108218057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a00ffd96f92f387458fd688393970bfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FGDialogueManager
+--- !u!4 &2108218059
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108218057}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.5122, y: 1.54384, z: -10.18837}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2108522881
 GameObject:
   m_ObjectHideFlags: 0
@@ -14069,6 +14133,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 2108218059}
   - {fileID: 425708211}
   - {fileID: 1111314899}
   - {fileID: 1479744030}
