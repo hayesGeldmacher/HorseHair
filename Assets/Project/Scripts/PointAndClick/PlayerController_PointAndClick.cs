@@ -136,6 +136,23 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
+    public void Transition()
+    {
+        Debug.Log("Transition timer was activated!");
+        StartCoroutine(TransitionEnumerator());
+    }
+
+    private IEnumerator TransitionEnumerator()
+    {
+        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+        blinkAnimator.SetTrigger("EyesDown");
+
+        yield return new WaitUntil(() =>
+        blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+
+        SceneManager.LoadScene(fightingGameScene);
+    }
+
     // ********************************************************************************
     // Tasks
     // ********************************************************************************
@@ -253,14 +270,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     private void MoveTo(TeleportClickEventData data)
     {
-        ////if this is the first teleport of the scene, play unique blinking animation - HG
-        //if (!finishedFirstTeleport)
-        //{
-        //    StartCoroutine(TeleportSequenceFirst(data));
-        //    finishedFirstTeleport = true;
-        //}
-        //else { StartCoroutine(TeleportSequence(data)); }
-
         StartCoroutine(TeleportSequence(data));
     }
 
