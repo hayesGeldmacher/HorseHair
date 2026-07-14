@@ -35,6 +35,10 @@ public class TelevisionSequence : MonoBehaviour
     /// This script manages the television sequence at the start of each night scene,
     /// before starting the fighting game
     /// </summary>
+    /// 
+    [Header("Skip Sequence")]
+    [Tooltip("Skip straight to fighting game.")]
+    private bool skipTelevision = false //skip the television sequence, straight to fighting game
 
     private int channelIndex = 0; //index for the current channel
     private int backupIndex = 1; //index for the next channel in sequence, for pre-loading videos
@@ -46,38 +50,10 @@ public class TelevisionSequence : MonoBehaviour
     [SerializeField] private Animator controllerAnimPlayer; //animator for the player game controller model
     [SerializeField] private Animator controllerAnimBrother; //animator for the brother game controller model
 
-    [Header("Reference Fields")]
+    [Header("GameObject References")]
     [SerializeField] private GameObject televisionScreen;
     [SerializeField] private GameObject gameScreen;
     [SerializeField] private FightRoundManager fightManager;
-
-
-    private bool canInteract = false; //manages interact cooldown for changing channels
-    private bool startedTelevision = false; //tracks if the tv has been enabled yet
-
-
-    [Header("Clicks Cooldown")]
-    [SerializeField] private float clickCooldown = 1; //how long does player need to wait before clicking to change channel? 
-    private float currentCooldown = 0;
-    [SerializeField] private int totalClicks = 4;
-    private int currentClicks = 0;
-
-    private bool calledChannelChange = false;
-    [SerializeField] private bool calledEndSequence = false;
-    [SerializeField] private bool skipTelevision = false;
-
-
-    //basic structure for this:
-    //2 video players 
-    /// <summary>
-    /// 1 player is the main, the other is the cache
-    /// 
-    /// when we are ready to swap:
-    /// - let the cache load a new clip in its videoplayer
-    /// when the cache is ready, simple disable the mesh renderer for the first cache and enable for teh second
-    /// 
-    /// as soon as they are swapped, we start prepping the video in the next cache!
-    /// </summary>
 
     [Header("Video References")]
     [SerializeField] private Video vp;
@@ -86,7 +62,28 @@ public class TelevisionSequence : MonoBehaviour
     [Header("Audio References")]
     [SerializeField] private AudioSource tvAudio;
 
-    public Channel[] channels;
+    [Header("Clicks Cooldown")]
+    [SerializeField] private float clickCooldown = 1; //how long does player need to wait before clicking to change channel? 
+    private float currentCooldown = 0;
+    [SerializeField] private int totalClicks = 4; //how times does player change channels before ending tv sequence? 
+    private int currentClicks = 0;
+
+    [Header("Wait Times")]
+    [Tooltip("how long for remote to leave.")]
+    [SerializeField] private float remoteWait;
+    [Tooltip("how long for brother controller to appear.")]
+    [SerializeField] private float controllerWaitBrother;
+    [Tooltip("how long for player controller to appear.")]
+    [SerializeField] private float controllerWaitPlayer;
+
+
+    private bool calledChannelChange = false; //is the channel currently changing
+    private bool calledEndSequence = false; //has the tv ending sequence been called yet
+    private bool canInteract = false; //manages interact cooldown for changing channels
+    private bool startedTelevision = false; //tracks if the tv has been enabled yet
+
+
+    public Channel[] channels; //array of channels to swap between
 
     void Awake()
     {
@@ -103,7 +100,9 @@ public class TelevisionSequence : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// This is just for testing - will replace whole function with Ray interaction system hooks - HG
+    /// </summary>
     void Update()
     {
 
@@ -246,12 +245,12 @@ public class TelevisionSequence : MonoBehaviour
     {
         tvAudio.Stop();
         tvAnim.SetTrigger("off");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(remoteWait);
         remoteAnim.SetTrigger("gone");
 
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(controllerWaitBrother);
         controllerAnimBrother.SetTrigger("equip");
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(controllerWaitPlayer);
         controllerAnimPlayer.SetTrigger("equip");
         televisionScreen.SetActive(false);
         gameScreen.SetActive(true);
