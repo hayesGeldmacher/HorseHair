@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.Video;
 
-
+/// <summary>
+/// This is not fucking fast enough - I think we will just need to create a few different video players that each render on or off...
+/// </summary>
 
 [System.Serializable]
 public struct Channel 
 {
+    public bool isTexture;
+    public RuntimeAnimatorController textureAnim;
     public VideoClip video;
     public AudioClip audio;
 }
@@ -20,6 +24,7 @@ public struct Video
 }
 
 
+
 public class TelevisionSequence : MonoBehaviour
 {
     /// <summary>
@@ -28,15 +33,24 @@ public class TelevisionSequence : MonoBehaviour
     /// </summary>
 
     [SerializeField] private int channelIndex = 0;
+    [SerializeField] private int backupIndex = 1;
 
     [Header("Animation")]
     [SerializeField] private Animator remoteAnim;
     [SerializeField] private Animator tvAnim;
 
+    [SerializeField] private Animator textureAnimController;
+
     private bool canInteract = false;
     private bool startedTelevision = false;
 
     [SerializeField] private GameObject televisionScreen;
+
+    [Header("Clicks Cooldown")]
+    [SerializeField] private float clickCooldown = 1; //how long does player need to wait before clicking to change channel? 
+    private float currentCooldown = 0;
+
+    private bool calledChannelChange = false;
 
 
     //basic structure for this:
@@ -60,15 +74,28 @@ public class TelevisionSequence : MonoBehaviour
 
     public Channel[] channels;
 
+    void Awake()
+    {
+     
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        LoadBackupOnStart();
         StartCoroutine(BeginTelevisionScene());
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if(currentCooldown > 0)
+        {
+            currentCooldown -= Time.deltaTime;
+            return;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             if (canInteract)
@@ -78,9 +105,9 @@ public class TelevisionSequence : MonoBehaviour
                     startedTelevision = true;
                     StartTelevision();
                 }
-                else
+                else if(!calledChannelChange)
                 {
-                    ProgressChannels();
+                    StartCoroutine(ProgressChannels());
                 }
             }
         }
@@ -101,33 +128,82 @@ public class TelevisionSequence : MonoBehaviour
     {
         tvAnim.SetTrigger("on");
         remoteAnim.SetTrigger("press");
+        vp.player.Play();
+        tvAudio.Play();
     }
 
-    public void ProgressChannels()
+    private IEnumerator ProgressChannels()
     {
+        calledChannelChange = true;
+        currentCooldown = clickCooldown;
         remoteAnim.SetTrigger("press");
+        yield return new WaitForSeconds(0.5f);
         channelIndex++;
         if(channelIndex + 1 > channels.Length) { channelIndex = 0; }
 
         LoadVideo();
     }
 
+    private void LoadBackupOnStart()
+    {
+        vp.player.clip = channels[0].video;
+        cache.player.clip = channels[1].video;
+        cache.player.Prepare();
+        tvAudio.clip = channels[0].audio;    
+    }
+
     private void LoadVideo()
     {
 
-        Video main = vp;
-        Video backup = cache;
-       
-        vp = backup;
-        cache = vp;
+        Channel newChannel = channels[channelIndex];
+        if (newChannel.isTexture)
+        {
+            textureAnimController.runtimeAnimatorController = newChannel.textureAnim as RuntimeAnimatorController;
+            cache.renderer.enabled = false;
+            vp.renderer.enabled = false;
+            
+        }
+        else
+        { 
 
-        main.renderer.enabled = true;
-        backup.renderer.enabled = false;
+            Video vpClone = vp;
+            Video cacheClone = cache;
 
-        int backupIndex = (channelIndex + 1 > channels.Length) ? 0 : channelIndex + 1;
+            vp = cacheClone;
+            cache = vpClone;
 
-        //now, load the backup!
-        backup.player.clip = channels[backupIndex].video;
-        tvAudio.clip = channels[channelIndex].audio;
+            //first disable the current video and set it to loading the next
+            cache.renderer.enabled = false;
+            cache.player.Stop();
+
+
+     
+
+            vp.renderer.enabled = true;
+            if (vp.player.isPrepared)
+            {
+             vp.player.Play();
+                Debug.Log("Player named: " + vp.player.gameObject.name + "is played next");
+
+            }
+            else
+            {
+                Debug.LogWarning("WARNING! player named: " + vp.player.gameObject.name + "is not prepared!");
+            }
+
+
+
+        }
+            backupIndex = channelIndex + 1;
+            if(backupIndex + 1 > channels.Length) {  backupIndex = 0; }
+
+            //now, load the backup!
+            cache.player.clip = channels[backupIndex].video;
+            cache.player.Prepare();
+        
+        tvAudio.Stop();
+        tvAudio.clip = newChannel.audio;
+        tvAudio.Play();
+        calledChannelChange = false;
     }
 }
