@@ -147,7 +147,7 @@ public class FightRoundManager : MonoBehaviour
     private Coroutine roundIntroCoroutine;
     private Coroutine roundEndCoroutine;
 
-    private bool gameCanStart = false;
+    [SerializeField] private bool gameCanStart = false;
 
     private void Start()
     {
