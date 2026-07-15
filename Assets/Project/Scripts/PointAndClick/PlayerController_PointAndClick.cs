@@ -44,9 +44,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private bool CanBeFastForwaded = false;
 
     [Header("Audio")]
-    [SerializeField] private AudioSource finishTaskSource; //sound played when task is completed and player leaves PNC segment 
-    [SerializeField] private AudioClip finishMorningClip; //clip played for above when morning task is finished
-    [SerializeField] private AudioClip finishAfternoonClip; //clip played for above when afternoon task is finished
+    [SerializeField, Tooltip("Sound played when task is completed and player leaves PNC segment")] 
+    private AudioSource finishTaskSource;
+    [SerializeField, Tooltip("Clip played for above when morning task is finished")] 
+    private AudioClip finishMorningClip;
+    [SerializeField, Tooltip("Clip played for above when afternoon task is finished")] 
+    private AudioClip finishAfternoonClip;
 
     private int dialogueIndex = 0;
     private bool startedDialogue = false;
@@ -100,6 +103,14 @@ public class PlayerController_PointAndClick : MonoBehaviour
                     break;
                 }
             }
+            if (StartingPoint == null)
+            {
+                StartingPoint = allEnvironments.FirstOrDefault();
+            }          
+        }
+        else
+        {
+            StartingPoint = FindObjectsByType<Camera_Environment>(FindObjectsInactive.Include)[0];
         }
         if (StartingPoint != null)
         {
@@ -134,6 +145,22 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 StartCoroutine(StartTask(task));
                 break;
         }
+    }
+
+    public void Transition()
+    {
+        StartCoroutine(TransitionEnumerator());
+    }
+
+    private IEnumerator TransitionEnumerator()
+    {
+        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+        blinkAnimator.SetTrigger("EyesDown");
+
+        yield return new WaitUntil(() =>
+        blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+
+        SceneManager.LoadScene(fightingGameScene);
     }
 
     // ********************************************************************************
@@ -253,14 +280,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     private void MoveTo(TeleportClickEventData data)
     {
-        ////if this is the first teleport of the scene, play unique blinking animation - HG
-        //if (!finishedFirstTeleport)
-        //{
-        //    StartCoroutine(TeleportSequenceFirst(data));
-        //    finishedFirstTeleport = true;
-        //}
-        //else { StartCoroutine(TeleportSequence(data)); }
-
         StartCoroutine(TeleportSequence(data));
     }
 
@@ -428,6 +447,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     public void OnShowTextBox()
     {
+        if (textBox.IsEmpty())
+            return;
         if (_hideTextCoroutine != null)
         {
             StopCoroutine(_hideTextCoroutine);

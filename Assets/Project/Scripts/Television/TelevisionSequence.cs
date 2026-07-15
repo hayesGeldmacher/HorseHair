@@ -83,6 +83,8 @@ public class TelevisionSequence : MonoBehaviour
     [Tooltip("how long for player controller to appear.")]
     [SerializeField] private float controllerWaitPlayer;
 
+    [SerializeField] private PlayerController_PointAndClick playerControls;
+
 
     private bool calledChannelChange = false; //is the channel currently changing
     private bool calledEndSequence = false; //has the tv ending sequence been called yet
@@ -119,25 +121,48 @@ public class TelevisionSequence : MonoBehaviour
             return;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    if (canInteract)
+        //    {
+        //        if (!startedTelevision)
+        //        {
+        //            startedTelevision = true;
+        //            StartTelevision();
+        //        }
+        //        else if (!calledChannelChange)
+        //        {
+        //            if (currentClicks < totalClicks)
+        //            {
+        //                StartCoroutine(ProgressChannels());
+        //            }
+        //            else
+        //            {
+        //                CallEndTelevisionSequence();
+        //            }
+        //        }
+        //    }
+        //}
+    }
+
+    public void InteractTelevision()
+    {
+        if (canInteract)
         {
-            if (canInteract)
+            if (!startedTelevision)
             {
-                if (!startedTelevision)
+                startedTelevision = true;
+                StartTelevision();
+            }
+            else if (!calledChannelChange)
+            {
+                if (currentClicks < totalClicks)
                 {
-                    startedTelevision = true;
-                    StartTelevision();
+                    StartCoroutine(ProgressChannels());
                 }
-                else if(!calledChannelChange)
+                else
                 {
-                    if(currentClicks < totalClicks)
-                    {
-                         StartCoroutine(ProgressChannels());
-                    }
-                    else
-                    {
-                        CallEndTelevisionSequence();
-                    }
+                    CallEndTelevisionSequence();
                 }
             }
         }
@@ -261,13 +286,13 @@ public class TelevisionSequence : MonoBehaviour
         remoteAnim.SetTrigger("gone");
         FGDialogueManager.instance.TriggerDialogue(endTrigger);
 
-        yield return new WaitForSeconds(controllerWaitBrother);
-        controllerAnimBrother.SetTrigger("equip");
-        yield return new WaitForSeconds(controllerWaitPlayer);
-        controllerAnimPlayer.SetTrigger("equip");
+        //yield return new WaitForSeconds(controllerWaitBrother);
+        //controllerAnimBrother.SetTrigger("equip");
+        //yield return new WaitForSeconds(controllerWaitPlayer);
+        //controllerAnimPlayer.SetTrigger("equip");
+
         televisionScreen.SetActive(false);
-        gameScreen.SetActive(true);
-        fightManager.SetGameActive();
+        playerControls.Transition();
     
         if(ScareManager.instance != null) { ScareManager.instance.CallScares(); }
     }

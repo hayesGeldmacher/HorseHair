@@ -22,6 +22,7 @@ public class EventManager : MonoBehaviour
     [SerializeField] private TimeOfDay currentTimeOfDay = TimeOfDay.Morning;
     [SerializeField] private int currentTaskNum = 0;
     [SerializeField] private Tasks[] tasks;
+    [SerializeField] private bool TVSet = false;
 
     private Dictionary<(TimeOfDay, int), EventClick_TaskGiver> tasksList =
         new Dictionary<(TimeOfDay, int), EventClick_TaskGiver>();
@@ -71,9 +72,18 @@ public class EventManager : MonoBehaviour
 
     private void StartTask()
     {
-        tasksList[(currentTimeOfDay, currentTaskNum)].ChangeTaskStatus(true);
-        tasksList[(currentTimeOfDay, currentTaskNum)].task.finalPoint.Activated = true;
-        ThoughtDialogue?.Invoke(tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
+        if (TVSet)
+        {
+            tasksList[(TimeOfDay.Morning, 0)].ChangeTaskStatus(true);
+            tasksList[(TimeOfDay.Morning, 0)].task.finalPoint.Activated = true;
+            ThoughtDialogue?.Invoke(tasksList[(TimeOfDay.Morning, 0)].task.ThoughtText);
+        }
+        else
+        {
+            tasksList[(currentTimeOfDay, currentTaskNum)].ChangeTaskStatus(true);
+            tasksList[(currentTimeOfDay, currentTaskNum)].task.finalPoint.Activated = true;
+            ThoughtDialogue?.Invoke(tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
+        }
     }
 
     private void HandleGoalCompleted(GoalCompletionData data)

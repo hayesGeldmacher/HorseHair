@@ -140,4 +140,9 @@ public class TextBox : MonoBehaviour
 
         fadeGroup.alpha = targetAlpha;
     }
+
+    public bool IsEmpty()
+    {
+        return _text.text == "";
+    }
 }
