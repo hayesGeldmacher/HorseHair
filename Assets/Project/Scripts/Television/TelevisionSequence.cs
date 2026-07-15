@@ -73,8 +73,7 @@ public class TelevisionSequence : MonoBehaviour
     private int currentClicks = 0;
 
     [Header("Dialogue References")]
-    [SerializeField] private FighterMoveDialogueTrigger playerTrigger;
-    [SerializeField] private FighterMoveDialogueTrigger jesseTrigger;
+    [SerializeField] private DialogueTrigger endTrigger; //unique trigger for when the brothers transition to the fighting game
 
     [Header("Wait Times")]
     [Tooltip("how long for remote to leave.")]
@@ -232,16 +231,18 @@ public class TelevisionSequence : MonoBehaviour
         tvAudio.Play();
         calledChannelChange = false;
 
-        DialogueTrigger newTrigger = newChannel.trigger;
-        if (Random.value <= newTrigger.triggerChance)
+        if (newChannel.hasDialogue)
         {
-            FighterMoveDialogueTrigger dialogue;
-            if (newTrigger.fromJesse) { dialogue = jesseTrigger; }
-            else { dialogue = playerTrigger; }
-            dialogue.TriggerDialogue(newTrigger);
+            DialogueTrigger newTrigger = newChannel.trigger;
+            StartCoroutine(CallDialogueTrigger(newTrigger));
         }
     }
 
+    private IEnumerator CallDialogueTrigger(DialogueTrigger trigger)
+    {
+        yield return new WaitForSeconds(1.0f);
+        FGDialogueManager.instance.TriggerDialogue(trigger);
+    }
 
     private void CallEndTelevisionSequence()
     {
@@ -258,6 +259,7 @@ public class TelevisionSequence : MonoBehaviour
         tvAnim.SetTrigger("off");
         yield return new WaitForSeconds(remoteWait);
         remoteAnim.SetTrigger("gone");
+        FGDialogueManager.instance.TriggerDialogue(endTrigger);
 
         yield return new WaitForSeconds(controllerWaitBrother);
         controllerAnimBrother.SetTrigger("equip");

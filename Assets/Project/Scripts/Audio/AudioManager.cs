@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using System.Collections;
+using System.Collections.Generic;
+
 
 public enum DialogueSound
 {
@@ -49,6 +52,12 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip[] playerClips; //index 0
     [SerializeField] private AudioClip[] brotherClips; //index 1
     [SerializeField] private AudioClip[] dadClips; //index 2
+
+    [Header("Dialogue Burst")]
+    [SerializeField] private float charsPerSound = 10; //how many sounds should trigger based on the characters in dialogue line
+    [SerializeField] private float spaceBetweenSounds = 0.2f; //how long to wait between triggering dialogue sounds
+    [SerializeField] private int maxSoundsPerLine = 4; //total sounds that can be triggered per line
+
     private int lastPlayedSource = 0;
 
     public void PlayInteractSound()
@@ -98,6 +107,7 @@ public class AudioManager : MonoBehaviour
         finishTaskSource.Play();
     }
 
+    //plays a per-typed character sound, one at a time
     public void PlayDialogueSound(DialogueSound sound)
     {
         AudioClip clip = null;
@@ -142,5 +152,33 @@ public class AudioManager : MonoBehaviour
         chosenSource.Play();
 
         Debug.Log("Displayed Audio!");
+    }
+
+    //plays several dialogue sounds, spaced apart, based on length of string
+    public void PlayDialogueBurst(string line, DialogueSound sound)
+    {
+        int charCount = 0;
+        int soundCount = 0;
+        float timeToWait = 0.0f;
+
+        foreach(char c in line)
+        {
+            charCount++;
+            if(charCount >= charsPerSound && soundCount <= maxSoundsPerLine)
+            {
+                charCount = 0;
+                soundCount++;
+                timeToWait += spaceBetweenSounds;
+                StartCoroutine(WaitToPlayDialogue(sound, timeToWait));
+            }
+        }
+
+        if(soundCount >= 0) { PlayDialogueSound(sound); }
+    }
+
+    private IEnumerator WaitToPlayDialogue(DialogueSound sound, float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        PlayDialogueSound(sound);
     }
 }

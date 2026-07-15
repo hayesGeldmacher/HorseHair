@@ -52,9 +52,9 @@ public class FGDialogueManager : MonoBehaviour
         public GameObject dialogueRoot;
         public TMP_Text dialogueText;
         public Animator dialogueAnim; //the animator which enables the text visibility - HG
-        public FighterMoveDialogueTrigger brotherTrigger;
         public float dialogueTimer;
         public bool isTalking = false;
+        public DialogueSound soundType;
     }
 
 
@@ -68,7 +68,8 @@ public class FGDialogueManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        HideDialogue(PlayerDialogue);
+        HideDialogue(JesseDialogue);
     }
 
     // Update is called once per frame
@@ -81,22 +82,32 @@ public class FGDialogueManager : MonoBehaviour
 
     public void TriggerDialogue(DialogueTrigger trigger)
     {
-        //get who the dialogue is coming from
-        BrotherDialogue targetDialogue = (trigger.fromJesse) ? JesseDialogue : PlayerDialogue;
 
-        if (targetDialogue.dialogueText != null)
-            targetDialogue.dialogueText.text = trigger.dialogueLine;
-
-        ShowDialogue(targetDialogue);
-
-        targetDialogue.dialogueTimer = dialogueVisibleTime;
-        trigger.cooldownTimer = trigger.cooldown;
-        trigger.hasTriggered = true;
-
-        if (trigger.hasBrotherResponse)
+        //first, check if we should even trigger
+        if (trigger.hasTriggered || trigger.triggerOnlyOnce) { return; }
+    
+        if (Random.value <= trigger.triggerChance)
         {
-            BrotherDialogue responseDialogue = (trigger.fromJesse) ? PlayerDialogue : JesseDialogue;
-            StartCoroutine(WaitForBrotherResponse(responseDialogue, trigger));
+   
+            //get who the dialogue is coming from
+            BrotherDialogue targetDialogue = (trigger.fromJesse) ? JesseDialogue : PlayerDialogue;
+
+            if (targetDialogue.dialogueText != null)
+                targetDialogue.dialogueText.text = trigger.dialogueLine;
+
+            AudioManager.instance.PlayDialogueBurst(trigger.dialogueLine, targetDialogue.soundType);
+
+            ShowDialogue(targetDialogue);
+
+            targetDialogue.dialogueTimer = dialogueVisibleTime;
+            trigger.cooldownTimer = trigger.cooldown;
+            trigger.hasTriggered = true;
+
+            if (trigger.hasBrotherResponse)
+            {
+                BrotherDialogue responseDialogue = (trigger.fromJesse) ? PlayerDialogue : JesseDialogue;
+                StartCoroutine(WaitForBrotherResponse(responseDialogue, trigger));
+            }
         }
     }
 
@@ -114,6 +125,7 @@ public class FGDialogueManager : MonoBehaviour
     {
         responseDialogue.dialogueText.text = line;
         ShowDialogue(responseDialogue);
+        AudioManager.instance.PlayDialogueBurst(line, responseDialogue.soundType);
 
         responseDialogue.dialogueTimer = dialogueVisibleTime;
 

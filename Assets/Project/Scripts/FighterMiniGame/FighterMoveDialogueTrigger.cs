@@ -42,10 +42,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private FightCharacter fighterToWatch;
-    [SerializeField] private GameObject dialogueRoot;
-    [SerializeField] private TMP_Text dialogueText;
-    [SerializeField] private Animator dialogueAnim; //the animator which enables the text visibility - HG
-    [SerializeField] private FighterMoveDialogueTrigger brotherTrigger;
 
     [Header("Dialogue Rules")]
     [SerializeField] private List<MoveDialogueRule> rules = new List<MoveDialogueRule>();
@@ -61,7 +57,7 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
     private void Start()
     {
-        HideDialogue();
+        
     }
 
     private void OnEnable()
@@ -79,7 +75,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
     private void Update()
     {
         UpdateRuleCooldowns();
-        UpdateDialogueTimer();
     }
 
     private void OnMovePerformed(
@@ -101,9 +96,10 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
             if (DoesHistoryMatchRule(rule))
             {
+                FGDialogueManager.instance.TriggerDialogue(rule.trigger);
                 if (Random.value <= rule.trigger.triggerChance)
                 {
-                    TriggerDialogue(rule.trigger);
+                    // TriggerDialogue(rule.trigger);
                     return;
                 }
 
@@ -197,70 +193,7 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         return rule.resultSequence[index];
     }
 
-    public void TriggerDialogue(DialogueTrigger trigger)
-    {
-        if (dialogueText != null)
-            dialogueText.text = trigger.dialogueLine;
-
-        ShowDialogue();
-
-        dialogueTimer = dialogueVisibleTime;
-        trigger.cooldownTimer = trigger.cooldown;
-        trigger.hasTriggered = true;
-
-        if (trigger.hasBrotherResponse && brotherTrigger != null)
-        {
-           StartCoroutine(WaitForBrotherResponse(trigger));
-        }
-    }
-
-    private IEnumerator WaitForBrotherResponse(DialogueTrigger trigger)
-    {
-        yield return new WaitForSeconds(trigger.brotherResponseTime);
-        if (!brotherTrigger.isTalking)
-        {
-            brotherTrigger.TriggerBrotherDialogue(trigger.brotherDialogueLine);
-        }
-    }
-
-    public void TriggerBrotherDialogue(string line)
-    {
-        dialogueText.text = line;
-        ShowDialogue();
-
-        dialogueTimer = dialogueVisibleTime;
-
-    }
-
-    private void ShowDialogue()
-    {
-        //  if (dialogueRoot != null)
-        //    dialogueRoot.SetActive(true);
-        if(dialogueAnim != null)
-            dialogueAnim.SetBool("visible", true);
-        isTalking = true;
-    }
-
-    private void HideDialogue()
-    {
-        // if (dialogueRoot != null)
-        //   dialogueRoot.SetActive(false);
-
-        if (dialogueAnim != null)
-            dialogueAnim.SetBool("visible", false);
-        isTalking = false;
-    }
-
-    private void UpdateDialogueTimer()
-    {
-        if (dialogueTimer <= 0f)
-            return;
-
-        dialogueTimer -= Time.deltaTime;
-
-        if (dialogueTimer <= 0f)
-            HideDialogue();
-    }
+   
 
     private void UpdateRuleCooldowns()
     {
@@ -306,6 +239,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
             rule.trigger.hasTriggered = false;
         }
 
-        HideDialogue();
+       // HideDialogue();
     }
 }
