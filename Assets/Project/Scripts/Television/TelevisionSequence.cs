@@ -295,7 +295,7 @@ public class TelevisionSequence : MonoBehaviour
         televisionScreen.SetActive(false);
         playerControls.Transition();
     
-        if(ScareManager.instance != null) { ScareManager.instance.CallScares(); }
+       // if(ScareManager.instance != null) { ScareManager.instance.CallScares(); }
     }
 
     //testing function for skipping the television

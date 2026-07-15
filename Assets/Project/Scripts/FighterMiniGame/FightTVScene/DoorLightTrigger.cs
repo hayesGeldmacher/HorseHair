@@ -23,7 +23,7 @@ public class DoorLightTrigger : MonoBehaviour
     [SerializeField] private AudioClip doorOpenClip;
     [SerializeField] private AudioClip doorCloseClip;
 
-    private bool active = false;
+    [SerializeField] bool active = false;
 
     private float GetRandomWait()
     {
