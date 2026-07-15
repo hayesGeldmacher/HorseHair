@@ -245,6 +245,10 @@ public class FightCharacter : MonoBehaviour
     private bool isKnockedDown;
     private bool isRecovering;
 
+    public bool movingForward = false; //for tracking in dream sequence
+    private float posXCurrent = 0;
+    private float posXLast = 0;
+
     private int facingDirection = 1;
 
     private float blockStunTimer;
@@ -591,6 +595,8 @@ public class FightCharacter : MonoBehaviour
 
     private void Update()
     {
+
+        UpdateIsMovingForward(); //check if fighter is moving forward on X axis - HG
         UpdateGrounded();
         UpdateFacingDirection();
 
@@ -919,6 +925,16 @@ public class FightCharacter : MonoBehaviour
 
         if (quickstepCooldownTimer > 0f)
             quickstepCooldownTimer -= Time.deltaTime;
+    }
+
+    //updating whether the player is moving forward or not for dream seqeuence stuff - HG
+    private void UpdateIsMovingForward()
+    {
+        posXCurrent = transform.localPosition.x;
+
+        movingForward = (posXCurrent > posXLast + 0.05f) ? true : false;
+
+        posXLast = posXCurrent; 
     }
 
     #endregion
