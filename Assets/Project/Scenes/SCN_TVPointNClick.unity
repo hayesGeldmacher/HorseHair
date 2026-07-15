@@ -165,50 +165,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterMoveDialogueTrigger
   fighterToWatch: {fileID: 644139990}
-  dialogueRoot: {fileID: 4261066953104633814}
-  dialogueText: {fileID: 8475191548923179014}
-  dialogueAnim: {fileID: 4261066953104633817}
-  brotherTrigger: {fileID: 774963578}
   rules:
   - ruleName: Punch Combo
     moveSequence: 010000000100000001000000
     resultSequence: 010000000100000001000000
     maxSequenceTime: 3
-    dialogueLine: 'What a punch combo! '
-    hasBrotherResponse: 0
-    brotherResponseTime: 1
-    brotherDialogueLine: 
-    triggerChance: 1
-    cooldown: 5
-    triggerOnlyOnce: 1
-    cooldownTimer: 0
-    hasTriggered: 0
+    trigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
   - ruleName: Grabbed
     moveSequence: 09000000
     resultSequence: 
     maxSequenceTime: 3
-    dialogueLine: I got your ass dude!
-    hasBrotherResponse: 1
-    brotherResponseTime: 1
-    brotherDialogueLine: I'm gonna KILL you...
-    triggerChance: 1
-    cooldown: 5
-    triggerOnlyOnce: 1
-    cooldownTimer: 0
-    hasTriggered: 0
+    trigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
   - ruleName: Punched
     moveSequence: 05000000
     resultSequence: 
     maxSequenceTime: 3
-    dialogueLine: Kicked!
-    hasBrotherResponse: 0
-    brotherResponseTime: 1
-    brotherDialogueLine: 
-    triggerChance: 1
-    cooldown: 5
-    triggerOnlyOnce: 1
-    cooldownTimer: 0
-    hasTriggered: 0
+    trigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
   dialogueVisibleTime: 2
   isTalking: 0
 --- !u!1 &67698780
@@ -5471,10 +5473,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterMoveDialogueTrigger
   fighterToWatch: {fileID: 1173407397}
-  dialogueRoot: {fileID: 284590060}
-  dialogueText: {fileID: 1625339006}
-  dialogueAnim: {fileID: 284590063}
-  brotherTrigger: {fileID: 53929660}
   rules: []
   dialogueVisibleTime: 2
   isTalking: 0
@@ -5906,6 +5904,10 @@ PrefabInstance:
     - target: {fileID: 189396485059415159, guid: 63f32d1c414a6334a923b1a8497f1f0e, type: 3}
       propertyPath: m_Name
       value: PF_Canvas_FG
+      objectReference: {fileID: 0}
+    - target: {fileID: 189396485059415159, guid: 63f32d1c414a6334a923b1a8497f1f0e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1673578293734625132, guid: 63f32d1c414a6334a923b1a8497f1f0e, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -6549,6 +6551,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1800225752}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1039682858
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.34262
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.63828
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 22.11814
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1949710041836328356, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1989334843392178721, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_Name
+      value: DialogueManager
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
 --- !u!1 &1045866720
 GameObject:
   m_ObjectHideFlags: 0
@@ -6647,31 +6706,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.39873374
+      value: 0.8110643
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.39873374
+      value: 0.8110643
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.39873374
+      value: 0.8110643
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.616
+      value: -0.445
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.229
+      value: 0.111
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.361
+      value: 2.306
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.031861242
+      value: 0.16204824
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalRotation.x
@@ -6679,7 +6738,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.99949235
+      value: 0.9867829
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalRotation.z
@@ -6691,7 +6750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -183.652
+      value: -198.652
       objectReference: {fileID: 0}
     - target: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -6703,7 +6762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: neiName
-      value: Remote
+      value: TV
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: ResetAfterClick
@@ -7265,6 +7324,17 @@ MonoBehaviour:
   tvAudio: {fileID: 1646422925}
   clickCooldown: 1
   totalClicks: 4
+  endTrigger:
+    dialogueLine: Let's get down to business...
+    fromJesse: 0
+    hasBrotherResponse: 0
+    brotherResponseTime: 1
+    brotherDialogueLine: 
+    triggerChance: 1
+    cooldown: 2
+    triggerOnlyOnce: 0
+    cooldownTimer: 0
+    hasTriggered: 0
   remoteWait: 0.5
   controllerWaitBrother: 2
   controllerWaitPlayer: 0.5
@@ -7274,18 +7344,66 @@ MonoBehaviour:
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: f870a76dd556a3b4d8954d0d7de3f052, type: 3}
     audio: {fileID: 8300000, guid: b9c63aa47ed6f104d97debcffb1d4010, type: 3}
+    hasDialogue: 0
+    trigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
   - isTexture: 0
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: 3c781a2aeb0629f44afe3a01defac210, type: 3}
     audio: {fileID: 8300000, guid: 078fca522297d4c49b81f20e825ea14f, type: 3}
+    hasDialogue: 1
+    trigger:
+      dialogueLine: I always like these old Westerns.
+      fromJesse: 1
+      hasBrotherResponse: 1
+      brotherResponseTime: 1
+      brotherDialogueLine: Nah, not enough action for me...
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
   - isTexture: 0
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac9778d9d8578e84681bd2e81a122e12, type: 3}
     audio: {fileID: 8300000, guid: e7c7c1e76c8f5a449947968cfc3df6e3, type: 3}
+    hasDialogue: 0
+    trigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
   - isTexture: 1
     textureAnim: {fileID: 9100000, guid: f2ab1cfc8f13255488e499ac776f65df, type: 2}
-    video: {fileID: 32900000, guid: ac9778d9d8578e84681bd2e81a122e12, type: 3}
+    video: {fileID: 0}
     audio: {fileID: 8300000, guid: 88c754c96aa91814fb82b0030f7484bd, type: 3}
+    hasDialogue: 1
+    trigger:
+      dialogueLine: 'I''m bored - can we play the game now? '
+      fromJesse: 1
+      hasBrotherResponse: 1
+      brotherResponseTime: 1
+      brotherDialogueLine: Alright, I hear ya...
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
 --- !u!4 &1111314899
 Transform:
   m_ObjectHideFlags: 0
@@ -15709,63 +15827,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7047927663717968186
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7314968760623419663}
-  - component: {fileID: 7865760448648566768}
-  m_Layer: 0
-  m_Name: PF_AudioManager_FG
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7314968760623419663
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7047927663717968186}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 974.7501, y: 300.57874, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7865760448648566768
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7047927663717968186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55bb5bf447c8679448146b082f289502, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  interactSource: {fileID: 0}
-  hoverSource1: {fileID: 0}
-  hoverSource2: {fileID: 0}
-  startTaskSource: {fileID: 0}
-  morningClip: {fileID: 0}
-  afternoonClip: {fileID: 0}
-  finishTaskSource: {fileID: 0}
-  finishMorningClip: {fileID: 0}
-  finishAfternoonClip: {fileID: 0}
-  dialogueSources: []
-  playerClips: []
-  brotherClips: []
-  dadClips: []
 --- !u!81 &8294815343259491573
 AudioListener:
   m_ObjectHideFlags: 0
@@ -15806,17 +15867,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
---- !u!114 &8475191548923179014 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6531668628338674314, guid: 63f32d1c414a6334a923b1a8497f1f0e, type: 3}
-  m_PrefabInstance: {fileID: 811596926}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &9018066788846919836
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15910,13 +15960,13 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1039682858}
   - {fileID: 425708211}
   - {fileID: 1111314899}
   - {fileID: 1479744030}
   - {fileID: 67698783}
   - {fileID: 605040338}
   - {fileID: 824808762}
-  - {fileID: 7314968760623419663}
   - {fileID: 7036998812301431472}
   - {fileID: 1346963762}
   - {fileID: 811596926}

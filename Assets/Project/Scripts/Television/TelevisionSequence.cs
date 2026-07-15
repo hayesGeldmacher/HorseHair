@@ -291,6 +291,7 @@ public class TelevisionSequence : MonoBehaviour
         //yield return new WaitForSeconds(controllerWaitPlayer);
         //controllerAnimPlayer.SetTrigger("equip");
 
+        yield return new WaitForSeconds(2.0f);
         televisionScreen.SetActive(false);
         playerControls.Transition();
     
