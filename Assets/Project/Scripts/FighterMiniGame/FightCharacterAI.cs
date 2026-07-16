@@ -314,9 +314,6 @@ public class FightCharacterAI : MonoBehaviour
         if (HandlePlayerForwardPressure())
             return;
 
-        if (HandlePlayerForwardPressure())
-            return;
-
         if (HandleBreathingSpace())
             return;
 
