@@ -20,7 +20,7 @@ public class RollingGrassManager : MonoBehaviour
     {
 
         charMoving = fightCharacter.movingForward;
-        if (!charMoving) { return; }
+        if (!charMoving || !canMove) { return; }
 
         currentTexOffset += offsetSpeed * Time.deltaTime;
         if(currentTexOffset >= 1) { currentTexOffset = 0; }
