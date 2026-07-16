@@ -48,6 +48,14 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Upward force applied when jumping")]
     [SerializeField] private float jumpForce = 7f;
 
+    [Tooltip("Gravity multiplier while rising")]
+    [Min(1f)]
+    [SerializeField] private float risingGravityMultiplier = 2f;
+
+    [Tooltip("Gravity multiplier while falling")]
+    [Min(1f)]
+    [SerializeField] private float fallingGravityMultiplier = 3.5f;
+
     [Tooltip("Minimum input value required before movement input is counted")]
     [SerializeField] private float inputDeadZone = 0.25f;
 
@@ -639,6 +647,7 @@ public class FightCharacter : MonoBehaviour
         if (!roundActive)
             return;
 
+        ApplyJumpGravity();
         Move();
     }
 
@@ -801,8 +810,6 @@ public class FightCharacter : MonoBehaviour
 
         horizontal = ApplyOpponentBodyResistance(horizontal);
 
-        horizontal = ApplyOpponentBodyResistance(horizontal);
-
         float currentMoveSpeed = moveSpeed;
 
         if (!isBlocking) //only shuffling is character is moving forward -HG
@@ -864,6 +871,33 @@ public class FightCharacter : MonoBehaviour
         {
             fighterAnim.SetTrigger("jump");
         }
+    }
+
+    private void ApplyJumpGravity()
+    {
+        if (rb == null)
+            return;
+
+        float verticalSpeed = rb.linearVelocity.y;
+        float gravityMultiplier;
+
+        if (verticalSpeed > 0.01f)
+        {
+            gravityMultiplier = risingGravityMultiplier;
+        }
+        else if (!isGrounded && verticalSpeed < -0.01f)
+        {
+            gravityMultiplier = fallingGravityMultiplier;
+        }
+        else
+        {
+            return;
+        }
+
+        rb.AddForce(
+            Physics.gravity * (gravityMultiplier - 1f),
+            ForceMode.Acceleration
+        );
     }
 
     private void CheckQuickstepInput(float moveInput)
