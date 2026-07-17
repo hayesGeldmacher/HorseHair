@@ -48,6 +48,14 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Upward force applied when jumping")]
     [SerializeField] private float jumpForce = 7f;
 
+    [Tooltip("Gravity multiplier while rising")]
+    [Min(1f)]
+    [SerializeField] private float risingGravityMultiplier = 2f;
+
+    [Tooltip("Gravity multiplier while falling")]
+    [Min(1f)]
+    [SerializeField] private float fallingGravityMultiplier = 3.5f;
+
     [Tooltip("Minimum input value required before movement input is counted")]
     [SerializeField] private float inputDeadZone = 0.25f;
 
@@ -172,13 +180,35 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Force applied to the opponent after a normal attack lands")]
     [SerializeField] private float hitPushbackForce = 3f;
 
-    [Header("Fighter Body Resistance")]
-    [Tooltip("Minimum horizontal distance maintained between fighters")]
-    [SerializeField] private float minimumFighterDistance = 1.1f;
+    [Header("Fighter Pushboxes")]
+    [Tooltip("Main body size while standing or crouching, increase width if idle animations allow fighters to overlap")]
+    [SerializeField] private Vector2 standingPushboxSize = new Vector2(1.45f, 1.8f);
 
-    [Tooltip("How much resistance there is when fighters are touching. 0 prevents pushing; 0.1 allows slight pushing")]
-    [Range(0f, 1f)]
-    [SerializeField] private float bodyPushAmount = 0.1f;
+    [Tooltip("Body size while airborne, a shorter height lets fighters jump past each other more naturally")]
+    [SerializeField] private Vector2 jumpingPushboxSize = new Vector2(0.8f, 1.25f);
+
+    [Tooltip("Ground contact area while knocked down, increase width to stop opponents from stepping too close.")]
+    [SerializeField] private Vector2 groundedPushboxSize = new Vector2(2.5f, 0.45f);
+
+    [Tooltip("Body size while getting back up after a knockdown")]
+    [SerializeField] private Vector2 recoveringPushboxSize = new Vector2(1.6f, 1.2f);
+
+    [Tooltip("Extra spacing kept between fighters to prevent visual jitter when they touch")]
+    [Min(0f)]
+    [SerializeField] private float pushboxSeparationBuffer = 0.05f;
+
+    [Header("Hitstop")]
+    [Tooltip("How long the attacker freezes after landing a hit")]
+    [SerializeField] private float attackerHitstopTime = 0.025f;
+
+    [Tooltip("How long the defender freezes after being hit")]
+    [SerializeField] private float defenderHitstopTime = 0.04f;
+
+    [Tooltip("How long both fighters freeze when an attack is blocked")]
+    [SerializeField] private float blockedHitstopTime = 0.02f;
+
+    [Tooltip("How long player inputs are remembered during hitstop so they execute immediately afterward")]
+    [SerializeField] private float hitstopInputBufferTime = 0.12f;
 
     #endregion
 
@@ -285,6 +315,22 @@ public class FightCharacter : MonoBehaviour
 
     private bool roundActive = true;
 
+    private float groundedPositionX;
+    private bool hasGroundedPositionLock;
+
+    private bool isInHitstop;
+    private float hitstopTimer;
+    private float animatorSpeedBeforeHitstop = 1f;
+
+    private bool bufferedPunch;
+    private bool bufferedKick;
+    private float bufferedAttackTimer;
+
+    private float horizontalVelocityBeforeHitstop;
+    private bool hasStoredHitstopVelocity;
+    private bool ignorePhysicalFighterCollisions = true;
+
+
     #endregion
 
     #region Public API
@@ -354,6 +400,8 @@ public class FightCharacter : MonoBehaviour
 
     private void ResetRoundState()
     {
+        ReleaseGroundedHorizontalPosition();
+
         // Movement states
         isShuffling = false;
         isCrouching = false;
@@ -394,6 +442,18 @@ public class FightCharacter : MonoBehaviour
             velocity.x = 0f;
             rb.linearVelocity = velocity;
         }
+
+        // Reset hitstop & buffered input 
+        isInHitstop = false;
+        hitstopTimer = 0f;
+        animatorSpeedBeforeHitstop = 1f;
+        ClearBufferedAttack();
+
+        if (fighterAnim != null)
+            fighterAnim.speed = 1f;
+
+        hasStoredHitstopVelocity = false;
+        horizontalVelocityBeforeHitstop = 0f;
 
         // Reset Animator parameters
         if (fighterAnim != null)
@@ -485,6 +545,11 @@ public class FightCharacter : MonoBehaviour
             pendingAttackHeight
         );
 
+        if (result == FighterMoveResult.Hit)
+            StartLocalHitstop(attackerHitstopTime);
+        else if (result == FighterMoveResult.Blocked)
+            StartLocalHitstop(blockedHitstopTime);
+
         PlayAttackResultSound(result, pendingHitSound);
 
         MovePerformed?.Invoke(this, pendingMoveType, result);
@@ -536,7 +601,11 @@ public class FightCharacter : MonoBehaviour
     /// If blocking correctly, applies chip damage, block stun, and small knockback.
     /// If not blocking, applies full damage.
     /// </summary>
-    public FighterMoveResult ReceiveAttack(int damage, Vector3 attackerPosition, AttackHeight attackHeight, FightCharacter attacker)
+    public FighterMoveResult ReceiveAttack(
+        int damage,
+        Vector3 attackerPosition,
+        AttackHeight attackHeight,
+        FightCharacter attacker)
     {
         if (isKnockedDown)
             return FighterMoveResult.Miss;
@@ -547,6 +616,9 @@ public class FightCharacter : MonoBehaviour
         if (IsBlockingAttack(attackerPosition))
         {
             ApplyBlockedAttack(attackerPosition, attacker);
+
+            StartLocalHitstop(blockedHitstopTime);
+
             return FighterMoveResult.Blocked;
         }
 
@@ -560,7 +632,124 @@ public class FightCharacter : MonoBehaviour
         ApplyDamage();
         ApplyHitPushback(attackerPosition);
 
+        StartLocalHitstop(defenderHitstopTime);
+
         return FighterMoveResult.Hit;
+    }
+
+    private void StartLocalHitstop(float duration)
+    {
+        if (duration <= 0f)
+            return;
+
+        if (!isInHitstop)
+        {
+            isInHitstop = true;
+
+            if (fighterAnim != null)
+            {
+                animatorSpeedBeforeHitstop = fighterAnim.speed;
+                fighterAnim.speed = 0f;
+            }
+
+            if (rb != null)
+            {
+                horizontalVelocityBeforeHitstop = rb.linearVelocity.x;
+                hasStoredHitstopVelocity = true;
+
+                Vector3 velocity = rb.linearVelocity;
+                velocity.x = 0f;
+                rb.linearVelocity = velocity;
+            }
+        }
+
+        hitstopTimer = Mathf.Max(hitstopTimer, duration);
+    }
+
+    private void UpdateLocalHitstop()
+    {
+        if (!isInHitstop)
+            return;
+
+        hitstopTimer -= Time.unscaledDeltaTime;
+
+        if (hitstopTimer > 0f)
+            return;
+
+        hitstopTimer = 0f;
+        isInHitstop = false;
+
+        if (fighterAnim != null)
+            fighterAnim.speed = animatorSpeedBeforeHitstop;
+
+        if (fighterAnim != null)
+            fighterAnim.speed = animatorSpeedBeforeHitstop;
+
+        if (rb != null && hasStoredHitstopVelocity)
+        {
+            Vector3 velocity = rb.linearVelocity;
+
+            velocity.x = horizontalVelocityBeforeHitstop * 0.65f;
+
+            rb.linearVelocity = velocity;
+        }
+
+        hasStoredHitstopVelocity = false;
+        horizontalVelocityBeforeHitstop = 0f;
+    }
+
+    private void CaptureHitstopInput()
+    {
+        if (controlledByAI || input == null)
+            return;
+
+        if (input.PunchPressed)
+        {
+            bufferedPunch = true;
+            bufferedKick = false;
+            bufferedAttackTimer = hitstopInputBufferTime;
+        }
+        else if (input.KickPressed)
+        {
+            bufferedKick = true;
+            bufferedPunch = false;
+            bufferedAttackTimer = hitstopInputBufferTime;
+        }
+    }
+
+    private void UpdateBufferedAttack()
+    {
+        if (!bufferedPunch && !bufferedKick)
+            return;
+
+        bufferedAttackTimer -= Time.unscaledDeltaTime;
+
+        if (bufferedAttackTimer <= 0f)
+            ClearBufferedAttack();
+    }
+
+    private bool TryPerformBufferedAttack()
+    {
+        if ((!bufferedPunch && !bufferedKick) || !CanStartAttack())
+            return false;
+
+        bool performPunch = bufferedPunch;
+
+        ClearBufferedAttack();
+
+        if (performPunch)
+            Punch();
+        else
+            Kick();
+
+        return true;
+    }
+
+    private void ClearBufferedAttack()
+    {
+        bufferedPunch = false;
+        bufferedKick = false;
+        bufferedAttackTimer = 0f;
     }
 
     public void FlipModel(float direction)
@@ -593,6 +782,11 @@ public class FightCharacter : MonoBehaviour
         AssignMissingReferences();
     }
 
+    private void Start()
+    {
+        ConfigurePhysicalFighterCollisions();
+    }
+
     private void Update()
     {
 
@@ -600,24 +794,29 @@ public class FightCharacter : MonoBehaviour
         UpdateGrounded();
         UpdateFacingDirection();
 
+
+        UpdateBufferedAttack();
+
+        if (isInHitstop)
+            CaptureHitstopInput();
+
+        UpdateLocalHitstop();
+
         if (!roundActive)
-        {
             return;
-        }
+
+        if (isInHitstop)
+            return;
 
         UpdateBlockStunTimer();
         UpdateQuickstepTimers();
         UpdateGroundedStateTimers();
 
         if (animateFighter && fighterAnim != null)
-        {
             UpdateAnimation();
-        }
 
         if (blockStunTimer > 0f)
-        {
             return;
-        }
 
         if (isKnockedDown)
         {
@@ -626,9 +825,10 @@ public class FightCharacter : MonoBehaviour
         }
 
         if (isRecovering)
-        {
             return;
-        }
+
+        if (TryPerformBufferedAttack())
+            return;
 
         ReadActions();
     }
@@ -639,7 +839,25 @@ public class FightCharacter : MonoBehaviour
         if (!roundActive)
             return;
 
+        MaintainGroundedHorizontalPosition();
+
+        if (isInHitstop)
+        {
+            if (rb != null)
+            {
+                Vector3 velocity = rb.linearVelocity;
+                velocity.x = 0f;
+                rb.linearVelocity = velocity;
+            }
+
+            ResolveFighterPushboxes();
+            return;
+        }
+
+        ApplyJumpGravity();
         Move();
+        LimitCurrentVelocityIntoOpponentPushbox();
+        ResolveFighterPushboxes();
     }
 
     #endregion
@@ -653,6 +871,27 @@ public class FightCharacter : MonoBehaviour
         health ??= GetComponent<FighterHealth>();
         audioSource ??= GetComponent<AudioSource>();
         superMeter ??= GetComponent<FighterSuperMeter>();
+    }
+
+    private void ConfigurePhysicalFighterCollisions()
+    {
+        if (!ignorePhysicalFighterCollisions || opponent == null)
+            return;
+
+        Collider[] thisColliders = GetComponentsInChildren<Collider>(true);
+        Collider[] opponentColliders = opponent.GetComponentsInChildren<Collider>(true);
+
+        foreach (Collider thisCollider in thisColliders)
+        {
+            foreach (Collider opponentCollider in opponentColliders)
+            {
+                if (thisCollider != null && opponentCollider != null &&
+                    thisCollider != opponentCollider)
+                {
+                    Physics.IgnoreCollision(thisCollider, opponentCollider, true);
+                }
+            }
+        }
     }
 
     #endregion
@@ -799,10 +1038,6 @@ public class FightCharacter : MonoBehaviour
             ? 0f
             : moveInput;
 
-        horizontal = ApplyOpponentBodyResistance(horizontal);
-
-        horizontal = ApplyOpponentBodyResistance(horizontal);
-
         float currentMoveSpeed = moveSpeed;
 
         if (!isBlocking) //only shuffling is character is moving forward -HG
@@ -816,32 +1051,260 @@ public class FightCharacter : MonoBehaviour
             currentMoveSpeed = crouchMoveSpeed;
 
         Vector3 velocity = rb.linearVelocity;
-        velocity.x = horizontal * currentMoveSpeed;
+        velocity.x = LimitVelocityIntoOpponentPushbox(horizontal * currentMoveSpeed);
         rb.linearVelocity = velocity;
     }
 
-    private float ApplyOpponentBodyResistance(float horizontalInput)
+    private struct FighterPushbox
     {
-        if (opponent == null)
-            return horizontalInput;
+        public Vector2 center;
+        public Vector2 size;
 
-        if (Mathf.Abs(horizontalInput) < inputDeadZone)
-            return 0f;
-
-        float differenceX = opponent.position.x - transform.position.x;
-        float distanceToOpponent = Mathf.Abs(differenceX);
-
-        if (distanceToOpponent <= Mathf.Epsilon)
-            return 0f;
-
-        bool movingTowardOpponent = Mathf.Sign(horizontalInput) == Mathf.Sign(differenceX);
-
-        if (movingTowardOpponent && distanceToOpponent <= minimumFighterDistance)
+        public FighterPushbox(Vector2 center, Vector2 size)
         {
-            return horizontalInput * bodyPushAmount;
+            this.center = center;
+            this.size = size;
+        }
+    }
+
+    /// <summary>
+    /// Caps walking speed before the next physics step so fighter roots cannot cross while their pushboxes
+    /// </summary>
+    private float LimitVelocityIntoOpponentPushbox(float horizontalVelocity)
+    {
+        if (opponent == null || Mathf.Approximately(horizontalVelocity, 0f))
+            return horizontalVelocity;
+
+        if (!opponent.TryGetComponent(out FightCharacter opponentCharacter))
+            return horizontalVelocity;
+
+        FighterPushbox thisPushbox = GetCurrentPushbox();
+        FighterPushbox opponentPushbox = opponentCharacter.GetCurrentPushbox();
+
+        if (!PushboxesOverlapVertically(thisPushbox, opponentPushbox))
+            return horizontalVelocity;
+
+        float differenceX = opponentPushbox.center.x - thisPushbox.center.x;
+
+        if (Mathf.Approximately(differenceX, 0f))
+            return 0f;
+
+        if (Mathf.Sign(horizontalVelocity) != Mathf.Sign(differenceX))
+            return horizontalVelocity;
+
+        float requiredDistance = GetRequiredHorizontalDistance(
+            thisPushbox,
+            opponentPushbox,
+            opponentCharacter
+        );
+
+        float remainingDistance = Mathf.Max(
+            0f,
+            Mathf.Abs(differenceX) - requiredDistance
+        );
+
+        bool opponentIsClosingGap =
+            opponentCharacter.IsTryingToMoveTowardPosition(thisPushbox.center.x);
+
+        float movementShare = opponentIsClosingGap ? 0.5f : 1f;
+        float maximumVelocityThisStep =
+            remainingDistance / Time.fixedDeltaTime * movementShare;
+
+        return Mathf.Sign(horizontalVelocity) * Mathf.Min(
+            Mathf.Abs(horizontalVelocity),
+            maximumVelocityThisStep
+        );
+    }
+
+    private void LimitCurrentVelocityIntoOpponentPushbox()
+    {
+        if (rb == null)
+            return;
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = LimitVelocityIntoOpponentPushbox(velocity.x);
+        rb.linearVelocity = velocity;
+    }
+
+    private bool IsTryingToMoveTowardPosition(float targetX)
+    {
+        Vector3 rootPosition = rb != null ? rb.position : transform.position;
+        float differenceX = targetX - rootPosition.x;
+
+        if (Mathf.Approximately(differenceX, 0f))
+            return false;
+
+        float directionToTarget = Mathf.Sign(differenceX);
+
+        if (quickstepTimer > 0f &&
+            Mathf.Sign(quickstepDirection) == directionToTarget)
+        {
+            return true;
         }
 
-        return horizontalInput;
+        if (!isKnockedDown && !isRecovering &&
+            blockStunTimer <= 0f && !isAttackAnimationPlaying &&
+            TryGetCurrentInput(
+                out float moveInput,
+                out _, out _, out _, out _, out _, out _))
+        {
+            if (Mathf.Abs(moveInput) >= inputDeadZone &&
+                Mathf.Sign(moveInput) == directionToTarget)
+            {
+                return true;
+            }
+        }
+
+        return rb != null &&
+               rb.linearVelocity.x * directionToTarget > 0.01f;
+    }
+
+    private FighterPushbox GetCurrentPushbox()
+    {
+        Vector2 size = GetCurrentPushboxSize();
+        Vector3 rootPosition = rb != null ? rb.position : transform.position;
+
+        return new FighterPushbox(
+            new Vector2(rootPosition.x, rootPosition.y + size.y * 0.5f),
+            size
+        );
+    }
+
+    private Vector2 GetCurrentPushboxSize()
+    {
+        Vector2 size;
+
+        if (isKnockedDown)
+            size = groundedPushboxSize;
+        else if (isRecovering)
+            size = recoveringPushboxSize;
+        else if (IsUsingJumpingPushbox())
+            size = jumpingPushboxSize;
+        else
+            size = standingPushboxSize;
+
+        size.x = Mathf.Max(0.05f, size.x);
+        size.y = Mathf.Max(0.05f, size.y);
+        return size;
+    }
+
+    private bool IsUsingJumpingPushbox()
+    {
+        return !isGrounded ||
+               (rb != null && Mathf.Abs(rb.linearVelocity.y) > 0.05f);
+    }
+
+    private static bool PushboxesOverlapVertically(
+        FighterPushbox first,
+        FighterPushbox second)
+    {
+        float firstBottom = first.center.y - first.size.y * 0.5f;
+        float firstTop = first.center.y + first.size.y * 0.5f;
+        float secondBottom = second.center.y - second.size.y * 0.5f;
+        float secondTop = second.center.y + second.size.y * 0.5f;
+
+        return Mathf.Min(firstTop, secondTop) >
+               Mathf.Max(firstBottom, secondBottom);
+    }
+
+    private float GetRequiredHorizontalDistance(
+        FighterPushbox first,
+        FighterPushbox second,
+        FightCharacter opponentCharacter)
+    {
+        float separationBuffer = Mathf.Max(
+            0f,
+            Mathf.Max(
+                pushboxSeparationBuffer,
+                opponentCharacter != null
+                    ? opponentCharacter.pushboxSeparationBuffer
+                    : 0f
+            )
+        );
+
+        return (first.size.x + second.size.x) * 0.5f + separationBuffer;
+    }
+
+    /// <summary>
+    /// Pushes the two fighters apart if their pushboxes overlap horizontally while overlapping verticall 
+    /// </summary>
+    private void ResolveFighterPushboxes()
+    {
+        if (rb == null || opponent == null)
+            return;
+
+        if (!opponent.TryGetComponent(out FightCharacter opponentCharacter) ||
+            opponentCharacter.rb == null || !opponentCharacter.roundActive)
+        {
+            return;
+        }
+
+        FighterPushbox thisPushbox = GetCurrentPushbox();
+        FighterPushbox opponentPushbox = opponentCharacter.GetCurrentPushbox();
+
+        if (!PushboxesOverlapVertically(thisPushbox, opponentPushbox))
+            return;
+
+        float differenceX = opponentPushbox.center.x - thisPushbox.center.x;
+        float requiredDistance = GetRequiredHorizontalDistance(
+            thisPushbox,
+            opponentPushbox,
+            opponentCharacter
+        );
+        float overlap = requiredDistance - Mathf.Abs(differenceX);
+
+        if (overlap <= 0f)
+            return;
+
+        float directionToOpponent = Mathf.Approximately(differenceX, 0f)
+            ? facingDirection
+            : Mathf.Sign(differenceX);
+
+        bool thisLocked = IsPushboxHorizontallyLocked();
+        bool opponentLocked = opponentCharacter.IsPushboxHorizontallyLocked();
+
+        if (thisLocked && opponentLocked)
+            return;
+
+        float thisShare = thisLocked ? 0f : opponentLocked ? 1f : 0.5f;
+        float opponentShare = opponentLocked ? 0f : thisLocked ? 1f : 0.5f;
+
+        MovePushboxRoot(-directionToOpponent * overlap * thisShare);
+        opponentCharacter.MovePushboxRoot(
+            directionToOpponent * overlap * opponentShare
+        );
+
+        StopHorizontalVelocityToward(directionToOpponent);
+        opponentCharacter.StopHorizontalVelocityToward(-directionToOpponent);
+    }
+
+    private bool IsPushboxHorizontallyLocked()
+    {
+        return isKnockedDown || isRecovering;
+    }
+
+    private void MovePushboxRoot(float amount)
+    {
+        if (rb == null || Mathf.Approximately(amount, 0f))
+            return;
+
+        Vector3 position = rb.position;
+        position.x += amount;
+        rb.position = position;
+    }
+
+    private void StopHorizontalVelocityToward(float direction)
+    {
+        if (rb == null)
+            return;
+
+        Vector3 velocity = rb.linearVelocity;
+
+        if (velocity.x * direction <= 0f)
+            return;
+
+        velocity.x = 0f;
+        rb.linearVelocity = velocity;
     }
 
     private void Jump(float moveInput)
@@ -864,6 +1327,33 @@ public class FightCharacter : MonoBehaviour
         {
             fighterAnim.SetTrigger("jump");
         }
+    }
+
+    private void ApplyJumpGravity()
+    {
+        if (rb == null)
+            return;
+
+        float verticalSpeed = rb.linearVelocity.y;
+        float gravityMultiplier;
+
+        if (verticalSpeed > 0.01f)
+        {
+            gravityMultiplier = risingGravityMultiplier;
+        }
+        else if (!isGrounded && verticalSpeed < -0.01f)
+        {
+            gravityMultiplier = fallingGravityMultiplier;
+        }
+        else
+        {
+            return;
+        }
+
+        rb.AddForce(
+            Physics.gravity * (gravityMultiplier - 1f),
+            ForceMode.Acceleration
+        );
     }
 
     private void CheckQuickstepInput(float moveInput)
@@ -934,7 +1424,7 @@ public class FightCharacter : MonoBehaviour
 
         movingForward = (posXCurrent > posXLast + 0.05f) ? true : false;
 
-        posXLast = posXCurrent; 
+        posXLast = posXCurrent;
     }
 
     #endregion
@@ -1141,28 +1631,54 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void SwitchSidesWithAttacker(FightCharacter attacker)
     {
-        Vector3 attackerPosition = attacker.transform.position;
-        Vector3 defenderPosition = transform.position;
+        if (attacker == null)
+            return;
 
-        float directionFromAttackerToDefender = Mathf.Sign(defenderPosition.x - attackerPosition.x);
+        Vector3 oldAttackerPosition = attacker.transform.position;
+        Vector3 oldDefenderPosition = transform.position;
 
-        attacker.transform.position = new Vector3(
-            defenderPosition.x,
-            attackerPosition.y,
-            attackerPosition.z
+        float directionFromAttackerToDefender =
+            Mathf.Sign(oldDefenderPosition.x - oldAttackerPosition.x);
+
+        if (Mathf.Approximately(directionFromAttackerToDefender, 0f))
+            directionFromAttackerToDefender = attacker.facingDirection;
+
+        float postGrabPushboxDistance =
+            (attacker.GetCurrentPushboxSize().x +
+             Mathf.Max(0.05f, groundedPushboxSize.x)) * 0.5f +
+            Mathf.Max(
+                pushboxSeparationBuffer,
+                attacker.pushboxSeparationBuffer
+            );
+
+        float separation = Mathf.Max(
+            grabSideSwitchOffset,
+            postGrabPushboxDistance
         );
 
-        transform.position = new Vector3(
-            attackerPosition.x + directionFromAttackerToDefender * grabSideSwitchOffset,
-            defenderPosition.y,
-            defenderPosition.z
-        );
+        float midpointX =
+            (oldAttackerPosition.x + oldDefenderPosition.x) * 0.5f;
+
+        Vector3 newAttackerPosition = oldAttackerPosition;
+        Vector3 newDefenderPosition = oldDefenderPosition;
+
+        newAttackerPosition.x =
+            midpointX + directionFromAttackerToDefender * separation * 0.5f;
+
+        newDefenderPosition.x =
+            midpointX - directionFromAttackerToDefender * separation * 0.5f;
 
         if (attacker.rb != null)
         {
             Vector3 attackerVelocity = attacker.rb.linearVelocity;
             attackerVelocity.x = 0f;
             attacker.rb.linearVelocity = attackerVelocity;
+
+            attacker.rb.position = newAttackerPosition;
+        }
+        else
+        {
+            attacker.transform.position = newAttackerPosition;
         }
 
         if (rb != null)
@@ -1170,11 +1686,19 @@ public class FightCharacter : MonoBehaviour
             Vector3 defenderVelocity = rb.linearVelocity;
             defenderVelocity.x = 0f;
             rb.linearVelocity = defenderVelocity;
+
+            rb.position = newDefenderPosition;
+        }
+        else
+        {
+            transform.position = newDefenderPosition;
         }
 
-        float newDirection = Mathf.Sign(transform.position.x - attacker.transform.position.x);
-        FlipModel(newDirection);
-        attacker.FlipModel(-newDirection);
+        float defenderFacingDirection =
+            Mathf.Sign(newAttackerPosition.x - newDefenderPosition.x);
+
+        FlipModel(defenderFacingDirection);
+        attacker.FlipModel(-defenderFacingDirection);
     }
 
     /// <summary>
@@ -1396,7 +1920,31 @@ public class FightCharacter : MonoBehaviour
             Vector3 velocity = rb.linearVelocity;
             velocity.x = 0f;
             rb.linearVelocity = velocity;
+            groundedPositionX = rb.position.x;
+            hasGroundedPositionLock = true;
         }
+    }
+
+    private void MaintainGroundedHorizontalPosition()
+    {
+        if (rb == null || !hasGroundedPositionLock ||
+            (!isKnockedDown && !isRecovering))
+        {
+            return;
+        }
+
+        Vector3 position = rb.position;
+        position.x = groundedPositionX;
+        rb.position = position;
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = 0f;
+        rb.linearVelocity = velocity;
+    }
+
+    private void ReleaseGroundedHorizontalPosition()
+    {
+        hasGroundedPositionLock = false;
     }
 
     private void UpdateGroundedStateTimers()
@@ -1466,6 +2014,8 @@ public class FightCharacter : MonoBehaviour
     {
         isRecovering = false;
         recoveryTimer = 0f;
+
+        ReleaseGroundedHorizontalPosition();
 
         if (fighterAnim != null)
             fighterAnim.SetFloat("recoverySpeed", 1f);
