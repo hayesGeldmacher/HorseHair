@@ -7,6 +7,7 @@ public enum TimeOfDay
 {
     Morning,
     Afternoon,
+    Dream,
 }
 
 [System.Serializable]
@@ -47,8 +48,6 @@ public class EventManager : MonoBehaviour
         foreach (var task in tasks)
         {
             tasksList[(task.timeOfDay, task.TaskNum)] = task.TaskItem;
-            //task.TaskItem.ChangeTaskStatus(false);
-            //task.TaskItem.ChangeGoalStatus(false);
             task.TaskItem.task.finalPoint.Activated = false;
             task.TaskItem.Activated = false;
         }
@@ -57,12 +56,11 @@ public class EventManager : MonoBehaviour
         {
             PlayerPrefs.SetString("Environment", 
                 tasksList[(currentTimeOfDay, currentTaskNum)].task.startingPosition.name);
-            //PlayerPrefs.SetString("Goal", 
-            //    tasksList[(currentTimeOfDay, currentTaskNum)].task.GoalText);
-            //PlayerPrefs.SetString("Thoughts",
-            //    tasksList[(currentTimeOfDay, currentTaskNum)].task.ThoughtText);
             tasksList[(currentTimeOfDay, currentTaskNum)].Activated = true;           
         }
+
+        PlayerPrefs.SetInt("TaskNum", currentTaskNum);
+        PlayerPrefs.SetInt("TimeOfDay", (int)currentTimeOfDay);
     }
 
     private void Start()
@@ -74,9 +72,9 @@ public class EventManager : MonoBehaviour
     {
         if (TVSet)
         {
-            tasksList[(TimeOfDay.Morning, 0)].ChangeTaskStatus(true);
-            tasksList[(TimeOfDay.Morning, 0)].task.finalPoint.Activated = true;
-            ThoughtDialogue?.Invoke(tasksList[(TimeOfDay.Morning, 0)].task.ThoughtText);
+            tasksList[(TimeOfDay.Dream, 0)].ChangeTaskStatus(true);
+            tasksList[(TimeOfDay.Dream, 0)].task.finalPoint.Activated = true;
+            ThoughtDialogue?.Invoke(tasksList[(TimeOfDay.Dream, 0)].task.ThoughtText);
         }
         else
         {

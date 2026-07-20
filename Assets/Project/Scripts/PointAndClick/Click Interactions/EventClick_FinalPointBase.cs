@@ -73,3 +73,4 @@ public class EventClick_FinalPointBase : EventClick
             base.ActivateOrDeactivate(activate);
     }
 }
+    

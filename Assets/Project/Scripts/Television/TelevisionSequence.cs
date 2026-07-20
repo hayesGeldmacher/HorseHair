@@ -43,6 +43,10 @@ public class TelevisionSequence : MonoBehaviour
     [Header("Skip Sequence")]
     [Tooltip("Skip straight to fighting game.")]
     [SerializeField] private bool skipTelevision = false; //skip the television sequence, straight to fighting game
+    [SerializeField] private bool dreamSequence = false;
+
+    [Header("Next Scene")]
+    [SerializeField] private string nextScene; //name of the next scene to load after television sequence
 
     private int channelIndex = 0; //index for the current channel
     private int backupIndex = 1; //index for the next channel in sequence, for pre-loading videos
@@ -107,6 +111,14 @@ public class TelevisionSequence : MonoBehaviour
             LoadBackupOnStart();
             StartCoroutine(BeginTelevisionScene());
         }
+        if (dreamSequence)
+        {
+            if (!startedTelevision)
+            {
+                startedTelevision = true;
+                StartTelevision();
+            }
+        }
     }
 
     /// <summary>
@@ -115,54 +127,33 @@ public class TelevisionSequence : MonoBehaviour
     void Update()
     {
 
-        if(currentCooldown > 0)
-        {
-            currentCooldown -= Time.deltaTime;
-            return;
-        }
-
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    if (canInteract)
-        //    {
-        //        if (!startedTelevision)
-        //        {
-        //            startedTelevision = true;
-        //            StartTelevision();
-        //        }
-        //        else if (!calledChannelChange)
-        //        {
-        //            if (currentClicks < totalClicks)
-        //            {
-        //                StartCoroutine(ProgressChannels());
-        //            }
-        //            else
-        //            {
-        //                CallEndTelevisionSequence();
-        //            }
-        //        }
-        //    }
-        //}
     }
 
     public void InteractTelevision()
     {
         if (canInteract)
         {
-            if (!startedTelevision)
+            if (dreamSequence)
             {
-                startedTelevision = true;
-                StartTelevision();
+                CallEndTelevisionSequence();
             }
-            else if (!calledChannelChange)
+            else
             {
-                if (currentClicks < totalClicks)
+                if (!startedTelevision)
                 {
-                    StartCoroutine(ProgressChannels());
+                    startedTelevision = true;
+                    StartTelevision();
                 }
-                else
+                else if (!calledChannelChange)
                 {
-                    CallEndTelevisionSequence();
+                    if (currentClicks < totalClicks)
+                    {
+                        StartCoroutine(ProgressChannels());
+                    }
+                    else
+                    {
+                        CallEndTelevisionSequence();
+                    }
                 }
             }
         }
@@ -284,18 +275,16 @@ public class TelevisionSequence : MonoBehaviour
         tvAnim.SetTrigger("off");
         yield return new WaitForSeconds(remoteWait);
         remoteAnim.SetTrigger("gone");
-        FGDialogueManager.instance.TriggerDialogue(endTrigger);
-
-        //yield return new WaitForSeconds(controllerWaitBrother);
-        //controllerAnimBrother.SetTrigger("equip");
-        //yield return new WaitForSeconds(controllerWaitPlayer);
-        //controllerAnimPlayer.SetTrigger("equip");
-
+        if (!dreamSequence)
+        {
+            FGDialogueManager.instance.TriggerDialogue(endTrigger);
+        }
         yield return new WaitForSeconds(2.0f);
         televisionScreen.SetActive(false);
-        playerControls.Transition();
-    
-       // if(ScareManager.instance != null) { ScareManager.instance.CallScares(); }
+        if (!dreamSequence) 
+        {
+            playerControls.Transition(nextScene);
+        }
     }
 
     //testing function for skipping the television
