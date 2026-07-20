@@ -526,6 +526,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     public void AdvanceDialogue(InputAction.CallbackContext ctx)
     {
+        if (Time.timeScale == 0) return;
         if (!startedDialogue || !ctx.started) return;
         GoThroughDialogue();
     }
