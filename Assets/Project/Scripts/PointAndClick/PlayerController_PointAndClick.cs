@@ -37,6 +37,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("Scenes")]
     [SerializeField] private string fightingGameScene;
     [SerializeField] private string houseScene;
+    [SerializeField] private string dreamScene;
     [SerializeField] private float transitionTimerInSeconds;
 
     [Header("Dialogue Settings")]
@@ -147,12 +148,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
-    public void Transition()
+    public void Transition(string level)
     {
-        StartCoroutine(TransitionEnumerator());
+        StartCoroutine(TransitionEnumerator(level));
     }
 
-    private IEnumerator TransitionEnumerator()
+    private IEnumerator TransitionEnumerator(string level)
     {
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
         blinkAnimator.SetTrigger("EyesDown");
@@ -160,7 +161,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         yield return new WaitUntil(() =>
         blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
 
-        SceneManager.LoadScene(fightingGameScene);
+        SceneManager.LoadScene(level);
     }
 
     // ********************************************************************************
@@ -199,6 +200,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     // Final Point
     // ********************************************************************************
+
+    public void ForceComplete()
+    {
+        completeTask = true;
+    }
+
     private void EndDay(FPBClickEventData fpb)
     {
         if (completeTask)
@@ -212,15 +219,20 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 PlayerPrefs.SetInt("TaskNum", currentTaskNum);
                 PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
             }
-            else
+            else if (currentTimeOfDay == TimeOfDay.Afternoon)
             {
                 scene = fightingGameScene;
+                PlayerPrefs.SetInt("TaskNum", currentTaskNum);
+                PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Dream);
+            }
+            else
+            {
+                scene = dreamScene;
                 PlayerPrefs.SetInt("TaskNum", currentTaskNum++);
                 PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
             }
             PlayerPrefs.Save();
             StartCoroutine(EndingSequence(fpb.DialogueText, scene));
-            //StartCoroutine(EndingSequence(fpb.CompleteString, scene));
         }
         else
         {

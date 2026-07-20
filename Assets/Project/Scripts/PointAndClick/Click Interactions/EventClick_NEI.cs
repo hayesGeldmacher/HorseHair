@@ -16,6 +16,7 @@ public class NEIClickEventData : ClickEventData
 public class EventClick_NEI : EventClick
 {
     [SerializeField] private string neiName = "NEI";
+    [SerializeField] private bool dieAfterClick = false;
     public bool Activated = true;
 
     //[Header("NEI Settings")]
@@ -49,6 +50,11 @@ public class EventClick_NEI : EventClick
 
     protected override ClickEventData CreateEventData()
     {
+        if (dieAfterClick)
+        {
+            Activated = false;
+            ActivateOrDeactivate(false);
+        }
         return new NEIClickEventData
         {
             NEIName = neiName,
