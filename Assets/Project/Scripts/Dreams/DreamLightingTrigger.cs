@@ -12,6 +12,8 @@ public class DreamLightingTrigger : MonoBehaviour
     [SerializeField] private float ambientTarget;
 
     [Header("Background Material")]
+    [SerializeField] private Material mat;
+
 
     private bool triggered = false;
 
