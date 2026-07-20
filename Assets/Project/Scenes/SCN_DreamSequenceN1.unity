@@ -14,7 +14,7 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 10
-  m_Fog: 1
+  m_Fog: 0
   m_FogColor: {r: 0.6745283, g: 0.65718377, b: 0.32771894, a: 1}
   m_FogMode: 3
   m_FogDensity: 0.004
@@ -11185,9 +11185,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DreamLightingTrigger
   triggerDirectional: 1
-  directionalTarget: 0.3
+  directionalTarget: 0.2
   triggerAmbience: 1
-  ambientTarget: 0.3
+  ambientTarget: 0.2
 --- !u!65 &578769786
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19145,6 +19145,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SM_Scarecrow
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ff4e04630c961c3459fb179ff91ed4c2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2096033449998505884, guid: ff4e04630c961c3459fb179ff91ed4c2, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -24543,7 +24547,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!95 &1483932202
 Animator:
   serializedVersion: 7

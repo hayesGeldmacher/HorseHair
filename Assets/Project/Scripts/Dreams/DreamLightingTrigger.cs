@@ -11,6 +11,8 @@ public class DreamLightingTrigger : MonoBehaviour
     [SerializeField] private bool triggerAmbience = true;
     [SerializeField] private float ambientTarget;
 
+    [Header("Background Material")]
+
     private bool triggered = false;
 
     private void OnTriggerEnter(Collider other)
