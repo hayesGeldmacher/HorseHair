@@ -68,6 +68,7 @@ public class TextBox : MonoBehaviour
 
         int playedCharacters = 0;
         int totalCharacters = 0;
+        int totalPlayedSounds = 0;
         while (elapsedTime < totalTime)
         {
             elapsedTime += Time.deltaTime;
@@ -82,11 +83,16 @@ public class TextBox : MonoBehaviour
             if(playedCharacters >= totalChars)
             {
                 AudioManager.instance.PlayDialogueSound(sound);
+                totalPlayedSounds++;
                 playedCharacters = 0;
                 totalCharacters = _text.text.Length;
             }
 
             yield return null;
+        }
+        if(totalPlayedSounds < 1) //ensure a minimum of two sounds play for every dialogue
+        {
+            AudioManager.instance.PlayDialogueSound(sound);
         }
         _text.text = textStorage;
 
