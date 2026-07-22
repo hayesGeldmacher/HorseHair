@@ -124,15 +124,15 @@ public class AudioManager : MonoBehaviour
     }
 
 
-    public void CallDialogueDelay()
+    public void CallDialogueDelay(DialogueSound sound)
     {
-        StartCoroutine(PlayDialogueSound());
+        StartCoroutine(PlayDialogueDelay(sound));
     }
 
-    private IEnumerator PlayDialogueDelay()
+    private IEnumerator PlayDialogueDelay(DialogueSound sound)
     {
         yield return new WaitForSeconds(0.2f);
-        PlayDialogueSound();
+        PlayDialogueSound(sound);
     }
 
     //plays a per-typed character sound, one at a time
