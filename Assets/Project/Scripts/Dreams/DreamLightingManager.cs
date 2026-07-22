@@ -45,6 +45,19 @@ public class DreamLightingManager : MonoBehaviour
     private bool hasAmbientTarget = false;
     private float previousAmbientIntensity;
     private float ambientLerpTime;
+
+    [Header("Background Material")]
+    [SerializeField] private Material backgroundMat;
+    [SerializeField] private float backgroundChangeSpeed = 1.0f;
+    [SerializeField] private Color backgroundStartingColor; 
+
+    private Color previousBackgroundColor;
+    private Color currentBackgroundColor;
+    private Color targetBackgroundColor;
+
+    private bool hasBackgroundTarget = false;
+    private float backgroundLerpTime;
+
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -54,6 +67,9 @@ public class DreamLightingManager : MonoBehaviour
 
         currentDirectionalIntensity = directionalLight.intensity;
         previousDirectionalIntensity = currentDirectionalIntensity;
+
+        backgroundMat.color = backgroundStartingColor;
+        currentBackgroundColor = backgroundStartingColor;
     }
 
     // Update is called once per frame
@@ -61,6 +77,7 @@ public class DreamLightingManager : MonoBehaviour
     {
         if (hasAmbientTarget) { AmbientUpdate(); }
         if (hasDirectionalTarget) { DirectionalUpdate(); }
+        if(hasBackgroundTarget) { BackgroundUpdate(); } 
     }
 
     private void AmbientUpdate()
@@ -90,6 +107,19 @@ public class DreamLightingManager : MonoBehaviour
         directionalLight.intensity = currentDirectionalIntensity;
     }
 
+    private void BackgroundUpdate()
+    {
+      currentBackgroundColor = Color.Lerp(previousBackgroundColor, targetBackgroundColor, backgroundLerpTime);
+      backgroundLerpTime += backgroundChangeSpeed * Time.deltaTime * 0.1f;
+        if (backgroundLerpTime >= 1.0f)
+        {
+            hasBackgroundTarget = false;
+            backgroundLerpTime = 1.0f;
+        }
+
+        backgroundMat.color = currentBackgroundColor;
+    }
+
     public void SetAmbientTarget(float intensity)
     {
         targetAmbientIntensity = intensity;
@@ -106,5 +136,18 @@ public class DreamLightingManager : MonoBehaviour
         directionalLerpTime = 0;
 
     }
+
+    public void SetColorTarget(Color color)
+    {
+        targetBackgroundColor = color;
+        hasBackgroundTarget = true;
+        previousBackgroundColor = currentBackgroundColor;
+        backgroundLerpTime = 0;
+    }
+
+   private void OnApplicationQuit()
+   {
+        backgroundMat.color = backgroundStartingColor;
+   }
     
 }

@@ -12,7 +12,8 @@ public class DreamLightingTrigger : MonoBehaviour
     [SerializeField] private float ambientTarget;
 
     [Header("Background Material")]
-    [SerializeField] private Material mat;
+    [SerializeField] private bool triggerColor = false;
+    [SerializeField] private Color colorTarget;
 
 
     private bool triggered = false;
@@ -25,6 +26,7 @@ public class DreamLightingTrigger : MonoBehaviour
 
             if (triggerDirectional) { DreamLightingManager.instance.SetDirectionalTarget(directionalTarget); }
             if (triggerAmbience) { DreamLightingManager.instance.SetAmbientTarget(ambientTarget); }
+            if (triggerColor) { DreamLightingManager.instance.SetColorTarget(colorTarget); }
         }
     }
 
