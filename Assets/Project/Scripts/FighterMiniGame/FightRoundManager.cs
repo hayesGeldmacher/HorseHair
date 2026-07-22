@@ -191,6 +191,7 @@ public class FightRoundManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
+        SetFighterPresentationVisible(true);
     }
 
     private void ToggleControlsPanel()
@@ -242,6 +243,7 @@ public class FightRoundManager : MonoBehaviour
 
         ResetMatchState();
         ResetFighters();
+        SetFighterPresentationVisible(true);
         SetFightersActive(false);
         UpdateAllUI();
 
@@ -278,7 +280,6 @@ public class FightRoundManager : MonoBehaviour
 
     private void CheckForAnyButtonStart()
     {
-        
         if (Input.GetKeyDown(KeyCode.Tab) || !gameCanStart)
             return;
 
@@ -388,10 +389,15 @@ public class FightRoundManager : MonoBehaviour
             loadingIcon.SetActive(true);
 
         yield return FadeScreen(1f);
-        yield return new WaitForSeconds(roundIntroBlackTime);
+
+        SetFighterPresentationVisible(false);
 
         ResetFighters();
         UpdateAllUI();
+
+        yield return new WaitForSeconds(roundIntroBlackTime);
+
+        SetFighterPresentationVisible(true);
 
         if (loadingIcon != null)
             loadingIcon.SetActive(false);
@@ -508,7 +514,7 @@ public class FightRoundManager : MonoBehaviour
     private IEnumerator RoundEndRoutine(FightCharacter roundWinner)
     {
         roundActive = false;
-        SetFightersActive(false);
+        SetRoundResults(roundWinner);
 
         if (roundWinner == playerCharacter)
             playerRoundWins++;
@@ -537,6 +543,19 @@ public class FightRoundManager : MonoBehaviour
 
         currentRoundNumber++;
         ShowNextRoundPrompt();
+    }
+
+    private void SetRoundResults(FightCharacter roundWinner)
+    {
+        FightCharacter roundLoser = roundWinner == playerCharacter
+            ? enemyCharacter
+            : playerCharacter;
+
+        if (roundWinner != null)
+            roundWinner.SetRoundResult(true);
+
+        if (roundLoser != null)
+            roundLoser.SetRoundResult(false);
     }
 
     private bool CheckForGameWinner()
@@ -607,6 +626,12 @@ public class FightRoundManager : MonoBehaviour
 
         ResetFighterPosition(playerCharacter, playerRigidbody, playerStartPoint);
         ResetFighterPosition(enemyCharacter, enemyRigidbody, enemyStartPoint);
+
+        if (playerCharacter != null)
+            playerCharacter.ResetRoundState();
+
+        if (enemyCharacter != null)
+            enemyCharacter.ResetRoundState();
     }
 
     private void ResetFighterPosition(FightCharacter fighter, Rigidbody fighterRigidbody, Transform startPoint)
@@ -634,6 +659,15 @@ public class FightRoundManager : MonoBehaviour
 
         if (enemyCharacter != null)
             enemyCharacter.SetRoundActive(isActive);
+    }
+
+    private void SetFighterPresentationVisible(bool isVisible)
+    {
+        if (playerCharacter != null)
+            playerCharacter.SetPresentationVisible(isVisible);
+
+        if (enemyCharacter != null)
+            enemyCharacter.SetPresentationVisible(isVisible);
     }
 
     private void SetStartScreenVisible(bool isVisible)

@@ -3070,7 +3070,7 @@ PrefabInstance:
       objectReference: {fileID: 685552051}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: groundedTime
-      value: 2
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: kickHitSound
@@ -3145,8 +3145,12 @@ PrefabInstance:
       value: 2.8
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: grabAnimationSpeed
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: manualRecoveryTime
-      value: 1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: standingKickDamage
@@ -3181,16 +3185,44 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: specialAnimationSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: attackerBlockRecoilForce
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpingKickAnimationSpeed
-      value: 1.15
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpingPunchAnimationSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingKickAnimationSpeed
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingKickAnimationSpeed
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingPunchAnimationSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingPunchAnimationSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: manualRecoveryAnimationSpeed
-      value: 0.75
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: automaticRecoveryAnimationSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2101551262792922484, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3334,7 +3366,7 @@ PrefabInstance:
       objectReference: {fileID: 747339618}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: groundedTime
-      value: 2
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: kickHitSound
@@ -3413,8 +3445,12 @@ PrefabInstance:
       value: 2.8
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: grabAnimationSpeed
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: manualRecoveryTime
-      value: 1
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: standingKickDamage
@@ -3449,12 +3485,44 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: specialAnimationSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: attackerBlockRecoilForce
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpingKickAnimationSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpingPunchAnimationSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingKickAnimationSpeed
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingKickAnimationSpeed
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingPunchAnimationSpeed
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingPunchAnimationSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: manualRecoveryAnimationSpeed
-      value: 0.75
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: automaticRecoveryAnimationSpeed
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8037240979521133309, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: m_LocalScale.x

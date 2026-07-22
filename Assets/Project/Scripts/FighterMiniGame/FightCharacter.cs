@@ -4,12 +4,6 @@ using UnityEngine;
 /// Controls fighter movement, combat actions, defensive states, AI input, and action text display
 /// This script is used by both the player and the enemy
 /// </summary>
-public enum AttackHeight
-{
-    High,
-    Low
-}
-
 public class FightCharacter : MonoBehaviour
 {
     #region Inspector References
@@ -157,9 +151,6 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Maximum distance required for a special attack to hit")]
     [SerializeField] private float specialRange = 2.5f;
 
-    [Tooltip("Height of the special attack, either High or Low")]
-    [SerializeField] private AttackHeight specialAttackHeight = AttackHeight.High;
-
     [Tooltip("Sound played when this fighter performs a special attack")]
     [SerializeField] private AudioClip specialHitSound;
 
@@ -210,6 +201,18 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("How long player inputs are remembered during hitstop so they execute immediately afterward")]
     [SerializeField] private float hitstopInputBufferTime = 0.12f;
 
+    private bool isInHitstop;
+    private float hitstopTimer;
+    private float animatorSpeedBeforeHitstop = 1f;
+
+    private bool bufferedPunch;
+    private bool bufferedKick;
+    private float bufferedAttackTimer;
+    private bool ignorePhysicalFighterCollisions = true;
+
+    private float horizontalVelocityBeforeHitstop;
+    private bool hasStoredHitstopVelocity;
+
     #endregion
 
     #region UI Animation And Sound Settings
@@ -226,6 +229,14 @@ public class FightCharacter : MonoBehaviour
 
     [Tooltip("The physical transform of the fighter's 3D model")]
     [SerializeField] private Transform fighterModel;
+
+    [Tooltip("Full Animator state path used when a new round begins")]
+    [SerializeField]
+    private string standingIdleStateName =
+        "FighterMovement.Standing.Fighter_Idle_Standing 0";
+
+    [Tooltip("Animator trigger used to play the round-win celebration")]
+    [SerializeField] private string celebrationTriggerName = "celebrate";
 
     [Header("Attack Animation Speeds")]
     [Tooltip("Animation speed for standing punch")]
@@ -275,6 +286,9 @@ public class FightCharacter : MonoBehaviour
     private bool isKnockedDown;
     private bool isRecovering;
 
+    private float groundedPositionX;
+    private bool hasGroundedPositionLock;
+
     public bool movingForward = false; //for tracking in dream sequence
     private float posXCurrent = 0;
     private float posXLast = 0;
@@ -305,30 +319,20 @@ public class FightCharacter : MonoBehaviour
     private FighterMoveType pendingMoveType;
     private int pendingAttackDamage;
     private float pendingAttackRange;
-    private AttackHeight pendingAttackHeight;
     private AudioClip pendingHitSound;
     private bool hasPendingAttack;
 
     private bool hasPendingGrab;
 
     private bool isAttackAnimationPlaying; //prevents attack spam while an attack animation is still playing 
+    private bool attackStartedAirborne;
+
+    private Renderer[] fighterRenderers;
+    private bool[] fighterRendererEnabledStates;
+    private bool fighterPresentationHidden;
 
     private bool roundActive = true;
 
-    private float groundedPositionX;
-    private bool hasGroundedPositionLock;
-
-    private bool isInHitstop;
-    private float hitstopTimer;
-    private float animatorSpeedBeforeHitstop = 1f;
-
-    private bool bufferedPunch;
-    private bool bufferedKick;
-    private float bufferedAttackTimer;
-
-    private float horizontalVelocityBeforeHitstop;
-    private bool hasStoredHitstopVelocity;
-    private bool ignorePhysicalFighterCollisions = true;
 
 
     #endregion
@@ -398,7 +402,122 @@ public class FightCharacter : MonoBehaviour
         }
     }
 
-    private void ResetRoundState()
+    /// <summary>
+    /// Stops normal gameplay and displays this fighter's end round result
+    /// The winner celebrates while the loser remains grounded until the next round
+    /// </summary>
+    public void SetRoundResult(bool wonRound)
+    {
+        SetRoundActive(false);
+
+        isAttackAnimationPlaying = false;
+        attackStartedAirborne = false;
+        hasPendingAttack = false;
+        hasPendingGrab = false;
+
+        isInHitstop = false;
+        hitstopTimer = 0f;
+        animatorSpeedBeforeHitstop = 1f;
+        hasStoredHitstopVelocity = false;
+        horizontalVelocityBeforeHitstop = 0f;
+        ClearBufferedAttack();
+
+        if (rb != null)
+        {
+            Vector3 velocity = rb.linearVelocity;
+            velocity.x = 0f;
+            rb.linearVelocity = velocity;
+        }
+
+        if (fighterAnim != null)
+        {
+            fighterAnim.speed = 1f;
+            fighterAnim.ResetTrigger("punch");
+            fighterAnim.ResetTrigger("kick");
+            fighterAnim.ResetTrigger("grab");
+            fighterAnim.ResetTrigger("special");
+            fighterAnim.ResetTrigger("quickStep");
+            fighterAnim.ResetTrigger("hurt");
+
+            if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
+                fighterAnim.ResetTrigger(celebrationTriggerName);
+
+            fighterAnim.SetBool("shuffling", false);
+            fighterAnim.SetBool("crouching", false);
+            fighterAnim.SetBool("blocking", false);
+            fighterAnim.SetBool("jumping", false);
+            fighterAnim.SetBool("recovering", false);
+        }
+
+        if (wonRound)
+        {
+            isKnockedDown = false;
+            isRecovering = false;
+            ReleaseGroundedHorizontalPosition();
+
+            if (fighterAnim != null)
+            {
+                fighterAnim.SetBool("stunned", false);
+
+                if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
+                    fighterAnim.SetTrigger(celebrationTriggerName);
+            }
+
+            return;
+        }
+
+        ApplyGroundedState();
+
+        groundedTimer = float.PositiveInfinity;
+
+        if (fighterAnim != null)
+        {
+            fighterAnim.SetBool("stunned", true);
+            fighterAnim.SetBool("recovering", false);
+            fighterAnim.Update(0f);
+        }
+    }
+
+    public void SetPresentationVisible(bool isVisible)
+    {
+        if (!isVisible)
+        {
+            if (fighterPresentationHidden)
+                return;
+
+            fighterRenderers = GetComponentsInChildren<Renderer>(true);
+            fighterRendererEnabledStates = new bool[fighterRenderers.Length];
+
+            for (int i = 0; i < fighterRenderers.Length; i++)
+            {
+                Renderer fighterRenderer = fighterRenderers[i];
+
+                if (fighterRenderer == null)
+                    continue;
+
+                fighterRendererEnabledStates[i] = fighterRenderer.enabled;
+                fighterRenderer.enabled = false;
+            }
+
+            fighterPresentationHidden = true;
+            return;
+        }
+
+        if (!fighterPresentationHidden)
+            return;
+
+        for (int i = 0; i < fighterRenderers.Length; i++)
+        {
+            Renderer fighterRenderer = fighterRenderers[i];
+
+            if (fighterRenderer != null)
+                fighterRenderer.enabled = fighterRendererEnabledStates[i];
+        }
+
+        fighterPresentationHidden = false;
+    }
+
+    public void ResetRoundState()
     {
         ReleaseGroundedHorizontalPosition();
 
@@ -409,6 +528,7 @@ public class FightCharacter : MonoBehaviour
 
         // Attack states
         isAttackAnimationPlaying = false;
+        attackStartedAirborne = false;
         hasPendingAttack = false;
         hasPendingGrab = false;
 
@@ -449,38 +569,70 @@ public class FightCharacter : MonoBehaviour
         animatorSpeedBeforeHitstop = 1f;
         ClearBufferedAttack();
 
-        if (fighterAnim != null)
-            fighterAnim.speed = 1f;
-
         hasStoredHitstopVelocity = false;
         horizontalVelocityBeforeHitstop = 0f;
 
         // Reset Animator parameters
-        if (fighterAnim != null)
+        ResetAnimatorForRound();
+    }
+
+    private void ResetAnimatorForRound()
+    {
+        if (fighterAnim == null)
+            return;
+
+        fighterAnim.speed = 1f;
+
+
+        fighterAnim.ResetTrigger("punch");
+        fighterAnim.ResetTrigger("kick");
+        fighterAnim.ResetTrigger("grab");
+        fighterAnim.ResetTrigger("special");
+        fighterAnim.ResetTrigger("quickStep");
+        fighterAnim.ResetTrigger("hurt");
+
+        if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
+            fighterAnim.ResetTrigger(celebrationTriggerName);
+
+        fighterAnim.SetBool("shuffling", false);
+        fighterAnim.SetBool("crouching", false);
+        fighterAnim.SetBool("blocking", false);
+        fighterAnim.SetBool("jumping", false);
+        fighterAnim.SetBool("recovering", false);
+        fighterAnim.SetFloat("recoverySpeed", 1f);
+
+        string resolvedIdleStateName = standingIdleStateName;
+        int idleStateHash = string.IsNullOrWhiteSpace(resolvedIdleStateName)
+            ? 0
+            : Animator.StringToHash(resolvedIdleStateName);
+
+        if (idleStateHash == 0 || !fighterAnim.HasState(0, idleStateHash))
         {
-            fighterAnim.ResetTrigger("punch");
-            fighterAnim.ResetTrigger("kick");
-            fighterAnim.ResetTrigger("grab");
-            fighterAnim.ResetTrigger("special");
-            fighterAnim.ResetTrigger("jump");
-            fighterAnim.ResetTrigger("quickStep");
-            fighterAnim.ResetTrigger("hurt");
-
-            fighterAnim.SetBool("shuffling", false);
-            fighterAnim.SetBool("crouching", false);
-            fighterAnim.SetBool("blocking", false);
-            fighterAnim.SetBool("jumping", false);
-            fighterAnim.SetBool("stunned", false);
-            fighterAnim.SetBool("recovering", false);
-            fighterAnim.SetFloat("recoverySpeed", 1f);
-
-            fighterAnim.CrossFade("FighterMovement.Standing.Fighter_Idle_Standing 0", 0.1f);
+            string layerName = fighterAnim.GetLayerName(0);
+            resolvedIdleStateName = layerName + "." + standingIdleStateName;
+            idleStateHash = Animator.StringToHash(resolvedIdleStateName);
         }
+
+        if (!fighterAnim.HasState(0, idleStateHash))
+        {
+            Debug.LogWarning(
+                name + " could not find round start Animator state '" +
+                standingIdleStateName + "'. Set Standing Idle State Name to its exact full Animator path.",
+                this
+            );
+            return;
+        }
+
+        fighterAnim.Play(idleStateHash, 0, 0f);
+        fighterAnim.SetBool("stunned", false);
+
+        fighterAnim.Update(0f);
     }
 
     public void StartAttackAnimation()
     {
         isAttackAnimationPlaying = true; //locks attack input during attack animation 
+        attackStartedAirborne = !isGrounded;
 
         if (rb != null && isGrounded)
         {
@@ -493,9 +645,15 @@ public class FightCharacter : MonoBehaviour
     public void EndAttackAnimation()
     {
         isAttackAnimationPlaying = false; //unlocks attack input after animation finishes 
+        attackStartedAirborne = false;
 
         if (fighterAnim != null)
-            fighterAnim.speed = 1f;
+        {
+            if (isInHitstop)
+                animatorSpeedBeforeHitstop = 1f;
+            else
+                fighterAnim.speed = 1f;
+        }
 
         hasPendingAttack = false;
         hasPendingGrab = false;
@@ -541,8 +699,7 @@ public class FightCharacter : MonoBehaviour
         FighterMoveResult result = TryHitOpponent(
             pendingAttackName,
             pendingAttackDamage,
-            pendingAttackRange,
-            pendingAttackHeight
+            pendingAttackRange
         );
 
         if (result == FighterMoveResult.Hit)
@@ -604,7 +761,6 @@ public class FightCharacter : MonoBehaviour
     public FighterMoveResult ReceiveAttack(
         int damage,
         Vector3 attackerPosition,
-        AttackHeight attackHeight,
         FightCharacter attacker)
     {
         if (isKnockedDown)
@@ -1314,6 +1470,11 @@ public class FightCharacter : MonoBehaviour
         if (rb == null)
             return;
 
+
+        isGrounded = false;
+        isCrouching = false;
+        isBlocking = false;
+
         float jumpHorizontalDirection = Mathf.Abs(moveInput) < inputDeadZone ? 0f : Mathf.Sign(moveInput);
 
         Vector3 velocity = rb.linearVelocity;
@@ -1323,9 +1484,11 @@ public class FightCharacter : MonoBehaviour
 
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-        if (animateFighter)
+        if (animateFighter && fighterAnim != null)
         {
-            fighterAnim.SetTrigger("jump");
+            fighterAnim.SetBool("crouching", false);
+            fighterAnim.SetBool("blocking", false);
+            fighterAnim.SetBool("jumping", true);
         }
     }
 
@@ -1443,14 +1606,12 @@ public class FightCharacter : MonoBehaviour
 
         int damage = GetPunchDamage();
         float range = GetPunchRange();
-        AttackHeight attackHeight = GetPunchHeight();
 
         StorePendingAttack(
             punchType,
             moveType,
             damage,
             range,
-            attackHeight,
             punchHitSound
         );
 
@@ -1473,14 +1634,12 @@ public class FightCharacter : MonoBehaviour
 
         int damage = GetKickDamage();
         float range = GetKickRange();
-        AttackHeight attackHeight = GetKickHeight();
 
         StorePendingAttack(
             kickType,
             moveType,
             damage,
             range,
-            attackHeight,
             kickHitSound
         );
 
@@ -1539,7 +1698,6 @@ public class FightCharacter : MonoBehaviour
             FighterMoveType.Special,
             specialDamage,
             specialRange,
-            specialAttackHeight,
             specialHitSound != null ? specialHitSound : kickHitSound
         );
 
@@ -1560,14 +1718,12 @@ public class FightCharacter : MonoBehaviour
         FighterMoveType moveType,
         int damage,
         float range,
-        AttackHeight attackHeight,
         AudioClip hitSound)
     {
         pendingAttackName = attackName;
         pendingMoveType = moveType;
         pendingAttackDamage = damage;
         pendingAttackRange = range;
-        pendingAttackHeight = attackHeight;
         pendingHitSound = hitSound;
         hasPendingAttack = true;
     }
@@ -1576,7 +1732,7 @@ public class FightCharacter : MonoBehaviour
 
     #region Combat Resolution
 
-    private FighterMoveResult TryHitOpponent(string attackName, int damage, float range, AttackHeight attackHeight)
+    private FighterMoveResult TryHitOpponent(string attackName, int damage, float range)
     {
         if (opponent == null)
         {
@@ -1598,7 +1754,7 @@ public class FightCharacter : MonoBehaviour
             return FighterMoveResult.Miss;
         }
 
-        return opponentCharacter.ReceiveAttack(damage, transform.position, attackHeight, this);
+        return opponentCharacter.ReceiveAttack(damage, transform.position, this);
     }
 
     private FighterMoveResult TryGrabOpponent()
@@ -1861,22 +2017,6 @@ public class FightCharacter : MonoBehaviour
         return standingKickRange;
     }
 
-    private AttackHeight GetPunchHeight()
-    {
-        if (isCrouching && isGrounded)
-            return AttackHeight.Low;
-
-        return AttackHeight.High;
-    }
-
-    private AttackHeight GetKickHeight()
-    {
-        if (isCrouching && isGrounded)
-            return AttackHeight.Low;
-
-        return AttackHeight.High;
-    }
-
     #endregion
 
     #region Defensive State Helpers
@@ -2039,15 +2179,23 @@ public class FightCharacter : MonoBehaviour
     {
         bool wasGrounded = isGrounded;
 
-        isGrounded = Physics.Raycast(
-            transform.position,
-            Vector3.down,
-            groundCheckDistance,
-            groundLayer
-        );
+        bool isRising = rb != null && rb.linearVelocity.y > 0.05f;
 
-        if (!wasGrounded && isGrounded && roundActive)
-            PlaySound(jumpLandSound);
+        isGrounded = !isRising && Physics.Raycast(
+                transform.position,
+                Vector3.down,
+                groundCheckDistance,
+                groundLayer
+            );
+
+        if (!wasGrounded && isGrounded)
+        {
+            if (isAttackAnimationPlaying && attackStartedAirborne)
+                EndAttackAnimation();
+
+            if (roundActive)
+                PlaySound(jumpLandSound);
+        }
     }
 
     private void UpdateBlockStunTimer()
