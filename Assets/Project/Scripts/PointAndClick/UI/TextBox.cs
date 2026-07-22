@@ -58,6 +58,7 @@ public class TextBox : MonoBehaviour
     private IEnumerator CrawlText(float speed, DialogueSound sound)
     {
         StartFade(1f);
+        AudioManager.instance.PlayDialogueSound(sound);
         float totalTime = _text.text.Length / speed;
         char[] textChars = _text.text.ToCharArray();
         float elapsedTime = 0f;

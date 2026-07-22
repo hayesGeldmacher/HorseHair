@@ -42,6 +42,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip morningClip; //clip played for above sound when time of day is morning
     [SerializeField] private AudioClip afternoonClip; //clip played for above sound when time of day is afternoon
 
+    [Header("Finish Task")]
+    [SerializeField] private AudioSource taskCompletedSource; //source to be played at the time a task is completed
+
     [Header("Audio")]
     [SerializeField] private AudioSource finishTaskSource; //sound played when task is completed and player leaves PNC segment 
     [SerializeField] private AudioClip finishMorningClip; //clip played for above when morning task is finished
@@ -105,6 +108,19 @@ public class AudioManager : MonoBehaviour
         if (!isMorning && afternoonClip != null) { finishTaskSource.clip = finishAfternoonClip; }
 
         finishTaskSource.Play();
+    }
+
+    public void CallTaskCompletedSound()
+    {
+        StartCoroutine(PlayTaskCompletedSound());
+    }
+
+    private IEnumerator PlayTaskCompletedSound()
+    {
+        yield return new WaitForSeconds(0.5f);
+       if (taskCompletedSource == null) { Debug.LogWarning("No audio source slotted for task completed sound!"); yield break; }
+       taskCompletedSource.pitch = GetRandomPitch();
+       taskCompletedSource.Play();
     }
 
     //plays a per-typed character sound, one at a time

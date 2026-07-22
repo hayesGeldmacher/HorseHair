@@ -435,6 +435,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             OnShowTextBox();
             GoalText.text = data.nextTask;
             completeTask = true;
+            AudioManager.instance.CallTaskCompletedSound();
         }
         else
         {
