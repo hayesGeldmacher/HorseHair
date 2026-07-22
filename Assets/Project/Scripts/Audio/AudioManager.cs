@@ -123,6 +123,18 @@ public class AudioManager : MonoBehaviour
        taskCompletedSource.Play();
     }
 
+
+    public void CallDialogueDelay()
+    {
+        StartCoroutine(PlayDialogueSound());
+    }
+
+    private IEnumerator PlayDialogueDelay()
+    {
+        yield return new WaitForSeconds(0.2f);
+        PlayDialogueSound();
+    }
+
     //plays a per-typed character sound, one at a time
     public void PlayDialogueSound(DialogueSound sound)
     {

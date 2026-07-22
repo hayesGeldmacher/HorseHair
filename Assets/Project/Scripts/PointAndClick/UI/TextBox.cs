@@ -92,7 +92,7 @@ public class TextBox : MonoBehaviour
         }
         if(totalPlayedSounds < 1) //ensure a minimum of two sounds play for every dialogue
         {
-            AudioManager.instance.PlayDialogueSound(sound);
+            AudioManager.instance.CallDialogueDelay();
         }
         _text.text = textStorage;
 
