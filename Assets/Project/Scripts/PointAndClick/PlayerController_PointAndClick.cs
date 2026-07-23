@@ -64,9 +64,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private bool leftBedroom = false; //trigger a dialogue only after leaving the bedroom - HG
     private bool completeTask = false;
 
-    //HG: private enum for triggering 'day completed' sound in AudioManager
-    private DayofTaskFinished dayFinished = DayofTaskFinished.Morning;
-    private DayofTaskFinished dayStarted = DayofTaskFinished.Morning;
+    //private enums for triggering 'day completed' and 'day started' sounds in AudioManager - HG
+    private AudioTime dayFinished = AudioTime.Morning;
+    private AudioTime dayStarted = AudioTime.Morning;
 
     public static event System.Action<Boolean> OnTalking;
 
@@ -96,6 +96,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void Start()
     {
+        SetDayStartedAudio();
         string environment = PlayerPrefs.GetString("Environment");
         if (!string.IsNullOrEmpty(environment))
         {
@@ -124,6 +125,27 @@ public class PlayerController_PointAndClick : MonoBehaviour
         GoalText.text = "";
     }
 
+    //helper function for determining the correct audio clip to play when starting a new PNC seqeunce, based on time - HG
+    private void SetDayStartedAudio()
+    {
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
+        if (currentTimeOfDay == TimeOfDay.Morning)
+        {
+            dayStarted = AudioTime.Morning;
+            Debug.Log("Set audio day start to morning!");
+        }
+        else if (currentTimeOfDay == TimeOfDay.Afternoon)
+        {
+            dayStarted = AudioTime.Afternoon;
+            Debug.Log("Set audio day start to afternoon!");
+        }
+        else
+        {
+            dayStarted = AudioTime.Night;
+            Debug.Log("Set audio day start to dream!");
+        }
+    }
     private void HandleObjectClicked(ClickEventData data)
     {
 
@@ -224,8 +246,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
                 Debug.Log("Set int to timeofday afternoon!");
 
-                dayFinished = DayofTaskFinished.Morning;
-                dayStarted = DayofTaskFinished.Afternoon;
+                dayFinished = AudioTime.Morning; //set time to play correct audio clip on end sequence - HG
             }
             else if (currentTimeOfDay == TimeOfDay.Afternoon)
             {
@@ -234,8 +255,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Dream);
                 Debug.Log("Set into to timeofday dream!");
 
-                dayFinished = DayofTaskFinished.Afternoon;
-                dayStarted = DayofTaskFinished.Dream;
+                dayFinished = AudioTime.Afternoon; //set time to play correct audio clip on end sequence - HG
             }
             else
             {
@@ -244,8 +264,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
                 Debug.Log("Set int to timeofday morning!");
 
-                dayFinished = DayofTaskFinished.Dream;
-                dayStarted = DayofTaskFinished.Morning;
+                dayFinished = AudioTime.Night; //set time to play correct audio clip on end sequence - HG
             }
             PlayerPrefs.Save();
             StartCoroutine(EndingSequence(fpb.DialogueText, scene));

@@ -12,11 +12,11 @@ public enum DialogueSound
     Other,
 }
 
-public enum DayofTaskFinished{ 
+public enum AudioTime{ 
     
     Morning,
     Afternoon,
-    Dream
+    Night
 }
 
 
@@ -49,7 +49,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource dayStartedSource; //sound when a new task PNC sequence begins
     [SerializeField] private AudioClip[] morningStartedClips;
     [SerializeField] private AudioClip[] afternoonStartedClips;
-    [SerializeField] private AudioClip[] dreamStartedClips;
+    [SerializeField] private AudioClip[] nightStartedClips;
 
     [Header("Complete Task")]
     [SerializeField] private AudioSource taskCompletedSource; //source to be played at the time a task is completed
@@ -58,7 +58,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource dayCompletedSource; //sound played when task is completed and player leaves PNC segment 
     [SerializeField] private AudioClip[] morningCompletedClips; //clips played when morning sequence is completed
     [SerializeField] private AudioClip[] afternoonCompletedClips; //clips played when afternoon sequence is completed
-    [SerializeField] private AudioClip[] dreamCompletedClips; //clips played when dream seqeunce is completed
+    [SerializeField] private AudioClip[] nightCompletedClips; //clips played when dream seqeunce is completed
 
     [Header("Dialogue")]
     [SerializeField] private AudioSource[] dialogueSources;
@@ -70,6 +70,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float charsPerSound = 10; //how many sounds should trigger based on the characters in dialogue line
     [SerializeField] private float spaceBetweenSounds = 0.2f; //how long to wait between triggering dialogue sounds
     [SerializeField] private int maxSoundsPerLine = 4; //total sounds that can be triggered per line
+
 
     private int lastPlayedSource = 0;
 
@@ -102,19 +103,19 @@ public class AudioManager : MonoBehaviour
         return Random.Range(0.8f, 1.1f);
     }
 
-    public void PlayDayStartedSound(DayofTaskFinished day)
+    public void PlayDayStartedSound(AudioTime day)
     {
         AudioClip clip = morningStartedClips[0];
         switch (day)
         {
-            case DayofTaskFinished.Morning:
+            case AudioTime.Morning:
                 clip = morningStartedClips[0];
                 break;
-            case DayofTaskFinished.Afternoon:
+            case AudioTime.Afternoon:
                 clip = afternoonStartedClips[0];
                 break;
-            case DayofTaskFinished.Dream:
-                clip = dreamStartedClips[0];
+            case AudioTime.Night:
+                clip = nightStartedClips[0];
                 break;
         }
 
@@ -122,26 +123,25 @@ public class AudioManager : MonoBehaviour
         dayStartedSource.Play();
     }
 
-    public void PlayDayCompletedSound(DayofTaskFinished day)
+    public void PlayDayCompletedSound(AudioTime day)
     {
         AudioClip clip = morningCompletedClips[0];
 
         switch (day)
         {
-            case DayofTaskFinished.Morning:
+            case AudioTime.Morning:
                 clip = morningCompletedClips[0];
                 break;
-            case DayofTaskFinished.Afternoon:
+            case AudioTime.Afternoon:
                 clip = afternoonCompletedClips[0];
                 break;
-            case DayofTaskFinished.Dream:
-                clip = dreamCompletedClips[0];
+            case AudioTime.Night:
+                clip = nightCompletedClips[0];
                 break;
         }
 
         dayCompletedSource.clip = clip;
         dayCompletedSource.Play();
-
     }
 
     public void CallTaskCompletedSound()
