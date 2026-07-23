@@ -66,6 +66,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     //HG: private enum for triggering 'day completed' sound in AudioManager
     private DayofTaskFinished dayFinished = DayofTaskFinished.Morning;
+    private DayofTaskFinished dayStarted = DayofTaskFinished.Morning;
 
     public static event System.Action<Boolean> OnTalking;
 
@@ -224,6 +225,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 Debug.Log("Set int to timeofday afternoon!");
 
                 dayFinished = DayofTaskFinished.Morning;
+                dayStarted = DayofTaskFinished.Afternoon;
             }
             else if (currentTimeOfDay == TimeOfDay.Afternoon)
             {
@@ -233,6 +235,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 Debug.Log("Set into to timeofday dream!");
 
                 dayFinished = DayofTaskFinished.Afternoon;
+                dayStarted = DayofTaskFinished.Dream;
             }
             else
             {
@@ -242,6 +245,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 Debug.Log("Set int to timeofday morning!");
 
                 dayFinished = DayofTaskFinished.Dream;
+                dayStarted = DayofTaskFinished.Morning;
             }
             PlayerPrefs.Save();
             StartCoroutine(EndingSequence(fpb.DialogueText, scene));
@@ -320,7 +324,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             isMorning = true;
         }
 
-        AudioManager.instance.PlayDayStartedSound(dayFinished);
+        AudioManager.instance.PlayDayStartedSound(dayStarted);
         yield return new WaitForSeconds(2.0f);
 
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
@@ -355,7 +359,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 isMorning = true;
             }
 
-            AudioManager.instance.PlayDayStartedSound(dayFinished);
+            AudioManager.instance.PlayDayStartedSound(dayStarted);
             yield return new WaitForSeconds(2.0f);
 
             blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
