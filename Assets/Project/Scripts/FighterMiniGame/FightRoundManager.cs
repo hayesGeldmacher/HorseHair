@@ -111,9 +111,6 @@ public class FightRoundManager : MonoBehaviour
     [SerializeField] private string playerDisplayName = "Player";
     [SerializeField] private string enemyDisplayName = "Enemy";
 
-    [Header("Controls Menu")]
-    [SerializeField] private GameObject controlsPanel;
-
     [Header("Scene Transition")]
     [SerializeField] private EyelidsFG eyelids;
     [SerializeField] private string nextSceneName;
@@ -156,9 +153,6 @@ public class FightRoundManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-            ToggleControlsPanel();
-
         if (waitingForStart)
         {
             UpdateStartScreenBlink();
@@ -192,14 +186,6 @@ public class FightRoundManager : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
         SetFighterPresentationVisible(true);
-    }
-
-    private void ToggleControlsPanel()
-    {
-        if (controlsPanel == null)
-            return;
-
-        controlsPanel.SetActive(!controlsPanel.activeSelf);
     }
 
     private void PlaySound(AudioClip clip)
