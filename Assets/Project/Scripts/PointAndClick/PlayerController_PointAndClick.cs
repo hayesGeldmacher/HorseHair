@@ -64,6 +64,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private bool leftBedroom = false; //trigger a dialogue only after leaving the bedroom - HG
     private bool completeTask = false;
 
+    //HG: private enum for triggering 'day completed' sound in AudioManager
+    private DayofTaskFinished dayFinished = DayofTaskFinished.Morning;
+
     public static event System.Action<Boolean> OnTalking;
 
     private void OnEnable()
@@ -218,18 +221,27 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 scene = houseScene;
                 PlayerPrefs.SetInt("TaskNum", currentTaskNum);
                 PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
+                Debug.Log("Set int to timeofday afternoon!");
+
+                dayFinished = DayofTaskFinished.Morning;
             }
             else if (currentTimeOfDay == TimeOfDay.Afternoon)
             {
                 scene = fightingGameScene;
                 PlayerPrefs.SetInt("TaskNum", currentTaskNum);
                 PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Dream);
+                Debug.Log("Set into to timeofday dream!");
+
+                dayFinished = DayofTaskFinished.Afternoon;
             }
             else
             {
                 scene = dreamScene;
                 PlayerPrefs.SetInt("TaskNum", currentTaskNum++);
                 PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
+                Debug.Log("Set int to timeofday morning!");
+
+                dayFinished = DayofTaskFinished.Dream;
             }
             PlayerPrefs.Save();
             StartCoroutine(EndingSequence(fpb.DialogueText, scene));
@@ -253,11 +265,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         OpenDialogue();
 
         //play corresponding audio - HG
-        bool isMorning = true;
-        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
-        if (currentTimeOfDay == TimeOfDay.Morning) { isMorning = false; }
-        AudioManager.instance.PlayTaskFinishSound(isMorning);
-        Debug.Log("Transition timer was activated!");
+        AudioManager.instance.PlayDayCompletedSound(dayFinished);
 
         yield return new WaitUntil(() => startedDialogue == false);
 
@@ -277,11 +285,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
         OnShowTextBox();
 
         //play corresponding audio - HG
-        bool isMorning = true;
-        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
-        if(currentTimeOfDay == TimeOfDay.Morning) { isMorning = false; }
-        AudioManager.instance.PlayTaskFinishSound(isMorning);
-        Debug.Log("Transition timer was activated!");
+        AudioManager.instance.PlayDayCompletedSound(dayFinished);
+
         yield return new WaitForSeconds(transitionTimerInSeconds);
         
         SceneManager.LoadScene(scene);
@@ -315,7 +320,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             isMorning = true;
         }
 
-        AudioManager.instance.PlayStartTaskSound(isMorning);
+        AudioManager.instance.PlayDayStartedSound(dayFinished);
         yield return new WaitForSeconds(2.0f);
 
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
@@ -350,7 +355,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 isMorning = true;
             }
 
-            AudioManager.instance.PlayStartTaskSound(isMorning);
+            AudioManager.instance.PlayDayStartedSound(dayFinished);
             yield return new WaitForSeconds(2.0f);
 
             blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);

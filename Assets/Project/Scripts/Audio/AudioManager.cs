@@ -12,6 +12,14 @@ public enum DialogueSound
     Other,
 }
 
+public enum DayofTaskFinished{ 
+    
+    Morning,
+    Afternoon,
+    Dream
+}
+
+
 public class AudioManager : MonoBehaviour
 {
     #region Singleton
@@ -37,18 +45,20 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource hoverSource2; //sound 2 when mouse hovers over an icon
     private bool playedFirstHover = false;
 
-    [Header("Start Task")]
-    [SerializeField] private AudioSource startTaskSource; //sound when a new task PNC sequence begins
-    [SerializeField] private AudioClip morningClip; //clip played for above sound when time of day is morning
-    [SerializeField] private AudioClip afternoonClip; //clip played for above sound when time of day is afternoon
+    [Header("Start Day")]
+    [SerializeField] private AudioSource dayStartedSource; //sound when a new task PNC sequence begins
+    [SerializeField] private AudioClip[] morningStartedClips;
+    [SerializeField] private AudioClip[] afternoonStartedClips;
+    [SerializeField] private AudioClip[] dreamStartedClips;
 
-    [Header("Finish Task")]
+    [Header("Complete Task")]
     [SerializeField] private AudioSource taskCompletedSource; //source to be played at the time a task is completed
 
-    [Header("Audio")]
-    [SerializeField] private AudioSource finishTaskSource; //sound played when task is completed and player leaves PNC segment 
-    [SerializeField] private AudioClip finishMorningClip; //clip played for above when morning task is finished
-    [SerializeField] private AudioClip finishAfternoonClip; //clip played for above when afternoon task is finished
+    [Header("Complete Day")]
+    [SerializeField] private AudioSource dayCompletedSource; //sound played when task is completed and player leaves PNC segment 
+    [SerializeField] private AudioClip[] morningCompletedClips; //clips played when morning sequence is completed
+    [SerializeField] private AudioClip[] afternoonCompletedClips; //clips played when afternoon sequence is completed
+    [SerializeField] private AudioClip[] dreamCompletedClips; //clips played when dream seqeunce is completed
 
     [Header("Dialogue")]
     [SerializeField] private AudioSource[] dialogueSources;
@@ -92,22 +102,46 @@ public class AudioManager : MonoBehaviour
         return Random.Range(0.8f, 1.1f);
     }
 
-    public void PlayStartTaskSound(bool isMorning)
+    public void PlayDayStartedSound(DayofTaskFinished day)
     {
-        if(startTaskSource == null) { Debug.LogWarning("No audio source slotted for start task sound!"); return; }
-        if (isMorning && morningClip != null) { startTaskSource.clip = morningClip; }
-        else if (!isMorning && afternoonClip != null) { startTaskSource.clip = afternoonClip; }
+        AudioClip clip = morningStartedClips[0];
+        switch (day)
+        {
+            case DayofTaskFinished.Morning:
+                clip = morningStartedClips[0];
+                break;
+            case DayofTaskFinished.Afternoon:
+                clip = afternoonStartedClips[0];
+                break;
+            case DayofTaskFinished.Dream:
+                clip = dreamStartedClips[0];
+                break;
+        }
 
-        startTaskSource.Play();
+        dayStartedSource.clip = clip;
+        dayStartedSource.Play();
     }
 
-    public void PlayTaskFinishSound(bool isMorning)
+    public void PlayDayCompletedSound(DayofTaskFinished day)
     {
-        if(finishTaskSource == null) { Debug.LogWarning("No audio source slotted for finish task sound!"); return; }
-        if(isMorning && finishMorningClip != false) { finishTaskSource.clip = finishMorningClip; }
-        if (!isMorning && afternoonClip != null) { finishTaskSource.clip = finishAfternoonClip; }
+        AudioClip clip = morningCompletedClips[0];
 
-        finishTaskSource.Play();
+        switch (day)
+        {
+            case DayofTaskFinished.Morning:
+                clip = morningCompletedClips[0];
+                break;
+            case DayofTaskFinished.Afternoon:
+                clip = afternoonCompletedClips[0];
+                break;
+            case DayofTaskFinished.Dream:
+                clip = dreamCompletedClips[0];
+                break;
+        }
+
+        dayCompletedSource.clip = clip;
+        dayCompletedSource.Play();
+
     }
 
     public void CallTaskCompletedSound()
