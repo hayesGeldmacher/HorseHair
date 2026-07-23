@@ -10438,7 +10438,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7da77986a813048a09bc77fa49dfba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioFadeTrigger
-  fade: {fileID: 0}
+  fade: {fileID: 1023205857}
   pitch: 0.97
 --- !u!1001 &544492954
 PrefabInstance:
@@ -11276,7 +11276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7da77986a813048a09bc77fa49dfba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioFadeTrigger
-  fade: {fileID: 0}
+  fade: {fileID: 1023205857}
   pitch: 0.93
 --- !u!1001 &582828478
 PrefabInstance:
@@ -18078,6 +18078,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c719c6d842c353646b2af252ed6d73f1, type: 3}
   m_PrefabInstance: {fileID: 899808557}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1023205857 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6560558172191280938, guid: 2b394aa4e0302ba41aa24337f49b7b0c, type: 3}
+  m_PrefabInstance: {fileID: 5704746066963788552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3a21e93c7aca2d45b039a2a1c960559, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClipPitchFade
 --- !u!1001 &1027680110
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19257,6 +19268,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 098598f3609c39440bff7079bc5c697b, type: 3}
   m_PrefabInstance: {fileID: 1126197759}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1131657036 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2873083889001150457, guid: 2b394aa4e0302ba41aa24337f49b7b0c, type: 3}
+  m_PrefabInstance: {fileID: 5704746066963788552}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39c02356a8fc9fe46812e375f7edf97f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioGroupFade
 --- !u!1001 &1134618910
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20539,7 +20561,7 @@ MonoBehaviour:
   sceneTransitionTime: 10
   nextSceneName: SCN_Credits
   fadeBackgroundAudio: 1
-  audioFade: {fileID: 0}
+  audioFade: {fileID: 1131657036}
   eyelids: {fileID: 359152536}
 --- !u!1001 &1252218253
 PrefabInstance:
@@ -21861,7 +21883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f7da77986a813048a09bc77fa49dfba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioFadeTrigger
-  fade: {fileID: 0}
+  fade: {fileID: 1023205857}
   pitch: 0.9
 --- !u!114 &1333680726
 MonoBehaviour:
@@ -34913,6 +34935,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2873083889001150457, guid: 2b394aa4e0302ba41aa24337f49b7b0c, type: 3}
+      propertyPath: backgroundMax
+      value: -20
+      objectReference: {fileID: 0}
     - target: {fileID: 3929583257668436305, guid: 2b394aa4e0302ba41aa24337f49b7b0c, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -34921,7 +34947,8 @@ PrefabInstance:
       propertyPath: m_PlayOnAwake
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3929583257668436305, guid: 2b394aa4e0302ba41aa24337f49b7b0c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
