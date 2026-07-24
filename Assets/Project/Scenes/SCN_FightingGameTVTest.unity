@@ -6040,12 +6040,16 @@ MonoBehaviour:
   skipTelevision: 1
   dreamSequence: 0
   nextScene: 
+  channelIndex: 0
+  backupIndex: 1
   tvAnim: {fileID: 1719609914}
+  reflectionAnim: {fileID: 0}
   textureAnimController: {fileID: 1967096229}
   remoteAnim: {fileID: 1583278211}
   controllerAnimPlayer: {fileID: 2009227588}
   controllerAnimBrother: {fileID: 757928347}
   televisionScreen: {fileID: 1719609908}
+  reflectionScreen: {fileID: 0}
   gameScreen: {fileID: 1197576165}
   fightManager: {fileID: 892047101}
   vp:
@@ -6055,6 +6059,7 @@ MonoBehaviour:
     player: {fileID: 497324304}
     renderer: {fileID: 497324306}
   tvAudio: {fileID: 1646422925}
+  turnOffSource: {fileID: 0}
   clickCooldown: 1
   totalClicks: 4
   endTrigger:
@@ -13189,6 +13194,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3839768922649269439, guid: 967bc8c2e18937047ad9b74c8316dc6d, type: 3}
+      propertyPath: nightStartedClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3839768922649269439, guid: 967bc8c2e18937047ad9b74c8316dc6d, type: 3}
+      propertyPath: nightCompletedClips.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3839768922649269439, guid: 967bc8c2e18937047ad9b74c8316dc6d, type: 3}
+      propertyPath: 'nightStartedClips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d4ee82f994261a0449767d815792fc82, type: 3}
+    - target: {fileID: 3839768922649269439, guid: 967bc8c2e18937047ad9b74c8316dc6d, type: 3}
+      propertyPath: 'nightCompletedClips.Array.data[0]'
+      value: 
+      objectReference: {fileID: 8300000, guid: d4ee82f994261a0449767d815792fc82, type: 3}
     - target: {fileID: 4156284622920297077, guid: 967bc8c2e18937047ad9b74c8316dc6d, type: 3}
       propertyPath: m_Name
       value: PF_AudioManager_FG
