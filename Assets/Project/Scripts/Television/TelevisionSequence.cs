@@ -167,8 +167,12 @@ public class TelevisionSequence : MonoBehaviour
     public void StartTelevision()
     {
         remoteAnim.SetTrigger("press");
-        vp.player.Play();
-        tvAudio.Play();
+        if (!dreamSequence)
+        {
+            vp.player.Play();
+            tvAudio.Play();
+
+        }
         startedTelevision = true;
 
     }
@@ -267,7 +271,10 @@ public class TelevisionSequence : MonoBehaviour
     private IEnumerator EndTelevisionSequence()
     {
         tvAudio.Stop();
-        turnOffSource.Play();
+        if (!dreamSequence)
+        {
+            turnOffSource.Play();
+        }
         tvAnim.SetTrigger("off");
         yield return new WaitForSeconds(remoteWait);
         remoteAnim.SetTrigger("gone");
