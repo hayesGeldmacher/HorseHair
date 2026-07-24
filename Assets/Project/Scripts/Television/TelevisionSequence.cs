@@ -48,11 +48,12 @@ public class TelevisionSequence : MonoBehaviour
     [Header("Next Scene")]
     [SerializeField] private string nextScene; //name of the next scene to load after television sequence
 
-    private int channelIndex = 0; //index for the current channel
-    private int backupIndex = 1; //index for the next channel in sequence, for pre-loading videos
+    [SerializeField] private int channelIndex = 0; //index for the current channel
+    [SerializeField] private int backupIndex = 1; //index for the next channel in sequence, for pre-loading videos
 
     [Header("Animation References")]
     [SerializeField] private Animator tvAnim; //animator for the channel TV screen
+    [SerializeField] private Animator reflectionAnim; //animator for the brother's face reflection in the screen
     [SerializeField] private Animator textureAnimController; //animator for the texture video canvas image
     [SerializeField] private Animator remoteAnim; //animator for the remote control model
     [SerializeField] private Animator controllerAnimPlayer; //animator for the player game controller model
@@ -60,6 +61,7 @@ public class TelevisionSequence : MonoBehaviour
 
     [Header("GameObject References")]
     [SerializeField] private GameObject televisionScreen;
+    [SerializeField] private GameObject reflectionScreen;
     [SerializeField] private GameObject gameScreen;
     [SerializeField] private FightRoundManager fightManager;
 
@@ -69,6 +71,7 @@ public class TelevisionSequence : MonoBehaviour
 
     [Header("Audio References")]
     [SerializeField] private AudioSource tvAudio;
+    [SerializeField] private AudioSource turnOffSource;
 
     [Header("Clicks Cooldown")]
     [SerializeField] private float clickCooldown = 1; //how long does player need to wait before clicking to change channel? 
@@ -121,14 +124,6 @@ public class TelevisionSequence : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// This is just for testing - will replace whole function with Ray interaction system hooks - HG
-    /// </summary>
-    void Update()
-    {
-
-    }
-
     public void InteractTelevision()
     {
         if (canInteract)
@@ -161,21 +156,21 @@ public class TelevisionSequence : MonoBehaviour
 
     private IEnumerator BeginTelevisionScene()
     {
+        tvAnim.SetTrigger("on");
         yield return new WaitForSeconds(2.0f);
         remoteAnim.SetTrigger("equip");
         yield return new WaitForSeconds(1.0f);
         canInteract = true;
-        //trigger some dialogue for the brother here
+        StartTelevision();
     }
 
-    //when we integrate Ray's click commands, this will be played via that system -
-    //for now, it simply operates based on clicking the mouse button
     public void StartTelevision()
     {
-        tvAnim.SetTrigger("on");
         remoteAnim.SetTrigger("press");
         vp.player.Play();
         tvAudio.Play();
+        startedTelevision = true;
+
     }
 
     private IEnumerator ProgressChannels()
@@ -184,7 +179,7 @@ public class TelevisionSequence : MonoBehaviour
         calledChannelChange = true;
         currentCooldown = clickCooldown;
         remoteAnim.SetTrigger("press");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
         channelIndex++;
         if(channelIndex + 1 > channels.Length) { channelIndex = 0; }
 
@@ -272,15 +267,19 @@ public class TelevisionSequence : MonoBehaviour
     private IEnumerator EndTelevisionSequence()
     {
         tvAudio.Stop();
+        turnOffSource.Play();
         tvAnim.SetTrigger("off");
         yield return new WaitForSeconds(remoteWait);
         remoteAnim.SetTrigger("gone");
+        reflectionScreen.SetActive(true);
+        televisionScreen.SetActive(false);
+        reflectionAnim.SetTrigger("appear");
+        yield return new WaitForSeconds(2.0f);
         if (!dreamSequence)
         {
             FGDialogueManager.instance.TriggerDialogue(endTrigger);
         }
-        yield return new WaitForSeconds(2.0f);
-        televisionScreen.SetActive(false);
+        yield return new WaitForSeconds(6.0f);
         if (!dreamSequence) 
         {
             playerControls.Transition(nextScene);
