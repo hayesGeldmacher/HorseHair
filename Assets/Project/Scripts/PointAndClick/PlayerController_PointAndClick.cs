@@ -276,7 +276,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
-    private IEnumerator EndingSequence(DialogueStorage desc, string scene)
+    public IEnumerator EndingSequence(DialogueStorage desc, string scene)
     {
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
         blinkAnimator.SetTrigger("EyesDown");
@@ -320,6 +320,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     private void MoveTo(TeleportClickEventData data)
     {
+        if (data.source.EndingCamera)
+            return;
         StartCoroutine(TeleportSequence(data));
     }
 

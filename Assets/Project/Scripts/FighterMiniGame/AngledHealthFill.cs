@@ -52,7 +52,7 @@ public class AngledHealthBarFill : MaskableGraphic
         SetVerticesDirty();
     }
 
-    protected override void GenerateMesh(
+    protected void GenerateMesh(
         VertexHelper vertexHelper)
     {
         vertexHelper.Clear();
