@@ -12,7 +12,7 @@ public class FighterSuperMeter : MonoBehaviour
 
     [Header("UI")]
     [Tooltip("Angled fill graphic used as this fighter's special meter")]
-    [SerializeField] private AngledHealthBarFill superBar;
+    [SerializeField] private AngledHealthFill superBar;
 
     private int currentSpecialUses;
 

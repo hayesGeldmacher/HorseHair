@@ -5,8 +5,8 @@ using UnityEngine.UI;
 /// <summary>
 //This script allows for the angled health bar fill 
 /// </summary>
-[AddComponentMenu("Angled Health Bar Fill")]
-public class AngledHealthBarFill : MaskableGraphic
+[AddComponentMenu("Angled Health Fill")]
+public class AngledHealthFill : MaskableGraphic
 {
     [Header("Fill")]
     [Range(0f, 1f)]
@@ -52,7 +52,7 @@ public class AngledHealthBarFill : MaskableGraphic
         SetVerticesDirty();
     }
 
-    protected override void GenerateMesh(
+    protected override void OnPopulateMesh(
         VertexHelper vertexHelper)
     {
         vertexHelper.Clear();

@@ -12,7 +12,7 @@ public class FighterHealth : MonoBehaviour
 
     [Header("UI")]
     [Tooltip("Slider used as this fighter's health bar")]
-    [SerializeField] private AngledHealthBarFill healthBar;
+    [SerializeField] private AngledHealthFill healthBar;
 
     private int currentHealth;
     private bool isDefeated;
