@@ -12,7 +12,7 @@ public class FighterHealth : MonoBehaviour
 
     [Header("UI")]
     [Tooltip("Slider used as this fighter's health bar")]
-    [SerializeField] private Slider healthBar;
+    [SerializeField] private AngledHealthBarFill healthBar;
 
     private int currentHealth;
     private bool isDefeated;
@@ -66,11 +66,7 @@ public class FighterHealth : MonoBehaviour
             return;
         }
 
-        healthBar.minValue = 0;
-        healthBar.maxValue = maxHealth;
-        healthBar.value = currentHealth;
-        healthBar.wholeNumbers = true;
-        healthBar.interactable = false;
+        UpdateHealthBar();
     }
 
     private void UpdateHealthBar()
@@ -78,7 +74,11 @@ public class FighterHealth : MonoBehaviour
         if (healthBar == null)
             return;
 
-        healthBar.value = currentHealth;
+        float normalizedHealth = maxHealth > 0
+            ? (float)currentHealth / maxHealth
+            : 0f;
+
+        healthBar.SetFill(normalizedHealth);
     }
 
     private void Defeat()

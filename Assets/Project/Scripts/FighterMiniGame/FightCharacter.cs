@@ -25,6 +25,10 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Turn this on for AI-controlled fighters Leave it off for the player")]
     [SerializeField] private bool controlledByAI;
 
+    [Header("Dream Sequence")]
+    [Tooltip("Only check this for dream sequences, disables combat")]
+    [SerializeField] private bool dreamTraversalMode;
+
     #endregion
 
     #region Movement Settings
@@ -344,7 +348,45 @@ public class FightCharacter : MonoBehaviour
         get { return roundActive; }
     }
 
+    public bool IsDreamTraversalMode
+    {
+        get { return dreamTraversalMode; }
+    }
+
     public event System.Action<FightCharacter, FighterMoveType, FighterMoveResult> MovePerformed;
+
+
+    public void SetDreamTraversalMode(bool enabled)
+    {
+        dreamTraversalMode = enabled;
+
+
+        walkNormal = enabled;
+
+        if (!enabled)
+            return;
+
+        roundActive = true;
+        ResetRoundState();
+
+        blockStunTimer = 0f;
+        isCrouching = false;
+        isBlocking = false;
+
+        quickstepTimer = 0f;
+        quickstepCooldownTimer = 0f;
+        quickstepDirection = 0f;
+
+        hasPendingAttack = false;
+        hasPendingGrab = false;
+        isAttackAnimationPlaying = false;
+        attackStartedAirborne = false;
+
+        ClearBufferedAttack();
+
+        facingDirection = 1;
+        FlipModel(1f);
+    }
 
     public void SetAIInput(float moveInput, bool jumpPressed, bool punchPressed, bool kickPressed, bool grabPressed, bool crouchHeld, bool specialPressed = false)
     {
@@ -631,6 +673,9 @@ public class FightCharacter : MonoBehaviour
 
     public void StartAttackAnimation()
     {
+        if (dreamTraversalMode)
+            return;
+
         isAttackAnimationPlaying = true; //locks attack input during attack animation 
         attackStartedAirborne = !isGrounded;
 
@@ -691,6 +736,9 @@ public class FightCharacter : MonoBehaviour
 
     public void PerformAttackHit()
     {
+        if (dreamTraversalMode)
+            return;
+
         if (!hasPendingAttack)
             return;
 
@@ -714,6 +762,9 @@ public class FightCharacter : MonoBehaviour
 
     public void PerformGrabHit()
     {
+        if (dreamTraversalMode)
+            return;
+
         if (!hasPendingGrab)
             return;
 
@@ -731,6 +782,9 @@ public class FightCharacter : MonoBehaviour
 
     public FighterMoveResult ReceiveGrab(FightCharacter attacker, int damage)
     {
+        if (dreamTraversalMode)
+            return FighterMoveResult.Miss;
+
         if (isKnockedDown || isRecovering)
             return FighterMoveResult.Miss;
 
@@ -763,6 +817,9 @@ public class FightCharacter : MonoBehaviour
         Vector3 attackerPosition,
         FightCharacter attacker)
     {
+        if (dreamTraversalMode)
+            return FighterMoveResult.Miss;
+
         if (isKnockedDown)
             return FighterMoveResult.Miss;
 
@@ -941,6 +998,9 @@ public class FightCharacter : MonoBehaviour
     private void Start()
     {
         ConfigurePhysicalFighterCollisions();
+
+        if (dreamTraversalMode)
+            SetDreamTraversalMode(true);
     }
 
     private void Update()
@@ -1058,6 +1118,17 @@ public class FightCharacter : MonoBehaviour
     {
         if (!TryGetCurrentInput(out float moveInput, out bool jumpPressed, out bool punchPressed, out bool kickPressed, out bool grabPressed, out bool specialPressed, out bool crouchHeld))
             return;
+
+        if (dreamTraversalMode)
+        {
+            isCrouching = false;
+            isBlocking = false;
+            quickstepTimer = 0f;
+            quickstepDirection = 0f;
+
+            ClearAIButtonInputs();
+            return;
+        }
 
         CheckQuickstepInput(moveInput);
 
@@ -1228,6 +1299,9 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private float LimitVelocityIntoOpponentPushbox(float horizontalVelocity)
     {
+        if (dreamTraversalMode)
+            return horizontalVelocity;
+
         if (opponent == null || Mathf.Approximately(horizontalVelocity, 0f))
             return horizontalVelocity;
 
@@ -1386,6 +1460,9 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void ResolveFighterPushboxes()
     {
+        if (dreamTraversalMode)
+            return;
+
         if (rb == null || opponent == null)
             return;
 
@@ -1710,7 +1787,12 @@ public class FightCharacter : MonoBehaviour
 
     private bool CanStartAttack()
     {
-        return !isAttackAnimationPlaying && !isKnockedDown && !isRecovering && blockStunTimer <= 0f; //checks if fighter can start an attack 
+        return !dreamTraversalMode
+            && roundActive
+            && !isAttackAnimationPlaying
+            && !isKnockedDown
+            && !isRecovering
+            && blockStunTimer <= 0f;
     }
 
     private void StorePendingAttack(
@@ -2167,6 +2249,13 @@ public class FightCharacter : MonoBehaviour
 
     private void UpdateFacingDirection()
     {
+        if (dreamTraversalMode)
+        {
+            facingDirection = 1;
+            FlipModel(1f);
+            return;
+        }
+
         if (opponent == null)
             return;
 

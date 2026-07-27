@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 24229f2f98dd2234c9d1ada7d8100621
+guid: 12d7418266fec804f98445bdfc0c0782
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -97,45 +97,148 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: LoadingIcon_0
+      name: HealthBarLeft
       rect:
         serializedVersion: 2
-        x: 416
-        y: 437
-        width: 699
-        height: 1098
+        x: 0
+        y: 51
+        width: 872
+        height: 88
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
-      outline: []
+      outline:
+      - - {x: 409, y: -9}
+        - {x: 433, y: 11}
+        - {x: 436, y: 44}
+        - {x: -374, y: 44}
+        - {x: -436, y: -7}
+        - {x: -436, y: -41}
+        - {x: -423, y: -44}
+        - {x: 375, y: -44}
+      - - {x: 414, y: -9}
+        - {x: 431, y: 7}
+        - {x: 393, y: -30}
+        - {x: 396, y: -27}
+        - {x: 409, y: -13}
+      - - {x: 405, y: -26}
+        - {x: 413, y: -26}
+        - {x: 413, y: -22}
+        - {x: 405, y: -22}
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 048ee3c81661e3741944349b8041ac95
-      internalID: -550035580
+      spriteID: 9679735e002314c4b95417e15caddceb
+      internalID: -1681716345
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: LoadingIcon_1
+      name: HealthBarRight
       rect:
         serializedVersion: 2
-        x: 1395
-        y: 745
-        width: 960
-        height: 961
+        x: 1033
+        y: 50
+        width: 871
+        height: 90
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: 435.5, y: -11}
+        - {x: 370.5, y: 44}
+        - {x: 367.5, y: 45}
+        - {x: -434.5, y: 45}
+        - {x: -435.5, y: 42}
+        - {x: -435.5, y: 38}
+        - {x: -433.5, y: 37}
+        - {x: -435.5, y: 37}
+        - {x: -435.5, y: 17}
+        - {x: -387.5, y: -44}
+        - {x: 435.5, y: -45}
+      - - {x: -399.5, y: -28}
+        - {x: -416.5, y: -9}
+        - {x: -423.5, y: 1}
+        - {x: -409.5, y: -16}
+        - {x: -394.5, y: -34}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c89819add41fd7459ab13c13a4a4f91
+      internalID: -302369338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SuperBarRight
+      rect:
+        serializedVersion: 2
+        x: 1381
+        y: 0
+        width: 512
+        height: 46
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: facac62a9e521964bb897abcf824152a
-      internalID: 1760313450
+      spriteID: 2d225a99628176c41b8fe5c613b19d98
+      internalID: -1275587720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SuperBarLeft
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 0
+        width: 518
+        height: 47
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bee458793d4beb14c9dac404afb6cdd0
+      internalID: -1715945686
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Timer
+      rect:
+        serializedVersion: 2
+        x: 805
+        y: 0
+        width: 298
+        height: 144
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline:
+      - - {x: -149, y: -68}
+        - {x: 140, y: -67}
+        - {x: 53, y: 50}
+        - {x: -57, y: 47}
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3af7057bb23373d43bd99d19e0e86414
+      internalID: -54714227
       vertices: []
       indices: 
       edges: []
@@ -144,7 +247,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9c61b1301cf1fc540b9f75b27f08abda
+    spriteID: 93835619a96843443b0fa903620cc2f1
     internalID: 0
     vertices: []
     indices: 
@@ -154,8 +257,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      LoadingIcon_0: -550035580
-      LoadingIcon_1: 1760313450
+      HealthBarLeft: -1681716345
+      HealthBarRight: -302369338
+      SuperBarLeft: -1715945686
+      SuperBarRight: -1275587720
+      Timer: -54714227
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

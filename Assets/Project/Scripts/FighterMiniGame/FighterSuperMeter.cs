@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 /// <summary>
 /// Handles the fighter's super meter and limits special ability usage per round.
@@ -8,18 +7,18 @@ public class FighterSuperMeter : MonoBehaviour
 {
     [Header("Special Uses")]
     [Tooltip("Maximum number of times this fighter can use special per round")]
+    [Min(1)]
     [SerializeField] private int maxSpecialUses = 3;
 
     [Header("UI")]
-    [Tooltip("Slider used as this fighter's special meter")]
-    [SerializeField] private Slider superBar;
+    [Tooltip("Angled fill graphic used as this fighter's special meter")]
+    [SerializeField] private AngledHealthBarFill superBar;
 
     private int currentSpecialUses;
 
     private void Awake()
     {
         ResetSuper();
-        SetupSuperBar();
     }
 
     public bool CanUseSpecial()
@@ -33,9 +32,13 @@ public class FighterSuperMeter : MonoBehaviour
             return false;
 
         currentSpecialUses--;
+
         UpdateSuperBar();
 
-        Debug.Log(name + " used special. Uses left: " + currentSpecialUses);
+        Debug.Log(
+            name + " used special. Uses left: " +
+            currentSpecialUses
+        );
 
         return true;
     }
@@ -44,6 +47,11 @@ public class FighterSuperMeter : MonoBehaviour
     {
         currentSpecialUses = maxSpecialUses;
         UpdateSuperBar();
+
+        Debug.Log(
+            name + " special uses reset to " +
+            currentSpecialUses
+        );
     }
 
     public int GetCurrentSpecialUses()
@@ -56,26 +64,50 @@ public class FighterSuperMeter : MonoBehaviour
         return maxSpecialUses;
     }
 
-    private void SetupSuperBar()
-    {
-        if (superBar == null)
-        {
-            Debug.LogWarning(name + " has no super bar assigned.");
-            return;
-        }
-
-        superBar.minValue = 0;
-        superBar.maxValue = maxSpecialUses;
-        superBar.value = currentSpecialUses;
-        superBar.wholeNumbers = true;
-        superBar.interactable = false;
-    }
-
     private void UpdateSuperBar()
     {
         if (superBar == null)
-            return;
+        {
+            Debug.LogWarning(
+                name + " has no angled super bar assigned."
+            );
 
-        superBar.value = currentSpecialUses;
+            return;
+        }
+
+        float normalizedSpecial =
+            (float)currentSpecialUses / maxSpecialUses;
+
+        superBar.SetFill(normalizedSpecial);
+    }
+
+    [ContextMenu("Test: Spend Special")]
+    private void TestSpendSpecial()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogWarning(
+                "Enter Play Mode before testing the special bar."
+            );
+
+            return;
+        }
+
+        TrySpendSpecial();
+    }
+
+    [ContextMenu("Test: Reset Special")]
+    private void TestResetSpecial()
+    {
+        if (!Application.isPlaying)
+        {
+            Debug.LogWarning(
+                "Enter Play Mode before testing the special bar."
+            );
+
+            return;
+        }
+
+        ResetSuper();
     }
 }
