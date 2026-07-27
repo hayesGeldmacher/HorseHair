@@ -48,7 +48,7 @@ public class Camera_Environment : MonoBehaviour
     private void Start()
     {
         if (TeleportClickEventData == null)
-            SetUpEventData();
+            SetUpEventData(null);
 
         ActivateOrDeactivate(false);
     }
@@ -70,7 +70,7 @@ public class Camera_Environment : MonoBehaviour
         }
     }
 
-    public void SetUpEventData()
+    public void SetUpEventData(EventClick_Environment _source)
     {
         TeleportClickEventData = new TeleportClickEventData
         {
@@ -84,6 +84,7 @@ public class Camera_Environment : MonoBehaviour
             Camera = this,
             spin_360_x = full360Camera_x,
             spin_360_y = full360Camera_y,
+            source = _source           
         };
     }
 }

@@ -10,11 +10,14 @@ public class TeleportClickEventData : ClickEventData
     public bool spin_360_x;
     public bool spin_360_y;
     public Camera_Environment Camera;
+    public EventClick_Environment source;
+    public bool endingCamera;
 }   
 
 public class EventClick_Environment : EventClick
 {
     [SerializeField] private Camera_Environment connectedCamera;
+    public bool EndingCamera = false;
 
     protected override void SetType()
     {
@@ -24,10 +27,7 @@ public class EventClick_Environment : EventClick
 
     protected override ClickEventData CreateEventData()
     {
-        if (connectedCamera.TeleportClickEventData == null)
-        {
-            connectedCamera.SetUpEventData();
-        }
+        connectedCamera.SetUpEventData(this);
         return connectedCamera.TeleportClickEventData;
     }
 }
