@@ -1265,11 +1265,14 @@ public class FightCharacter : MonoBehaviour
             ? 0f
             : moveInput;
 
+        if (dreamTraversalMode)
+            horizontal = Mathf.Max(0f, horizontal);
+
         float currentMoveSpeed = moveSpeed;
 
         if (!isBlocking) //only shuffling is character is moving forward -HG
         {
-            isShuffling = Mathf.Abs(moveInput) < inputDeadZone ? false : true; //check if player is moving or still - HG
+            isShuffling = Mathf.Abs(horizontal) >= inputDeadZone; //check if player is moving or still - HG
         }
 
         if (isBlocking)
