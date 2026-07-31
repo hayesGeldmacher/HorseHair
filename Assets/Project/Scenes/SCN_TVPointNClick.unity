@@ -1637,17 +1637,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 687070628}
   m_SourcePrefab: {fileID: 100100000, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
---- !u!114 &247595925 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1532814386464735753, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
-  m_PrefabInstance: {fileID: 247595924}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1001 &253207941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7692,7 +7681,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TelevisionSequence
   skipTelevision: 0
   dreamSequence: 0
-  nextScene: SCN_FightingGameTVTest
+  nextScene: SCN_FightingGame
   channelIndex: 0
   backupIndex: 1
   tvAnim: {fileID: 1131307639}
@@ -8455,7 +8444,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterSuperMeter
   maxSpecialUses: 3
-  superBar: {fileID: 247595925}
+  superBar: {fileID: 0}
 --- !u!114 &1173407404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8595,14 +8584,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 4528363175994530018, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
-      propertyPath: Priority.Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5452108303933329207, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
+    - target: {fileID: 6671725320161104119, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: rayCaster
+      value: 
+      objectReference: {fileID: 8294815343259491575}
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalPosition.x
       value: -5.048
@@ -9440,7 +9425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterSuperMeter
   maxSpecialUses: 3
-  superBar: {fileID: 1748472277}
+  superBar: {fileID: 0}
 --- !u!114 &1388324150
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12537,17 +12522,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1748472277 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6032805573959948035, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
-  m_PrefabInstance: {fileID: 247595924}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!1 &1752334605
 GameObject:
   m_ObjectHideFlags: 0
@@ -16247,6 +16221,7 @@ GameObject:
   - component: {fileID: 3916660544120190121}
   - component: {fileID: 8294815343259491573}
   - component: {fileID: 8294815343259491574}
+  - component: {fileID: 8294815343259491575}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: Untagged
@@ -16528,6 +16503,22 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &8294815343259491575
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2827840929947947679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1001 &9018066788846919836
 PrefabInstance:
   m_ObjectHideFlags: 0

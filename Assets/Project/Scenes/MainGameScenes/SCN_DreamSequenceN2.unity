@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 101160393}
   - component: {fileID: 101160396}
   - component: {fileID: 101160399}
+  - component: {fileID: 101160400}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -289,6 +290,22 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &101160400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101160392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!1001 &174716987
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1450,6 +1467,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 6671725320161104119, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: rayCaster
+      value: 
+      objectReference: {fileID: 101160400}
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
