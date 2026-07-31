@@ -3460,6 +3460,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 4528363175994530018, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: Lens.FieldOfView
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 4949140355990455194, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.5
@@ -3504,6 +3508,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 13.800049
       objectReference: {fileID: 0}
+    - target: {fileID: 6671725320161104119, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: rayCaster
+      value: 
+      objectReference: {fileID: 840972118}
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.594
@@ -3543,10 +3551,6 @@ PrefabInstance:
     - target: {fileID: 7084677945363431872, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8903659107462836408, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
-      propertyPath: m_RenderPostProcessing
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5314,6 +5318,7 @@ GameObject:
   - component: {fileID: 840972115}
   - component: {fileID: 840972116}
   - component: {fileID: 840972117}
+  - component: {fileID: 840972118}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5362,7 +5367,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -5388,7 +5393,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 840972111}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.594, y: 1.22, z: -2.234}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5486,6 +5491,22 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &840972118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840972111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c49b4cc203aa6414fae5c798d1d0e7d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.PhysicsRaycaster
+  m_EventMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_MaxRayIntersections: 0
 --- !u!114 &855239728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6807,10 +6828,6 @@ PrefabInstance:
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTaskNum
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
-      propertyPath: currentTimeOfDay
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: tasks.Array.data[0].TaskNum
