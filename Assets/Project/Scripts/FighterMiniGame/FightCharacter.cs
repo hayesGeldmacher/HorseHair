@@ -21,6 +21,9 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Health component used when this fighter takes damage")]
     [SerializeField] private FighterHealth health;
 
+    [Tooltip("Fight camera that shakes when this fighter lands an attack")]
+    [SerializeField] private FightCameraFollow fightCamera;
+
     [Header("Control Type")]
     [Tooltip("Turn this on for AI-controlled fighters Leave it off for the player")]
     [SerializeField] private bool controlledByAI;
@@ -174,6 +177,15 @@ public class FightCharacter : MonoBehaviour
     [Header("Hit Pushback")]
     [Tooltip("Force applied to the opponent after a normal attack lands")]
     [SerializeField] private float hitPushbackForce = 3f;
+
+    [Header("Hit Camera Shake")]
+    [Tooltip("How long the camera shakes after this fighter lands an attack")]
+    [Min(0f)]
+    [SerializeField] private float hitShakeDuration = 0.08f;
+
+    [Tooltip("How far the camera moves during a connected attack shake")]
+    [Min(0f)]
+    [SerializeField] private float hitShakeStrength = 0.05f;
 
     [Header("Fighter Pushboxes")]
     [Tooltip("Main body size while standing or crouching, increase width if idle animations allow fighters to overlap")]
@@ -751,7 +763,10 @@ public class FightCharacter : MonoBehaviour
         );
 
         if (result == FighterMoveResult.Hit)
+        {
             StartLocalHitstop(attackerHitstopTime);
+            PlayConnectedAttackShake();
+        }
         else if (result == FighterMoveResult.Blocked)
             StartLocalHitstop(blockedHitstopTime);
 
@@ -773,7 +788,10 @@ public class FightCharacter : MonoBehaviour
         FighterMoveResult result = TryGrabOpponent();
 
         if (result == FighterMoveResult.Hit)
+        {
             PlaySound(grabSound);
+            PlayConnectedAttackShake();
+        }
         else
             PlaySound(attackMissSound);
 
@@ -1087,6 +1105,7 @@ public class FightCharacter : MonoBehaviour
         health ??= GetComponent<FighterHealth>();
         audioSource ??= GetComponent<AudioSource>();
         superMeter ??= GetComponent<FighterSuperMeter>();
+        fightCamera ??= FindAnyObjectByType<FightCameraFollow>();
     }
 
     private void ConfigurePhysicalFighterCollisions()
@@ -1865,6 +1884,15 @@ public class FightCharacter : MonoBehaviour
         }
 
         return opponentCharacter.ReceiveGrab(this, grabDamage);
+    }
+
+    private void PlayConnectedAttackShake()
+    {
+        if (fightCamera == null)
+            fightCamera = FindAnyObjectByType<FightCameraFollow>();
+
+        if (fightCamera != null)
+            fightCamera.Shake(hitShakeDuration, hitShakeStrength);
     }
 
     /// <summary>
