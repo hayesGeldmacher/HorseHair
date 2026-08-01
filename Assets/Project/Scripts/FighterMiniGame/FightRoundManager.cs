@@ -90,6 +90,12 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Icon used to display the enemy's round wins")]
     [SerializeField] private Image[] enemyWinIcons;
 
+    [Tooltip("Sprite shown before a round has been won")]
+    [SerializeField] private Sprite eggSprite;
+
+    [Tooltip("Sprite shown after a round has been won")]
+    [SerializeField] private Sprite hatchedSprite;
+
     [Tooltip("Text used to display the player's name on the match screen")]
     [SerializeField] private GameObject playerNameText;
 
@@ -236,6 +242,7 @@ public class FightRoundManager : MonoBehaviour
         SetStartScreenVisible(true);
         SetNextRoundPromptVisible(false);
         SetNameTextVisible(false);
+        SetRoundWinIconsVisible(false);
         SetRoundMessage("");
         SetCenterMessage("");
 
@@ -311,6 +318,7 @@ public class FightRoundManager : MonoBehaviour
 
         SetStartScreenVisible(false);
         SetNameTextVisible(true);
+        SetRoundWinIconsVisible(true);
         SetNextRoundPromptVisible(false);
 
         QueueRoundStart();
@@ -379,7 +387,9 @@ public class FightRoundManager : MonoBehaviour
         SetFighterPresentationVisible(false);
 
         ResetFighters();
+        currentRoundTime = roundTimeSeconds;
         UpdateAllUI();
+        SetRoundMessage("Round " + currentRoundNumber);
 
         yield return new WaitForSeconds(roundIntroBlackTime);
 
@@ -507,7 +517,11 @@ public class FightRoundManager : MonoBehaviour
         else if (roundWinner == enemyCharacter)
             enemyRoundWins++;
 
-        UpdateRoundWinText();
+        if (playerRoundWins >= roundsNeededToWinGame ||
+            enemyRoundWins >= roundsNeededToWinGame)
+        {
+            UpdateRoundWinText();
+        }
 
         Time.timeScale = roundEndSlowMotionScale;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
@@ -689,6 +703,24 @@ public class FightRoundManager : MonoBehaviour
             enemyNameText.SetActive(isVisible);
     }
 
+    private void SetRoundWinIconsVisible(bool isVisible)
+    {
+        SetIconArrayVisible(playerWinIcons, isVisible);
+        SetIconArrayVisible(enemyWinIcons, isVisible);
+    }
+
+    private void SetIconArrayVisible(Image[] icons, bool isVisible)
+    {
+        if (icons == null)
+            return;
+
+        foreach (Image icon in icons)
+        {
+            if (icon != null)
+                icon.gameObject.SetActive(isVisible);
+        }
+    }
+
     private void UpdateAllUI()
     {
         UpdateTimerText();
@@ -717,7 +749,7 @@ public class FightRoundManager : MonoBehaviour
         for (int i = 0; i < crownIcons.Length; i++)
         {
             if (crownIcons[i] != null)
-                crownIcons[i].gameObject.SetActive(i < wins);
+                crownIcons[i].sprite = i < wins ? hatchedSprite : eggSprite;
         }
     }
 
