@@ -23,8 +23,10 @@ public class EventClick_TaskGiver : EventClick
     [SerializeField] private string tgName = "TG";
     [SerializeField] public TaskItem task;
     [SerializeField] private EventClick_NEI Alternative_NEI;
+    [SerializeField] private bool IsGoal;
     public bool Activated = false;
-    private bool Talked = false;
+    public bool Talked = false;
+    public bool IsUsedByGoal = false;
 
     private void Awake()
     {
@@ -44,6 +46,11 @@ public class EventClick_TaskGiver : EventClick
 
     protected override ClickEventData CreateEventData()
     {
+        if (IsUsedByGoal)
+        {
+            return null;
+        }
+
         dialogueText.useAltDialogue = Talked;
         if (!Talked)
         {
@@ -66,6 +73,8 @@ public class EventClick_TaskGiver : EventClick
         if (Activated)
         {
             base.ActivateOrDeactivate(activate);
+            if (Talked && IsGoal)
+                base.ActivateOrDeactivate(false);
         }
         else
         {
@@ -78,11 +87,21 @@ public class EventClick_TaskGiver : EventClick
     public void ChangeTaskStatus(bool status)
     {
         gameObject.SetActive(status);
+        if (status)
+        {
+            task.goalItem.ActivateItems();
+            if (IsGoal)
+                gameObject.SetActive(false);
+        }
     }
 
     public void ChangeGoalStatus(bool status)
     {
         if (status)
+        {
             task.goalItem.StartTask();
+            if (IsGoal)
+                task.goalItem.ActivateOrDeactivate(true);
+        }
     }
 }

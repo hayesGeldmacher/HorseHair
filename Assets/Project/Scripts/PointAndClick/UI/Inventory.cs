@@ -57,4 +57,16 @@ public class Inventory : MonoBehaviour
 
         fadeGroup.alpha = targetAlpha;
     }
+
+    public bool CheckItemInInventory(string itemName)
+    {
+        foreach (var slot in _slots)
+        {
+            if (slot.GetName() == itemName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }

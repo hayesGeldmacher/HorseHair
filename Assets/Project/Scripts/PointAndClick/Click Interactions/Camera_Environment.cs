@@ -62,7 +62,7 @@ public class Camera_Environment : MonoBehaviour
         gameObject.SetActive(State);  
         foreach (var clickEvent in connectedClickEvents)
         {
-            clickEvent.gameObject.SetActive(State);
+            clickEvent.ActivateOrDeactivate(State);
         }
         foreach (var clickEvent in connectedItems)
         {
@@ -84,7 +84,7 @@ public class Camera_Environment : MonoBehaviour
             Camera = this,
             spin_360_x = full360Camera_x,
             spin_360_y = full360Camera_y,
-            source = _source           
+            source = _source,
         };
     }
 }

@@ -17,6 +17,7 @@ public class GoalCompletionData
     public string CompletedString;
     public string NotCompletedString;
     public string nextTask;
+    public EventClick_TaskGiver sequenceTask;
 }
 
 public class EventClick_GoalItem : EventClick
@@ -26,13 +27,21 @@ public class EventClick_GoalItem : EventClick
     [SerializeField] private string NotCompletedGoalString = "I still need ";
     [SerializeField] private string CompletedGoalString = "Perfect, now I should go to school";
     [SerializeField] private string TaskAfterComplettion = "I should go to school now";
-
-    [SerializeField] private DialogueStorage test;
+    [Header("Next Goal")]
+    [SerializeField] private EventClick_TaskGiver nextTask;
 
     private Dictionary<EventClick_Item, bool> itemCollectionStatus = 
         new Dictionary<EventClick_Item, bool>();
     public static event System.Action<GoalCompletionData> GoalCompleted;
     public bool Activated = false;
+
+    private void Awake()
+    {
+        if (nextTask)
+        {
+            nextTask.IsUsedByGoal = true;
+        }
+    }
 
     public void StartTask()
     {
@@ -102,14 +111,15 @@ public class EventClick_GoalItem : EventClick
             }
 
             GoalCompleted.Invoke(new GoalCompletionData
-            {           
+            {
                 GoalName = goalName,
                 NeededItems = new Dictionary<EventClick_Item, bool>(itemCollectionStatus),
                 SourceGoal = this,
                 IsCompleted = allCollected,
                 CompletedString = CompletedGoalString,
                 NotCompletedString = neededItems,
-                nextTask = TaskAfterComplettion
+                nextTask = TaskAfterComplettion,
+                sequenceTask = nextTask,
             });
         }
     }
@@ -122,5 +132,13 @@ public class EventClick_GoalItem : EventClick
             return true;
         }
         return false;
+    }
+
+    public void ActivateItems()
+    {
+        foreach(var item in requiredItems)
+        {
+            item.ActivateOrDeactivate(true);
+        }
     }
 }
