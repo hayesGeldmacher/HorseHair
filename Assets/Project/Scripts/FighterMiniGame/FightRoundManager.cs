@@ -22,6 +22,13 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("How fast the press any button text blinks")]
     [SerializeField] private float blinkSpeed = 2f;
 
+    [Header("Character Select")]
+    [Tooltip("Character selection shown after leaving the start screen")]
+    [SerializeField] private CharacterSelectManager characterSelectManager;
+
+    [Tooltip("How long the loading screen stays up before character selection")]
+    [SerializeField] private float characterSelectLoadingTime = 1f;
+
     [Header("Next Round Prompt")]
     [Tooltip("Text shown between rounds to wait for player input")]
     [SerializeField] private TMP_Text nextRoundPromptText;
@@ -149,6 +156,7 @@ public class FightRoundManager : MonoBehaviour
 
     private Coroutine roundIntroCoroutine;
     private Coroutine roundEndCoroutine;
+    private Coroutine characterSelectLoadingCoroutine;
 
     [SerializeField] private bool gameCanStart = false;
 
@@ -222,6 +230,12 @@ public class FightRoundManager : MonoBehaviour
         if (roundEndCoroutine != null)
             StopCoroutine(roundEndCoroutine);
 
+        if (characterSelectLoadingCoroutine != null)
+        {
+            StopCoroutine(characterSelectLoadingCoroutine);
+            characterSelectLoadingCoroutine = null;
+        }
+
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
@@ -240,6 +254,9 @@ public class FightRoundManager : MonoBehaviour
         UpdateAllUI();
 
         SetStartScreenVisible(true);
+        if (characterSelectManager != null)
+            characterSelectManager.HideAndReset();
+
         SetNextRoundPromptVisible(false);
         SetNameTextVisible(false);
         SetRoundWinIconsVisible(false);
@@ -273,11 +290,27 @@ public class FightRoundManager : MonoBehaviour
 
     private void CheckForAnyButtonStart()
     {
+
         if (Input.GetKeyDown(KeyCode.Tab) || !gameCanStart)
             return;
 
         if (!startingRound && Input.anyKeyDown)
-            StartMatch();
+        {
+            if (startScreenNoiseSource != null && startButtonClickSFX != null)
+                startScreenNoiseSource.PlayOneShot(startButtonClickSFX, 2f);
+
+            if (characterSelectManager != null)
+            {
+                waitingForStart = false;
+                characterSelectLoadingCoroutine = StartCoroutine(
+                    CharacterSelectLoadingRoutine()
+                );
+            }
+            else
+            {
+                StartMatch();
+            }
+        }
     }
 
     private void CheckForAnyButtonNextRound()
@@ -294,10 +327,46 @@ public class FightRoundManager : MonoBehaviour
 
     private void StartMatch()
     {
-        if (startScreenNoiseSource != null && startButtonClickSFX != null)
-            startScreenNoiseSource.PlayOneShot(startButtonClickSFX, 2f);
-
         StartCoroutine(StartMatchFadeRoutine());
+    }
+
+    private IEnumerator CharacterSelectLoadingRoutine()
+    {
+        startingRound = true;
+
+        yield return FadeScreen(1f);
+
+        SetStartScreenVisible(false);
+
+        if (startScreenNoiseSource != null)
+        {
+            startScreenNoiseSource.Stop();
+            startScreenNoiseSource.loop = false;
+            startScreenNoiseSource.clip = null;
+        }
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(characterSelectLoadingTime);
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(false);
+
+        startingRound = false;
+        characterSelectManager.OpenSelection(fadeDuration);
+
+        yield return FadeScreen(0f);
+
+        characterSelectLoadingCoroutine = null;
+    }
+
+    public void StartMatchFromCharacterSelect()
+    {
+        if (startingRound || roundActive || gameOver)
+            return;
+
+        StartMatch();
     }
 
     private IEnumerator StartMatchFadeRoutine()
@@ -306,6 +375,12 @@ public class FightRoundManager : MonoBehaviour
         startingRound = true;
 
         yield return FadeScreen(1f);
+
+        if (characterSelectManager != null)
+            characterSelectManager.HideAndReset();
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
