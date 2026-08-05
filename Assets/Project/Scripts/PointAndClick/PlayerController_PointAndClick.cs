@@ -19,6 +19,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     [Header("Player Settings")]
     private Camera_Environment StartingPoint;
+    [SerializeField] private Light flashLight;
 
     [Header("UI Settings")]
     [SerializeField] private float FadeDelay = 1f;
@@ -408,6 +409,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         transform.position = data.ObjectTransform.position;
         transform.rotation = data.ObjectTransform.rotation;
+        
+        flashLight.enabled = data.ActivateFlashlight;
 
         PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX, 
             data.FollowSpeedY, data.spin_360_x, data.spin_360_y);

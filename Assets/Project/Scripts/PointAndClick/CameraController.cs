@@ -36,6 +36,11 @@ public class CameraController : MonoBehaviour
     private bool isFrozen = false;
     private Vector2 frozenPosition;
 
+    [Header("Flashlight Settings")]
+    [SerializeField] private Light spotlight;
+    [SerializeField] private Camera cam;
+
+    [Header("Controller")]
     [SerializeField] private VirtualMouseInput VM;
     [SerializeField] private PlayerInput playerInput;
     private const string gamepadScheme = "Gamepad";
@@ -91,6 +96,31 @@ public class CameraController : MonoBehaviour
         {
             _panTilt.TiltAxis.Value = -_currentInput.y * _pitchClamp;
         }
+
+        UpdateSpotlight();
+    }
+
+    private void UpdateSpotlight()
+    {
+        //Camera cam = Camera.main;
+
+        //Vector2 mousePos = Mouse.current.position.ReadValue();
+        //Ray ray = cam.ScreenPointToRay(mousePos);
+
+        //if (Physics.Raycast(ray, out RaycastHit hit, 1000f, spotlightMask))
+        //{
+        //    spotlight.transform.LookAt(hit.point);
+        //}
+        ////else
+        ////{
+        ////    spotlight.transform.rotation = ray.rotation;
+        ////}
+        ///
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+
+        Ray ray = cam.ScreenPointToRay(mousePos);
+
+        spotlight.transform.rotation = Quaternion.LookRotation(ray.direction);
     }
 
     public void OnLook(InputAction.CallbackContext context)

@@ -17,6 +17,8 @@ public class Camera_Environment : MonoBehaviour
     private bool full360Camera_x = false;
     [SerializeField]
     private bool full360Camera_y = false;
+    [SerializeField] private bool _activateFlashlight = false;
+    [Header("Environment Settings")]
     [SerializeField]
     private EventClick_Environment selfClickEvent;
     [SerializeField] private GameObject _arrows;
@@ -85,6 +87,7 @@ public class Camera_Environment : MonoBehaviour
             spin_360_x = full360Camera_x,
             spin_360_y = full360Camera_y,
             source = _source,
+            ActivateFlashlight = _activateFlashlight,
         };
     }
 }

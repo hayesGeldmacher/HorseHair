@@ -14,13 +14,14 @@ public class TeleportClickEventData : ClickEventData
     public bool endingCamera;
     public bool canEnter = true;
     public string requiredItemDesc;
+    public bool ActivateFlashlight = false;
 }   
 
 public class EventClick_Environment : EventClick
 {
     [SerializeField] private Camera_Environment connectedCamera;
-    [SerializeField] private EventClick_Item requiredItems;
     [Header("Required Item")]
+    [SerializeField] private EventClick_Item requiredItems;
     [SerializeField] private string requiredItemString;
     [SerializeField] private Inventory playerInventory;
     [Header("Task Limitter")]
