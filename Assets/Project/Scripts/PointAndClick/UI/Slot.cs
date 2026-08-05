@@ -26,4 +26,9 @@ public class Slot : MonoBehaviour
         _itemImage.sprite = null;
         _itemText.text = string.Empty;
     }   
+
+    public string GetName()
+    {
+        return _itemText.text;  
+    }
 }

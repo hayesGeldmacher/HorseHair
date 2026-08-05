@@ -19,6 +19,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     [Header("Player Settings")]
     private Camera_Environment StartingPoint;
+    [SerializeField] private Light flashLight;
 
     [Header("UI Settings")]
     [SerializeField] private float FadeDelay = 1f;
@@ -59,6 +60,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private Camera_Environment currentCamera;
     private Coroutine _hideInventoryCoroutine;
     private Coroutine _hideTextCoroutine;
+    public TaskItem currentTask = null;
 
     private bool finishedFirstTeleport = false;
     private bool leftBedroom = false; //trigger a dialogue only after leaving the bedroom - HG
@@ -210,6 +212,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         else
         {
+            currentTask = task.Task;    
             GoalText.text = task.Task.GoalText;
             dialogueText = task.DialogueText;
             OpenDialogue();
@@ -322,6 +325,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         if (data.source.EndingCamera)
             return;
+        if (data.canEnter == false)
+        {
+            textBox.SetText(data.requiredItemDesc);
+            OnShowTextBox();
+            return;
+        }
         StartCoroutine(TeleportSequence(data));
     }
 
@@ -400,6 +409,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         transform.position = data.ObjectTransform.position;
         transform.rotation = data.ObjectTransform.rotation;
+        
+        flashLight.enabled = data.ActivateFlashlight;
 
         PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX, 
             data.FollowSpeedY, data.spin_360_x, data.spin_360_y);
@@ -460,11 +471,19 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         if (data.IsCompleted)
         {
-            textBox.SetName("Me");
-            textBox.SetText(data.CompletedString);
-            OnShowTextBox();
-            GoalText.text = data.nextTask;
-            completeTask = true;
+            if (data.sequenceTask)
+            {
+                data.sequenceTask.IsUsedByGoal = false;
+                data.SourceGoal.enabled = false;
+            }
+            else
+            {
+                textBox.SetName("Me");
+                textBox.SetText(data.CompletedString);
+                OnShowTextBox();
+                GoalText.text = data.nextTask;
+                completeTask = true;
+            }
             AudioManager.instance.CallTaskCompletedSound();
         }
         else
