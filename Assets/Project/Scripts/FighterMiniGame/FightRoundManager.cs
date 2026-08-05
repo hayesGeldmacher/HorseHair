@@ -22,6 +22,13 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("How fast the press any button text blinks")]
     [SerializeField] private float blinkSpeed = 2f;
 
+    [Header("Character Select")]
+    [Tooltip("Character selection shown after leaving the start screen")]
+    [SerializeField] private CharacterSelectManager characterSelectManager;
+
+    [Tooltip("How long the loading screen stays up before character selection")]
+    [SerializeField] private float characterSelectLoadingTime = 1f;
+
     [Header("Next Round Prompt")]
     [Tooltip("Text shown between rounds to wait for player input")]
     [SerializeField] private TMP_Text nextRoundPromptText;
@@ -90,6 +97,12 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Icon used to display the enemy's round wins")]
     [SerializeField] private Image[] enemyWinIcons;
 
+    [Tooltip("Sprite shown before a round has been won")]
+    [SerializeField] private Sprite eggSprite;
+
+    [Tooltip("Sprite shown after a round has been won")]
+    [SerializeField] private Sprite hatchedSprite;
+
     [Tooltip("Text used to display the player's name on the match screen")]
     [SerializeField] private GameObject playerNameText;
 
@@ -143,6 +156,7 @@ public class FightRoundManager : MonoBehaviour
 
     private Coroutine roundIntroCoroutine;
     private Coroutine roundEndCoroutine;
+    private Coroutine characterSelectLoadingCoroutine;
 
     [SerializeField] private bool gameCanStart = false;
 
@@ -216,6 +230,12 @@ public class FightRoundManager : MonoBehaviour
         if (roundEndCoroutine != null)
             StopCoroutine(roundEndCoroutine);
 
+        if (characterSelectLoadingCoroutine != null)
+        {
+            StopCoroutine(characterSelectLoadingCoroutine);
+            characterSelectLoadingCoroutine = null;
+        }
+
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
 
@@ -234,8 +254,12 @@ public class FightRoundManager : MonoBehaviour
         UpdateAllUI();
 
         SetStartScreenVisible(true);
+        if (characterSelectManager != null)
+            characterSelectManager.HideAndReset();
+
         SetNextRoundPromptVisible(false);
         SetNameTextVisible(false);
+        SetRoundWinIconsVisible(false);
         SetRoundMessage("");
         SetCenterMessage("");
 
@@ -266,11 +290,27 @@ public class FightRoundManager : MonoBehaviour
 
     private void CheckForAnyButtonStart()
     {
+
         if (Input.GetKeyDown(KeyCode.Tab) || !gameCanStart)
             return;
 
         if (!startingRound && Input.anyKeyDown)
-            StartMatch();
+        {
+            if (startScreenNoiseSource != null && startButtonClickSFX != null)
+                startScreenNoiseSource.PlayOneShot(startButtonClickSFX, 2f);
+
+            if (characterSelectManager != null)
+            {
+                waitingForStart = false;
+                characterSelectLoadingCoroutine = StartCoroutine(
+                    CharacterSelectLoadingRoutine()
+                );
+            }
+            else
+            {
+                StartMatch();
+            }
+        }
     }
 
     private void CheckForAnyButtonNextRound()
@@ -287,10 +327,46 @@ public class FightRoundManager : MonoBehaviour
 
     private void StartMatch()
     {
-        if (startScreenNoiseSource != null && startButtonClickSFX != null)
-            startScreenNoiseSource.PlayOneShot(startButtonClickSFX, 2f);
-
         StartCoroutine(StartMatchFadeRoutine());
+    }
+
+    private IEnumerator CharacterSelectLoadingRoutine()
+    {
+        startingRound = true;
+
+        yield return FadeScreen(1f);
+
+        SetStartScreenVisible(false);
+
+        if (startScreenNoiseSource != null)
+        {
+            startScreenNoiseSource.Stop();
+            startScreenNoiseSource.loop = false;
+            startScreenNoiseSource.clip = null;
+        }
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(characterSelectLoadingTime);
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(false);
+
+        startingRound = false;
+        characterSelectManager.OpenSelection(fadeDuration);
+
+        yield return FadeScreen(0f);
+
+        characterSelectLoadingCoroutine = null;
+    }
+
+    public void StartMatchFromCharacterSelect()
+    {
+        if (startingRound || roundActive || gameOver)
+            return;
+
+        StartMatch();
     }
 
     private IEnumerator StartMatchFadeRoutine()
@@ -299,6 +375,12 @@ public class FightRoundManager : MonoBehaviour
         startingRound = true;
 
         yield return FadeScreen(1f);
+
+        if (characterSelectManager != null)
+            characterSelectManager.HideAndReset();
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(true);
 
         yield return new WaitForSeconds(1f);
 
@@ -311,6 +393,7 @@ public class FightRoundManager : MonoBehaviour
 
         SetStartScreenVisible(false);
         SetNameTextVisible(true);
+        SetRoundWinIconsVisible(true);
         SetNextRoundPromptVisible(false);
 
         QueueRoundStart();
@@ -379,7 +462,9 @@ public class FightRoundManager : MonoBehaviour
         SetFighterPresentationVisible(false);
 
         ResetFighters();
+        currentRoundTime = roundTimeSeconds;
         UpdateAllUI();
+        SetRoundMessage("Round " + currentRoundNumber);
 
         yield return new WaitForSeconds(roundIntroBlackTime);
 
@@ -507,7 +592,11 @@ public class FightRoundManager : MonoBehaviour
         else if (roundWinner == enemyCharacter)
             enemyRoundWins++;
 
-        UpdateRoundWinText();
+        if (playerRoundWins >= roundsNeededToWinGame ||
+            enemyRoundWins >= roundsNeededToWinGame)
+        {
+            UpdateRoundWinText();
+        }
 
         Time.timeScale = roundEndSlowMotionScale;
         Time.fixedDeltaTime = 0.02f * Time.timeScale;
@@ -689,6 +778,24 @@ public class FightRoundManager : MonoBehaviour
             enemyNameText.SetActive(isVisible);
     }
 
+    private void SetRoundWinIconsVisible(bool isVisible)
+    {
+        SetIconArrayVisible(playerWinIcons, isVisible);
+        SetIconArrayVisible(enemyWinIcons, isVisible);
+    }
+
+    private void SetIconArrayVisible(Image[] icons, bool isVisible)
+    {
+        if (icons == null)
+            return;
+
+        foreach (Image icon in icons)
+        {
+            if (icon != null)
+                icon.gameObject.SetActive(isVisible);
+        }
+    }
+
     private void UpdateAllUI()
     {
         UpdateTimerText();
@@ -717,7 +824,7 @@ public class FightRoundManager : MonoBehaviour
         for (int i = 0; i < crownIcons.Length; i++)
         {
             if (crownIcons[i] != null)
-                crownIcons[i].gameObject.SetActive(i < wins);
+                crownIcons[i].sprite = i < wins ? hatchedSprite : eggSprite;
         }
     }
 
