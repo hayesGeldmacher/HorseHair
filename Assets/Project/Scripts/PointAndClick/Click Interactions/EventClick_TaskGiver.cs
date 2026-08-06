@@ -28,6 +28,8 @@ public class EventClick_TaskGiver : EventClick
     public bool Talked = false;
     public bool IsUsedByGoal = false;
 
+   
+
     private void Awake()
     {
         if (Alternative_NEI != null)

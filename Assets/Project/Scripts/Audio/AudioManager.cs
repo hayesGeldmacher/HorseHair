@@ -9,6 +9,7 @@ public enum DialogueSound
     Player,
     Brother,
     Dad,
+    Scarecrow,
     Other,
 }
 
@@ -65,6 +66,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip[] playerClips; //index 0
     [SerializeField] private AudioClip[] brotherClips; //index 1
     [SerializeField] private AudioClip[] dadClips; //index 2
+    [SerializeField] private AudioClip[] scarecrowClips;// index 3
 
     [Header("Dialogue Burst")]
     [SerializeField] private float charsPerSound = 10; //how many sounds should trigger based on the characters in dialogue line
@@ -187,6 +189,11 @@ public class AudioManager : MonoBehaviour
             case DialogueSound.Dad:
                 audioIndex = Random.Range(0, dadClips.Length);
                 clip = dadClips[audioIndex];
+                break;
+            case DialogueSound.Scarecrow:
+                Debug.Log("Chose scarecrow!");
+                 audioIndex = Random.Range(0, scarecrowClips.Length);
+                clip = scarecrowClips[audioIndex];
                 break;
             default:
                 audioIndex = Random.Range(0, playerClips.Length);
