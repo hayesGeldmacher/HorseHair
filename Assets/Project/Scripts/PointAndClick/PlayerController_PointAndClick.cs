@@ -461,8 +461,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             if (Inventory[i] != null && data.SourceGoal.CollectItem(Inventory[i]))
             {
-                Inventory[i] = null;
-                inventoryUI.RemoveItem(i);
+                //Inventory[i] = null;
+                //inventoryUI.RemoveItem(i);
             }
         }
         data.SourceGoal.CheckGoal();
