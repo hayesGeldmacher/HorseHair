@@ -25,6 +25,32 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &-6259705956781758744
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: sheepAlone_Still
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 8165030822503451360, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1107 &-4229336534709649991
 AnimatorStateMachine:
   serializedVersion: 7
@@ -36,9 +62,12 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 3296835145998829808}
-    m_Position: {x: 20, y: 260, z: 0}
+    m_Position: {x: 240, y: 270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2213196587977973495}
+    m_Position: {x: 250, y: 220, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -6259705956781758744}
     m_Position: {x: 20, y: 180, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
@@ -46,10 +75,10 @@ AnimatorStateMachine:
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 40, y: 120, z: 0}
+  m_EntryPosition: {x: 40, y: 130, z: 0}
   m_ExitPosition: {x: 800, y: 120, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
-  m_DefaultState: {fileID: -2213196587977973495}
+  m_DefaultState: {fileID: -6259705956781758744}
 --- !u!1102 &-2213196587977973495
 AnimatorState:
   serializedVersion: 6
@@ -83,7 +112,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: AC_sheepAlone
+  m_Name: AC_sheepStill
   serializedVersion: 6
   m_AnimatorParameters:
   - m_Name: running
@@ -127,7 +156,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7572516847871587896, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
+  m_Motion: {fileID: 8165030822503451360, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
