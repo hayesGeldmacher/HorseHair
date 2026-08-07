@@ -3150,7 +3150,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: NextScene
-      value: SCN_HouseLayout
+      value: SCN_Credits
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: _endingCamera
@@ -5512,6 +5512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51327faac36436246a305b1b649aa2b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemDisappear
+  alternativeItem: {fileID: 0}
 --- !u!1 &477424540
 GameObject:
   m_ObjectHideFlags: 0
@@ -7858,11 +7859,11 @@ PrefabInstance:
       objectReference: {fileID: 810050405}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.size
-      value: 3
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[0].name
@@ -7877,7 +7878,23 @@ PrefabInstance:
       value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[3].name
+      value: Scarecrow
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[4].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[1].sound
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[2].sound
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[3].sound
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
@@ -7886,15 +7903,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[0].dialogue
-      value: Have you seen Harold?
+      value: Hello?
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[1].dialogue
-      value: '*hmhmh scrhchc*'
+      value: '*...*'
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[2].dialogue
-      value: '*My heart feels like it''s breaking..."'
+      value: Have you seen Harold?
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[3].dialogue
+      value: '*hmhmh scrhchc*'
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[4].dialogue
+      value: '*My heart felt like it was full of water"'
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.data[0].name
@@ -7909,16 +7934,32 @@ PrefabInstance:
       value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[3].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[4].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.data[0].dialogue
-      value: I had a dream I was falling for a very long time...
+      value: I was dreaming... The walls were melting around me
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.data[1].dialogue
-      value: I landed in a cornfield, or maybe an ocean....
+      value: Or was I falling..?
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.data[2].dialogue
-      value: Is that Harold?
+      value: I landed in a cornfield, or maybe an ocean....
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[3].dialogue
+      value: I could hear wind.. or waves...
+      objectReference: {fileID: 0}
+    - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
+      propertyPath: task.ThoughtText.dialogue.Array.data[4].dialogue
+      value: Is that.. Harold?
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.data[0].name
@@ -7930,7 +7971,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.data[0].dialogue
-      value: '*hmhmh scrhchc*'
+      value: '*hmhhhm scrhkxc*'
       objectReference: {fileID: 0}
     - target: {fileID: 4518672925211160668, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_Enabled
@@ -33465,7 +33506,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: dreamScene
-      value: SCN_HouseLayout
+      value: SCN_Credits
       objectReference: {fileID: 0}
     - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: flashLight

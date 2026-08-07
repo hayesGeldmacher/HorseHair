@@ -376,6 +376,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private IEnumerator TeleportSequence(TeleportClickEventData data)
     {
+        PlayerCamera.rayCaster.enabled = false;
+
         // Blinking
         if (!finishedFirstTeleport)
         {
@@ -422,6 +424,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         currentCamera = data.Camera;
         currentCamera.ActivateOrDeactivate(true);
+        PlayerCamera.rayCaster.enabled = true;
 
         if (!leftBedroom)
         {
