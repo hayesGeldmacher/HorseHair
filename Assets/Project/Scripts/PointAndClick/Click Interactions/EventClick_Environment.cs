@@ -11,9 +11,15 @@ public class TeleportClickEventData : ClickEventData
     public bool spin_360_y;
     public Camera_Environment Camera;
     public EventClick_Environment source;
+
     public bool endingCamera;
+    public float delayBeforeEnding;
+    public DialogueStorage endingDialogue;
+    public string NextScene;
+
     public bool canEnter = true;
     public string requiredItemDesc;
+
     public bool ActivateFlashlight = false;
 }   
 

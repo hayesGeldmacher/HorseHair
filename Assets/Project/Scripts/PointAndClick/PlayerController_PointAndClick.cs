@@ -239,38 +239,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         if (completeTask)
         {
-            string scene = "";
-            TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
-            int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
-            if (currentTimeOfDay == TimeOfDay.Morning)
-            {
-                scene = houseScene;
-                PlayerPrefs.SetInt("TaskNum", currentTaskNum);
-                PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
-                Debug.Log("Set int to timeofday afternoon!");
-
-                dayFinished = AudioTime.Morning; //set time to play correct audio clip on end sequence - HG
-            }
-            else if (currentTimeOfDay == TimeOfDay.Afternoon)
-            {
-                scene = fightingGameScene;
-                PlayerPrefs.SetInt("TaskNum", currentTaskNum);
-                PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Dream);
-                Debug.Log("Set into to timeofday dream!");
-
-                dayFinished = AudioTime.Afternoon; //set time to play correct audio clip on end sequence - HG
-            }
-            else
-            {
-                scene = dreamScene;
-                PlayerPrefs.SetInt("TaskNum", currentTaskNum++);
-                PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
-                Debug.Log("Set int to timeofday morning!");
-
-                dayFinished = AudioTime.Night; //set time to play correct audio clip on end sequence - HG
-            }
-            PlayerPrefs.Save();
-            StartCoroutine(EndingSequence(fpb.DialogueText, scene));
+            EndingSequence(fpb.DialogueText);
         }
         else
         {
@@ -279,8 +248,46 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
-    public IEnumerator EndingSequence(DialogueStorage desc, string scene)
+    public void EndingSequence(DialogueStorage desc, float delay = 0)
     {
+        string scene = "";
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
+        if (currentTimeOfDay == TimeOfDay.Morning)
+        {
+            scene = houseScene;
+            PlayerPrefs.SetInt("TaskNum", currentTaskNum);
+            PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
+            Debug.Log("Set int to timeofday afternoon!");
+
+            dayFinished = AudioTime.Morning; //set time to play correct audio clip on end sequence - HG
+        }
+        else if (currentTimeOfDay == TimeOfDay.Afternoon)
+        {
+            scene = fightingGameScene;
+            PlayerPrefs.SetInt("TaskNum", currentTaskNum);
+            PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Dream);
+            Debug.Log("Set into to timeofday dream!");
+
+            dayFinished = AudioTime.Afternoon; //set time to play correct audio clip on end sequence - HG
+        }
+        else
+        {
+            scene = dreamScene;
+            PlayerPrefs.SetInt("TaskNum", currentTaskNum++);
+            PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
+            Debug.Log("Set int to timeofday morning!");
+
+            dayFinished = AudioTime.Night; //set time to play correct audio clip on end sequence - HG
+        }
+        PlayerPrefs.Save();
+        StartCoroutine(EndingSequence(desc, scene, delay));
+    }
+
+    public IEnumerator EndingSequence(DialogueStorage desc, string scene, float delay = 0)
+    {
+        yield return new WaitForSeconds(delay);
+
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
         blinkAnimator.SetTrigger("EyesDown");
 
@@ -323,8 +330,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     private void MoveTo(TeleportClickEventData data)
     {
-        if (data.source.EndingCamera)
-            return;
         if (data.canEnter == false)
         {
             textBox.SetText(data.requiredItemDesc);
@@ -422,6 +427,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             leftBedroom = true;
             StartCoroutine(DisplayTaskStartDialogue());
+        }
+
+        if (data.endingCamera)
+        {
+            StartCoroutine(EndingSequence(data.endingDialogue, data.NextScene, data.delayBeforeEnding));
         }
     }
 

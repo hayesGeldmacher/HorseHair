@@ -18,6 +18,11 @@ public class Camera_Environment : MonoBehaviour
     [SerializeField]
     private bool full360Camera_y = false;
     [SerializeField] private bool _activateFlashlight = false;
+    [Header("Ending Camera")]
+    [SerializeField] private bool _endingCamera = false;
+    [SerializeField] private float delayBeforeEnding = 2f;
+    [SerializeField] private DialogueStorage endingDialogue;
+    [SerializeField] private string NextScene;
     [Header("Environment Settings")]
     [SerializeField]
     private EventClick_Environment selfClickEvent;
@@ -28,6 +33,7 @@ public class Camera_Environment : MonoBehaviour
     public TeleportClickEventData TeleportClickEventData;
     private EventClick_Environment[] connectedClickEvents;
     public EventClick[] connectedItems;
+    private ItemDisappear[] connectedDisappearItems;
 
     private void OnValidate()
     {
@@ -45,6 +51,7 @@ public class Camera_Environment : MonoBehaviour
         _cameraMesh.SetActive(false);
         connectedClickEvents = _arrows.GetComponentsInChildren<EventClick_Environment>();
         connectedItems = _items.GetComponentsInChildren<EventClick>();
+        connectedDisappearItems = _items.GetComponentsInChildren<ItemDisappear>();
     }
 
     private void Start()
@@ -70,6 +77,10 @@ public class Camera_Environment : MonoBehaviour
         {
             clickEvent.ActivateOrDeactivate(State);
         }
+        foreach (var items in connectedDisappearItems)
+        {
+            items.gameObject.SetActive(State);
+        }
     }
 
     public void SetUpEventData(EventClick_Environment _source)
@@ -87,6 +98,10 @@ public class Camera_Environment : MonoBehaviour
             spin_360_x = full360Camera_x,
             spin_360_y = full360Camera_y,
             source = _source,
+            endingCamera = _endingCamera,
+            delayBeforeEnding = delayBeforeEnding,
+            endingDialogue = endingDialogue,
+            NextScene = NextScene,
             ActivateFlashlight = _activateFlashlight,
         };
     }

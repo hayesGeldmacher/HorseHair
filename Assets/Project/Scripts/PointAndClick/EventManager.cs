@@ -52,11 +52,20 @@ public class EventManager : MonoBehaviour
             task.TaskItem.Activated = false;
         }
 
-        if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
+        if (TVSet)
         {
-            PlayerPrefs.SetString("Environment", 
-                tasksList[(currentTimeOfDay, currentTaskNum)].task.startingPosition.name);
-            tasksList[(currentTimeOfDay, currentTaskNum)].Activated = true;           
+            PlayerPrefs.SetString("Environment",
+                 tasksList[(TimeOfDay.Dream, 0)].task.startingPosition.name);
+            tasksList[(TimeOfDay.Dream, 0)].Activated = true;
+        }
+        else
+        {
+            if (tasksList.ContainsKey((currentTimeOfDay, currentTaskNum)))
+            {
+                PlayerPrefs.SetString("Environment",
+                    tasksList[(currentTimeOfDay, currentTaskNum)].task.startingPosition.name);
+                tasksList[(currentTimeOfDay, currentTaskNum)].Activated = true;
+            }
         }
 
         PlayerPrefs.SetInt("TaskNum", currentTaskNum);

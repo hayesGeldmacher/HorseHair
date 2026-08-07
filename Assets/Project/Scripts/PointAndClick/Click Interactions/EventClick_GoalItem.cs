@@ -24,6 +24,7 @@ public class EventClick_GoalItem : EventClick
 {
     [SerializeField] private string goalName = "Goal Item";
     [SerializeField] private EventClick_Item[] requiredItems;
+    [SerializeField] private EventClick_Item[] permanentInventoryItems;
     [SerializeField] private string NotCompletedGoalString = "I still need ";
     [SerializeField] private string CompletedGoalString = "Perfect, now I should go to school";
     [SerializeField] private string TaskAfterComplettion = "I should go to school now";
@@ -47,6 +48,10 @@ public class EventClick_GoalItem : EventClick
     {
         Activated = true;
         foreach (var item in requiredItems)
+        {
+            item.Activated = true;
+        }
+        foreach (var item in permanentInventoryItems)
         {
             item.Activated = true;
         }
