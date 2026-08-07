@@ -79,7 +79,7 @@ public class Camera_Environment : MonoBehaviour
         }
         foreach (var items in connectedDisappearItems)
         {
-            items.gameObject.SetActive(State);
+            items.ActivateOrDeactivate(State);
         }
     }
 

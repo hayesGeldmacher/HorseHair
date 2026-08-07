@@ -376,11 +376,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private IEnumerator TeleportSequence(TeleportClickEventData data)
     {
-        if (currentCamera != null)
-        {
-            currentCamera.ActivateOrDeactivate(false);
-        }
-
         // Blinking
         if (!finishedFirstTeleport)
         {
@@ -408,6 +403,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
             yield return new WaitUntil(() =>
             blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
+
+            if (currentCamera != null)
+            {
+                currentCamera.ActivateOrDeactivate(false);
+            }
 
             blinkAnimator.SetTrigger("EyesUp");
         }
