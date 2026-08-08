@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,13 @@ public enum TimeOfDay
     Morning,
     Afternoon,
     Dream,
+}
+
+[Serializable]
+public class  TimeCheck
+{
+    public TimeOfDay timeOfDay;
+    public int TaskNum;
 }
 
 [System.Serializable]
