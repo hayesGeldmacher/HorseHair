@@ -35,6 +35,9 @@ public class Camera_Environment : MonoBehaviour
     public EventClick[] connectedItems;
     private ItemDisappear[] connectedDisappearItems;
 
+    [Header("Jumpscare Audio")]
+    [SerializeField] private AudioSource jumpscareAudio;
+
     private void OnValidate()
     {
         if (transform.parent != null)
@@ -64,6 +67,10 @@ public class Camera_Environment : MonoBehaviour
     public void TeleportToSelf()
     {
         selfClickEvent.ForceClick();
+        if(jumpscareAudio != null)
+        {
+            jumpscareAudio.Play();
+        }
     }
 
     public void ActivateOrDeactivate(bool State)

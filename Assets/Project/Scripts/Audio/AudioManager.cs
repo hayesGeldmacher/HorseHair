@@ -120,7 +120,7 @@ public class AudioManager : MonoBehaviour
                 clip = nightStartedClips[0];
                 break;
         }
-
+        if (clip == null) { return; }
         dayStartedSource.clip = clip;
         dayStartedSource.Play();
     }
@@ -141,7 +141,7 @@ public class AudioManager : MonoBehaviour
                 clip = nightCompletedClips[0];
                 break;
         }
-
+        if(clip == null) { return; }
         dayCompletedSource.clip = clip;
         dayCompletedSource.Play();
     }

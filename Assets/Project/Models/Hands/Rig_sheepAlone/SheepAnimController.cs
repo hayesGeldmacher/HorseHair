@@ -15,6 +15,12 @@ public class SheepAnimController : MonoBehaviour
     [SerializeField] private Transform playerBody; //the body of the camera
     [SerializeField] private float playerNearness;
     [SerializeField] private float runWait = 2.0f;
+
+    [Header("Pulled Away")]
+    [SerializeField] private bool pullSheepAway = false;
+    [SerializeField] private Animator sheepPulledaAnim;
+
+
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -39,7 +45,15 @@ public class SheepAnimController : MonoBehaviour
         if (!hasTriggeredRun)
         {
             hasTriggeredRun = true;
-            StartCoroutine(TriggerParentRun());
+            if (pullSheepAway)
+            {
+                StartCoroutine(TriggerSheepPulled());
+            }
+            else
+            {
+                StartCoroutine(TriggerParentRun());
+
+            }
         }
     }
 
@@ -48,5 +62,11 @@ public class SheepAnimController : MonoBehaviour
         yield return new WaitForSeconds(runWait);
         sheepChild.SetBool("running", true);
         sheepParent.SetTrigger("run");
+    }
+
+    private IEnumerator TriggerSheepPulled()
+    {
+        yield return new WaitForSeconds(runWait);
+        sheepParent.SetTrigger("pulled");
     }
 }
