@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7667538586066392905}
   - component: {fileID: 7506401663983764462}
+  - component: {fileID: 8874995253650183303}
   m_Layer: 0
   m_Name: RoundManager
   m_TagString: Untagged
@@ -48,25 +49,160 @@ MonoBehaviour:
   titleText: {fileID: 0}
   pressAnyButtonText: {fileID: 0}
   blinkSpeed: 4
-  startInputLockoutTime: 0.25
-  returnToStartScreenAfterGameOver: 1
+  characterSelectManager: {fileID: 0}
+  characterSelectLoadingTime: 1
   nextRoundPromptText: {fileID: 0}
+  gameOverPromptText: {fileID: 0}
   nextRoundInputDelay: 1
   roundTimeSeconds: 60
   roundsNeededToWinGame: 2
-  roundRestartDelay: 2
   playerCharacter: {fileID: 0}
   enemyCharacter: {fileID: 0}
   playerHealth: {fileID: 0}
   enemyHealth: {fileID: 0}
+  playerSuperMeter: {fileID: 0}
+  enemySuperMeter: {fileID: 0}
   playerStartPoint: {fileID: 6748691539999406939}
   enemyStartPoint: {fileID: 2592433403620247734}
   playerRigidbody: {fileID: 0}
   enemyRigidbody: {fileID: 0}
   timerText: {fileID: 0}
   roundMessageText: {fileID: 0}
-  playerRoundWinsText: {fileID: 0}
-  enemyRoundWinsText: {fileID: 0}
+  centerMessageText: {fileID: 0}
+  playerWinIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  enemyWinIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  eggSprite: {fileID: -469135796, guid: b9ed5cad9684862439a3f5b54fef62d7, type: 3}
+  hatchedSprite: {fileID: -597483946, guid: b9ed5cad9684862439a3f5b54fef62d7, type: 3}
+  playerNameText: {fileID: 0}
+  enemyNameText: {fileID: 0}
+  fadeCanvasGroup: {fileID: 0}
+  fadeDuration: 0.4
+  loadingIcon: {fileID: 0}
+  roundIntroBlackTime: 1
+  roundBeginTextTime: 2
+  roundEndSlowMotionScale: 0.25
+  roundEndPresentationTime: 4
+  playerDisplayName: Farmer
+  enemyDisplayName: Sheep
+  controlsPreloadTime: 1
+  controlsPanel: {fileID: 0}
+  keyboardControls: {fileID: 0}
+  gamepadControls: {fileID: 0}
+  keyboardContinuePrompt: {fileID: 0}
+  gamepadContinuePrompt: {fileID: 0}
+  controlsBackButton: {fileID: 0}
+  controlsContinueBlinkSpeed: 4
+  eyelids: {fileID: 0}
+  nextSceneName: SCN_DreamSequenceN2
+  audioSource: {fileID: 8874995253650183303}
+  startScreenNoiseSource: {fileID: 0}
+  startScreenWhiteNoise: {fileID: 8300000, guid: 9195641473ff2554689633f57e2246ea, type: 3}
+  startButtonClickSFX: {fileID: 8300000, guid: 04d00ac632aaf2846abdfb2a3072ae33, type: 3}
+  roundWinSFX: {fileID: 8300000, guid: 37d40b8d31ce4e542bfc75506e462908, type: 3}
+  backgroundMusic: {fileID: 8300000, guid: 417681b882afd9a40bb2faf664fcb9bd, type: 3}
+  matchWonSFX: {fileID: 8300000, guid: b38b84b5702119d4fb4d5a4612e073a9, type: 3}
+  gameCanStart: 0
+--- !u!82 &8874995253650183303
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3323478571961413175}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 6474951187488041805, guid: 8a4d8223ae21d724a9b4ec1ed26322aa, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.9
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3333911956633909507
 GameObject:
   m_ObjectHideFlags: 0

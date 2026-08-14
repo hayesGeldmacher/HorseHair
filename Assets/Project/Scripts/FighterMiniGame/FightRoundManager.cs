@@ -124,6 +124,31 @@ public class FightRoundManager : MonoBehaviour
     [SerializeField] private string playerDisplayName = "Player";
     [SerializeField] private string enemyDisplayName = "Enemy";
 
+    [Header("Controls Loading Screen")]
+    [Tooltip("How long to show loading screen before showing controls")]
+    [SerializeField] private float controlsPreloadTime = 1f;
+
+    [Tooltip("The controls screen shown after character selection")]
+    [SerializeField] private GameObject controlsPanel;
+
+    [Tooltip("Keyboard controls folder")]
+    [SerializeField] private GameObject keyboardControls;
+
+    [Tooltip("Gamepad controls folder")]
+    [SerializeField] private GameObject gamepadControls;
+
+    [Tooltip("Keyboard continue prompt")]
+    [SerializeField] private GameObject keyboardContinuePrompt;
+
+    [Tooltip("Gamepad continue prompt")]
+    [SerializeField] private GameObject gamepadContinuePrompt;
+
+    [Tooltip("Back button")]
+    [SerializeField] private GameObject controlsBackButton;
+
+    [Tooltip("How quickly the continue prompts blink")]
+    [SerializeField] private float controlsContinueBlinkSpeed = 2f;
+
     [Header("Scene Transition")]
     [SerializeField] private EyelidsFG eyelids;
     [SerializeField] private string nextSceneName;
@@ -142,6 +167,7 @@ public class FightRoundManager : MonoBehaviour
     private float startBlinkTimer;
     private float nextRoundBlinkTimer;
     private float inputDelayTimer;
+    private float controlsContinueBlinkTimer;
 
     private int playerRoundWins;
     private int enemyRoundWins;
@@ -153,6 +179,8 @@ public class FightRoundManager : MonoBehaviour
     private bool startingRound;
     private bool roundActive;
     private bool gameOver;
+    private bool usingGamepadControls;
+    private bool showingLoadingControlsScreen;
 
     private Coroutine roundIntroCoroutine;
     private Coroutine roundEndCoroutine;
@@ -167,6 +195,14 @@ public class FightRoundManager : MonoBehaviour
 
     private void Update()
     {
+        UpdateLastUsedControlDevice();
+
+        if (controlsPanel != null && controlsPanel.activeInHierarchy)
+        {
+            UpdateDisplayedControls();
+            UpdateControlsContinueBlink();
+        }
+
         if (waitingForStart)
         {
             UpdateStartScreenBlink();
@@ -200,6 +236,162 @@ public class FightRoundManager : MonoBehaviour
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
         SetFighterPresentationVisible(true);
+    }
+
+    private void UpdateLastUsedControlDevice()
+    {
+        if (AnyGamepadButtonDown())
+        {
+            usingGamepadControls = true;
+            return;
+        }
+
+        if (Input.anyKeyDown)
+            usingGamepadControls = false;
+    }
+
+    private bool AnyGamepadButtonDown()
+    {
+        return Input.GetKeyDown(KeyCode.JoystickButton0) ||
+               Input.GetKeyDown(KeyCode.JoystickButton1) ||
+               Input.GetKeyDown(KeyCode.JoystickButton2) ||
+               Input.GetKeyDown(KeyCode.JoystickButton3) ||
+               Input.GetKeyDown(KeyCode.JoystickButton4) ||
+               Input.GetKeyDown(KeyCode.JoystickButton5) ||
+               Input.GetKeyDown(KeyCode.JoystickButton6) ||
+               Input.GetKeyDown(KeyCode.JoystickButton7) ||
+               Input.GetKeyDown(KeyCode.JoystickButton8) ||
+               Input.GetKeyDown(KeyCode.JoystickButton9) ||
+               Input.GetKeyDown(KeyCode.JoystickButton10) ||
+               Input.GetKeyDown(KeyCode.JoystickButton11) ||
+               Input.GetKeyDown(KeyCode.JoystickButton12) ||
+               Input.GetKeyDown(KeyCode.JoystickButton13) ||
+               Input.GetKeyDown(KeyCode.JoystickButton14) ||
+               Input.GetKeyDown(KeyCode.JoystickButton15) ||
+               Input.GetKeyDown(KeyCode.JoystickButton16) ||
+               Input.GetKeyDown(KeyCode.JoystickButton17) ||
+               Input.GetKeyDown(KeyCode.JoystickButton18) ||
+               Input.GetKeyDown(KeyCode.JoystickButton19);
+    }
+
+    private void ShowControlsLoadingScreen()
+    {
+        if (controlsPanel != null)
+            controlsPanel.SetActive(true);
+
+        SetControlsScreenMode(true);
+        UpdateDisplayedControls();
+    }
+
+    public void ShowControlsFromPause()
+    {
+        if (controlsPanel != null)
+            controlsPanel.SetActive(true);
+
+        SetControlsScreenMode(false);
+        RefreshControlsForCurrentInput();
+    }
+
+    public void HideControlsFromPause()
+    {
+        HideControlsLoadingScreen();
+    }
+
+    public void RefreshControlsForCurrentInput()
+    {
+        UpdateLastUsedControlDevice();
+        UpdateDisplayedControls();
+    }
+
+    private void SetControlsScreenMode(bool isLoadingScreen)
+    {
+        showingLoadingControlsScreen = isLoadingScreen;
+        controlsContinueBlinkTimer = 0f;
+
+        if (controlsBackButton != null)
+            controlsBackButton.SetActive(!isLoadingScreen);
+
+        UpdateDisplayedControls();
+        SetContinueTextEnabled(keyboardContinuePrompt, true);
+        SetContinueTextEnabled(gamepadContinuePrompt, true);
+    }
+
+    private void UpdateControlsContinueBlink()
+    {
+        if (!showingLoadingControlsScreen)
+            return;
+
+        controlsContinueBlinkTimer +=
+            Time.unscaledDeltaTime * controlsContinueBlinkSpeed;
+
+        bool textVisible = Mathf.Sin(controlsContinueBlinkTimer) > 0f;
+
+        if (usingGamepadControls)
+            SetContinueTextEnabled(gamepadContinuePrompt, textVisible);
+        else
+            SetContinueTextEnabled(keyboardContinuePrompt, textVisible);
+    }
+
+    private void SetContinueTextEnabled(GameObject prompt, bool isEnabled)
+    {
+        if (prompt == null)
+            return;
+
+        TMP_Text promptText = prompt.GetComponent<TMP_Text>();
+
+        if (promptText == null)
+            promptText = prompt.GetComponentInChildren<TMP_Text>(true);
+
+        if (promptText != null)
+            promptText.enabled = isEnabled;
+    }
+
+    private void HideControlsLoadingScreen()
+    {
+        if (controlsPanel != null)
+            controlsPanel.SetActive(false);
+    }
+
+    public void UpdateDisplayedControls()
+    {
+        if (keyboardControls != null)
+            keyboardControls.SetActive(!usingGamepadControls);
+
+        if (gamepadControls != null)
+            gamepadControls.SetActive(usingGamepadControls);
+
+        if (keyboardContinuePrompt != null)
+        {
+            keyboardContinuePrompt.SetActive(
+                showingLoadingControlsScreen && !usingGamepadControls
+            );
+        }
+
+        if (gamepadContinuePrompt != null)
+        {
+            gamepadContinuePrompt.SetActive(
+                showingLoadingControlsScreen && usingGamepadControls
+            );
+        }
+    }
+
+    private bool ControlsConfirmPressed()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            usingGamepadControls = false;
+            UpdateDisplayedControls();
+            return true;
+        }
+
+        if (Input.GetKeyDown(KeyCode.JoystickButton0))
+        {
+            usingGamepadControls = true;
+            UpdateDisplayedControls();
+            return true;
+        }
+
+        return false;
     }
 
     private void PlaySound(AudioClip clip)
@@ -268,6 +460,8 @@ public class FightRoundManager : MonoBehaviour
 
         if (loadingIcon != null)
             loadingIcon.SetActive(false);
+
+        HideControlsLoadingScreen();
 
         if (startScreenNoiseSource != null && startScreenWhiteNoise != null)
         {
@@ -382,7 +576,24 @@ public class FightRoundManager : MonoBehaviour
         if (loadingIcon != null)
             loadingIcon.SetActive(true);
 
-        yield return new WaitForSeconds(1f);
+        HideControlsLoadingScreen();
+        yield return new WaitForSecondsRealtime(controlsPreloadTime);
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(false);
+
+        ShowControlsLoadingScreen();
+
+
+        yield return null;
+
+        while (!ControlsConfirmPressed())
+        {
+            UpdateDisplayedControls();
+            yield return null;
+        }
+
+        HideControlsLoadingScreen();
 
         if (startScreenNoiseSource != null)
         {

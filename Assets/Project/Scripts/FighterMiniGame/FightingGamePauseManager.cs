@@ -12,6 +12,9 @@ public class FightingGamePauseManager : MonoBehaviour
     [SerializeField] private GameObject fightingGamePauseScreen;
     [SerializeField] private GameObject controlsPanel;
 
+    [Header("Controls Display")]
+    [SerializeField] private FightRoundManager fightRoundManager;
+
     [Header("Default UI Selection")]
     [SerializeField] private Selectable firstPauseSelection;
     [SerializeField] private Selectable firstControlsSelection;
@@ -48,7 +51,7 @@ public class FightingGamePauseManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Tab) ||
-            Input.GetKeyDown(KeyCode.JoystickButton7))
+            Input.GetKeyDown(KeyCode.JoystickButton6))
         {
             TogglePause();
         }
@@ -145,7 +148,16 @@ public class FightingGamePauseManager : MonoBehaviour
         }
 
         fightingGamePauseScreen.SetActive(false);
-        controlsPanel.SetActive(true);
+
+        if (fightRoundManager != null)
+        {
+            fightRoundManager.ShowControlsFromPause();
+        }
+        else
+        {
+            Debug.LogError("FightRoundManager is not assigned.");
+            controlsPanel.SetActive(true);
+        }
 
         SelectMenuItem(firstControlsSelection);
     }
