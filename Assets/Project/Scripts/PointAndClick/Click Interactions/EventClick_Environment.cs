@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using static UnityEditor.Rendering.MaterialUpgrader;
 
 public class TeleportClickEventData : ClickEventData
 {
@@ -21,7 +23,16 @@ public class TeleportClickEventData : ClickEventData
     public string requiredItemDesc;
 
     public bool ActivateFlashlight = false;
-}   
+
+    public DialogueStorage movementDialogue;
+}
+
+[Serializable]
+public class DialogueMovement
+{
+    public TimeCheck time;
+    public DialogueStorage dialogue;
+}
 
 public class EventClick_Environment : EventClick
 {
@@ -50,7 +61,9 @@ public class EventClick_Environment : EventClick
             connectedCamera.TeleportClickEventData.requiredItemDesc = requiredItemString;
             connectedCamera.TeleportClickEventData.canEnter = 
                 playerInventory.CheckItemInInventory(requiredItems.itemName);
+            connectedCamera.TeleportClickEventData.DialogueText = dialogueText;
         }
+        connectedCamera.talked = true;
         return connectedCamera.TeleportClickEventData;
     }
 

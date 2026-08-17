@@ -29,7 +29,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     [SerializeField] private int OutlineIndex = 1;
     [SerializeField] public string description;
     [SerializeField] private bool ResetAfterClick = true;
-    [SerializeField] protected DialogueStorage dialogueText;
+    [SerializeField] public DialogueStorage dialogueText;
     [SerializeField] protected ObjectType resetCursor = ObjectType.None;
 
     protected ObjectType Type = ObjectType.None;
@@ -37,6 +37,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public static event System.Action<ClickEventData> OnObjectClicked;
     public static event System.Action<ObjectType, string> OnObjectHovered;
     private Material outlineMaterial;
+    private bool clicked = false;
 
     private void Start()
     {
@@ -57,6 +58,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
         {
             ResetClick();
         }
+        clicked = true;
     }
 
     public virtual void ResetClick()
@@ -89,8 +91,13 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        outlineMaterial.SetFloat("_Outline_Show", 0f);
-        OnObjectHovered?.Invoke(ObjectType.None, "");
+        if (clicked)
+            clicked = false;
+        else
+        {
+            outlineMaterial.SetFloat("_Outline_Show", 0f);
+            OnObjectHovered?.Invoke(ObjectType.None, "");
+        }
     }
 
     public virtual void ActivateOrDeactivate(bool activate)
