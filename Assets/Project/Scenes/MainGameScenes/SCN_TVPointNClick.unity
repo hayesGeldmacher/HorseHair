@@ -11798,6 +11798,7 @@ MonoBehaviour:
   fightingGameParent: {fileID: 1699308458}
   fightingGamePauseScreen: {fileID: 782489000}
   controlsPanel: {fileID: 287091029}
+  fightRoundManager: {fileID: 0}
   firstPauseSelection: {fileID: 1897961146}
   firstControlsSelection: {fileID: 778186365}
 --- !u!4 &1265532784
@@ -16467,6 +16468,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1699308459}
     m_Modifications:
+    - target: {fileID: 211473414028078432, guid: 448b2ec1c98eba642a88366aeacfe353, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 643642821102333026, guid: 448b2ec1c98eba642a88366aeacfe353, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9.5
@@ -18525,7 +18530,7 @@ Transform:
   m_GameObject: {fileID: 2071812717}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0018024518, y: 0.9999649, z: 0.007985669, w: -0.0017959664}
-  m_LocalPosition: {x: -628.32, y: -375.76, z: -2.45}
+  m_LocalPosition: {x: -628.32, y: -375.74, z: -3.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
