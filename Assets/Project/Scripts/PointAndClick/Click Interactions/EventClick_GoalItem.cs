@@ -18,6 +18,7 @@ public class GoalCompletionData
     public string NotCompletedString;
     public string nextTask;
     public EventClick_TaskGiver sequenceTask;
+    public DialogueStorage DialogueText;
 }
 
 public class EventClick_GoalItem : EventClick
@@ -47,6 +48,10 @@ public class EventClick_GoalItem : EventClick
     public void StartTask()
     {
         Activated = true;
+        if (nextTask)
+        {
+            nextTask.Activated = true;
+        }
         foreach (var item in requiredItems)
         {
             item.Activated = true;
@@ -125,6 +130,7 @@ public class EventClick_GoalItem : EventClick
                 NotCompletedString = neededItems,
                 nextTask = TaskAfterComplettion,
                 sequenceTask = nextTask,
+                DialogueText = dialogueText,
             });
         }
     }

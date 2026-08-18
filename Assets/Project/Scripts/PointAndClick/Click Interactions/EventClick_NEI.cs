@@ -61,6 +61,7 @@ public class EventClick_NEI : EventClick
             ObjectTransform = transform,
             Source = gameObject,
             Description = description,
+            DialogueText = dialogueText,
         };
     }
 

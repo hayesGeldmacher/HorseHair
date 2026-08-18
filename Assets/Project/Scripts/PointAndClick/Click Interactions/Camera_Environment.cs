@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -38,6 +39,11 @@ public class Camera_Environment : MonoBehaviour
     [Header("Jumpscare Audio")]
     [SerializeField] private AudioSource jumpscareAudio;
 
+    [Header("Tutorial")]
+    [SerializeField] public DialogueMovement[] dialogueMovements;
+    public bool talked = false;
+    private Dictionary<(TimeOfDay, int), DialogueStorage> dialogueMovementDict = new Dictionary<(TimeOfDay, int), DialogueStorage>();
+
     private void OnValidate()
     {
         if (transform.parent != null)
@@ -55,6 +61,11 @@ public class Camera_Environment : MonoBehaviour
         connectedClickEvents = _arrows.GetComponentsInChildren<EventClick_Environment>();
         connectedItems = _items.GetComponentsInChildren<EventClick>();
         connectedDisappearItems = _items.GetComponentsInChildren<ItemDisappear>();
+
+        foreach (var dialogueMovement in dialogueMovements)
+        {
+            dialogueMovementDict.Add((dialogueMovement.time.timeOfDay, dialogueMovement.time.TaskNum), dialogueMovement.dialogue);
+        }
     }
 
     private void Start()
@@ -92,6 +103,10 @@ public class Camera_Environment : MonoBehaviour
 
     public void SetUpEventData(EventClick_Environment _source)
     {
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
+        DialogueStorage used = (dialogueMovementDict.ContainsKey((currentTimeOfDay, currentTaskNum)) && !talked) ? 
+            dialogueMovementDict[(currentTimeOfDay, currentTaskNum)] : null;
         TeleportClickEventData = new TeleportClickEventData
         {
             EnvironmentName = environmentName,
@@ -110,6 +125,7 @@ public class Camera_Environment : MonoBehaviour
             endingDialogue = endingDialogue,
             NextScene = NextScene,
             ActivateFlashlight = _activateFlashlight,
+            movementDialogue = used,           
         };
     }
 }
