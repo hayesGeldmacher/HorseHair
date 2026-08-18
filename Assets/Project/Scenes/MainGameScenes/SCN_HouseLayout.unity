@@ -7800,6 +7800,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
+    - target: {fileID: 3203083033632880677, guid: a899a9303063fb1429d5dcd28e4a3f19, type: 3}
+      propertyPath: m_CastShadows
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 6696227416929615131, guid: a899a9303063fb1429d5dcd28e4a3f19, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -15119,6 +15123,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 350712745507544793, guid: 5599edb0844d3864eb4a70ce9212a424, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1729239504501208380, guid: 5599edb0844d3864eb4a70ce9212a424, type: 3}
       propertyPath: m_Range
       value: 4
@@ -15135,9 +15143,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Light_Day
       objectReference: {fileID: 0}
+    - target: {fileID: 2079586179078635303, guid: 5599edb0844d3864eb4a70ce9212a424, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4022148660227251212, guid: 5599edb0844d3864eb4a70ce9212a424, type: 3}
       propertyPath: m_Range
-      value: 4
+      value: 1.39
       objectReference: {fileID: 0}
     - target: {fileID: 4022148660227251212, guid: 5599edb0844d3864eb4a70ce9212a424, type: 3}
       propertyPath: m_Lightmapping
@@ -15150,6 +15162,10 @@ PrefabInstance:
     - target: {fileID: 4069418522219257101, guid: 5599edb0844d3864eb4a70ce9212a424, type: 3}
       propertyPath: m_LocalPosition.y
       value: 3.4480002
+      objectReference: {fileID: 0}
+    - target: {fileID: 4648997940959197363, guid: 5599edb0844d3864eb4a70ce9212a424, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5029431120016590835, guid: 5599edb0844d3864eb4a70ce9212a424, type: 3}
       propertyPath: m_LocalPosition.y
@@ -19356,7 +19372,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
-  m_UsePipelineSettings: 1
+  m_UsePipelineSettings: 0
   m_AdditionalLightsShadowResolutionTier: 2
   m_CustomShadowLayers: 0
   m_LightCookieSize: {x: 1, y: 1}
@@ -19384,10 +19400,10 @@ Light:
   serializedVersion: 13
   m_Type: 0
   m_Color: {r: 1, g: 0.88712555, b: 0.72641504, a: 1}
-  m_Intensity: 0.5
-  m_Range: 4
+  m_Intensity: 0.8
+  m_Range: 2.19
   m_SpotAngle: 163.45662
-  m_InnerSpotAngle: 141.21948
+  m_InnerSpotAngle: 150.45816
   m_CookieSize2D: {x: 0.5, y: 0.5}
   m_Shadows:
     m_Type: 2
@@ -19396,7 +19412,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.05
     m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NearPlane: 0.05
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
