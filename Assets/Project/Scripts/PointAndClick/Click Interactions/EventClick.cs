@@ -54,10 +54,11 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public void OnPointerClick(PointerEventData eventData)
     {
         OnObjectClicked?.Invoke(CreateEventData());
-        if (ResetAfterClick)
-        {
-            ResetClick();
-        }
+        ResetClick();
+        //if (ResetAfterClick)
+        //{
+        //    ResetClick();
+        //}
         clicked = true;
     }
 
