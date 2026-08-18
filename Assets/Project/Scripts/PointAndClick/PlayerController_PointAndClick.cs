@@ -243,8 +243,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         else
         {
-            textBox.SetText(fpb.IncompleteString);
-            OnShowTextBox();
+            dialogueText = new DialogueStorage();
+            dialogueText.dialogue = fpb.DialogueText.alternativeDialogue;
+            OpenDialogue();
+
+            //textBox.SetText(fpb.IncompleteString);
+            //OnShowTextBox();
         }
     }
 
@@ -332,8 +336,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         if (data.canEnter == false)
         {
-            textBox.SetText(data.requiredItemDesc);
-            OnShowTextBox();
+            dialogueText = data.DialogueText;
+            OpenDialogue();
             return;
         }
         StartCoroutine(TeleportSequence(data));
@@ -426,6 +430,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
         currentCamera.ActivateOrDeactivate(true);
         PlayerCamera.rayCaster.enabled = true;
 
+        if (data.movementDialogue != null)
+        {
+            dialogueText = data.movementDialogue;
+            OpenDialogue();
+        }
+
         if (!leftBedroom)
         {
             leftBedroom = true;
@@ -455,9 +465,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 Inventory[i] = item;
                 inventoryUI.AddItem(item.itemImage, item.itemName, i);
                 textBox.SetName("Me");
-                textBox.SetText(item.description);
                 OnOpenInventory();
-                OnShowTextBox();
+                dialogueText = item.dialogueText;
+                OpenDialogue();
                 return true;
             }
         }
@@ -474,8 +484,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             if (Inventory[i] != null && data.SourceGoal.CollectItem(Inventory[i]))
             {
-                //Inventory[i] = null;
-                //inventoryUI.RemoveItem(i);
+                Inventory[i] = null;
+                inventoryUI.RemoveItem(i);
             }
         }
         data.SourceGoal.CheckGoal();
@@ -487,13 +497,14 @@ public class PlayerController_PointAndClick : MonoBehaviour
             if (data.sequenceTask)
             {
                 data.sequenceTask.IsUsedByGoal = false;
+                data.sequenceTask.Activated = true;
                 data.SourceGoal.enabled = false;
             }
             else
             {
                 textBox.SetName("Me");
-                textBox.SetText(data.CompletedString);
-                OnShowTextBox();
+                dialogueText = data.DialogueText;
+                OpenDialogue();
                 GoalText.text = data.nextTask;
                 completeTask = true;
             }
@@ -501,9 +512,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         else
         {
-            textBox.SetName("Me");
-            textBox.SetText(data.NotCompletedString);
-            OnShowTextBox();
+            dialogueText = new DialogueStorage();
+            dialogueText.dialogue = data.DialogueText.alternativeDialogue;
+            OpenDialogue();
         }
     }
 
@@ -512,9 +523,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     private void TalkAbout(NEIClickEventData data)
     {
-        textBox.SetName("Me");
-        textBox.SetText(data.Description);
-        OnShowTextBox();
+        dialogueText = data.DialogueText;
+        OpenDialogue();
     }
 
     // ********************************************************************************
