@@ -348,6 +348,8 @@ public class FightCharacter : MonoBehaviour
     private bool fighterPresentationHidden;
 
     private bool roundActive = true;
+    private bool tutorialDamageImmune;
+    private bool tutorialUnlimitedSpecials;
 
 
 
@@ -363,6 +365,38 @@ public class FightCharacter : MonoBehaviour
     public bool IsDreamTraversalMode
     {
         get { return dreamTraversalMode; }
+    }
+
+    public bool IsGrounded
+    {
+        get { return isGrounded; }
+    }
+
+    public bool IsCrouching
+    {
+        get { return isCrouching; }
+    }
+
+    public bool IsBlocking
+    {
+        get { return isBlocking; }
+    }
+
+    public bool IsQuickstepping
+    {
+        get { return quickstepTimer > 0f; }
+    }
+
+
+    public void SetTutorialDamageImmunity(bool immune)
+    {
+        tutorialDamageImmune = immune;
+    }
+
+
+    public void SetTutorialUnlimitedSpecials(bool unlimited)
+    {
+        tutorialUnlimitedSpecials = unlimited;
     }
 
     public event System.Action<FightCharacter, FighterMoveType, FighterMoveResult> MovePerformed;
@@ -818,7 +852,8 @@ public class FightCharacter : MonoBehaviour
             return FighterMoveResult.Miss;
         }
 
-        health.TakeDamage(damage, true);
+        if (!tutorialDamageImmune)
+            health.TakeDamage(damage, true);
 
         SwitchSidesWithAttacker(attacker);
         ApplyGroundedState();
@@ -859,7 +894,8 @@ public class FightCharacter : MonoBehaviour
             return FighterMoveResult.Miss;
         }
 
-        health.TakeDamage(damage, true);
+        if (!tutorialDamageImmune)
+            health.TakeDamage(damage, true);
         ApplyDamage();
         ApplyHitPushback(attackerPosition);
 
@@ -1783,7 +1819,7 @@ public class FightCharacter : MonoBehaviour
             return;
         }
 
-        if (!superMeter.TrySpendSpecial())
+        if (!tutorialUnlimitedSpecials && !superMeter.TrySpendSpecial())
         {
             PlaySound(attackMissSound);
             MovePerformed?.Invoke(this, FighterMoveType.Special, FighterMoveResult.Miss);
@@ -1975,7 +2011,7 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void ApplyBlockedAttack(Vector3 attackerPosition, FightCharacter attacker)
     {
-        if (health != null)
+        if (health != null && !tutorialDamageImmune)
             health.TakeDamage(blockChipDamage, false);
 
         ApplyBlockStun();
@@ -1984,7 +2020,9 @@ public class FightCharacter : MonoBehaviour
         if (attacker != null)
             attacker.ApplyBlockRecoil(transform.position);
 
-        Debug.Log(name + " blocked the attack and took chip damage.");
+        Debug.Log(tutorialDamageImmune
+            ? name + " blocked the tutorial attack with no damage."
+            : name + " blocked the attack and took chip damage.");
     }
 
     private void ApplyDamage()

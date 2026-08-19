@@ -23,7 +23,7 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         public float maxSequenceTime = 3f;
 
         public DialogueTrigger trigger;
-  
+
     }
 
     private struct MoveRecord
@@ -42,6 +42,7 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private FightCharacter fighterToWatch;
+    [SerializeField] private FightRoundManager roundManager;
 
     [Header("Dialogue Rules")]
     [SerializeField] private List<MoveDialogueRule> rules = new List<MoveDialogueRule>();
@@ -54,10 +55,18 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
     private readonly List<MoveRecord> moveHistory = new List<MoveRecord>();
     private float dialogueTimer;
+    private bool wasTutorialActive;
 
     private void Start()
     {
-        
+
+        if (roundManager == null)
+        {
+            roundManager = FindFirstObjectByType<FightRoundManager>(
+                FindObjectsInactive.Include);
+        }
+
+        wasTutorialActive = IsTutorialActive();
     }
 
     private void OnEnable()
@@ -74,7 +83,23 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
 
     private void Update()
     {
+        bool tutorialActive = IsTutorialActive();
+
+        if (tutorialActive != wasTutorialActive)
+        {
+            moveHistory.Clear();
+            wasTutorialActive = tutorialActive;
+        }
+
+        if (tutorialActive)
+            return;
+
         UpdateRuleCooldowns();
+    }
+
+    private bool IsTutorialActive()
+    {
+        return roundManager != null && roundManager.IsTutorialPhaseActive;
     }
 
     private void OnMovePerformed(
@@ -82,6 +107,9 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         FighterMoveType moveType,
         FighterMoveResult result)
     {
+        if (IsTutorialActive())
+            return;
+
         moveHistory.Add(new MoveRecord(moveType, result, Time.time));
         TrimOldMoveHistory();
         CheckRules();
@@ -193,7 +221,7 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         return rule.resultSequence[index];
     }
 
-   
+
 
     private void UpdateRuleCooldowns()
     {
@@ -239,6 +267,6 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
             rule.trigger.hasTriggered = false;
         }
 
-       // HideDialogue();
+        // HideDialogue();
     }
 }

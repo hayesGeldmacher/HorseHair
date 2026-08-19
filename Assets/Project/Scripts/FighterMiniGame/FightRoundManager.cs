@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
@@ -9,6 +9,11 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class FightRoundManager : MonoBehaviour
 {
+    public bool IsTutorialPhaseActive
+    {
+        get { return tutorialPhaseActive; }
+    }
+
     [Header("Start Screen")]
     [Tooltip("Panel shown before the fighting game starts")]
     [SerializeField] private GameObject startScreenPanel;
@@ -53,6 +58,10 @@ public class FightRoundManager : MonoBehaviour
 
     [Tooltip("Enemy FightCharacter component")]
     [SerializeField] private FightCharacter enemyCharacter;
+
+    [Header("Tutorial")]
+    [Tooltip("Assign this only in the tutorial scene. It starts after the controls screen and round intro.")]
+    [SerializeField] private FightingGameTutorial fightingGameTutorial;
 
     [Tooltip("Player health component")]
     [SerializeField] private FighterHealth playerHealth;
@@ -181,6 +190,9 @@ public class FightRoundManager : MonoBehaviour
     private bool gameOver;
     private bool usingGamepadControls;
     private bool showingLoadingControlsScreen;
+    private bool tutorialPhaseActive;
+    private bool tutorialFinished;
+    private bool subscribedToTutorial;
 
     private Coroutine roundIntroCoroutine;
     private Coroutine roundEndCoroutine;
@@ -190,6 +202,7 @@ public class FightRoundManager : MonoBehaviour
 
     private void Start()
     {
+        ConfigureTutorial();
         ShowStartScreen();
     }
 
@@ -227,12 +240,19 @@ public class FightRoundManager : MonoBehaviour
         if (!roundActive || gameOver)
             return;
 
+        if (tutorialPhaseActive)
+            return;
+
         UpdateRoundTimer();
         CheckForRoundWinner();
     }
 
     private void OnDisable()
     {
+        if (fightingGameTutorial != null && subscribedToTutorial)
+            fightingGameTutorial.TutorialCompleted -= HandleTutorialCompleted;
+
+        subscribedToTutorial = false;
         Time.timeScale = 1f;
         Time.fixedDeltaTime = 0.02f;
         SetFighterPresentationVisible(true);
@@ -675,7 +695,18 @@ public class FightRoundManager : MonoBehaviour
         ResetFighters();
         currentRoundTime = roundTimeSeconds;
         UpdateAllUI();
-        SetRoundMessage("Round " + currentRoundNumber);
+        bool startingTutorial = fightingGameTutorial != null && !tutorialFinished;
+
+        if (timerText != null)
+        {
+            timerText.gameObject.SetActive(true);
+
+            if (startingTutorial)
+                timerText.text = "∞";
+        }
+
+        SetRoundMessage(startingTutorial ? "Tutorial" : "Round " + currentRoundNumber);
+
 
         yield return new WaitForSeconds(roundIntroBlackTime);
 
@@ -686,7 +717,9 @@ public class FightRoundManager : MonoBehaviour
 
         yield return FadeScreen(0f);
 
-        SetCenterMessage("ROUND " + currentRoundNumber + ", BEGIN!");
+        SetCenterMessage(startingTutorial
+            ? "TUTORIAL, BEGIN!"
+            : "ROUND " + currentRoundNumber + ", BEGIN!");
 
         yield return new WaitForSeconds(roundBeginTextTime);
 
@@ -741,9 +774,94 @@ public class FightRoundManager : MonoBehaviour
 
         SetNextRoundPromptVisible(false);
         SetCenterMessage("");
-        SetRoundMessage("Round " + currentRoundNumber);
 
+        if (fightingGameTutorial == null)
+            ConfigureTutorial();
+
+        if (fightingGameTutorial != null && !tutorialFinished)
+        {
+            tutorialPhaseActive = true;
+            SetTutorialDamageImmunity(true);
+            SetTutorialUnlimitedSpecials(true);
+
+            if (timerText != null)
+            {
+                timerText.gameObject.SetActive(true);
+                timerText.text = "∞";
+            }
+
+            SetRoundMessage("Tutorial");
+            fightingGameTutorial.BeginTutorial();
+            Debug.Log("Infinite-time tutorial started.");
+            return;
+        }
+
+        tutorialPhaseActive = false;
+        SetTutorialDamageImmunity(false);
+        SetTutorialUnlimitedSpecials(false);
+
+        if (timerText != null)
+            timerText.gameObject.SetActive(true);
+
+        SetRoundMessage("Round " + currentRoundNumber);
         Debug.Log("Round " + currentRoundNumber + " started.");
+    }
+
+    private void ConfigureTutorial()
+    {
+        if (fightingGameTutorial == null)
+        {
+            fightingGameTutorial = FindAnyObjectByType<FightingGameTutorial>(FindObjectsInactive.Include);
+        }
+
+        if (fightingGameTutorial == null || subscribedToTutorial)
+            return;
+
+        fightingGameTutorial.TutorialCompleted += HandleTutorialCompleted;
+        subscribedToTutorial = true;
+    }
+
+    private void HandleTutorialCompleted()
+    {
+        if (!tutorialPhaseActive)
+            return;
+
+        tutorialPhaseActive = false;
+        tutorialFinished = true;
+        roundActive = false;
+        currentRoundNumber = 1;
+        playerRoundWins = 0;
+        enemyRoundWins = 0;
+
+        SetTutorialDamageImmunity(false);
+        SetTutorialUnlimitedSpecials(false);
+
+        SetFightersActive(false);
+
+        if (timerText != null)
+            timerText.gameObject.SetActive(true);
+
+        UpdateAllUI();
+        Debug.Log("Tutorial complete. Starting normal Round 1.");
+        QueueRoundStart();
+    }
+
+    private void SetTutorialDamageImmunity(bool immune)
+    {
+        if (playerCharacter != null)
+            playerCharacter.SetTutorialDamageImmunity(immune);
+
+        if (enemyCharacter != null)
+            enemyCharacter.SetTutorialDamageImmunity(immune);
+    }
+
+    private void SetTutorialUnlimitedSpecials(bool unlimited)
+    {
+        if (playerCharacter != null)
+            playerCharacter.SetTutorialUnlimitedSpecials(unlimited);
+
+        if (enemyCharacter != null)
+            enemyCharacter.SetTutorialUnlimitedSpecials(unlimited);
     }
 
     private void UpdateRoundTimer()
