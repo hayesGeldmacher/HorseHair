@@ -206,6 +206,11 @@ public class FightRoundManager : MonoBehaviour
         ShowStartScreen();
     }
 
+    private void OnEnable()
+    {
+        ConfigureTutorial();
+    }
+
     private void Update()
     {
         UpdateLastUsedControlDevice();
@@ -819,6 +824,9 @@ public class FightRoundManager : MonoBehaviour
 
         fightingGameTutorial.TutorialCompleted += HandleTutorialCompleted;
         subscribedToTutorial = true;
+
+        if (fightingGameTutorial.IsCompleted)
+            HandleTutorialCompleted();
     }
 
     private void HandleTutorialCompleted()

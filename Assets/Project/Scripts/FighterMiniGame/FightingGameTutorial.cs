@@ -64,6 +64,11 @@ public class FightingGameTutorial : MonoBehaviour
 
     public event System.Action TutorialCompleted;
 
+    public bool IsCompleted
+    {
+        get { return tutorialCompleted; }
+    }
+
     private int lessonIndex;
     private bool tutorialStarted;
     private bool acceptingAction;
@@ -346,12 +351,12 @@ public class FightingGameTutorial : MonoBehaviour
             tutorialCompleted = true;
             dialogueUI.Show(finalMessage);
 
-            yield return new WaitForSeconds(finalMessageTime);
+            yield return new WaitForSecondsRealtime(finalMessageTime);
 
             dialogueUI.Hide();
             SetOpponentDummyMode(false);
-            onTutorialCompleted?.Invoke();
             TutorialCompleted?.Invoke();
+            onTutorialCompleted?.Invoke();
             yield break;
         }
 
