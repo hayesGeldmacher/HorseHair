@@ -22331,6 +22331,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1779462823}
   - component: {fileID: 1779462822}
+  - component: {fileID: 1779462824}
   m_Layer: 0
   m_Name: LightManager
   m_TagString: Untagged
@@ -22439,6 +22440,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1779462824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1779462821}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d7f608423c828f47bd2082df8261f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightMapController
+  darkLightmapDir:
+  - {fileID: 2800000, guid: 52e91226851fa4c4dbeb3a9722e97079, type: 3}
+  - {fileID: 2800000, guid: 315fad1bdd826cf4ba08e1ddbfa6c46e, type: 3}
+  darklightmapColor:
+  - {fileID: 2800000, guid: 4119d59beac3afb46942913cfd0736e8, type: 3}
+  - {fileID: 2800000, guid: bd1f9092c682eee408aa2f1ec3b3a7b8, type: 3}
+  brightLightmapDir:
+  - {fileID: 2800000, guid: eada6bfb0026ced45a8469f5037e3108, type: 3}
+  - {fileID: 2800000, guid: 7ab8cb5dd9649654b9551c61176744f9, type: 3}
+  brightLightmapColor:
+  - {fileID: 2800000, guid: 012e037d49eede34c96ec796b4e8e6a5, type: 3}
+  - {fileID: 2800000, guid: 3e267048ae0b7874487c80815deda1a5, type: 3}
+  dark: 0
+  windowObjects: []
+  windowMatBright: {fileID: 0}
+  windowMatDark: {fileID: 0}
 --- !u!1001 &1781416248
 PrefabInstance:
   m_ObjectHideFlags: 0
