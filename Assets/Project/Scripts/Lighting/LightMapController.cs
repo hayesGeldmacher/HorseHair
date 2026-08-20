@@ -33,8 +33,9 @@ public struct LightProfile
 {
     public LightMapState lightMapState;
     public LargeWindowState largeWindowState;
-    public bool isSmallWindowBright;
-    public bool isFrontDoorBright;
+    public bool alterReflection;
+    [Range(0.0f, 1.0f)]
+    public float reflectionIntensity;
 
 }
 
@@ -72,21 +73,24 @@ public class LightMapController : MonoBehaviour
     [SerializeField] private TimeOfDay currentTime;
     [SerializeField] private DayProfile[] days;
 
+    [Header("Testing Input")]
+    public bool testingInput = false;
+    private bool dark = false;
+    [SerializeField] private int taskCount;
+
     [Header("Bright Light Maps")]
-    public Texture2D[] brightLightmapDir, brightLightmapColor;
+    [SerializeField] private Texture2D[] brightLightmapDir;
+    [SerializeField] private Texture2D[] brightLightmapColor;
 
     [Header("Dark Light Maps")]
-    public Texture2D[] darkLightmapDir, darklightmapColor;
+    [SerializeField] private Texture2D[] darkLightmapDir;
+    [SerializeField] private Texture2D[] darkLightmapColor;
 
     [Header("Black Light Maps")]
-    public Texture2D[] blackLightmapDir, blackLightmapColor;
+    [SerializeField] private Texture2D[] blackLightmapDir;
+    [SerializeField] private Texture2D[] blackLightmapColor;
 
     private LightmapData[] darkLightmap, brightLightmap, blackLightmap;
-
-    private bool dark = false;
-
-    [Header("Testing Input")]
-    public bool testDark = false;
 
     [Header("Window Object References")]
     public GameObject[] windowObjectsLarge, windowObjectsSmall; //all windows need to have their materials replaced for time of day!
@@ -97,14 +101,9 @@ public class LightMapController : MonoBehaviour
     public Material windowLargeDark; //emissive material for large windows during the evening
     public Material windowLargeBlackout; //
 
-    [Header("Window Small Materials")]
-    public Material windowSmallBright; //emissive material for small windows during the day
-    public Material windowSmallDark; //emissive material for small windows during the evening
 
-    [Header("Door Object & Materials")]
-    public GameObject frontDoor;
-    public Material frontDoorBright;
-    public Material frontDoorDark;
+    public delegate void ChangeLights(int day, bool isMorning);
+    public ChangeLights OnChangeLights;
 
     void Start() 
     {
@@ -118,7 +117,7 @@ public class LightMapController : MonoBehaviour
         {
             LightmapData lmdata = new LightmapData();
             lmdata.lightmapDir = darkLightmapDir[i];
-            lmdata.lightmapColor = darklightmapColor[i];
+            lmdata.lightmapColor = darkLightmapColor[i];
 
             dlightmap.Add(lmdata);
         }
@@ -143,27 +142,44 @@ public class LightMapController : MonoBehaviour
     private void SetTimeAndDay()
     {
         currentTime = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", (int)currentTime);
-        int taskCount = 0;
+        taskCount = 0;
         taskCount = PlayerPrefs.GetInt("TaskNum", taskCount);
         currentDay = GetCurrentDay(taskCount);
 
-        LoadLightProfile();
+        bool morning = (currentTime == TimeOfDay.Morning) ? true : false;
+        LoadLightProfile(currentDay, morning);
+    }
+
+    private void TickTimeAndDay()
+    {
+        currentTime = (currentTime == TimeOfDay.Morning) ? TimeOfDay.Afternoon : TimeOfDay.Morning;
+        taskCount++;
+        if(taskCount > 9)
+        {
+            taskCount = 0;
+            currentTime = TimeOfDay.Morning;
+        }
+        currentDay = GetCurrentDay(taskCount);
+
     }
 
     private void Update()
     {
-        if (!testDark) { return; }
-        if (Input.GetMouseButtonDown(0))
+        if (!testingInput) { return; }
+        if (Input.GetMouseButtonDown(1))
         {
-            SwapLightMaps(dark);
+            TickTimeAndDay();
+            bool morning = (currentTime == TimeOfDay.Morning) ? true : false;
+            LoadLightProfile(currentDay, morning);
+            //LoadLightProfile();
         }
     }
 
 
-    public void LoadLightProfile()
+    public void LoadLightProfile(int dayNum, bool morning)
     {
-        DayProfile day = days[currentDay];
-        LightProfile profile = (currentTime == TimeOfDay.Morning) ? day.morningProfile : day.afternoonProfile;
+        DayProfile day = days[dayNum];
+        LightProfile profile = (morning) ? day.morningProfile : day.afternoonProfile;
 
         Material newMatLarge = GetWindowLarge(profile.largeWindowState);
         foreach (GameObject window in windowObjectsLarge)
@@ -172,20 +188,14 @@ public class LightMapController : MonoBehaviour
             renderer.material = newMatLarge;
         }
 
-        //assign materials to small windows
-        Material newMaterialSmall = (profile.isSmallWindowBright ? windowSmallBright : windowSmallDark);
-        foreach (GameObject window in windowObjectsSmall)
-        {
-            MeshRenderer renderer = window.GetComponent<MeshRenderer>();
-            renderer.material = newMaterialSmall;
-        }
-
-        Material newMaterialDoor = (profile.isFrontDoorBright ? frontDoorBright : frontDoorDark);
-        MeshRenderer doorRenderer = frontDoor.GetComponent<MeshRenderer>();
-        doorRenderer.material = newMaterialDoor;
-
         //finall, set the lightmaps!
         SetLightMap(profile.lightMapState);
+
+        float newReflectionIntensity = (profile.alterReflection ? profile.reflectionIntensity : 1.0f);
+        RenderSettings.reflectionIntensity = newReflectionIntensity;
+
+        bool isMorning = (currentTime == TimeOfDay.Morning) ? true : false;
+        OnChangeLights?.Invoke(currentDay, isMorning);
     }
 
     private Material GetWindowLarge(LargeWindowState windowState)
@@ -220,35 +230,6 @@ public class LightMapController : MonoBehaviour
                 LightmapSettings.lightmaps = blackLightmap;
                 break;  
         }
-    }
-
-
-    private void SwapLightMaps(bool isDark)
-    {
-        LightmapSettings.lightmaps = (isDark ? brightLightmap : darkLightmap);
-        SwapWindowsMaterials(isDark);
-        dark = !dark;
-        
-    }
-
-    void SwapWindowsMaterials(bool isDark)
-    {
-        //assign new materials to large windows
-        Material newMaterialLarge = (isDark ? windowLargeBright : windowLargeDark);
-        foreach (GameObject window in windowObjectsLarge)
-        {
-            MeshRenderer renderer = window.GetComponent<MeshRenderer>();
-            renderer.material = newMaterialLarge;
-        }
-
-        //assign materials to small windows
-        Material newMaterialSmall = (isDark ? windowSmallBright : windowSmallDark);
-        foreach(GameObject window in windowObjectsSmall)
-        {
-            MeshRenderer renderer = window.GetComponent<MeshRenderer>();
-            renderer.material = newMaterialSmall;
-        }
-
     }
 
     //current day is determined by task number
