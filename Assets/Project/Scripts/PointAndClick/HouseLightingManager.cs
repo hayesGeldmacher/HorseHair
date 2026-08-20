@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
     /// every day has a unique lighting profile for both morning and afternoon
     /// </summary>
 
-
+/*
 [System.Serializable]
 public struct LightProfile
 {
@@ -97,3 +97,4 @@ public class HouseLightingManager : MonoBehaviour
         else { return 0; }
     }
 }
+*/
