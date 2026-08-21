@@ -20729,9 +20729,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a675c8b1da01c9a4c8cf7f7a597242aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Light_Flickering
-  minIntensity: 0.5
-  maxIntensity: 1.2
-  flickerSpeed: 0.08
+  day1:
+    morningProfile:
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+    afternoonProfile:
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+  day2:
+    morningProfile:
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+    afternoonProfile:
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+  day3:
+    morningProfile:
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+    afternoonProfile:
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+  day4:
+    morningProfile:
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+    afternoonProfile:
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+  currentMinIntensity: 0.5
+  currentMaxIntensity: 5
+  currentFlickerSpeed: 0.1
 --- !u!114 &1580855481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23034,41 +23078,65 @@ MonoBehaviour:
       largeWindowState: 0
       alterReflection: 0
       reflectionIntensity: 1
+      alterFog: 1
+      fogIntensity: 0.0146
+      fogColor: {r: 0.9669811, g: 0, b: 0, a: 1}
     afternoonProfile:
       lightMapState: 1
       largeWindowState: 1
       alterReflection: 0
       reflectionIntensity: 0
+      alterFog: 0
+      fogIntensity: 0
+      fogColor: {r: 0, g: 0, b: 0, a: 0}
   - morningProfile:
       lightMapState: 1
       largeWindowState: 2
       alterReflection: 0
       reflectionIntensity: 0
+      alterFog: 0
+      fogIntensity: 0
+      fogColor: {r: 0, g: 0, b: 0, a: 0}
     afternoonProfile:
       lightMapState: 0
       largeWindowState: 0
       alterReflection: 1
       reflectionIntensity: 0.598
+      alterFog: 0
+      fogIntensity: 0
+      fogColor: {r: 0, g: 0, b: 0, a: 0}
   - morningProfile:
       lightMapState: 2
       largeWindowState: 2
       alterReflection: 1
       reflectionIntensity: 0
+      alterFog: 1
+      fogIntensity: 0.0713
+      fogColor: {r: 1, g: 0, b: 0, a: 1}
     afternoonProfile:
       lightMapState: 1
       largeWindowState: 0
       alterReflection: 0
       reflectionIntensity: 0
+      alterFog: 0
+      fogIntensity: 0
+      fogColor: {r: 0, g: 0, b: 0, a: 0}
   - morningProfile:
       lightMapState: 0
       largeWindowState: 0
       alterReflection: 0
       reflectionIntensity: 0
+      alterFog: 0
+      fogIntensity: 0
+      fogColor: {r: 0, g: 0, b: 0, a: 0}
     afternoonProfile:
       lightMapState: 0
       largeWindowState: 0
       alterReflection: 0
       reflectionIntensity: 0
+      alterFog: 0
+      fogIntensity: 0
+      fogColor: {r: 0, g: 0, b: 0, a: 0}
   testingInput: 0
   taskCount: 0
   brightLightmapDir:
@@ -23080,7 +23148,9 @@ MonoBehaviour:
   darkLightmapDir:
   - {fileID: 2800000, guid: 52e91226851fa4c4dbeb3a9722e97079, type: 3}
   - {fileID: 2800000, guid: 315fad1bdd826cf4ba08e1ddbfa6c46e, type: 3}
-  darkLightmapColor: []
+  darkLightmapColor:
+  - {fileID: 2800000, guid: 4119d59beac3afb46942913cfd0736e8, type: 3}
+  - {fileID: 2800000, guid: bd1f9092c682eee408aa2f1ec3b3a7b8, type: 3}
   blackLightmapDir:
   - {fileID: 2800000, guid: c5dc16371adf2c14c9d060d63cd0919a, type: 3}
   - {fileID: 2800000, guid: fb248172078decf43a2ecbc2e5238044, type: 3}

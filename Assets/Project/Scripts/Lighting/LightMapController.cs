@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 
 /// <summary>
@@ -31,12 +32,22 @@ public enum LargeWindowState
 [System.Serializable]
 public struct LightProfile
 {
+    [Header("Baked Lights")]
     public LightMapState lightMapState;
+
+    [Header("Window Materials")]
     public LargeWindowState largeWindowState;
+
+    [Header("Reflections")]
     public bool alterReflection;
     [Range(0.0f, 1.0f)]
     public float reflectionIntensity;
 
+    [Header("Fog")]
+    public bool alterFog;
+    [Range(0.0f, 0.1f)]
+    public float fogIntensity;
+    public Color fogColor;
 }
 
 //struct for day-specific lighting data
@@ -101,12 +112,18 @@ public class LightMapController : MonoBehaviour
     public Material windowLargeDark; //emissive material for large windows during the evening
     public Material windowLargeBlackout; //
 
-
     public delegate void ChangeLights(int day, bool isMorning);
     public ChangeLights OnChangeLights;
 
+    //collecting 'default' fog color and intensity at the start of the game
+    private Color defaultFogColor;
+    private float defaultFogIntensity;
+
     void Start() 
     {
+        defaultFogColor = RenderSettings.fogColor;
+        defaultFogIntensity = RenderSettings.fogDensity;
+
         SetTimeAndDay();
     }
 
@@ -193,6 +210,14 @@ public class LightMapController : MonoBehaviour
 
         float newReflectionIntensity = (profile.alterReflection ? profile.reflectionIntensity : 1.0f);
         RenderSettings.reflectionIntensity = newReflectionIntensity;
+
+        //set the fog color and intensity
+        Color newFogColor = (profile.alterFog ? profile.fogColor : defaultFogColor);
+        float newFogIntensity = (profile.alterFog ? profile.fogIntensity : defaultFogIntensity);
+
+        RenderSettings.fogDensity = newFogIntensity;
+        RenderSettings.fogColor = newFogColor;
+
 
         bool isMorning = (currentTime == TimeOfDay.Morning) ? true : false;
         OnChangeLights?.Invoke(currentDay, isMorning);
