@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using static UnityEditor.Rendering.MaterialUpgrader;
 
 public class TeleportClickEventData : ClickEventData
 {
