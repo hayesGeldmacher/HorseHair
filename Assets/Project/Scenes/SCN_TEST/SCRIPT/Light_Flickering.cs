@@ -4,7 +4,8 @@ using UnityEngine;
 [System.Serializable]
 public class LightFlickerProfile 
 {
-    public bool isFlickering;
+    public bool isActive = true;
+    public bool isFlickering = false;
     public float minIntensity = 0.5f;
     public float maxIntensity = 5.0f;
     public float flickerSpeed = 0.1f;
@@ -48,6 +49,13 @@ public class Light_Flickering : MonoBehaviour
        
         FlickerDayProfile profile = GetLightProfile(day);
         LightFlickerProfile lightProf = (isMorning) ? profile.morningProfile : profile.afternoonProfile;
+
+        if (!lightProf.isActive)
+        {
+            light.enabled = false;
+            CancelInvoke("Flicker");
+            return;
+        }
 
         if (!lightProf.isFlickering)
         {

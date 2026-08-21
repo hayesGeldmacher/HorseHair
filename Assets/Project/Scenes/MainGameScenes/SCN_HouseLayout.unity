@@ -7187,16 +7187,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightSourceControl
   day1:
-    activatedMorning: 0
+    activatedMorning: 1
     notActivatedEvening: 0
   day2:
-    activatedMorning: 0
+    activatedMorning: 1
     notActivatedEvening: 0
   day3:
-    activatedMorning: 0
+    activatedMorning: 1
     notActivatedEvening: 0
   day4:
-    activatedMorning: 0
+    activatedMorning: 1
     notActivatedEvening: 0
   darkMat: {fileID: 2100000, guid: 814fd165cb7228945bfa310ff5cdfbcd, type: 2}
   lightMat: {fileID: 2100000, guid: a0027c1955a04ff40a92739d096aea66, type: 2}
@@ -7883,17 +7883,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightSourceControl
   day1:
-    activatedMorning: 0
-    notActivatedEvening: 0
+    activatedMorning: 1
+    notActivatedEvening: 1
   day2:
-    activatedMorning: 0
-    notActivatedEvening: 0
+    activatedMorning: 1
+    notActivatedEvening: 1
   day3:
-    activatedMorning: 0
-    notActivatedEvening: 0
+    activatedMorning: 1
+    notActivatedEvening: 1
   day4:
-    activatedMorning: 0
-    notActivatedEvening: 0
+    activatedMorning: 1
+    notActivatedEvening: 1
   darkMat: {fileID: 2100000, guid: 814fd165cb7228945bfa310ff5cdfbcd, type: 2}
   lightMat: {fileID: 2100000, guid: a0027c1955a04ff40a92739d096aea66, type: 2}
 --- !u!1 &643841859
@@ -12466,17 +12466,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightSourceControl
   day1:
-    activatedMorning: 0
-    notActivatedEvening: 0
+    activatedMorning: 1
+    notActivatedEvening: 1
   day2:
-    activatedMorning: 0
-    notActivatedEvening: 0
+    activatedMorning: 1
+    notActivatedEvening: 1
   day3:
-    activatedMorning: 0
-    notActivatedEvening: 0
+    activatedMorning: 1
+    notActivatedEvening: 1
   day4:
-    activatedMorning: 0
-    notActivatedEvening: 0
+    activatedMorning: 1
+    notActivatedEvening: 1
   darkMat: {fileID: 2100000, guid: 814fd165cb7228945bfa310ff5cdfbcd, type: 2}
   lightMat: {fileID: 2100000, guid: a0027c1955a04ff40a92739d096aea66, type: 2}
 --- !u!1 &931922004
@@ -20731,44 +20731,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Light_Flickering
   day1:
     morningProfile:
+      isActive: 1
       isFlickering: 0
       minIntensity: 0.5
       maxIntensity: 5
       flickerSpeed: 0.1
     afternoonProfile:
+      isActive: 1
       isFlickering: 0
       minIntensity: 0.5
       maxIntensity: 5
       flickerSpeed: 0.1
   day2:
     morningProfile:
+      isActive: 1
       isFlickering: 0
       minIntensity: 0.5
       maxIntensity: 5
       flickerSpeed: 0.1
     afternoonProfile:
+      isActive: 1
       isFlickering: 0
       minIntensity: 0.5
       maxIntensity: 5
       flickerSpeed: 0.1
   day3:
     morningProfile:
+      isActive: 1
       isFlickering: 0
       minIntensity: 0.5
       maxIntensity: 5
       flickerSpeed: 0.1
     afternoonProfile:
+      isActive: 1
       isFlickering: 0
       minIntensity: 0.5
       maxIntensity: 5
       flickerSpeed: 0.1
   day4:
     morningProfile:
+      isActive: 1
       isFlickering: 0
       minIntensity: 0.5
       maxIntensity: 5
       flickerSpeed: 0.1
     afternoonProfile:
+      isActive: 1
       isFlickering: 0
       minIntensity: 0.5
       maxIntensity: 5
@@ -23078,9 +23086,9 @@ MonoBehaviour:
       largeWindowState: 0
       alterReflection: 0
       reflectionIntensity: 1
-      alterFog: 1
-      fogIntensity: 0.0146
-      fogColor: {r: 0.9669811, g: 0, b: 0, a: 1}
+      alterFog: 0
+      fogIntensity: 0
+      fogColor: {r: 0.509434, g: 0.507031, b: 0.507031, a: 1}
     afternoonProfile:
       lightMapState: 1
       largeWindowState: 1
@@ -24345,7 +24353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LightSourceControl
   day1:
-    activatedMorning: 0
+    activatedMorning: 1
     notActivatedEvening: 0
   day2:
     activatedMorning: 0
