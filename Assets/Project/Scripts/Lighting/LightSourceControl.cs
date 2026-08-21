@@ -18,10 +18,10 @@ public struct LightingProfile
 
 public class LightSourceControl : MonoBehaviour
 {
-    [SerializeField] LightingProfile day1;
-    [SerializeField] LightingProfile day2;
-    [SerializeField] LightingProfile day3;
-    [SerializeField] LightingProfile day4; 
+    [SerializeField] private LightingProfile day1;
+    [SerializeField] private LightingProfile day2;
+    [SerializeField] private LightingProfile day3;
+    [SerializeField] private LightingProfile day4; 
     public Material darkMat;
     public Material lightMat;
 
