@@ -24,14 +24,20 @@ public class Light_Flickering : MonoBehaviour
     [SerializeField] private FlickerDayProfile day2;
     [SerializeField] private FlickerDayProfile day3;
     [SerializeField] private FlickerDayProfile day4;
-    
+
+    [SerializeField] private Material lightMat;
+    [SerializeField] private float matIntensity;
+
+    [SerializeField] private float minLightIntensity;
+    [SerializeField] private float maxLightIntensity;
 
     private Light light;
-
+    private Color color; 
     public float currentMinIntensity = .5f;
     public float currentMaxIntensity = 5.0f;
     public float currentFlickerSpeed = 0.1f;
 
+    
     private void Start()
     {
         light = GetComponent<Light>();
@@ -42,7 +48,18 @@ public class Light_Flickering : MonoBehaviour
     {
         float randomIntensity = Random.Range(currentMinIntensity, currentMaxIntensity);
         light.intensity = randomIntensity;
+
+        float matIntensity = Remap(randomIntensity, currentMinIntensity, minLightIntensity, currentMaxIntensity, maxLightIntensity);
+        lightMat.SetColor("_EmissionColor", Color.red);
     }
+
+
+    public float Remap(float value, float from1, float to1, float from2, float to2)
+    {
+        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+    }
+
+    //we really want to set the lamp material to flickering as well - we can do this by editing its emission intensity
 
     private void SetLighting(int day, bool isMorning)
     {

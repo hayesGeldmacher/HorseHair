@@ -15,7 +15,6 @@ public struct LightingProfile
     public bool notActivatedEvening;
 }
 
-
 public class LightSourceControl : MonoBehaviour
 {
     [SerializeField] private LightingProfile day1;
