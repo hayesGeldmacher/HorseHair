@@ -69,6 +69,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     //private enums for triggering 'day completed' and 'day started' sounds in AudioManager - HG
     private AudioTime dayFinished = AudioTime.Morning;
     private AudioTime dayStarted = AudioTime.Morning;
+    private bool inventoryIsOpen = false;
 
     public static event System.Action<Boolean> OnTalking;
 
@@ -124,7 +125,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             StartingPoint.TeleportToSelf();
         }
-        GoalText.text = "";
+        GoalText.text = PlayerPrefs.GetString("StartingTask");
     }
 
     //helper function for determining the correct audio clip to play when starting a new PNC seqeunce, based on time - HG
@@ -213,7 +214,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         else
         {
             currentTask = task.Task;    
-            GoalText.text = task.Task.GoalText;
+            ChangingTask(task.Task.GoalText);
             dialogueText = task.DialogueText;
             OpenDialogue();
             task.Giver.ChangeTaskStatus(false);
@@ -224,6 +225,18 @@ public class PlayerController_PointAndClick : MonoBehaviour
             OnOpenInventory();
             task.Giver.ChangeTaskStatus(true);
         }
+    }
+
+    private void ChangingTask(string newTask)
+    {
+        string strikethrough = "<s>" + GoalText.text + "</s>";
+        GoalText.text = strikethrough + "\n";
+        GoalText.text += newTask;
+    }
+
+    public void AddHint(string hintTask)
+    {
+        GoalText.text += "\n\t<i>" + hintTask + "</i>";
     }
 
     // ********************************************************************************
@@ -338,6 +351,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             dialogueText = data.DialogueText;
             OpenDialogue();
+            if (!data.alreadyClicked)
+            {
+                AddHint(data.requiredItemDesc);
+            }
+            OnOpenInventory();
             return;
         }
         StartCoroutine(TeleportSequence(data));
@@ -499,16 +517,26 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 data.sequenceTask.IsUsedByGoal = false;
                 data.sequenceTask.Activated = true;
                 data.SourceGoal.enabled = false;
+                AudioManager.instance.CallTaskCompletedSound();
             }
             else
             {
-                textBox.SetName("Me");
-                dialogueText = data.DialogueText;
-                OpenDialogue();
-                GoalText.text = data.nextTask;
-                completeTask = true;
+                if (data.Talked)
+                {
+                    dialogueText = data.compDialogueText;
+                    OpenDialogue();
+                    OnOpenInventory();
+                }
+                else
+                {
+                    dialogueText = data.DialogueText;
+                    OpenDialogue();
+                    ChangingTask(data.nextTask);
+                    OnOpenInventory();
+                    completeTask = true;
+                    AudioManager.instance.CallTaskCompletedSound();
+                }
             }
-            AudioManager.instance.CallTaskCompletedSound();
         }
         else
         {
@@ -557,8 +585,31 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     // Inventory
     // ********************************************************************************
+    public void OnInventoryButtonPress(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+        {
+            return;
+        }
+
+        if (inventoryIsOpen)
+        {
+            if (_hideInventoryCoroutine != null)
+                StopCoroutine(_hideInventoryCoroutine);
+
+            inventoryUI.HideInventory();
+            _hideInventoryCoroutine = null;
+            inventoryIsOpen = false;
+        }
+        else
+        {
+            OnOpenInventory();
+        }
+    }
+
     public void OnOpenInventory()
     {
+        inventoryIsOpen = true;
         inventoryUI.ShowInventory();
 
         if (_hideInventoryCoroutine != null)
@@ -574,6 +625,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         inventoryUI.HideInventory();
         _hideInventoryCoroutine = null;
+        inventoryIsOpen = false;
     }
 
     // ********************************************************************************

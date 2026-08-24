@@ -20,6 +20,7 @@ public class TeleportClickEventData : ClickEventData
 
     public bool canEnter = true;
     public string requiredItemDesc;
+    public bool alreadyClicked = false;
 
     public bool ActivateFlashlight = false;
 
@@ -45,6 +46,7 @@ public class EventClick_Environment : EventClick
     [SerializeField] private PlayerController_PointAndClick playerController;
     [Header("Ending Camera")]
     public bool EndingCamera = false;
+    private bool alreadyInteracted = false;
 
     protected override void SetType()
     {
@@ -61,8 +63,10 @@ public class EventClick_Environment : EventClick
             connectedCamera.TeleportClickEventData.canEnter = 
                 playerInventory.CheckItemInInventory(requiredItems.itemName);
             connectedCamera.TeleportClickEventData.DialogueText = dialogueText;
+            connectedCamera.TeleportClickEventData.alreadyClicked = alreadyInteracted;
         }
         connectedCamera.talked = true;
+        alreadyInteracted = true;
         return connectedCamera.TeleportClickEventData;
     }
 

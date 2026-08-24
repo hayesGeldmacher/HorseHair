@@ -1065,7 +1065,10 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: df726932d78e2e24abc1824cc5084e75, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: b95e5534b985edf4ea1d447c08260f85, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 1240379961}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b95e5534b985edf4ea1d447c08260f85, type: 3}
 --- !u!114 &88056811 stripped
@@ -1913,15 +1916,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 930253332857221194, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.068
+      value: -0.105
       objectReference: {fileID: 0}
     - target: {fileID: 930253332857221194, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.01
+      value: 0.024
       objectReference: {fileID: 0}
     - target: {fileID: 930253332857221194, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.226
+      value: -0.96
       objectReference: {fileID: 0}
     - target: {fileID: 930253332857221194, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1981,11 +1984,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5347853069010918716, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.79
+      value: -29.737
       objectReference: {fileID: 0}
     - target: {fileID: 5347853069010918716, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.795
+      value: 4.785
       objectReference: {fileID: 0}
     - target: {fileID: 5347853069010918716, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4334,7 +4337,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.GoalText
-      value: Give Dad his stuff.
+      value: Find Trash Bags and Tools. Should be downstairs.
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.goalItem
@@ -7251,8 +7254,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 420673301243134052, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -235.64
+      objectReference: {fileID: 0}
+    - target: {fileID: 420673301243134052, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -15.699951
+      value: -111.8
       objectReference: {fileID: 0}
     - target: {fileID: 460076029916431738, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: charsVariance
@@ -7273,6 +7280,14 @@ PrefabInstance:
     - target: {fileID: 758895102263819641, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_ActionEvents.Array.data[14].m_PersistentCalls.m_Calls.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 758895102263819641, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 758895102263819641, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_ActionEvents.Array.data[13].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnInventoryButtonPress
       objectReference: {fileID: 0}
     - target: {fileID: 831787545934616908, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_fontSize
@@ -7463,13 +7478,37 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_fontSize
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_fontAsset
       value: 
       objectReference: {fileID: 11400000, guid: f15b5a5e859171d4698aa302cc3ebf6a, type: 2}
     - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_fontColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: -8683409099501824686, guid: f15b5a5e859171d4698aa302cc3ebf6a, type: 2}
+    - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
+      objectReference: {fileID: 0}
     - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
@@ -9698,6 +9737,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: 'permanentInventoryItems.Array.data[0]'
       value: 
       objectReference: {fileID: 1305503168}
@@ -9728,6 +9771,26 @@ PrefabInstance:
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[2].dialogue
       value: I'm gonna leave for school, can't be losing my imperfect attendance.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[0].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[1].name
+      value: Jesse
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[1].sound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[0].dialogue
+      value: I should really be getting to school now.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[1].dialogue
+      value: See ya.
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.data[0].name
@@ -10027,15 +10090,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.098
+      value: -0.164
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.435
+      value: -0.442
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.624
+      value: 1.498
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10317,7 +10380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.GoalText
-      value: Find the Harold Plush
+      value: Find the Harold Plush. Check Bedroom.
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.goalItem
@@ -13522,6 +13585,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
+      propertyPath: tasks.Array.data[0].WakeUpTask
+      value: Find Jesse in his room.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
+      propertyPath: tasks.Array.data[1].WakeUpTask
+      value: Talk to Dad in his room.
+      objectReference: {fileID: 0}
+    - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: tasks.Array.data[0].startingPosition
       value: 
       objectReference: {fileID: 397139513}
@@ -14148,8 +14219,7 @@ PrefabInstance:
       objectReference: {fileID: 393700453}
     - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: requiredItemString
-      value: It's too dark. I need a flashlight. I think I saw one near the garage
-        downstairs.
+      value: Need Flashlight. Should be near Garage
       objectReference: {fileID: 0}
     - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
@@ -15225,7 +15295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: TaskAfterComplettion
-      value: Play HorseHair before bed
+      value: Go to my room and play Horsehair.
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: requiredItems.Array.size
@@ -15242,6 +15312,10 @@ PrefabInstance:
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.size
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[0].name
@@ -15270,6 +15344,26 @@ PrefabInstance:
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[2].dialogue
       value: He's not dumb, he reminds of Harold...
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[0].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[1].name
+      value: Dad
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[1].sound
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[0].dialogue
+      value: I'm gonna go to my room now.
+      objectReference: {fileID: 0}
+    - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
+      propertyPath: CompletedDialogue.dialogue.Array.data[1].dialogue
+      value: Whatever.
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.data[0].name
@@ -15305,7 +15399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.data[2].dialogue
-      value: Then go look for them!
+      value: Then go look for them! They should be downstairs!
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16321,6 +16415,84 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239813359}
   m_CullTransparentMesh: 1
+--- !u!1001 &1240379960
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1256665814}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.1856
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.1856
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.1856
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.472
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.288
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -10.783
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_Name
+      value: SM_Bed_Brothers (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+--- !u!4 &1240379961 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f50b53b4552bebd47a7cf456316e5e7b, type: 3}
+  m_PrefabInstance: {fileID: 1240379960}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1242752511
 GameObject:
   m_ObjectHideFlags: 0
@@ -16839,6 +17011,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.761712, y: 3.652121, z: 1.0000004}
   m_Center: {x: 0.89816797, y: 0.112086594, z: -0.00000021484408}
+--- !u!4 &1256665814 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: b95e5534b985edf4ea1d447c08260f85, type: 3}
+  m_PrefabInstance: {fileID: 83796082}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1259615735
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20174,9 +20351,65 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a675c8b1da01c9a4c8cf7f7a597242aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Light_Flickering
-  minIntensity: 0.5
-  maxIntensity: 1.2
-  flickerSpeed: 0.08
+  day1:
+    morningProfile:
+      isActive: 1
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+    afternoonProfile:
+      isActive: 1
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+  day2:
+    morningProfile:
+      isActive: 1
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+    afternoonProfile:
+      isActive: 1
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+  day3:
+    morningProfile:
+      isActive: 1
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+    afternoonProfile:
+      isActive: 1
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+  day4:
+    morningProfile:
+      isActive: 1
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+    afternoonProfile:
+      isActive: 1
+      isFlickering: 0
+      minIntensity: 0.5
+      maxIntensity: 5
+      flickerSpeed: 0.1
+  lightMat: {fileID: 0}
+  matIntensity: 0
+  minLightIntensity: 0
+  maxLightIntensity: 0
+  currentMinIntensity: 0.5
+  currentMaxIntensity: 5
+  currentFlickerSpeed: 0.1
 --- !u!114 &1580855481
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22398,80 +22631,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9628d05c80c6ce44e823f4f103afbdbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HouseLightingManager
-  currentDay: 0
-  currentTime: 0
-  days:
-  - morningProfile:
-      directionalIntensity: 1.5
-      directionalColor: {r: 1, g: 0.8745098, b: 0.8392157, a: 0}
-      ambientIntensity: 1
-      skyMat: {fileID: 2100000, guid: efb98dfa5f33f2d44b7ca8183bf0c18a, type: 2}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-    afternoonProfile:
-      directionalIntensity: 2
-      directionalColor: {r: 0.9528302, g: 0.6400554, b: 0.61124957, a: 0}
-      ambientIntensity: 1
-      skyMat: {fileID: 2100000, guid: d25636ab9597626459fa27369e925030, type: 2}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-  - morningProfile:
-      directionalIntensity: 0
-      directionalColor: {r: 0, g: 0, b: 0, a: 0}
-      ambientIntensity: 0
-      skyMat: {fileID: 0}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-    afternoonProfile:
-      directionalIntensity: 0
-      directionalColor: {r: 0, g: 0, b: 0, a: 0}
-      ambientIntensity: 0
-      skyMat: {fileID: 0}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-  - morningProfile:
-      directionalIntensity: 0
-      directionalColor: {r: 0, g: 0, b: 0, a: 0}
-      ambientIntensity: 0
-      skyMat: {fileID: 0}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-    afternoonProfile:
-      directionalIntensity: 0
-      directionalColor: {r: 0, g: 0, b: 0, a: 0}
-      ambientIntensity: 0
-      skyMat: {fileID: 0}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-  - morningProfile:
-      directionalIntensity: 0
-      directionalColor: {r: 0, g: 0, b: 0, a: 0}
-      ambientIntensity: 0
-      skyMat: {fileID: 0}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-    afternoonProfile:
-      directionalIntensity: 0
-      directionalColor: {r: 0, g: 0, b: 0, a: 0}
-      ambientIntensity: 0
-      skyMat: {fileID: 0}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-  - morningProfile:
-      directionalIntensity: 0
-      directionalColor: {r: 0, g: 0, b: 0, a: 0}
-      ambientIntensity: 0
-      skyMat: {fileID: 0}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-    afternoonProfile:
-      directionalIntensity: 0
-      directionalColor: {r: 0, g: 0, b: 0, a: 0}
-      ambientIntensity: 0
-      skyMat: {fileID: 0}
-      overrideSunRot: 0
-      newSunRotation: {x: 0, y: 0, z: 0}
-  directionalLight: {fileID: 244549101}
 --- !u!4 &1779462823
 Transform:
   m_ObjectHideFlags: 0
@@ -22563,55 +22722,55 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.3507
+      value: 0.82839173
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.3506995
+      value: 0.82839143
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.3506998
+      value: 0.82839155
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.12495489
+      value: -0.159
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.38454264
+      value: -0.17
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.08252872
+      value: 1.346
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.1313612
+      value: 0.061120182
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.033820804
+      value: -0.0108226165
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9887131
+      value: -0.9972444
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.06361502
+      value: 0.04063103
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 1.118
+      value: 4.572
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -119.608
+      value: -172.925
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
+      value: 1.526
       objectReference: {fileID: 0}
     - target: {fileID: -8571112691341695615, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -23235,6 +23394,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: description
+      value: I bet dad's still sleeping...
+      objectReference: {fileID: 0}
+    - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
+      propertyPath: dialogueText.dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[0].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
+      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
       value: I bet dad's still sleeping...
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -19,6 +19,8 @@ public class GoalCompletionData
     public string nextTask;
     public EventClick_TaskGiver sequenceTask;
     public DialogueStorage DialogueText;
+    public DialogueStorage compDialogueText;
+    public bool Talked = false;
 }
 
 public class EventClick_GoalItem : EventClick
@@ -29,6 +31,8 @@ public class EventClick_GoalItem : EventClick
     [SerializeField] private string NotCompletedGoalString = "I still need ";
     [SerializeField] private string CompletedGoalString = "Perfect, now I should go to school";
     [SerializeField] private string TaskAfterComplettion = "I should go to school now";
+    [SerializeField] private DialogueStorage CompletedDialogue;
+    private bool talked = false;
     [Header("Next Goal")]
     [SerializeField] private EventClick_TaskGiver nextTask;
 
@@ -131,7 +135,11 @@ public class EventClick_GoalItem : EventClick
                 nextTask = TaskAfterComplettion,
                 sequenceTask = nextTask,
                 DialogueText = dialogueText,
+                compDialogueText = CompletedDialogue,
+                Talked = talked,
             });
+            if (allCollected)
+                talked = true;
         }
     }
 
