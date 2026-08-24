@@ -24,6 +24,7 @@ public class Tasks
     public TimeOfDay timeOfDay;
     public int TaskNum;
     public EventClick_TaskGiver TaskItem;
+    public string WakeUpTask;
 }
 
 public class EventManager : MonoBehaviour
@@ -35,6 +36,8 @@ public class EventManager : MonoBehaviour
 
     private Dictionary<(TimeOfDay, int), EventClick_TaskGiver> tasksList =
         new Dictionary<(TimeOfDay, int), EventClick_TaskGiver>();
+    private Dictionary<(TimeOfDay, int), string> wakeUpTasks = 
+        new Dictionary<(TimeOfDay, int), string>();
 
     public static event System.Action<DialogueStorage> ThoughtDialogue;
 
@@ -50,6 +53,7 @@ public class EventManager : MonoBehaviour
 
     private void Awake()
     {
+        string startingTask = "";
         currentTaskNum = PlayerPrefs.GetInt("TaskNum", currentTaskNum);
         currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", (int)currentTimeOfDay);
 
@@ -58,6 +62,7 @@ public class EventManager : MonoBehaviour
             tasksList[(task.timeOfDay, task.TaskNum)] = task.TaskItem;
             task.TaskItem.task.finalPoint.Activated = false;
             task.TaskItem.Activated = false;
+            wakeUpTasks[(task.timeOfDay, task.TaskNum)] = task.WakeUpTask;
         }
 
         if (TVSet)
@@ -73,11 +78,13 @@ public class EventManager : MonoBehaviour
                 PlayerPrefs.SetString("Environment",
                     tasksList[(currentTimeOfDay, currentTaskNum)].task.startingPosition.name);
                 tasksList[(currentTimeOfDay, currentTaskNum)].Activated = true;
+                startingTask = wakeUpTasks[(currentTimeOfDay, currentTaskNum)];
             }
         }
 
         PlayerPrefs.SetInt("TaskNum", currentTaskNum);
         PlayerPrefs.SetInt("TimeOfDay", (int)currentTimeOfDay);
+        PlayerPrefs.SetString("StartingTask", startingTask);
     }
 
     private void Start()
