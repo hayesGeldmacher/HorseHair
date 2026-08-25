@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterMoveDialogueTrigger
   fighterToWatch: {fileID: 644139990}
+  roundManager: {fileID: 0}
   rules:
   - ruleName: Punch Combo
     moveSequence: 010000000100000001000000
@@ -5589,6 +5590,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterMoveDialogueTrigger
   fighterToWatch: {fileID: 1173407397}
+  roundManager: {fileID: 0}
   rules: []
   dialogueVisibleTime: 2
   isTalking: 0
@@ -8319,7 +8321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventClickConnector
   televisionSequence: {fileID: 1111314898}
-  PNC: {fileID: 0}
+  PNC: {fileID: 920591137}
 --- !u!1 &1070777508 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6364283120059024961, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
@@ -8813,7 +8815,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TelevisionSequence
   skipTelevision: 0
   dreamSequence: 0
-  nextScene: SCN_FightingGame
+  nextScene: SCN_FightingGameTutorialN1
   channelIndex: 0
   backupIndex: 1
   tvAnim: {fileID: 1131307639}
@@ -11338,6 +11340,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: fightingGameScene
+      value: SCN_FightingGameTutorialN1
+      objectReference: {fileID: 0}
     - target: {fileID: 6671725320161104119, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: cam
       value: 
@@ -11422,6 +11428,10 @@ PrefabInstance:
       propertyPath: m_sharedMaterial
       value: 
       objectReference: {fileID: -8683409099501824686, guid: f15b5a5e859171d4698aa302cc3ebf6a, type: 2}
+    - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278190080
+      objectReference: {fileID: 0}
     - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0

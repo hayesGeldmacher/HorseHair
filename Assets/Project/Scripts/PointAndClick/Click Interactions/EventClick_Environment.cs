@@ -64,6 +64,7 @@ public class EventClick_Environment : EventClick
                 playerInventory.CheckItemInInventory(requiredItems.itemName);
             connectedCamera.TeleportClickEventData.DialogueText = dialogueText;
             connectedCamera.TeleportClickEventData.alreadyClicked = alreadyInteracted;
+            resetCursor = connectedCamera.TeleportClickEventData.canEnter ? ObjectType.None : ObjectType.Talk;
         }
         connectedCamera.talked = true;
         alreadyInteracted = true;
