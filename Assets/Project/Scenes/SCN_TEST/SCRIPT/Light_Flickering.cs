@@ -26,17 +26,23 @@ public class Light_Flickering : MonoBehaviour
     [SerializeField] private FlickerDayProfile day4;
 
     [SerializeField] private Material lightMat;
-    [SerializeField] private float matIntensity;
 
-    [SerializeField] private float minLightIntensity;
-    [SerializeField] private float maxLightIntensity;
+    [Header("Mesh Renderer Reference")]
+    [SerializeField] private MeshRenderer renderer;
+
+    [Header("Material Brightness")]
+    [SerializeField] private float minMatIntensity;
+    [SerializeField] private float maxMatIntensity;
 
     private Light light;
-    private Color color; 
-    public float currentMinIntensity = .5f;
-    public float currentMaxIntensity = 5.0f;
-    public float currentFlickerSpeed = 0.1f;
+    private Color baseColor;
+    private Color emissiveColor;
+    private float currentMinIntensity = .5f;
+    private float currentMaxIntensity = 5.0f;
+    private float currentFlickerSpeed = 0.1f;
 
+    [Header("Testing Fields")]
+    [SerializeField] private float matIntensity;
     
     private void Start()
     {
@@ -49,14 +55,19 @@ public class Light_Flickering : MonoBehaviour
         float randomIntensity = Random.Range(currentMinIntensity, currentMaxIntensity);
         light.intensity = randomIntensity;
 
-        float matIntensity = Remap(randomIntensity, currentMinIntensity, minLightIntensity, currentMaxIntensity, maxLightIntensity);
-        lightMat.SetColor("_EmissionColor", Color.red);
+        matIntensity = Remap(randomIntensity, currentMinIntensity, currentMaxIntensity, minMatIntensity, maxMatIntensity);
+        
+        Color newEmissive = emissiveColor * matIntensity;
+        Color newBase = baseColor * matIntensity;
+        lightMat.SetColor("_EmissionColor", newEmissive);
+        lightMat.SetColor("_BaseColor", newBase);
     }
 
 
-    public float Remap(float value, float from1, float to1, float from2, float to2)
+    public float Remap(float value, float fromMin, float fromMax, float toMin, float toMax)
     {
-        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+           float percentage = (value - fromMin) / (fromMax - fromMin);
+           return Mathf.Lerp(toMin, toMax, percentage);
     }
 
     //we really want to set the lamp material to flickering as well - we can do this by editing its emission intensity
@@ -84,6 +95,11 @@ public class Light_Flickering : MonoBehaviour
         currentMaxIntensity = lightProf.maxIntensity;
         currentMinIntensity = lightProf.minIntensity;
 
+        lightMat = renderer.material;
+        lightMat.EnableKeyword("_EMISSION");
+        emissiveColor = lightMat.GetColor("_EmissionColor");
+        baseColor = lightMat.GetColor("_BaseColor");
+        renderer.material = lightMat;
         InvokeRepeating("Flicker", 0f, currentFlickerSpeed);
     }
 
