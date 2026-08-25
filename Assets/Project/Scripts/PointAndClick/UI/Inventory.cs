@@ -34,6 +34,11 @@ public class Inventory : MonoBehaviour
         StartFade(0f);
     }
 
+    public void HideInventoryInstant()
+    {
+        fadeGroup.alpha = 0;
+    }
+
     private void StartFade(float targetAlpha)
     {
         if (_fadeCoroutine != null)
