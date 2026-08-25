@@ -597,7 +597,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             if (_hideInventoryCoroutine != null)
                 StopCoroutine(_hideInventoryCoroutine);
 
-            inventoryUI.HideInventory();
+            inventoryUI.HideInventoryInstant();
             _hideInventoryCoroutine = null;
             inventoryIsOpen = false;
         }
