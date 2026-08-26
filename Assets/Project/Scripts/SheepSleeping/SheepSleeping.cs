@@ -16,6 +16,8 @@ public class SheepSleeping : MonoBehaviour
 
     [SerializeField] AudioVolumeFade fade;
 
+    [SerializeField] private float endDelay = 8.0f;
+    [SerializeField] private SleepPostProcess depth;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -49,8 +51,10 @@ public class SheepSleeping : MonoBehaviour
 
         yield return new WaitForSeconds(animTriggerWait);
         sheepAnim.SetBool("started", true);
+        depth.TriggerFocalChange(true);
         fade.StartFadeIn(true, true);
-
+        yield return new WaitForSeconds(endDelay);
+        fade.StartFadeIn(false, false);
     }
 
 }
