@@ -47,6 +47,7 @@ public class AudioManager : MonoBehaviour
     private bool playedFirstHover = false;
 
     [Header("Start Day")]
+    [SerializeField] private bool playDayStartedSound = true;
     [SerializeField] private AudioSource dayStartedSource; //sound when a new task PNC sequence begins
     [SerializeField] private AudioClip[] morningStartedClips;
     [SerializeField] private AudioClip[] afternoonStartedClips;
@@ -107,6 +108,11 @@ public class AudioManager : MonoBehaviour
 
     public void PlayDayStartedSound(AudioTime day)
     {
+        if (!playDayStartedSound) 
+        {
+            Debug.Log("Audio Manager Skipped day starting sound");
+            return; 
+        }
         AudioClip clip = morningStartedClips[0];
         switch (day)
         {
