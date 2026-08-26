@@ -14,6 +14,8 @@ public class SheepSleeping : MonoBehaviour
     [SerializeField] private float playerNearness;
     [SerializeField] private float animTriggerWait = 2.0f;
 
+    [SerializeField] AudioVolumeFade fade;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -44,8 +46,11 @@ public class SheepSleeping : MonoBehaviour
 
     private IEnumerator TriggerStartAnim()
     {
+
         yield return new WaitForSeconds(animTriggerWait);
         sheepAnim.SetBool("started", true);
+        fade.StartFadeIn(true, true);
+
     }
 
 }
