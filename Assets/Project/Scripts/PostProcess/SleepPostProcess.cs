@@ -28,8 +28,6 @@ public class SleepPostProcess : MonoBehaviour
         {
             depth = tempD;
         }
-
-     //   tempD.focalLength.value = 200.0f;
     }
 
     // Update is called once per frame
