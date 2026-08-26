@@ -5,6 +5,7 @@ public class FighterVFXController : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private FightCharacter fightCharacter;
+    [SerializeField] private FightRoundManager roundManager;
 
     [Tooltip("This fighter's own VFX spawn points. Used for Special VFX.")]
     [SerializeField] private FighterVFXSpawnPoints selfVFXPoints;
@@ -104,6 +105,9 @@ public class FighterVFXController : MonoBehaviour
             if (opponentVFXPoints == null)
                 opponentVFXPoints = opponentTransform.GetComponentInChildren<FighterVFXSpawnPoints>();
         }
+
+        if (roundManager == null)
+            roundManager = FindAnyObjectByType<FightRoundManager>();
     }
 
     private void CacheCurrentSpecialUses()
@@ -166,7 +170,10 @@ public class FighterVFXController : MonoBehaviour
 
         lastSpecialUses = currentSpecialUses;
 
-        if (!superMeterWasSpent)
+        bool tutorialActive =
+            roundManager != null && roundManager.IsTutorialPhaseActive;
+
+        if (!superMeterWasSpent && !tutorialActive)
             return;
 
         StartSpecialVFXSpawn();
