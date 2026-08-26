@@ -852,8 +852,7 @@ public class FightCharacter : MonoBehaviour
             return FighterMoveResult.Miss;
         }
 
-        if (!tutorialDamageImmune)
-            health.TakeDamage(damage, true);
+        health.TakeDamage(tutorialDamageImmune ? 0 : damage, true);
 
         SwitchSidesWithAttacker(attacker);
         ApplyGroundedState();
@@ -894,8 +893,7 @@ public class FightCharacter : MonoBehaviour
             return FighterMoveResult.Miss;
         }
 
-        if (!tutorialDamageImmune)
-            health.TakeDamage(damage, true);
+        health.TakeDamage(tutorialDamageImmune ? 0 : damage, true);
         ApplyDamage();
         ApplyHitPushback(attackerPosition);
 
@@ -2011,8 +2009,10 @@ public class FightCharacter : MonoBehaviour
     /// </summary>
     private void ApplyBlockedAttack(Vector3 attackerPosition, FightCharacter attacker)
     {
-        if (health != null && !tutorialDamageImmune)
-            health.TakeDamage(blockChipDamage, false);
+        if (health != null)
+        {
+            health.TakeDamage(tutorialDamageImmune ? 0 : blockChipDamage, false);
+        }
 
         ApplyBlockStun();
         ApplyBlockKnockback(attackerPosition);

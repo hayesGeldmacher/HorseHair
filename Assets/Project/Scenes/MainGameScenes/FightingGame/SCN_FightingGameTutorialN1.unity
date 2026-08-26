@@ -553,6 +553,7 @@ MonoBehaviour:
   openingDelay: 0.5
   openingMessageTime: 4
   successMessageTime: 4
+  successResponseDelay: 2
   openingMessage: Okay, I know it's been a while. Let me remind you how to play.
   requiredMovementDistance: 0.5
   lessons:
@@ -586,7 +587,7 @@ MonoBehaviour:
   - step: 7
     instruction: 'Go ahead and finish with your special move by punching and kicking
       at the same time. '
-    successResponse: That was powerful! You only have two special moves per round,
+    successResponse: That was powerful! You only have three special moves per round,
       so use them carefully...
   finalMessage: Great work! Now lets get into the real thing. I wont be going easy!
   finalMessageTime: 2
@@ -5944,7 +5945,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 24.497192, y: 0.22631836}
+  m_AnchoredPosition: {x: 24.497314, y: 0.22631836}
   m_SizeDelta: {x: -278.6595, y: -110.878525}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1082160245
@@ -7449,7 +7450,7 @@ GameObject:
   - component: {fileID: 1451128964}
   - component: {fileID: 1451128963}
   m_Layer: 5
-  m_Name: TutorialDialoguePanel
+  m_Name: TutorialDialogueCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

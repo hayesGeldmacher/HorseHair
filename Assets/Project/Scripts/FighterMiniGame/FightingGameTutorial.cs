@@ -42,6 +42,7 @@ public class FightingGameTutorial : MonoBehaviour
     [SerializeField, Min(0f)] private float openingDelay = 0.5f;
     [SerializeField, Min(0f)] private float openingMessageTime = 2.5f;
     [SerializeField, Min(0f)] private float successMessageTime = 1.25f;
+    [SerializeField, Min(0f)] private float successResponseDelay = 05f;
 
     [Header("Opening")]
     [TextArea(2, 4)]
@@ -340,6 +341,7 @@ public class FightingGameTutorial : MonoBehaviour
     private IEnumerator AdvanceAfterResponse()
     {
         TutorialLesson lesson = lessons[lessonIndex];
+        yield return new WaitForSeconds(successResponseDelay);
         dialogueUI.Show(lesson.successResponse);
 
         yield return new WaitForSeconds(successMessageTime);
