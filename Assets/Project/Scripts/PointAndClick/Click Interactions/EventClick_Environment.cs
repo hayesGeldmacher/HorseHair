@@ -44,6 +44,9 @@ public class EventClick_Environment : EventClick
     [Header("Task Limitter")]
     [SerializeField] private EventClick_TaskGiver taskLimit;
     [SerializeField] private PlayerController_PointAndClick playerController;
+    [Header("Day Limitter")]
+    [SerializeField] private bool availableEveryday = true;
+    [SerializeField] private TimeCheck[] availableTime;
     [Header("Ending Camera")]
     public bool EndingCamera = false;
     private bool alreadyInteracted = false;
@@ -81,5 +84,27 @@ public class EventClick_Environment : EventClick
             }
         }
         this.gameObject.SetActive(activate);
+
+        if (activate) { CheckDayLimit(); }
+    }
+
+    private void CheckDayLimit()
+    {
+        if (!availableEveryday)
+        {
+            bool isAvailable = false;
+            foreach (var timeCheck in availableTime)
+            {
+                if (timeCheck.timeOfDay == (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0) && timeCheck.TaskNum == PlayerPrefs.GetInt("TaskNum", 0))
+                {
+                    isAvailable = true;
+                    break;
+                }
+            }
+
+            if (!isAvailable) { gameObject.SetActive(false); }
+        }
+
+        
     }
 }

@@ -161,7 +161,7 @@ public class LightMapController : MonoBehaviour
         currentTime = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", (int)currentTime);
         taskCount = 0;
         taskCount = PlayerPrefs.GetInt("TaskNum", taskCount);
-        currentDay = GetCurrentDay(taskCount);
+        currentDay = taskCount;
 
         bool morning = (currentTime == TimeOfDay.Morning) ? true : false;
         LoadLightProfile(currentDay, morning);
@@ -176,7 +176,7 @@ public class LightMapController : MonoBehaviour
             taskCount = 0;
             currentTime = TimeOfDay.Morning;
         }
-        currentDay = GetCurrentDay(taskCount);
+        currentDay = taskCount;
 
     }
 
@@ -257,21 +257,4 @@ public class LightMapController : MonoBehaviour
         }
     }
 
-    //current day is determined by task number
-    //2 tasks per day, starting at 0
-    //day 0 - 0,1
-    //day 1 - 2,3
-    //day 2 - 4,5
-    //day 3 - 6,7
-    //day 4 - 8,9
-
-    private int GetCurrentDay(int taskCount)
-    {
-        if (taskCount == 0 || taskCount == 1) { return 0; }
-        else if (taskCount == 2 || taskCount == 3) { return 1; }
-        else if (taskCount == 4 || taskCount == 5) { return 2; }
-        else if (taskCount == 6 || taskCount == 7) { return 3; }
-        else if (taskCount == 8 || taskCount == 9) { return 4; }
-        else { return 0; }
-    }
 }
