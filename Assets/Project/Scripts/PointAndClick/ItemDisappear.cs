@@ -24,6 +24,8 @@ public class ItemDisappear : MonoBehaviour
                 }
             }
             isUsed = isAvailable;
+
+            Debug.Log("CURRENT TASK NUM: " + PlayerPrefs.GetInt("TaskNum", 0));
         }
     }
 
