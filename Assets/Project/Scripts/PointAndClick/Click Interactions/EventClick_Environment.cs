@@ -88,6 +88,7 @@ public class EventClick_Environment : EventClick
         if (activate) { CheckDayLimit(); }
     }
 
+    //Added function from ItemDisappear script - HG
     private void CheckDayLimit()
     {
         if (!availableEveryday)
