@@ -1,19 +1,22 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class FadeGroup
 {
     public AudioSource source;
-    [Range(0.0f, 1.0f)]
+    [UnityEngine.Range(0.0f, 1.0f)]
     public float lowerLimit = 0.0f;
-    [Range(0.0f, 1.0f)]
+    [UnityEngine.Range(0.0f, 1.0f)]
     public float upperLimit = 1.0f;
     public float speed = 0.05f;
 }
 
 public class AudioVolumeFade : MonoBehaviour
 {
-    public FadeGroup[] groups;
+    public List<FadeGroup> groups = new List<FadeGroup>();
     [SerializeField] private bool currentlyFading = false;
     [SerializeField] private bool fadingUp = false;
 
@@ -75,6 +78,16 @@ public class AudioVolumeFade : MonoBehaviour
                     source.Play();
                 }
             }
+        }
+    }
+
+    public void SetAudioClip(AudioClip clip)
+    {
+        if(groups.Count > 0)
+        {
+            AudioSource source = groups[0].source;
+            source.clip = clip;
+            source.Stop();
         }
     }
 
