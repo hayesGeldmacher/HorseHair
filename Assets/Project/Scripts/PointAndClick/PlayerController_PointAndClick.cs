@@ -34,6 +34,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     [Header("GoalText")]
     [SerializeField] private TMP_Text GoalText;
+    [SerializeField] private TMP_Text HintText;
 
     [Header("Scenes")]
     [SerializeField] private string fightingGameScene;
@@ -125,7 +126,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             StartingPoint.TeleportToSelf();
         }
-        GoalText.text = PlayerPrefs.GetString("StartingTask");
+        ChangingTask(PlayerPrefs.GetString("StartingTask"));
     }
 
     //helper function for determining the correct audio clip to play when starting a new PNC seqeunce, based on time - HG
@@ -222,21 +223,29 @@ public class PlayerController_PointAndClick : MonoBehaviour
             yield return new WaitUntil(() => startedDialogue == false);
 
             task.Giver.ChangeGoalStatus(true);
-            OnOpenInventory();
+            OnOpenInventory(PhoneState.Tasks);
             task.Giver.ChangeTaskStatus(true);
         }
     }
 
     private void ChangingTask(string newTask)
     {
-        string strikethrough = "<s>" + GoalText.text + "</s>";
-        GoalText.text = strikethrough + "\n";
-        GoalText.text += newTask;
+        //string strikethrough = "<s>" + GoalText.text + "</s>";
+        //GoalText.text = strikethrough + "\n";
+        //GoalText.text += newTask;
+
+        GoalText.text = newTask;
+        if (HintText.text != "")
+        {
+            AddHint("");
+        }
     }
 
     public void AddHint(string hintTask)
     {
-        GoalText.text += "\n\t<i>" + hintTask + "</i>";
+        //GoalText.text += "\n\t<i>" + hintTask + "</i>";
+
+        HintText.text = hintTask;
     }
 
     // ********************************************************************************
@@ -355,7 +364,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             {
                 AddHint(data.requiredItemDesc);
             }
-            OnOpenInventory();
+            OnOpenInventory(PhoneState.Tasks);
             return;
         }
         StartCoroutine(TeleportSequence(data));
@@ -462,7 +471,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         if (data.endingCamera)
         {
-            StartCoroutine(EndingSequence(data.endingDialogue, data.NextScene, data.delayBeforeEnding));
+            StartCoroutine(EndingSequence(data.endingDialogue, 
+                data.NextScene, data.delayBeforeEnding));
         }
     }
 
@@ -483,7 +493,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 Inventory[i] = item;
                 inventoryUI.AddItem(item.itemImage, item.itemName, i);
                 textBox.SetName("Me");
-                OnOpenInventory();
+                OnOpenInventory(PhoneState.Inventory);
                 dialogueText = item.dialogueText;
                 OpenDialogue();
                 return true;
@@ -525,14 +535,14 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 {
                     dialogueText = data.compDialogueText;
                     OpenDialogue();
-                    OnOpenInventory();
+                    OnOpenInventory(PhoneState.Tasks);
                 }
                 else
                 {
                     dialogueText = data.DialogueText;
                     OpenDialogue();
                     ChangingTask(data.nextTask);
-                    OnOpenInventory();
+                    OnOpenInventory(PhoneState.Tasks);
                     completeTask = true;
                     AudioManager.instance.CallTaskCompletedSound();
                 }
@@ -595,11 +605,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
         if (inventoryIsOpen)
         {
             if (_hideInventoryCoroutine != null)
+            {
                 StopCoroutine(_hideInventoryCoroutine);
-
-            inventoryUI.HideInventoryInstant();
-            _hideInventoryCoroutine = null;
-            inventoryIsOpen = false;
+            }
+            _hideInventoryCoroutine = 
+                StartCoroutine(HideInventoryAfterDelay(0));
         }
         else
         {
@@ -607,25 +617,27 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
-    public void OnOpenInventory()
+    public void OnOpenInventory(PhoneState phonestate = PhoneState.None)
     {
         inventoryIsOpen = true;
-        inventoryUI.ShowInventory();
+        inventoryUI.ShowInventory(phonestate);
+        PlayerCamera.rayCaster.enabled = false;
 
         if (_hideInventoryCoroutine != null)
         {
             StopCoroutine(_hideInventoryCoroutine);
         }
-        _hideInventoryCoroutine = StartCoroutine(HideInventoryAfterDelay(FadeDelay));
+        //_hideInventoryCoroutine = StartCoroutine(HideInventoryAfterDelay(FadeDelay));
     }
 
     private IEnumerator HideInventoryAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        inventoryUI.HideInventory();
+        inventoryUI.HideInventoryInstant();
         _hideInventoryCoroutine = null;
         inventoryIsOpen = false;
+        PlayerCamera.rayCaster.enabled = true;
     }
 
     // ********************************************************************************
@@ -683,8 +695,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
             dialogueIndex = 0;
             startedDialogue = false;
             textBox.HideTextBox();
-            PlayerCamera.rayCaster.enabled = true;
             OnTalking?.Invoke(false);
+            StartCoroutine(TurnOnRaycastAfterDelay(0.5f));
         }
         else
         {
@@ -693,5 +705,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
             textBox.ShowTextBoxTextCrawl(dialogueText.dialogueSpeed, dialogueText.dialogue[dialogueIndex].sound);
             dialogueIndex++;
         }
+    }
+
+    private IEnumerator TurnOnRaycastAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (inventoryIsOpen != true)
+            PlayerCamera.rayCaster.enabled = true;
     }
 }
