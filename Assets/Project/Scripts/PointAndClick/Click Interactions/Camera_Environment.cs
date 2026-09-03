@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -43,6 +44,13 @@ public class Camera_Environment : MonoBehaviour
     [SerializeField] public DialogueMovement[] dialogueMovements;
     public bool talked = false;
     private Dictionary<(TimeOfDay, int), DialogueStorage> dialogueMovementDict = new Dictionary<(TimeOfDay, int), DialogueStorage>();
+
+    [Header("Travel Script Extension")]
+    [SerializeField] private TravelScriptExtension_Base travelScriptExtension;
+    [SerializeField, Tooltip("If false, will only trigger once")] private bool ActivateEverytime = false;
+    [SerializeField] private TimeCheck[] availableTime;
+    [SerializeField] float delayBeforeActivation = 0f;
+    private bool traveled = false;
 
     private void OnValidate()
     {
@@ -127,5 +135,46 @@ public class Camera_Environment : MonoBehaviour
             ActivateFlashlight = _activateFlashlight,
             movementDialogue = used,           
         };
+    }
+
+    public void ActivateTravelTrigger()
+    {
+        if (travelScriptExtension == null)
+        {
+            return;
+        }
+
+        if (!DayChecker())
+        {
+            return;
+        }
+
+        if (traveled)
+        {
+            if (!ActivateEverytime)
+                return;
+        }
+
+        traveled = true;
+        StartCoroutine(ActivateTravelToEnvironment());
+    }
+
+    private IEnumerator ActivateTravelToEnvironment()
+    {
+        yield return new WaitForSeconds(delayBeforeActivation);
+        travelScriptExtension.OnTravelToEnvironment(TeleportClickEventData);
+    }
+
+    private bool DayChecker()
+    {
+        foreach (var timeCheck in availableTime)
+        {
+            if (timeCheck.timeOfDay == (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0) &&
+                timeCheck.TaskNum == PlayerPrefs.GetInt("TaskNum", 0))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

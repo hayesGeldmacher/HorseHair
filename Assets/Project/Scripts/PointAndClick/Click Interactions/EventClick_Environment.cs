@@ -96,7 +96,8 @@ public class EventClick_Environment : EventClick
             bool isAvailable = false;
             foreach (var timeCheck in availableTime)
             {
-                if (timeCheck.timeOfDay == (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0) && timeCheck.TaskNum == PlayerPrefs.GetInt("TaskNum", 0))
+                if (timeCheck.timeOfDay == (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0) && 
+                    timeCheck.TaskNum == PlayerPrefs.GetInt("TaskNum", 0))
                 {
                     isAvailable = true;
                     break;
@@ -107,5 +108,25 @@ public class EventClick_Environment : EventClick
         }
 
         
+    }
+
+    public override void ResetClick()
+    {
+        if (requiredItems != null)
+        {
+            if (playerInventory.CheckItemInInventory(requiredItems.itemName))
+            {
+                resetCursor = ObjectType.None;
+            }
+            else
+            {
+                resetCursor = ObjectType.Talk;
+            }
+        }
+        else
+        {
+            resetCursor = ObjectType.None;
+        }
+        base.ResetClick();
     }
 }
