@@ -13718,6 +13718,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 397139512}
     m_Modifications:
     - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: arrowObject
+      value: 
+      objectReference: {fileID: 1867365072}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: IsVisibleArrow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: connectedCamera
       value: 
       objectReference: {fileID: 1259615739}
@@ -13773,6 +13781,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 87.257
       objectReference: {fileID: 0}
+    - target: {fileID: 2953368786170596054, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953368786170596054, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f339ac970188a0844bdcd4baeaf8fe0e, type: 2}
     - target: {fileID: 3579324845554013986, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_Radius
       value: 1.3829697
@@ -13792,6 +13808,14 @@ PrefabInstance:
     - target: {fileID: 6027383702789033556, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_Name
       value: RestOfRoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 8771846822256184871, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8771846822256184871, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16934,9 +16958,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioVolumeFade
   groups:
   - source: {fileID: 823866730}
+    track: {fileID: 0}
     lowerLimit: 0
     upperLimit: 0.1
     speed: 0.05
+    playOnAwake: 0
   currentlyFading: 0
   fadingUp: 0
 --- !u!114 &823866732
@@ -16955,14 +16981,26 @@ MonoBehaviour:
   volumeFade: {fileID: 823866731}
   musicDays:
   - morningSlot:
+      source: {fileID: 0}
       track: {fileID: 8300000, guid: 9d65b0638606100408502a1b4b1c5226, type: 3}
-      startOnAwake: 0
+      lowerLimit: 0
+      upperLimit: 1
+      speed: 0.025
+      playOnAwake: 0
     afternoonSlot:
+      source: {fileID: 0}
       track: {fileID: 0}
-      startOnAwake: 0
+      lowerLimit: 0
+      upperLimit: 1
+      speed: 0.025
+      playOnAwake: 0
   currentSlot:
+    source: {fileID: 0}
     track: {fileID: 0}
-    startOnAwake: 0
+    lowerLimit: 0
+    upperLimit: 1
+    speed: 0.025
+    playOnAwake: 0
   isMorning: 0
   day: 0
 --- !u!4 &827094419 stripped
@@ -34814,6 +34852,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.88193, y: 2.080355, z: 1.3736781}
   m_Center: {x: 0.7154486, y: 0.08847853, z: 0.18683785}
+--- !u!23 &1867365072 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2953368786170596054, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+  m_PrefabInstance: {fileID: 779120084}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1867683998
 MonoBehaviour:
   m_ObjectHideFlags: 0
