@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -243,6 +244,7 @@ public class FightingGameTutorial : MonoBehaviour
         yield return new WaitForSeconds(openingDelay);
 
         dialogueUI.Show(openingMessage);
+        AudioManager.instance.PlayDialogueBurst(openingMessage, DialogueSound.Brother);
         yield return new WaitForSeconds(openingMessageTime);
 
         ShowCurrentInstruction();
@@ -257,6 +259,7 @@ public class FightingGameTutorial : MonoBehaviour
             SetOpponentDummyMode(false);
 
         dialogueUI.Show(lesson.instruction);
+        AudioManager.instance.PlayDialogueBurst(lesson.instruction, DialogueSound.Brother);
         acceptingAction = true;
     }
 
@@ -343,7 +346,7 @@ public class FightingGameTutorial : MonoBehaviour
         TutorialLesson lesson = lessons[lessonIndex];
         yield return new WaitForSeconds(successResponseDelay);
         dialogueUI.Show(lesson.successResponse);
-
+        AudioManager.instance.PlayDialogueBurst(lesson.successResponse, DialogueSound.Brother);
         yield return new WaitForSeconds(successMessageTime);
 
         lessonIndex++;
@@ -352,7 +355,7 @@ public class FightingGameTutorial : MonoBehaviour
         {
             tutorialCompleted = true;
             dialogueUI.Show(finalMessage);
-
+            AudioManager.instance.PlayDialogueBurst(finalMessage, DialogueSound.Brother);
             yield return new WaitForSecondsRealtime(finalMessageTime);
 
             dialogueUI.Hide();
