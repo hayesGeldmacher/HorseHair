@@ -409,6 +409,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         PlayerCamera.rayCaster.enabled = false;
 
+        OnTalking?.Invoke(false);
+
         // Blinking
         if (!finishedFirstTeleport)
         {
@@ -474,6 +476,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
             StartCoroutine(EndingSequence(data.endingDialogue, 
                 data.NextScene, data.delayBeforeEnding));
         }
+
+        data.Camera.ActivateTravelTrigger();
     }
 
     // ********************************************************************************
