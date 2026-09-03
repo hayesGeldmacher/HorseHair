@@ -5,15 +5,8 @@ using System.Collections.Generic;
 [System.Serializable]
 public struct MusicDay 
 {
-    public MusicTimeSlot morningSlot;
-    public MusicTimeSlot afternoonSlot;
-}
-
-[System.Serializable]
-public struct MusicTimeSlot
-{
-    public AudioClip track;
-    public bool startOnAwake;
+    public FadeGroup morningSlot;
+    public FadeGroup afternoonSlot;
 }
 
 public class MusicManagerHouse : MonoBehaviour
@@ -29,7 +22,7 @@ public class MusicManagerHouse : MonoBehaviour
 
     [Header("Tracks Per Day")]
     public List<MusicDay> musicDays = new List<MusicDay>();
-    [SerializeField] private MusicTimeSlot currentSlot;
+    [SerializeField] private FadeGroup currentSlot;
     [SerializeField] private bool isMorning;
     [SerializeField] private int day;
    
@@ -54,7 +47,11 @@ public class MusicManagerHouse : MonoBehaviour
         {
             volumeFade.SetAudioClip(currentSlot.track);
         }
-        if(currentSlot.track != null && currentSlot.startOnAwake) { volumeFade.StartFadeIn(true, true); }
+        currentSlot.source = source;
+        if(currentSlot.track != null && currentSlot.playOnAwake) {
+            source.volume = 0;
+            volumeFade.StartFadeIn(true, true);
+        }
     }
 
    

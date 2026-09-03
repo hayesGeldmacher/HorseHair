@@ -7,11 +7,14 @@ using System.Collections.Generic;
 public class FadeGroup
 {
     public AudioSource source;
+    public AudioClip track;
     [UnityEngine.Range(0.0f, 1.0f)]
     public float lowerLimit = 0.0f;
     [UnityEngine.Range(0.0f, 1.0f)]
     public float upperLimit = 1.0f;
-    public float speed = 0.05f;
+    public float speed = 0.025f;
+
+    public bool playOnAwake = false;
 }
 
 public class AudioVolumeFade : MonoBehaviour
@@ -25,6 +28,7 @@ public class AudioVolumeFade : MonoBehaviour
     {
         if (!currentlyFading) { return; }
 
+       
         if (fadingUp)
         {
             bool finished = true;
@@ -33,8 +37,9 @@ public class AudioVolumeFade : MonoBehaviour
                 AudioSource source = group.source;
                 if(source.volume < group.upperLimit)
                 {
+                    float newSpeed = group.speed * 0.01f;   
                     finished = false;
-                    source.volume += group.speed * Time.deltaTime;
+                    source.volume += newSpeed * Time.deltaTime;
                 }
                 else
                 {
@@ -51,6 +56,7 @@ public class AudioVolumeFade : MonoBehaviour
                 AudioSource source = group.source;
                 if (source.volume > group.lowerLimit)
                 {
+                    float newSpeed = group.speed * 0.01f;
                     finished = false;
                     source.volume -= group.speed * Time.deltaTime;
                 }
