@@ -13718,6 +13718,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 397139512}
     m_Modifications:
     - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: arrowObject
+      value: 
+      objectReference: {fileID: 779120088}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: IsVisibleArrow
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: connectedCamera
       value: 
       objectReference: {fileID: 1259615739}
@@ -13773,6 +13781,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 87.257
       objectReference: {fileID: 0}
+    - target: {fileID: 2953368786170596054, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2953368786170596054, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f339ac970188a0844bdcd4baeaf8fe0e, type: 2}
     - target: {fileID: 3579324845554013986, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_Radius
       value: 1.3829697
@@ -13832,6 +13848,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 3.2545736, y: 2.6864274, z: 1.0000001}
   m_Center: {x: 1.127288, y: 0.3181679, z: 0.0000007425984}
+--- !u!1 &779120088 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3746015445644438275, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+  m_PrefabInstance: {fileID: 779120084}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &785356420
 PrefabInstance:
   m_ObjectHideFlags: 0
