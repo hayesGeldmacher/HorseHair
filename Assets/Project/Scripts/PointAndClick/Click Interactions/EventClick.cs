@@ -36,13 +36,27 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     protected string Name = "";
     public static event System.Action<ClickEventData> OnObjectClicked;
     public static event System.Action<ObjectType, string> OnObjectHovered;
-    private Material outlineMaterial;
+    [Header("Visible Arrow")]
+    [SerializeField] private bool IsVisibleArrow = false;
+    [SerializeField] private GameObject arrowObject;
     private bool clicked = false;
+    private Material outlineMaterial;
 
     private void Start()
     {
-        outlineMaterial = GetComponent<Renderer>().materials[OutlineIndex];
-        outlineMaterial.SetFloat("_Outline_Show", 0f);
+        if (IsVisibleArrow)
+        {          
+            if (arrowObject != null)
+            {
+                arrowObject.layer = LayerMask.NameToLayer("Default");
+                if (!(arrowObject.GetComponent<Renderer>() == null || 
+                    arrowObject.GetComponent<Renderer>().materials.Length <= OutlineIndex))
+                {
+                    outlineMaterial = arrowObject.GetComponent<Renderer>().materials[OutlineIndex];
+                    outlineMaterial.SetFloat("_Outline_Show", 0f);
+                }
+            }
+        }
         SetType();
     }
 
@@ -86,7 +100,10 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        outlineMaterial.SetFloat("_Outline_Show", 1f);
+        if (outlineMaterial != null)
+        {
+            outlineMaterial.SetFloat("_Outline_Show", 1f);
+        }
         OnObjectHovered?.Invoke(Type, Name);
     }
 
@@ -96,7 +113,10 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             clicked = false;
         else
         {
-            outlineMaterial.SetFloat("_Outline_Show", 0f);
+            if (outlineMaterial != null)
+            {
+                outlineMaterial.SetFloat("_Outline_Show", 0f);
+            }
             OnObjectHovered?.Invoke(ObjectType.None, "");
         }
     }
