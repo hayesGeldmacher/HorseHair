@@ -50,6 +50,18 @@ public class EventClick_Environment : EventClick
     [Header("Ending Camera")]
     public bool EndingCamera = false;
     private bool alreadyInteracted = false;
+    [Header("Visible Arrow")]
+    [SerializeField] private bool IsVisbleArrow = false;
+
+    public static event Action ShowArrowEvent;
+
+    private void OnEnable()
+    {
+        if (IsVisbleArrow)
+        {
+            ShowArrowEvent?.Invoke();
+        }
+    }
 
     protected override void SetType()
     {

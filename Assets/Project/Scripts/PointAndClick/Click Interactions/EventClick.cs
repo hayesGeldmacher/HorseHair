@@ -36,15 +36,15 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     protected string Name = "";
     public static event System.Action<ClickEventData> OnObjectClicked;
     public static event System.Action<ObjectType, string> OnObjectHovered;
-    [Header("Visible Arrow")]
-    [SerializeField] private bool IsVisibleArrow = false;
+    [Header("Debug UI")]
+    [SerializeField] private bool HighligherUsed = false;
     [SerializeField] private GameObject arrowObject;
     private bool clicked = false;
     private Material outlineMaterial;
 
     private void Start()
     {
-        if (IsVisibleArrow)
+        if (HighligherUsed)
         {          
             if (arrowObject != null)
             {
@@ -79,7 +79,10 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
     public virtual void ResetClick()
     {
         OnObjectHovered?.Invoke(resetCursor, "");
-        outlineMaterial.SetFloat("_Outline_Show", 0f);
+        if (outlineMaterial != null)
+        {
+            outlineMaterial?.SetFloat("_Outline_Show", 0f);
+        }
     }
 
     public void ForceClick()

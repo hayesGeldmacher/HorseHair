@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController_PointAndClick : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     [Header("UI Settings")]
     [SerializeField] private float FadeDelay = 1f;
+    [SerializeField] private Image arrowImage;
 
     [Header("Inventory")]
     [SerializeField] private EventClick_Item[] Inventory = new EventClick_Item[5];
@@ -79,6 +81,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
         EventClick.OnObjectClicked += HandleObjectClicked;
         EventClick_GoalItem.GoalCompleted += HandleGoalCompleted;
         EventManager.ThoughtDialogue += HandleStartEvent;
+        EventClick_Environment.ShowArrowEvent += EventClick_Environment_ShowArrowEvent;
+    }
+
+    private void EventClick_Environment_ShowArrowEvent()
+    {
+        arrowImage.enabled = true;
     }
 
     private void OnDisable()
@@ -86,6 +94,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         EventClick.OnObjectClicked -= HandleObjectClicked;
         EventClick_GoalItem.GoalCompleted -= HandleGoalCompleted;
         EventManager.ThoughtDialogue -= HandleStartEvent;
+        EventClick_Environment.ShowArrowEvent -= EventClick_Environment_ShowArrowEvent;
     }
 
     private void HandleStartEvent(DialogueStorage storage)
@@ -407,6 +416,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private IEnumerator TeleportSequence(TeleportClickEventData data)
     {
+        arrowImage.enabled = false;
         PlayerCamera.rayCaster.enabled = false;
 
         OnTalking?.Invoke(false);
