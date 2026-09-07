@@ -33,6 +33,18 @@ public class FGDialogueManager : MonoBehaviour
 
     public static FGDialogueManager instance;
 
+    private int pendingResponses;
+
+    public bool IsDialogueActive
+    {
+        get
+        {
+            return PlayerDialogue.isTalking ||
+                   JesseDialogue.isTalking ||
+                   pendingResponses > 0;
+        }
+    }
+
     void Awake()
     {
         if (instance != null)
@@ -84,11 +96,12 @@ public class FGDialogueManager : MonoBehaviour
     {
 
         //first, check if we should even trigger
-        if (trigger.hasTriggered || trigger.triggerOnlyOnce) { return; }
-    
+        if (trigger.triggerOnlyOnce && trigger.hasTriggered)
+            return;
+
         if (Random.value <= trigger.triggerChance)
         {
-   
+
             //get who the dialogue is coming from
             BrotherDialogue targetDialogue = (trigger.fromJesse) ? JesseDialogue : PlayerDialogue;
 
@@ -105,30 +118,39 @@ public class FGDialogueManager : MonoBehaviour
 
             if (trigger.hasBrotherResponse)
             {
-                BrotherDialogue responseDialogue = (trigger.fromJesse) ? PlayerDialogue : JesseDialogue;
+                BrotherDialogue responseDialogue = (trigger.fromJesse)
+                    ? PlayerDialogue
+                    : JesseDialogue;
+
+                pendingResponses++;
                 StartCoroutine(WaitForBrotherResponse(responseDialogue, trigger));
             }
         }
     }
 
-    private IEnumerator WaitForBrotherResponse(BrotherDialogue responseDialogue, DialogueTrigger trigger)
+    private IEnumerator WaitForBrotherResponse(
+        BrotherDialogue responseDialogue,
+        DialogueTrigger trigger)
     {
         yield return new WaitForSeconds(trigger.brotherResponseTime);
-        if (!responseDialogue.isTalking)
-        {
-            TriggerResponse(responseDialogue, trigger.brotherDialogueLine);
-        }
-    }
 
+        if (!responseDialogue.isTalking)
+            TriggerResponse(responseDialogue, trigger.brotherDialogueLine);
+
+        pendingResponses--;
+    }
 
     public void TriggerResponse(BrotherDialogue responseDialogue, string line)
     {
-        responseDialogue.dialogueText.text = line;
+        if (responseDialogue.dialogueText != null)
+            responseDialogue.dialogueText.text = line;
+
         ShowDialogue(responseDialogue);
-        AudioManager.instance.PlayDialogueBurst(line, responseDialogue.soundType);
+
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayDialogueBurst(line, responseDialogue.soundType);
 
         responseDialogue.dialogueTimer = dialogueVisibleTime;
-
     }
 
     private void ShowDialogue(BrotherDialogue dialogue)
@@ -159,6 +181,27 @@ public class FGDialogueManager : MonoBehaviour
 
         if (dialogue.dialogueTimer <= 0f)
             HideDialogue(dialogue);
+    }
+
+    public IEnumerator PlayDialogueSequence(
+    List<DialogueTrigger> sequence,
+    float delayBetweenLines)
+    {
+        if (sequence == null)
+            yield break;
+
+        foreach (DialogueTrigger trigger in sequence)
+        {
+            if (trigger == null)
+                continue;
+
+            TriggerDialogue(trigger);
+
+            yield return new WaitUntil(() => !IsDialogueActive);
+
+            if (delayBetweenLines > 0f)
+                yield return new WaitForSecondsRealtime(delayBetweenLines);
+        }
     }
 
 

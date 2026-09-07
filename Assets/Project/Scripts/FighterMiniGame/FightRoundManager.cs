@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 /// <summary>
 /// Handles start screen, round timing, round wins, bo3 game rules, next-round prompt, and round resets
@@ -132,6 +133,31 @@ public class FightRoundManager : MonoBehaviour
     [SerializeField] private float roundEndPresentationTime = 4f;
     [SerializeField] private string playerDisplayName = "Player";
     [SerializeField] private string enemyDisplayName = "Enemy";
+
+    [Header("Match Win Screen")]
+    [SerializeField] private GameObject matchWinPanel;
+    [SerializeField] private TMP_Text matchWinnerText;
+    [SerializeField] private Image matchWinnerPortrait;
+    [SerializeField] private Sprite playerWinnerPortrait;
+    [SerializeField] private Sprite enemyWinnerPortrait;
+
+    [Tooltip("Delay between showing the win screen and starting dialogue")]
+    [SerializeField] private float dialogueStartDelay = 1f;
+
+    [Header("Post-Match Dialogue")]
+    [SerializeField] private FGDialogueManager dialogueManager;
+    [SerializeField]
+    private List<DialogueTrigger> playerWinDialogue =
+        new List<DialogueTrigger>();
+
+    [SerializeField]
+    private List<DialogueTrigger> enemyWinDialogue =
+        new List<DialogueTrigger>();
+
+    [SerializeField] private float delayBetweenDialogueLines = 0.25f;
+
+    [Tooltip("Small pause after dialogue disappears before closing the eyes")]
+    [SerializeField] private float afterDialogueDelay = 0.25f;
 
     [Header("Controls Loading Screen")]
     [Tooltip("How long to show loading screen before showing controls")]
@@ -439,6 +465,9 @@ public class FightRoundManager : MonoBehaviour
 
     private void ShowStartScreen()
     {
+        if (matchWinPanel != null)
+            matchWinPanel.SetActive(false);
+
         CancelInvoke(nameof(StartRound));
 
         if (roundIntroCoroutine != null)
@@ -972,23 +1001,30 @@ public class FightRoundManager : MonoBehaviour
 
     private bool CheckForGameWinner()
     {
-        if (playerRoundWins < roundsNeededToWinGame && enemyRoundWins < roundsNeededToWinGame)
+        FightCharacter matchWinner = null;
+
+        if (playerRoundWins >= roundsNeededToWinGame)
+            matchWinner = playerCharacter;
+        else if (enemyRoundWins >= roundsNeededToWinGame)
+            matchWinner = enemyCharacter;
+
+        if (matchWinner == null)
             return false;
 
-        EndGame();
+        EndGame(matchWinner);
         return true;
     }
 
-    private void EndGame()
+    private void EndGame(FightCharacter matchWinner)
     {
         gameOver = true;
         roundActive = false;
         waitingForNextRound = false;
-        waitingForGameOverInput = true;
+        waitingForGameOverInput = false;
         startingRound = false;
 
         if (gameOverPromptText != null)
-            gameOverPromptText.gameObject.SetActive(true);
+            gameOverPromptText.gameObject.SetActive(false);
 
         if (audioSource != null)
         {
@@ -999,16 +1035,57 @@ public class FightRoundManager : MonoBehaviour
 
         PlaySound(matchWonSFX);
 
-        inputDelayTimer = nextRoundInputDelay;
-
         SetFightersActive(false);
         SetNextRoundPromptVisible(false);
 
         if (!triggeredTransition)
         {
             triggeredTransition = true;
-            StartCoroutine(TransitionScene());
+            StartCoroutine(PostMatchSequence(matchWinner));
         }
+    }
+
+    private IEnumerator PostMatchSequence(FightCharacter matchWinner)
+    {
+        bool playerWon = matchWinner == playerCharacter;
+
+        string winnerName = playerWon
+            ? playerDisplayName
+            : enemyDisplayName;
+
+        Sprite winnerPortrait = playerWon
+            ? playerWinnerPortrait
+            : enemyWinnerPortrait;
+
+        if (matchWinnerText != null)
+            matchWinnerText.text = winnerName + " won the match!";
+
+        if (matchWinnerPortrait != null)
+            matchWinnerPortrait.sprite = winnerPortrait;
+
+        if (matchWinPanel != null)
+            matchWinPanel.SetActive(true);
+
+        yield return new WaitForSecondsRealtime(dialogueStartDelay);
+
+        List<DialogueTrigger> endingDialogue = playerWon
+            ? playerWinDialogue
+            : enemyWinDialogue;
+
+        if (dialogueManager != null &&
+            endingDialogue != null &&
+            endingDialogue.Count > 0)
+        {
+            yield return StartCoroutine(
+                dialogueManager.PlayDialogueSequence(
+                    endingDialogue,
+                    delayBetweenDialogueLines
+                )
+            );
+        }
+
+        yield return new WaitForSecondsRealtime(afterDialogueDelay);
+        yield return TransitionScene();
     }
 
     private IEnumerator TransitionScene()
