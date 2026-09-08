@@ -25,6 +25,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("UI Settings")]
     [SerializeField] private float FadeDelay = 1f;
     [SerializeField] private Image arrowImage;
+    [SerializeField] private Animator arrowAnim;
     
 
     [Header("Inventory")]
@@ -87,7 +88,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void EventClick_Environment_ShowArrowEvent()
     {
-        arrowImage.enabled = true;
+        arrowAnim.SetBool("appeared", true);
     }
 
     private void OnDisable()
@@ -418,7 +419,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private IEnumerator TeleportSequence(TeleportClickEventData data)
     {
-        arrowImage.enabled = false;
+        // arrowImage.enabled = false;
+        arrowAnim.SetBool("appeared", false);
         PlayerCamera.rayCaster.enabled = false;
 
         OnTalking?.Invoke(false);
