@@ -228,7 +228,7 @@ public class AudioManager : MonoBehaviour
         }
 
         chosenSource.clip = clip;
-        chosenSource.pitch = Random.Range(0.8f, 1.2f);
+        chosenSource.pitch = Random.Range(0.9f, 1.1f);
         chosenSource.Play();
 
         Debug.Log("Displayed Audio!");

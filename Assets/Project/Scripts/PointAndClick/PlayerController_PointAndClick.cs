@@ -25,6 +25,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("UI Settings")]
     [SerializeField] private float FadeDelay = 1f;
     [SerializeField] private Image arrowImage;
+    
 
     [Header("Inventory")]
     [SerializeField] private EventClick_Item[] Inventory = new EventClick_Item[5];

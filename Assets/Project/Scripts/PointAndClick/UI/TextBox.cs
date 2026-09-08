@@ -64,7 +64,7 @@ public class TextBox : MonoBehaviour
         StartFade(1f);
 
 
-     
+       
         AudioManager.instance.PlayDialogueSound(sound);
         float totalTime = _text.text.Length / speed;
         char[] textChars = _text.text.ToCharArray();
