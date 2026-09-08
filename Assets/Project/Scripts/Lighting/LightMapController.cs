@@ -37,6 +37,7 @@ public struct LightProfile
 
     [Header("Window Materials")]
     public LargeWindowState largeWindowState;
+    public bool smallWindowsDim;
 
     [Header("Reflections")]
     public bool alterReflection;
@@ -111,6 +112,10 @@ public class LightMapController : MonoBehaviour
     public Material windowLargeDim;
     public Material windowLargeDark; //emissive material for large windows during the evening
     public Material windowLargeBlackout; //
+
+    [Header("Window Small Materials")]
+    public Material windowSmallDim;
+    public Material windowSmallBright;
 
     public delegate void ChangeLights(int day, bool isMorning);
     public ChangeLights OnChangeLights;
@@ -204,6 +209,8 @@ public class LightMapController : MonoBehaviour
             MeshRenderer renderer = window.GetComponent<MeshRenderer>();
             renderer.material = newMatLarge;
         }
+
+        Material newMatSmall = (profile.smallWindowsDim) ? windowSmallDim : windowSmallBright;
 
         //finall, set the lightmaps!
         SetLightMap(profile.lightMapState);

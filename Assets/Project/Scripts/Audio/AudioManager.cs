@@ -184,6 +184,7 @@ public class AudioManager : MonoBehaviour
     //plays a per-typed character sound, one at a time
     public void PlayDialogueSound(DialogueSound sound)
     {
+
         AudioClip clip = null;
         int audioIndex = 0;
         switch (sound)
@@ -260,4 +261,6 @@ public class AudioManager : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         PlayDialogueSound(sound);
     }
+
+ 
 }
