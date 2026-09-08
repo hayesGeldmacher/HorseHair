@@ -210,8 +210,17 @@ public class LightMapController : MonoBehaviour
             renderer.material = newMatLarge;
         }
 
+        /*
+         
         Material newMatSmall = (profile.smallWindowsDim) ? windowSmallDim : windowSmallBright;
+        foreach(GameObject window in windowObjectsSmall)
+        {
+            MeshRenderer renderer = window.GetComponent <MeshRenderer>();
+            renderer.material = newMatSmall;
+        }
 
+         
+         */
         //finall, set the lightmaps!
         SetLightMap(profile.lightMapState);
 
