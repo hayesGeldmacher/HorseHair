@@ -88,7 +88,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void EventClick_Environment_ShowArrowEvent()
     {
-        arrowAnim.SetBool("appeared", true);
+        if (arrowAnim != null) { arrowAnim.SetBool("appeared", true); }
+       
     }
 
     private void OnDisable()
@@ -420,7 +421,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private IEnumerator TeleportSequence(TeleportClickEventData data)
     {
         // arrowImage.enabled = false;
-        arrowAnim.SetBool("appeared", false);
+        if(arrowAnim != null) { arrowAnim.SetBool("appeared", false); }
+       
         PlayerCamera.rayCaster.enabled = false;
 
         OnTalking?.Invoke(false);
