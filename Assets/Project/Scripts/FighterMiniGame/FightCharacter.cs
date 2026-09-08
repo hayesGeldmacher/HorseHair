@@ -1622,6 +1622,7 @@ public class FightCharacter : MonoBehaviour
             fighterAnim.SetBool("crouching", false);
             fighterAnim.SetBool("blocking", false);
             fighterAnim.SetBool("jumping", true);
+            fighterAnim.SetTrigger("jump");
         }
     }
 
@@ -2378,6 +2379,11 @@ public class FightCharacter : MonoBehaviour
         fighterAnim.SetBool("jumping", !isGrounded);
         fighterAnim.SetBool("stunned", isKnockedDown);
         fighterAnim.SetBool("recovering", isRecovering);
+    }
+    //
+    public void ResetJumpAnim()
+    {
+        fighterAnim.ResetTrigger("jump");
     }
 
     #endregion

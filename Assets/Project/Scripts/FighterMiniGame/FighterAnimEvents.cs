@@ -47,4 +47,9 @@ public class FighterAnimEvents : MonoBehaviour
 
         Debug.Log(fightCharacter.gameObject.name + " finished attack animation!");
     }
+
+    public void ResetJump()
+    {
+        fightCharacter.ResetJumpAnim();
+    }
 }
