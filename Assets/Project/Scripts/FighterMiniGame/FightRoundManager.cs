@@ -159,6 +159,9 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Small pause after dialogue disappears before closing the eyes")]
     [SerializeField] private float afterDialogueDelay = 0.25f;
 
+    [Tooltip("Pause between finishing last match and first dialogue appearing")]
+    [SerializeField] private float afterMatchDelay = 1.0f;
+
     [Header("Controls Loading Screen")]
     [Tooltip("How long to show loading screen before showing controls")]
     [SerializeField] private float controlsPreloadTime = 1f;
@@ -225,6 +228,12 @@ public class FightRoundManager : MonoBehaviour
     private Coroutine characterSelectLoadingCoroutine;
 
     [SerializeField] private bool gameCanStart = false;
+
+    //Adding delegates for narrative and dialogue events - HG
+    public delegate void StartCharSelect();
+    public StartCharSelect onCharSelect;
+
+
 
     private void Start()
     {
@@ -580,6 +589,7 @@ public class FightRoundManager : MonoBehaviour
 
     private IEnumerator CharacterSelectLoadingRoutine()
     {
+        onCharSelect?.Invoke(); //invoke to let objects know that char select has started -HG
         startingRound = true;
 
         yield return FadeScreen(1f);
@@ -1047,6 +1057,8 @@ public class FightRoundManager : MonoBehaviour
 
     private IEnumerator PostMatchSequence(FightCharacter matchWinner)
     {
+
+        yield return new WaitForSeconds(afterMatchDelay); //wait a second between finishing match and starting dialogue -HG
         bool playerWon = matchWinner == playerCharacter;
 
         string winnerName = playerWon
