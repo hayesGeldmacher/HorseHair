@@ -17,6 +17,7 @@ public class TeleportClickEventData : ClickEventData
     public float delayBeforeEnding;
     public DialogueStorage endingDialogue;
     public string NextScene;
+    public bool UseSpecialBlinking = false;
 
     public bool canEnter = true;
     public string requiredItemDesc;

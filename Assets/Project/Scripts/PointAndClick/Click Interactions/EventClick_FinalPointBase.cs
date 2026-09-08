@@ -8,6 +8,8 @@ public class FPBClickEventData : ClickEventData
     public bool GoToNextScene;
     public string CompleteString;
     public string IncompleteString;
+    public string NextSceneName;
+    public bool UseSpecialBlinking;
 }
 
 public class EventClick_FinalPointBase : EventClick
@@ -15,8 +17,9 @@ public class EventClick_FinalPointBase : EventClick
     [SerializeField] private string fpbName = "FPB";
     [SerializeField] private string NotCompletedText = "Goal Not Completed";
     [SerializeField] private string CompletedText = "Goal Complete";
+    [SerializeField] private string nextScene = "";
+    [SerializeField] private bool useSpecialBlinking = false;
    
-
     private bool goToNextScene = false;
     public bool Activated = false;
 
@@ -57,6 +60,8 @@ public class EventClick_FinalPointBase : EventClick
             GoToNextScene = goToNextScene,
             CompleteString = CompletedText,
             IncompleteString = NotCompletedText,
+            NextSceneName = nextScene,
+            UseSpecialBlinking = useSpecialBlinking,
         };
     }
 

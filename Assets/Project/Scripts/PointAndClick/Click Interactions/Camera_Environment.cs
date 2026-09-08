@@ -25,6 +25,7 @@ public class Camera_Environment : MonoBehaviour
     [SerializeField] private float delayBeforeEnding = 2f;
     [SerializeField] private DialogueStorage endingDialogue;
     [SerializeField] private string NextScene;
+    [SerializeField] private bool useSpecialBlinking = false;
     [Header("Environment Settings")]
     [SerializeField]
     private EventClick_Environment selfClickEvent;
@@ -133,7 +134,8 @@ public class Camera_Environment : MonoBehaviour
             endingDialogue = endingDialogue,
             NextScene = NextScene,
             ActivateFlashlight = _activateFlashlight,
-            movementDialogue = used,           
+            movementDialogue = used,      
+            UseSpecialBlinking = useSpecialBlinking,
         };
     }
 

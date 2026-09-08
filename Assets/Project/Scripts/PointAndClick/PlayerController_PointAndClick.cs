@@ -270,7 +270,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         if (completeTask)
         {
-            EndingSequence(fpb.DialogueText);
+            EndingSequenceDay(fpb.DialogueText, fpb);
         }
         else
         {
@@ -283,14 +283,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
-    public void EndingSequence(DialogueStorage desc, float delay = 0)
+    public void EndingSequenceDay(DialogueStorage desc, FPBClickEventData data, float delay = 0)
     {
-        string scene = "";
         TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
         int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
         if (currentTimeOfDay == TimeOfDay.Morning)
         {
-            scene = houseScene;
             PlayerPrefs.SetInt("TaskNum", currentTaskNum);
             PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
             Debug.Log("Set int to timeofday afternoon!");
@@ -299,7 +297,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         else if (currentTimeOfDay == TimeOfDay.Afternoon)
         {
-            scene = fightingGameScene;
             PlayerPrefs.SetInt("TaskNum", currentTaskNum);
             PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Dream);
             Debug.Log("Set into to timeofday dream!");
@@ -308,7 +305,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         else
         {
-            scene = dreamScene;
             PlayerPrefs.SetInt("TaskNum", currentTaskNum++);
             PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
             Debug.Log("Set int to timeofday morning!");
@@ -316,15 +312,20 @@ public class PlayerController_PointAndClick : MonoBehaviour
             dayFinished = AudioTime.Night; //set time to play correct audio clip on end sequence - HG
         }
         PlayerPrefs.Save();
-        StartCoroutine(EndingSequence(desc, scene, delay));
+        StartCoroutine(EndingSequence(desc, data.NextSceneName, data.UseSpecialBlinking, delay));
     }
 
-    public IEnumerator EndingSequence(DialogueStorage desc, string scene, float delay = 0)
+    public IEnumerator EndingSequence(DialogueStorage desc, string scene, bool UseSpecialBlink = false, float delay = 0)
     {
         yield return new WaitForSeconds(delay);
 
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
-        blinkAnimator.SetTrigger("EyesDown");
+        if (UseSpecialBlink)
+            blinkAnimator.SetTrigger("EyesEnd");
+        else
+        {
+            blinkAnimator.SetTrigger("EyesDown");
+        }
 
         yield return new WaitUntil(() =>
             blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
@@ -484,7 +485,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
         if (data.endingCamera)
         {
             StartCoroutine(EndingSequence(data.endingDialogue, 
-                data.NextScene, data.delayBeforeEnding));
+                data.NextScene, data.UseSpecialBlinking, 
+                data.delayBeforeEnding));
         }
 
         data.Camera.ActivateTravelTrigger();
