@@ -14,7 +14,7 @@ public class SheepSleeping : MonoBehaviour
     [SerializeField] private float playerNearness;
     [SerializeField] private float animTriggerWait = 2.0f;
 
-    [SerializeField] AudioVolumeFade fade;
+    [SerializeField] private AudioVolumeFade fade;
 
     [SerializeField] private float endDelay = 8.0f;
     [SerializeField] private SleepPostProcess depth;

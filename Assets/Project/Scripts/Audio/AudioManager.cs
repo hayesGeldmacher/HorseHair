@@ -57,6 +57,9 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource taskCompletedSource; //source to be played at the time a task is completed
 
     [Header("Complete Day")]
+    [SerializeField] private bool playDayCompletedSound = false;
+
+
     [SerializeField] private AudioSource dayCompletedSource; //sound played when task is completed and player leaves PNC segment 
     [SerializeField] private AudioClip[] morningCompletedClips; //clips played when morning sequence is completed
     [SerializeField] private AudioClip[] afternoonCompletedClips; //clips played when afternoon sequence is completed
@@ -133,6 +136,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlayDayCompletedSound(AudioTime day)
     {
+        if (!playDayCompletedSound) return;
         AudioClip clip = morningCompletedClips[0];
 
         switch (day)
