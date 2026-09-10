@@ -27,7 +27,6 @@ public class EventClick_TaskGiver : EventClick
     public bool Activated = false;
     public bool Talked = false;
     public bool IsUsedByGoal = false;
-
    
 
     private void Awake()

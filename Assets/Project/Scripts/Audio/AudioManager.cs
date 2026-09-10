@@ -17,7 +17,7 @@ public enum AudioTime{
     
     Morning,
     Afternoon,
-    Night
+    Night,
 }
 
 
@@ -120,12 +120,15 @@ public class AudioManager : MonoBehaviour
         switch (day)
         {
             case AudioTime.Morning:
+                if (morningStartedClips.Length == 0) { return; }
                 clip = morningStartedClips[0];
                 break;
             case AudioTime.Afternoon:
+                if (afternoonStartedClips.Length == 0) { return; }
                 clip = afternoonStartedClips[0];
                 break;
             case AudioTime.Night:
+                if (nightStartedClips.Length == 0) { return; }
                 clip = nightStartedClips[0];
                 break;
         }
@@ -142,12 +145,15 @@ public class AudioManager : MonoBehaviour
         switch (day)
         {
             case AudioTime.Morning:
+                if (morningCompletedClips.Length == 0) { return; }
                 clip = morningCompletedClips[0];
                 break;
             case AudioTime.Afternoon:
+                if (afternoonCompletedClips.Length == 0) { return; }
                 clip = afternoonCompletedClips[0];
                 break;
             case AudioTime.Night:
+                if (nightCompletedClips.Length == 0) { return; }
                 clip = nightCompletedClips[0];
                 break;
         }

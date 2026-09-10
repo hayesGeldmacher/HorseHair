@@ -9,6 +9,7 @@ public enum TimeOfDay
     Morning,
     Afternoon,
     Dream,
+    Transitions,
 }
 
 [Serializable]
@@ -68,8 +69,8 @@ public class EventManager : MonoBehaviour
         if (TVSet)
         {
             PlayerPrefs.SetString("Environment",
-                 tasksList[(TimeOfDay.Dream, 0)].task.startingPosition.name);
-            tasksList[(TimeOfDay.Dream, 0)].Activated = true;
+                 tasksList[(currentTimeOfDay, 0)].task.startingPosition.name);
+            tasksList[(currentTimeOfDay, 0)].Activated = true;
         }
         else
         {
@@ -96,9 +97,9 @@ public class EventManager : MonoBehaviour
     {
         if (TVSet)
         {
-            tasksList[(TimeOfDay.Dream, 0)].ChangeTaskStatus(true);
-            tasksList[(TimeOfDay.Dream, 0)].task.finalPoint.Activated = true;
-            ThoughtDialogue?.Invoke(tasksList[(TimeOfDay.Dream, 0)].task.ThoughtText);
+            tasksList[(currentTimeOfDay, 0)].ChangeTaskStatus(true);
+            tasksList[(currentTimeOfDay, 0)].task.finalPoint.Activated = true;
+            ThoughtDialogue?.Invoke(tasksList[(currentTimeOfDay, 0)].task.ThoughtText);
         }
         else
         {

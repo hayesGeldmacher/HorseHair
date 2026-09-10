@@ -76,7 +76,10 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private AudioTime dayStarted = AudioTime.Morning;
     private bool inventoryIsOpen = false;
 
+    private bool IsTranstionScene = false;
+
     public static event System.Action<Boolean> OnTalking;
+    public static event System.Action TransitionCall;
 
     private void OnEnable()
     {
@@ -137,6 +140,10 @@ public class PlayerController_PointAndClick : MonoBehaviour
         if (StartingPoint != null)
         {
             StartingPoint.TeleportToSelf();
+        }
+        if ((TimeOfDay)PlayerPrefs.GetInt("TimeOfDay") == TimeOfDay.Transitions)
+        {
+            IsTranstionScene = true;
         }
         ChangingTask(PlayerPrefs.GetString("StartingTask"));
     }
@@ -293,8 +300,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
         if (currentTimeOfDay == TimeOfDay.Morning)
         {
             PlayerPrefs.SetInt("TaskNum", currentTaskNum);
-            PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
-            Debug.Log("Set int to timeofday afternoon!");
+            PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Transitions);
+            Debug.Log("Set int to timeofday transitions!");
 
             dayFinished = AudioTime.Morning; //set time to play correct audio clip on end sequence - HG
         }
@@ -318,7 +325,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
         StartCoroutine(EndingSequence(desc, data.NextSceneName, data.UseSpecialBlinking, delay));
     }
 
-    public IEnumerator EndingSequence(DialogueStorage desc, string scene, bool UseSpecialBlink = false, float delay = 0)
+    public IEnumerator EndingSequence(DialogueStorage desc, string scene, 
+        bool UseSpecialBlink = false, float delay = 0)
     {
         yield return new WaitForSeconds(delay);
 
@@ -333,8 +341,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
         yield return new WaitUntil(() =>
             blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
 
-        dialogueText = desc;
-        OpenDialogue();
+        if (desc != null)
+        {
+            dialogueText = desc;
+            OpenDialogue();
+        }
 
         //play corresponding audio - HG
         AudioManager.instance.PlayDayCompletedSound(dayFinished);
@@ -439,6 +450,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             {
                 isMorning = true;
             }
+
 
             AudioManager.instance.PlayDayStartedSound(dayStarted);
             yield return new WaitForSeconds(2.0f);
@@ -718,6 +730,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
             textBox.HideTextBox();
             OnTalking?.Invoke(false);
             StartCoroutine(TurnOnRaycastAfterDelay(0.5f));
+
+            if (IsTranstionScene)
+            {
+                TransitionCall.Invoke();
+            }
         }
         else
         {
