@@ -7,6 +7,10 @@ public class TransitionData_Call : MonoBehaviour
     [SerializeField] private float delay = 0;
     [SerializeField] private bool useSpecialBlink = false;
 
+    public delegate void CallTransition();
+    public CallTransition OnTransitionCalled;
+
+
     private void Awake()
     {
         PlayerController_PointAndClick.TransitionCall += OnTransitionData_Call;
@@ -22,6 +26,7 @@ public class TransitionData_Call : MonoBehaviour
         PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Afternoon);
         Debug.Log("Set int to timeofday afternoon!");
 
+        OnTransitionCalled?.Invoke();
         StartCoroutine(playerController.EndingSequence(null, nextSceneName, useSpecialBlink, delay));
     }
 }

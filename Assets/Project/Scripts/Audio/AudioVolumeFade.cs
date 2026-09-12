@@ -58,7 +58,7 @@ public class AudioVolumeFade : MonoBehaviour
                 {
                     float newSpeed = group.speed * 0.01f;
                     finished = false;
-                    source.volume -= group.speed * Time.deltaTime;
+                    source.volume -= newSpeed * Time.deltaTime;
                 }
                 else
                 {
