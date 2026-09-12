@@ -10,6 +10,9 @@ public enum DialogueSound
     Brother,
     Dad,
     Scarecrow,
+
+    Interact,
+
     Other,
 }
 
@@ -71,6 +74,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip[] brotherClips; //index 1
     [SerializeField] private AudioClip[] dadClips; //index 2
     [SerializeField] private AudioClip[] scarecrowClips;// index 3
+    [SerializeField] private AudioClip interactClip;
 
     [Header("Dialogue Burst")]
     [SerializeField] private float charsPerSound = 10; //how many sounds should trigger based on the characters in dialogue line
@@ -193,31 +197,47 @@ public class AudioManager : MonoBehaviour
 
         AudioClip clip = null;
         int audioIndex = 0;
+        int lastPlayedIndex = 0;
+        int length = 0;
         switch (sound)
         {
             case DialogueSound.Player:
+                length = playerClips.Length;
                 audioIndex = Random.Range(0, playerClips.Length);
+                if(audioIndex == lastPlayedIndex) { audioIndex = GetAudioIndexAdd(audioIndex, length); }
                 clip = playerClips[audioIndex];
                 break;
             case DialogueSound.Brother:
+                length = brotherClips.Length;
                 audioIndex = Random.Range(0, brotherClips.Length);
+                if(audioIndex == lastPlayedIndex) { audioIndex = GetAudioIndexAdd(audioIndex, length); }
                 clip = brotherClips[audioIndex];
                 break;
             case DialogueSound.Dad:
+                length = dadClips.Length;
                 audioIndex = Random.Range(0, dadClips.Length);
+                if (audioIndex == lastPlayedIndex) { audioIndex = GetAudioIndexAdd(audioIndex, length); }
                 clip = dadClips[audioIndex];
                 break;
             case DialogueSound.Scarecrow:
+                length = scarecrowClips.Length;
                 Debug.Log("Chose scarecrow!");
                  audioIndex = Random.Range(0, scarecrowClips.Length);
+                if (audioIndex == lastPlayedIndex) { audioIndex = GetAudioIndexAdd(audioIndex, length); }
                 clip = scarecrowClips[audioIndex];
                 break;
+            case DialogueSound.Interact:
+                clip = interactClip;
+                break;
             default:
+                length = playerClips.Length;
                 audioIndex = Random.Range(0, playerClips.Length);
+                if (audioIndex == lastPlayedIndex) { audioIndex = GetAudioIndexAdd(audioIndex, length); }
                 clip = playerClips[audioIndex];
                 break;
         }
 
+        audioIndex = lastPlayedIndex;
         AudioSource chosenSource = dialogueSources[0];
       
         int sourceIndex = 0;
@@ -238,6 +258,22 @@ public class AudioManager : MonoBehaviour
         chosenSource.Play();
 
         Debug.Log("Displayed Audio!");
+    }
+
+
+    private int GetAudioIndexAdd(int index, int length)
+    {
+        int newIndex = 0;
+        if(index + 1 > length)
+        {
+            newIndex = index - 1;
+        }
+        else
+        {
+            newIndex = index + 1;
+        }
+
+        return newIndex;
     }
 
     //plays several dialogue sounds, spaced apart, based on length of string
