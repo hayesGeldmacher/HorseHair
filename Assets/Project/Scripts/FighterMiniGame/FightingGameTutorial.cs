@@ -153,6 +153,26 @@ public class FightingGameTutorial : MonoBehaviour
         StartCoroutine(TutorialOpeningRoutine());
     }
 
+    /// <summary>
+    /// Cancels the tutorial and restores everything it changes so a normal
+    /// match can begin immediately.
+    /// </summary>
+    public void SkipTutorial()
+    {
+        StopAllCoroutines();
+
+        tutorialStarted = false;
+        acceptingAction = false;
+        tutorialCompleted = true;
+
+        if (dialogueUI != null)
+            dialogueUI.Hide();
+
+        SetOpponentDummyMode(false);
+
+        enabled = false;
+    }
+
     private void OnDisable()
     {
         if (player != null && subscribedToPlayer)

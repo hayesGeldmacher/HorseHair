@@ -28,6 +28,9 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("How fast the press any button text blinks")]
     [SerializeField] private float blinkSpeed = 2f;
 
+    [Tooltip("Skip all opening screens and the tutorial, then immediately begin Round 1")]
+    [SerializeField] private bool skipIntroAndCharacterSelect = false;
+
     [Header("Character Select")]
     [Tooltip("Character selection shown after leaving the start screen")]
     [SerializeField] private CharacterSelectManager characterSelectManager;
@@ -239,6 +242,15 @@ public class FightRoundManager : MonoBehaviour
     {
         ConfigureTutorial();
         ShowStartScreen();
+
+        if (skipIntroAndCharacterSelect)
+        {
+            PrepareForImmediateStart();
+
+            if (gameCanStart)
+                StartMatchImmediately();
+            StartMatchImmediately();
+        }
     }
 
     private void OnEnable()
@@ -585,6 +597,83 @@ public class FightRoundManager : MonoBehaviour
     private void StartMatch()
     {
         StartCoroutine(StartMatchFadeRoutine());
+    }
+
+    private void PrepareForImmediateStart()
+    {
+        // Keep the fighters inactive until TelevisionSequence signals that its
+        // blink has finished through SetGameActive().
+        SetStartScreenVisible(false);
+
+        if (characterSelectManager != null)
+            characterSelectManager.HideAndReset();
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(false);
+
+        HideControlsLoadingScreen();
+
+        if (startScreenNoiseSource != null)
+        {
+            startScreenNoiseSource.Stop();
+            startScreenNoiseSource.loop = false;
+            startScreenNoiseSource.clip = null;
+        }
+    }
+
+    private void StartMatchImmediately()
+    {
+        waitingForStart = false;
+        waitingForNextRound = false;
+        waitingForGameOverInput = false;
+        startingRound = false;
+        roundActive = false;
+        gameOver = false;
+        tutorialPhaseActive = false;
+        tutorialFinished = true;
+
+        if (fightingGameTutorial != null)
+            fightingGameTutorial.SkipTutorial();
+
+        SetTutorialDamageImmunity(false);
+        SetTutorialUnlimitedSpecials(false);
+
+        if (characterSelectManager != null)
+            characterSelectManager.HideAndReset();
+
+        if (loadingIcon != null)
+            loadingIcon.SetActive(false);
+
+        HideControlsLoadingScreen();
+
+        if (startScreenNoiseSource != null)
+        {
+            startScreenNoiseSource.Stop();
+            startScreenNoiseSource.loop = false;
+            startScreenNoiseSource.clip = null;
+        }
+
+        if (fadeCanvasGroup != null)
+        {
+            fadeCanvasGroup.alpha = 0f;
+            fadeCanvasGroup.blocksRaycasts = false;
+        }
+
+        SetStartScreenVisible(false);
+        SetFighterPresentationVisible(true);
+        SetNameTextVisible(true);
+        SetRoundWinIconsVisible(true);
+        SetNextRoundPromptVisible(false);
+        SetCenterMessage("");
+
+        if (audioSource != null && backgroundMusic != null)
+        {
+            audioSource.clip = backgroundMusic;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
+        StartRound();
     }
 
     private IEnumerator CharacterSelectLoadingRoutine()
@@ -1275,5 +1364,13 @@ public class FightRoundManager : MonoBehaviour
     public void SetGameActive()
     {
         gameCanStart = true;
+
+        if (skipIntroAndCharacterSelect &&
+            !startingRound &&
+            !roundActive &&
+            !gameOver)
+        {
+            StartMatchImmediately();
+        }
     }
 }
