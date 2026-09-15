@@ -53,8 +53,12 @@ public class EventClick_Environment : EventClick
     private bool alreadyInteracted = false;
     [Header("Visible Arrow")]
     [SerializeField] private bool IsVisbleArrow = false;
+    [Header("Show Darkened Image")]
+    [SerializeField] private bool ShowDarkenedImage = false;
+
 
     public static event Action ShowArrowEvent;
+    public static event Action<bool> HoveredEvent;
 
     private void OnEnable()
     {
@@ -141,5 +145,21 @@ public class EventClick_Environment : EventClick
             resetCursor = ObjectType.None;
         }
         base.ResetClick();
+    }
+
+    public override void ExtraHovered()
+    {
+        if (ShowDarkenedImage)
+        {
+            HoveredEvent.Invoke(true);
+        }
+    }
+
+    public override void ExtraUnHovered()
+    {
+        if (ShowDarkenedImage)
+        {
+            HoveredEvent.Invoke(false);
+        }
     }
 }

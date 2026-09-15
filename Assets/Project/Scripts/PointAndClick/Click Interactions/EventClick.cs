@@ -108,6 +108,7 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
             outlineMaterial.SetFloat("_Outline_Show", 1f);
         }
         OnObjectHovered?.Invoke(Type, Name);
+        ExtraHovered();
     }
 
     public void OnPointerExit(PointerEventData eventData)
@@ -121,7 +122,16 @@ public class EventClick : MonoBehaviour, IPointerClickHandler, IPointerEnterHand
                 outlineMaterial.SetFloat("_Outline_Show", 0f);
             }
             OnObjectHovered?.Invoke(ObjectType.None, "");
+            ExtraUnHovered();
         }
+    }
+
+    public virtual void ExtraHovered()
+    {
+    }
+
+    public virtual void ExtraUnHovered()
+    {
     }
 
     public virtual void ActivateOrDeactivate(bool activate)

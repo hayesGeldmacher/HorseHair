@@ -58,6 +58,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField, Tooltip("Clip played for above when afternoon task is finished")] 
     private AudioClip finishAfternoonClip;
 
+    [Header("Hover Effect")]
+    [SerializeField] private Animator darkeningAnimator;
+
+    [Header("Other")]
+
     private int dialogueIndex = 0;
     private bool startedDialogue = false;
     private int altDialogueIndex = 0;
@@ -87,6 +92,21 @@ public class PlayerController_PointAndClick : MonoBehaviour
         EventClick_GoalItem.GoalCompleted += HandleGoalCompleted;
         EventManager.ThoughtDialogue += HandleStartEvent;
         EventClick_Environment.ShowArrowEvent += EventClick_Environment_ShowArrowEvent;
+        EventClick_Environment.HoveredEvent += EventClick_Environment_HoveredEvent;
+    }
+
+    private void EventClick_Environment_HoveredEvent(bool obj)
+    {
+        if (obj)
+        {
+            Debug.Log("Hovered over environment object");
+            darkeningAnimator.SetBool("appeared", true);
+        }
+        else
+        {
+            Debug.Log("Unhovered over environment object");
+            darkeningAnimator.SetBool("appeared", false);
+        }
     }
 
     private void EventClick_Environment_ShowArrowEvent()
@@ -101,6 +121,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         EventClick_GoalItem.GoalCompleted -= HandleGoalCompleted;
         EventManager.ThoughtDialogue -= HandleStartEvent;
         EventClick_Environment.ShowArrowEvent -= EventClick_Environment_ShowArrowEvent;
+        EventClick_Environment.HoveredEvent -= EventClick_Environment_HoveredEvent;
     }
 
     private void HandleStartEvent(DialogueStorage storage)

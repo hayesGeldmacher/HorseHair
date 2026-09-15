@@ -825,6 +825,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Garage
       objectReference: {fileID: 0}
+    - target: {fileID: 8771846822256184871, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3579324845554013986, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
     m_RemovedGameObjects: []
@@ -10156,9 +10160,17 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1992665190075752343, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2393729271341618146, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.156
+      objectReference: {fileID: 0}
+    - target: {fileID: 4527553096604998405, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4528363175994530018, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: Lens.FieldOfView
@@ -10200,6 +10212,10 @@ PrefabInstance:
       propertyPath: finishTaskSource
       value: 
       objectReference: {fileID: 393700451}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: darkeningAnimator
+      value: 
+      objectReference: {fileID: 360472091}
     - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: fightingGameScene
       value: SCN_TVPointNClick
@@ -10329,6 +10345,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7279625971252437074, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4278190080
       objectReference: {fileID: 0}
@@ -10360,6 +10380,10 @@ PrefabInstance:
       propertyPath: m_hasFontAssetChanged
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7979610226452474015, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_RaycastTarget
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8652937310383403861, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_fontSize
       value: 40
@@ -10374,6 +10398,10 @@ PrefabInstance:
       objectReference: {fileID: -8683409099501824686, guid: f15b5a5e859171d4698aa302cc3ebf6a, type: 2}
     - target: {fileID: 8652937310383403861, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8667084893968901831, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9185711435723726112, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
@@ -22633,7 +22661,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTaskNum
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTimeOfDay

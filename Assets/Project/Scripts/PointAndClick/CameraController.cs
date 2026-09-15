@@ -28,6 +28,10 @@ public class CameraController : MonoBehaviour
     [Header("Tester Settings")]
     [SerializeField]
     public PhysicsRaycaster rayCaster;
+    [Header("Raycast Debug")]
+    [SerializeField] private bool debugRaycast = true;
+    [SerializeField] private float debugRayLength = 100f;
+    private GameObject currentRaycastHit;
 
     private Vector2 _screenCenter;
     public Vector2 _mouseInput = Vector2.zero;
@@ -98,24 +102,64 @@ public class CameraController : MonoBehaviour
         }
 
         UpdateSpotlight();
+        DebugRaycast();
+    }
+
+    private void DebugRaycast()
+    {
+        if (!debugRaycast || rayCaster == null || cam == null)
+            return;
+
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+
+        // Create a PointerEventData using the current mouse position
+        PointerEventData pointerData = new PointerEventData(EventSystem.current)
+        {
+            position = mousePos
+        };
+
+        // Ask the PhysicsRaycaster/EventSystem what is being hit
+        List<RaycastResult> results = new List<RaycastResult>();
+
+        EventSystem.current.RaycastAll(pointerData, results);
+
+        if (results.Count > 0)
+        {
+            RaycastResult hit = results[0];
+
+            if (currentRaycastHit != hit.gameObject)
+            {
+                currentRaycastHit = hit.gameObject;
+
+                Debug.Log(
+                    $"[PhysicsRaycaster] Hit: {hit.gameObject.name}\n" +
+                    $"Distance: {hit.distance:F2}\n" +
+                    $"World Position: {hit.worldPosition}\n" +
+                    $"Module: {hit.module}"
+                );
+            }
+        }
+        else
+        {
+            if (currentRaycastHit != null)
+            {
+                Debug.Log("[PhysicsRaycaster] No longer hitting anything.");
+                currentRaycastHit = null;
+            }
+        }
+
+        // Draw the ray in the Scene view
+        Ray ray = cam.ScreenPointToRay(mousePos);
+
+        Debug.DrawRay(
+            ray.origin,
+            ray.direction * debugRayLength,
+            Color.red
+        );
     }
 
     private void UpdateSpotlight()
     {
-        //Camera cam = Camera.main;
-
-        //Vector2 mousePos = Mouse.current.position.ReadValue();
-        //Ray ray = cam.ScreenPointToRay(mousePos);
-
-        //if (Physics.Raycast(ray, out RaycastHit hit, 1000f, spotlightMask))
-        //{
-        //    spotlight.transform.LookAt(hit.point);
-        //}
-        ////else
-        ////{
-        ////    spotlight.transform.rotation = ray.rotation;
-        ////}
-        ///
         Vector2 mousePos = Mouse.current.position.ReadValue();
 
         Ray ray = cam.ScreenPointToRay(mousePos);
