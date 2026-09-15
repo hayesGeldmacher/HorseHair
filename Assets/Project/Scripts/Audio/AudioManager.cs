@@ -264,6 +264,9 @@ public class AudioManager : MonoBehaviour
     private int GetAudioIndexAdd(int index, int length)
     {
         int newIndex = 0;
+        if(length < 2) { return index; }
+
+
         if(index + 1 > length)
         {
             newIndex = index - 1;
@@ -279,6 +282,11 @@ public class AudioManager : MonoBehaviour
     //plays several dialogue sounds, spaced apart, based on length of string
     public void PlayDialogueBurst(string line, DialogueSound sound)
     {
+
+        //not using the animal crossing-style audio anymyore - HG
+        PlayDialogueSound(sound);
+        return;
+
         int charCount = 0;
         int soundCount = 0;
         float timeToWait = 0.0f;

@@ -51,7 +51,7 @@ public class SheepSleeping : MonoBehaviour
 
         yield return new WaitForSeconds(animTriggerWait);
         sheepAnim.SetBool("started", true);
-        depth.TriggerFocalChange(true);
+        //depth.TriggerFocalChange(true);
         fade.StartFadeIn(true, true);
         yield return new WaitForSeconds(endDelay);
         fade.StartFadeIn(false, false);

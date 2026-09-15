@@ -37,6 +37,8 @@ public class EventClick_TaskGiver : EventClick
             if (Activated)
                 Alternative_NEI.Activated = false;
         }
+
+
     }
 
     protected override void SetType()

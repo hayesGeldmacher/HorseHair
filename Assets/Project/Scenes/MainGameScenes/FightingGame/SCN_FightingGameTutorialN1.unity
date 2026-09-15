@@ -713,7 +713,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[1].fromJesse
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[2].fromJesse
@@ -733,19 +733,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[3].fromJesse
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[0].dialogueLine
-      value: And thats game!
+      value: And that's the game!
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[1].dialogueLine
-      value: I almost had you.
+      value: I know you're still learning, but that was embarrassing...
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[2].dialogueLine
-      value: Sure you did.
+      value: Well, kicking your ass wore me out - I'm headed to bed...
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[0].triggerChance
@@ -820,12 +820,20 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinDialogue.Array.data[1].hasBrotherResponse
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[2].hasBrotherResponse
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinDialogue.Array.data[1].brotherDialogueLine
+      value: Oh, shut up.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[2].brotherDialogueLine
-      value: Whatever...
+      value: Night, Jesse.
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[2].brotherResponseTime
@@ -15713,7 +15721,7 @@ MonoBehaviour:
       brotherDialogueLine: I'm trying!
       triggerChance: 1
       cooldown: 2
-      triggerOnlyOnce: 0
+      triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
   - ruleName: Triple Block
@@ -15728,7 +15736,7 @@ MonoBehaviour:
       brotherDialogueLine: 
       triggerChance: 1
       cooldown: 2
-      triggerOnlyOnce: 0
+      triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
   - ruleName: Fancy Combos
@@ -15743,7 +15751,7 @@ MonoBehaviour:
       brotherDialogueLine: No fair! You know the combos
       triggerChance: 1
       cooldown: 2
-      triggerOnlyOnce: 0
+      triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
   - ruleName: Whiff
@@ -15758,7 +15766,7 @@ MonoBehaviour:
       brotherDialogueLine: 
       triggerChance: 0.5
       cooldown: 2
-      triggerOnlyOnce: 0
+      triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
   - ruleName: Crouch Combo
@@ -15773,7 +15781,7 @@ MonoBehaviour:
       brotherDialogueLine: Shut Up
       triggerChance: 1
       cooldown: 2
-      triggerOnlyOnce: 0
+      triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
   - ruleName: Grab Miss
@@ -15788,7 +15796,7 @@ MonoBehaviour:
       brotherDialogueLine: 
       triggerChance: 0.35
       cooldown: 2
-      triggerOnlyOnce: 0
+      triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
   - ruleName: One-Two
@@ -15803,7 +15811,7 @@ MonoBehaviour:
       brotherDialogueLine: Cheater
       triggerChance: 0.6
       cooldown: 2
-      triggerOnlyOnce: 0
+      triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
   - ruleName: Greed
@@ -15818,7 +15826,7 @@ MonoBehaviour:
       brotherDialogueLine: I am going to kill you
       triggerChance: 1
       cooldown: 2
-      triggerOnlyOnce: 0
+      triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
   dialogueVisibleTime: 2
@@ -26039,6 +26047,7 @@ MonoBehaviour:
   nightStartedClips:
   - {fileID: 8300000, guid: d4ee82f994261a0449767d815792fc82, type: 3}
   taskCompletedSource: {fileID: 6063392438996104974}
+  playDayCompletedSound: 0
   dayCompletedSource: {fileID: 4127594524243954481}
   morningCompletedClips:
   - {fileID: 8300000, guid: d120a68dfa7abf94b96a8808996a8508, type: 3}
@@ -26051,17 +26060,15 @@ MonoBehaviour:
   - {fileID: 9166242639588695703}
   - {fileID: 7855103725717250627}
   playerClips:
-  - {fileID: 8300000, guid: 78161e2cb5d6b084e89eced4debb2c4d, type: 3}
-  - {fileID: 8300000, guid: 0572a50fb9a59d041a11af91c4b050c7, type: 3}
-  - {fileID: 8300000, guid: 7614c5817d6bbb046bae5161aeb081e9, type: 3}
-  - {fileID: 8300000, guid: a390ef827e9b9f149b077cd6b644e590, type: 3}
-  - {fileID: 8300000, guid: 7d1cc5f5f6c088043a5ee4d05cd71d1a, type: 3}
+  - {fileID: 8300000, guid: 76fce85dcca0f45449cb2c1e87e285a3, type: 3}
+  - {fileID: 8300000, guid: fef5b669b4f37524d8919ee1907f9d35, type: 3}
+  - {fileID: 8300000, guid: e517dafcd74e0134e9a80aedbb18a8b2, type: 3}
+  - {fileID: 8300000, guid: 36df5c27d24c2c942a57240c8830b3d6, type: 3}
   brotherClips:
-  - {fileID: 8300000, guid: 5c558f416aa1b5245b16a3a5ca002989, type: 3}
-  - {fileID: 8300000, guid: d799388b52d4b994087b66e9a28ea7d1, type: 3}
-  - {fileID: 8300000, guid: 2949c4ddf3dd0bf448eae5f5c6355cf4, type: 3}
-  - {fileID: 8300000, guid: b1103af0830791548af78613155892ad, type: 3}
-  - {fileID: 8300000, guid: be42c39da1fbce14e856c8aae1752cd1, type: 3}
+  - {fileID: 8300000, guid: 8ae551e4576aea94fb38a60b0e4c4681, type: 3}
+  - {fileID: 8300000, guid: bd9b26ebb70b874438cb97b14494c906, type: 3}
+  - {fileID: 8300000, guid: 675ca47bb96c981448448f5852d97892, type: 3}
+  - {fileID: 8300000, guid: 3fd09d23977c2c54ebc42a3f44156635, type: 3}
   dadClips:
   - {fileID: 8300000, guid: 9e4b8ca51c7afdc438b595ec4d284797, type: 3}
   - {fileID: 8300000, guid: 97fdf54cb23728345b4b699d6299f9f4, type: 3}
@@ -26069,6 +26076,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 6c89a1796d161e643b8da57f03d04177, type: 3}
   - {fileID: 8300000, guid: affc7eaaec9e9b74983fed19de0cd5bf, type: 3}
   scarecrowClips: []
+  interactClip: {fileID: 0}
   charsPerSound: 20
   spaceBetweenSounds: 0.2
   maxSoundsPerLine: 4
