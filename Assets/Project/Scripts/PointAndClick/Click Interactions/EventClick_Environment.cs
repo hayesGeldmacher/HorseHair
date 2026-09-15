@@ -87,6 +87,7 @@ public class EventClick_Environment : EventClick
         }
         connectedCamera.talked = true;
         alreadyInteracted = true;
+        ExtraUnHovered();
         return connectedCamera.TeleportClickEventData;
     }
 
