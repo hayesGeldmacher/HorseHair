@@ -7329,7 +7329,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &940743867
 Transform:
   m_ObjectHideFlags: 0
@@ -10821,6 +10821,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4528363175994530018, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: Lens.FieldOfView
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 6671725320161104119, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: cam
       value: 
@@ -11752,7 +11756,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1346963760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17179,7 +17183,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2071812718
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18439,7 +18443,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5560444909248311465, guid: 046da85c2bdd9194fa3cb371a81fd158, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5638072793374938760, guid: 046da85c2bdd9194fa3cb371a81fd158, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -19522,7 +19526,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 60
+  field of view: 40
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -20378,6 +20382,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 824808762}
     m_Modifications:
+    - target: {fileID: 2417516004936196850, guid: 406e6c44d786f5341a07ed5561fe1264, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3526596192162399579, guid: 406e6c44d786f5341a07ed5561fe1264, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.14

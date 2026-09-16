@@ -40,10 +40,14 @@ public class CursorManager : MonoBehaviour
 
     private void Start()
     {
-        _CursorsScriptsDict = new Dictionary<CursorType, CursorsScript>();
-        foreach (CursorsScript anim in CursorsScriptsList)
+        if (_CursorsScriptsDict == null)
         {
-            _CursorsScriptsDict[anim.cursorType] = anim;
+             _CursorsScriptsDict = new Dictionary<CursorType, CursorsScript>();
+            foreach (CursorsScript anim in CursorsScriptsList)
+            {
+                _CursorsScriptsDict[anim.cursorType] = anim;
+            }
+
         }
 
         SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Default]);
@@ -120,6 +124,16 @@ public class CursorManager : MonoBehaviour
 
     private void PlayerController_PointAndClick_OnTalking(Boolean state)
     {
+        if(_CursorsScriptsDict == null)
+        {
+            _CursorsScriptsDict = new Dictionary<CursorType, CursorsScript>();
+            foreach (CursorsScript anim in CursorsScriptsList)
+            {
+                _CursorsScriptsDict[anim.cursorType] = anim;
+            }
+        }
+
+
         if (state)
         {
             SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Talking]);
