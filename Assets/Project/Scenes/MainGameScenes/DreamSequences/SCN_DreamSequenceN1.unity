@@ -4280,7 +4280,11 @@ PrefabInstance:
     - target: {fileID: 6859763450132576749, guid: b5e7fb05e8f926e40befe73434985c53, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 0f8392c76023ccb478a08d37dee83511, type: 2}
+      objectReference: {fileID: 9100000, guid: 8a4c880d13616a64fba52f7e617f23b4, type: 2}
+    - target: {fileID: 7508641152295969984, guid: b5e7fb05e8f926e40befe73434985c53, type: 3}
+      propertyPath: fightCharacter
+      value: 
+      objectReference: {fileID: 2047719968}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -25998,6 +26002,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1634340021}
   - component: {fileID: 1634340022}
+  - component: {fileID: 1634340023}
   m_Layer: 0
   m_Name: FighterAudio
   m_TagString: Untagged
@@ -26033,7 +26038,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -26117,6 +26122,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1634340023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634340020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b8ce18909a7c745bd1b186eacfa75c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioVolumeFade
+  groups:
+  - source: {fileID: 1634340022}
+    track: {fileID: 0}
+    lowerLimit: 0
+    upperLimit: 1
+    speed: 25
+    playOnAwake: 0
+  currentlyFading: 0
+  fadingUp: 0
+  fadeOnStart: 1
+  playOnStart: 0
+  fadeUpOnStart: 1
 --- !u!1001 &1637314182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44433,6 +44462,7 @@ MonoBehaviour:
   titleText: {fileID: 0}
   pressAnyButtonText: {fileID: 4531815950283314288}
   blinkSpeed: 4
+  skipIntroAndCharacterSelect: 0
   characterSelectManager: {fileID: 0}
   characterSelectLoadingTime: 1
   nextRoundPromptText: {fileID: 0}

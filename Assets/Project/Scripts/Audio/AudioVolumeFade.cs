@@ -23,6 +23,11 @@ public class AudioVolumeFade : MonoBehaviour
     [SerializeField] private bool currentlyFading = false;
     [SerializeField] private bool fadingUp = false;
 
+    [Header("On Start Fields")]
+    [SerializeField] private bool fadeOnStart = false;
+    [SerializeField] private bool playOnStart = false;
+    [SerializeField] private bool fadeUpOnStart = false;
+
     // Update is called once per frame
     void Update()
     {
@@ -67,6 +72,15 @@ public class AudioVolumeFade : MonoBehaviour
             }
 
             if (finished) { currentlyFading = false; }
+        }
+    }
+
+
+    private void Start()
+    {
+        if (fadeOnStart)
+        {
+            StartFadeIn(fadeUpOnStart, playOnStart);
         }
     }
 
