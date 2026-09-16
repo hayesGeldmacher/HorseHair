@@ -871,6 +871,7 @@ MonoBehaviour:
   flashLight: {fileID: 7384149165784214137}
   FadeDelay: 4
   arrowImage: {fileID: 9200480796059370795}
+  arrowAnim: {fileID: 0}
   Inventory:
   - {fileID: 0}
   - {fileID: 0}
@@ -904,6 +905,7 @@ MonoBehaviour:
   finishTaskSource: {fileID: 0}
   finishMorningClip: {fileID: 0}
   finishAfternoonClip: {fileID: 0}
+  darkeningAnimator: {fileID: 0}
   currentTask:
     goalItem: {fileID: 0}
     finalPoint: {fileID: 0}
@@ -1043,11 +1045,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2978423397892847469}
+  - {fileID: 6620661080824813815}
   - {fileID: 3031221382598227793}
   - {fileID: 2264034602785802165}
   - {fileID: 6618065620862406072}
   - {fileID: 7528691190941839261}
-  - {fileID: 6620661080824813815}
   m_Father: {fileID: 7084677945363431872}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -4229,6 +4231,7 @@ MonoBehaviour:
   fadeGroup: {fileID: 3280570002974308948}
   fadeDuration: 0.5
   TextCrawlCooldown: 0
+  useTextCrawlAudio: 0
   baseCharsPerSound: 10
   charsVariance: 0
   completeTextCrawl: 1
@@ -5230,6 +5233,8 @@ MonoBehaviour:
   full360Camera_x: 1
   full360Camera_y: 0
   rayCaster: {fileID: 0}
+  debugRaycast: 1
+  debugRayLength: 100
   _mouseInput: {x: 0, y: 0}
   _currentInput: {x: 0, y: 0}
   spotlight: {fileID: 4776837992820928888}
