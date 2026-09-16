@@ -102,7 +102,7 @@ public class CameraController : MonoBehaviour
         }
 
         UpdateSpotlight();
-        DebugRaycast();
+      //  DebugRaycast();
     }
 
     private void DebugRaycast()
