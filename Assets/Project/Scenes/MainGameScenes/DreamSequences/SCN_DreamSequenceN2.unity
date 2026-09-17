@@ -4361,6 +4361,89 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83cdee31f78672c4ead39894f7ed55b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Camera_Environment
+--- !u!1 &309747018
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 309747019}
+  - component: {fileID: 309747021}
+  - component: {fileID: 309747020}
+  m_Layer: 8
+  m_Name: NEI_TV
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &309747019
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309747018}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0.05245056, z: -0, w: 0.9986235}
+  m_LocalPosition: {x: -0.08800015, y: -0.11899996, z: -0.40700087}
+  m_LocalScale: {x: 0.11131613, y: 0.11131613, z: 0.11131613}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 861113538}
+  m_LocalEulerAnglesHint: {x: 0, y: -6.013, z: 0}
+--- !u!65 &309747020
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309747018}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2.4963355, y: 1.8760843, z: 0.9999997}
+  m_Center: {x: -0.0640977, y: -0.08562642, z: 0.00000006140708}
+--- !u!114 &309747021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309747018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdf3987bf05db244d9eca3ec74830566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventClick_NEI
+  OutlineIndex: 1
+  description: 
+  ResetAfterClick: 1
+  dialogueText:
+    dialogue:
+    - name: Me
+      dialogue: What is this...
+      sound: 0
+    dialogueSpeed: 10
+    alternativeDialogue: []
+    useAltDialogue: 0
+  resetCursor: 0
+  HighligherUsed: 0
+  arrowObject: {fileID: 0}
+  neiName: Television
+  dieAfterClick: 1
+  Activated: 1
 --- !u!1001 &313797259
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8655,6 +8738,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8307889161650280648, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
   m_PrefabInstance: {fileID: 305091245}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &861113538 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 714299772151755328, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+  m_PrefabInstance: {fileID: 1325720938}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &879655032
 Mesh:
   m_ObjectHideFlags: 0
@@ -10699,7 +10787,7 @@ PrefabInstance:
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.startingPosition
       value: 
-      objectReference: {fileID: 1597965283}
+      objectReference: {fileID: 810050405}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
       value: 5
@@ -16062,6 +16150,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8307889161650280648, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       insertIndex: -1
       addedObject: {fileID: 425594696}
+    - targetCorrespondingSourceObject: {fileID: 714299772151755328, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 309747019}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
 --- !u!4 &1325720939 stripped
@@ -27970,7 +28061,7 @@ Transform:
   m_GameObject: {fileID: 2129309090}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.535, y: 0, z: -0.09}
+  m_LocalPosition: {x: -0.122, y: 0, z: -0.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
