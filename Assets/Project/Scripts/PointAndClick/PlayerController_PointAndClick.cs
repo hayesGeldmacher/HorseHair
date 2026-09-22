@@ -61,6 +61,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("Hover Effect")]
     [SerializeField] private Animator darkeningAnimator;
 
+    [Header("Phone UI")]
+    [SerializeField] private Animator phoneImageAnim;
+
     [Header("Other")]
 
     private int dialogueIndex = 0;
@@ -664,10 +667,21 @@ public class PlayerController_PointAndClick : MonoBehaviour
             }
             _hideInventoryCoroutine = 
                 StartCoroutine(HideInventoryAfterDelay(0));
+
+            if(phoneImageAnim != null)
+            {
+                phoneImageAnim.SetTrigger("appear");
+            }
+            else { Debug.Log("Phone Image Animator Reference not assigned in Player!"); }
         }
         else
         {
             OnOpenInventory();
+            if (phoneImageAnim != null)
+            {
+                phoneImageAnim.SetTrigger("disappear");
+            }
+            else { Debug.Log("Phone Image Animator Reference not assigned in Player!"); }
         }
     }
 
