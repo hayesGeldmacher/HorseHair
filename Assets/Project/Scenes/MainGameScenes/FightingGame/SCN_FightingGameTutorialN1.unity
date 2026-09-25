@@ -664,6 +664,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 710532396}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: skipIntroAndCharacterSelect
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -16648,6 +16652,9 @@ MonoBehaviour:
     playOnAwake: 1
   currentlyFading: 1
   fadingUp: 1
+  fadeOnStart: 0
+  playOnStart: 0
+  fadeUpOnStart: 0
 --- !u!82 &2130230062
 AudioSource:
   m_ObjectHideFlags: 0

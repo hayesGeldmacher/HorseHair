@@ -525,6 +525,7 @@ public class FightCharacter : MonoBehaviour
             fighterAnim.ResetTrigger("grab");
             fighterAnim.ResetTrigger("special");
             fighterAnim.ResetTrigger("quickStep");
+            fighterAnim.ResetTrigger("quickStep");
             fighterAnim.ResetTrigger("hurt");
 
             if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
@@ -1693,7 +1694,22 @@ public class FightCharacter : MonoBehaviour
         isBlocking = false;
         isCrouching = false;
 
-        if (animateFighter) { fighterAnim.SetTrigger("quickStep"); }
+        if (animateFighter)
+        {
+            bool movingForward = (direction > 0) ? true : false;
+            Debug.Log("Direction!: " + direction);
+            if (movingForward)
+            {
+                fighterAnim.SetTrigger("quickStep");
+                Debug.Log("QuickStepped forward!");
+            }
+            else
+            {
+                fighterAnim.SetTrigger("quickStepBackward");
+                Debug.Log("Quickstepped backward!");
+            }
+        
+        }
     }
 
     private void UpdateQuickstepTimers()
