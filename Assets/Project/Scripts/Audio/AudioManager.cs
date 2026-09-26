@@ -81,6 +81,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private float spaceBetweenSounds = 0.2f; //how long to wait between triggering dialogue sounds
     [SerializeField] private int maxSoundsPerLine = 4; //total sounds that can be triggered per line
 
+    private int lastPlayedIndex = 0;
 
     private int lastPlayedSource = 0;
 
@@ -197,7 +198,6 @@ public class AudioManager : MonoBehaviour
 
         AudioClip clip = null;
         int audioIndex = 0;
-        int lastPlayedIndex = 0;
         int length = 0;
         switch (sound)
         {
@@ -237,7 +237,7 @@ public class AudioManager : MonoBehaviour
                 break;
         }
 
-        audioIndex = lastPlayedIndex;
+       lastPlayedIndex = audioIndex;
         AudioSource chosenSource = dialogueSources[0];
       
         int sourceIndex = 0;
@@ -267,7 +267,7 @@ public class AudioManager : MonoBehaviour
         if(length < 2) { return index; }
 
 
-        if(index + 1 > length)
+        if(index + 1 >= length)
         {
             newIndex = index - 1;
         }
