@@ -26,7 +26,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [SerializeField] private float FadeDelay = 1f;
     [SerializeField] private Image arrowImage;
     [SerializeField] private Animator arrowAnim;
-    
+    private bool arrowIsVisible = false;
 
     [Header("Inventory")]
     [SerializeField] private EventClick_Item[] Inventory = new EventClick_Item[5];
@@ -114,8 +114,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void EventClick_Environment_ShowArrowEvent()
     {
-        if (arrowAnim != null) { arrowAnim.SetBool("appeared", true); }
-       
+        if (arrowAnim != null) { arrowAnim.SetBool("appeared", true); arrowIsVisible = true; }    
     }
 
     private void OnDisable()
@@ -456,7 +455,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private IEnumerator TeleportSequence(TeleportClickEventData data)
     {
         // arrowImage.enabled = false;
-        if(arrowAnim != null) { arrowAnim.SetBool("appeared", false); }
+        if(arrowAnim != null) { arrowAnim.SetBool("appeared", false); arrowIsVisible = false; }
        
         PlayerCamera.rayCaster.enabled = false;
 
@@ -659,6 +658,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
             return;
         }
 
+        if (startedDialogue)
+        {
+            return;
+        }
+
         if (inventoryIsOpen)
         {
             if (_hideInventoryCoroutine != null)
@@ -673,10 +677,19 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 phoneImageAnim.SetTrigger("appear");
             }
             else { Debug.Log("Phone Image Animator Reference not assigned in Player!"); }
+            
+            if (arrowIsVisible && arrowAnim != null)
+            {
+                arrowAnim.SetBool("appeared", true);
+            }
         }
         else
         {
             OnOpenInventory();
+            if (arrowIsVisible && arrowAnim != null)
+            {
+                arrowAnim.SetBool("appeared", false);
+            }
         }
     }
 
