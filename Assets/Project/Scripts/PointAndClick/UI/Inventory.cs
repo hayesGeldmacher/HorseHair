@@ -33,6 +33,7 @@ public class Inventory : MonoBehaviour
         taskPanel.SetActive(true);
         currentPhoneState = PhoneState.Tasks;
         taskBtn.Select();
+        phoneAnimation.SetTrigger("Left Press");
     }
 
     public void OnClickInventory()
@@ -41,6 +42,7 @@ public class Inventory : MonoBehaviour
         taskPanel.SetActive(false);
         currentPhoneState = PhoneState.Inventory;
         inventoryBtn.Select();
+        phoneAnimation.SetTrigger("Right Press");
     }
 
     public void OnClickPhone()
