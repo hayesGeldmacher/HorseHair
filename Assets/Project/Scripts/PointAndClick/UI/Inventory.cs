@@ -72,6 +72,8 @@ public class Inventory : MonoBehaviour
     public void ShowInventory(PhoneState phoneState)
     {
         phoneAnimation.SetTrigger("Open Phone");
+        taskBtn.interactable = true;
+        inventoryBtn.interactable = true;
         StartCoroutine(ShowPhoneScreen(phoneState));
     }
 
@@ -79,7 +81,8 @@ public class Inventory : MonoBehaviour
     {
         yield return new WaitUntil(() => 
         phoneAnimation.GetCurrentAnimatorStateInfo(0).IsName("Opened"));
-        fadeGroup.alpha = 1;
+        //  fadeGroup.alpha = 1;
+        StartFade(1.0f);
         switch (phoneState)
         {
             case PhoneState.Inventory:
@@ -95,12 +98,15 @@ public class Inventory : MonoBehaviour
 
     public void HideInventory()
     {
-        StartFade(0f);
+       // StartFade(0f);
     }
 
     public void HideInventoryInstant()
     {
-        fadeGroup.alpha = 0;
+        //fadeGroup.alpha = 0;
+        StartFade(0f);
+        taskBtn.interactable = false;
+        inventoryBtn.interactable = false;
         phoneAnimation.SetTrigger("Close Phone");
     }
 

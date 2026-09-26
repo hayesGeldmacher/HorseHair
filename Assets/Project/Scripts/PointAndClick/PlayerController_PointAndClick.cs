@@ -677,11 +677,6 @@ public class PlayerController_PointAndClick : MonoBehaviour
         else
         {
             OnOpenInventory();
-            if (phoneImageAnim != null)
-            {
-                phoneImageAnim.SetTrigger("disappear");
-            }
-            else { Debug.Log("Phone Image Animator Reference not assigned in Player!"); }
         }
     }
 
@@ -696,6 +691,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
             StopCoroutine(_hideInventoryCoroutine);
         }
         //_hideInventoryCoroutine = StartCoroutine(HideInventoryAfterDelay(FadeDelay));
+
+        if (phoneImageAnim != null)
+        {
+            phoneImageAnim.SetTrigger("disappear");
+        }
+        else { Debug.Log("Phone Image Animator Reference not assigned in Player!"); }
     }
 
     private IEnumerator HideInventoryAfterDelay(float delay)
