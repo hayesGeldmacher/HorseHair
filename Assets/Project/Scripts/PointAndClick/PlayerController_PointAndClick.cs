@@ -649,6 +649,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         _hideTextCoroutine = null;
     }
 
+
     // ********************************************************************************
     // Inventory
     // ********************************************************************************

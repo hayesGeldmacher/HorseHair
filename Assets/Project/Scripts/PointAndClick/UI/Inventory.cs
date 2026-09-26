@@ -1,4 +1,5 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,11 +25,33 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Button taskBtn;
     [SerializeField] private Button phoneBtn;
 
+    [Header("Text")]
+    [SerializeField] private TMP_Text headerText;
+
+    [Header("Audio")]
+    [SerializeField] private AudioSource phoneButtonSource;
+
     private Coroutine _fadeCoroutine;
     private PhoneState currentPhoneState = PhoneState.None;
 
+
+    private void PlayPhoneButtonSound()
+    {
+        if (phoneButtonSource != null) 
+        { 
+            phoneButtonSource.pitch = UnityEngine.Random.Range(0.85f, 1.1f);
+            phoneButtonSource.Play();
+        }
+        else
+        {
+            Debug.Log("No ui button audio effect assigned in phone!");
+        }
+    }
+
     public void OnClickTask()
     {
+        headerText.text = "To Do:";
+        PlayPhoneButtonSound();
         inventoryPanel.SetActive(false);
         taskPanel.SetActive(true);
         currentPhoneState = PhoneState.Tasks;
@@ -38,6 +61,8 @@ public class Inventory : MonoBehaviour
 
     public void OnClickInventory()
     {
+        headerText.text = "My Stuff:";
+        PlayPhoneButtonSound();
         inventoryPanel.SetActive(true);
         taskPanel.SetActive(false);
         currentPhoneState = PhoneState.Inventory;
