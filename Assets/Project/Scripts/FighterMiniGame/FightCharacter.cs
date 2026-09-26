@@ -254,6 +254,9 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Animator trigger used to play the round-win celebration")]
     [SerializeField] private string celebrationTriggerName = "celebrate";
 
+    [Tooltip("Animator trigger used to play the round-loss animation")]
+    [SerializeField] private string lossTriggerName = "lose";
+
     [Header("Attack Animation Speeds")]
     [Tooltip("Animation speed for standing punch")]
     [SerializeField] private float standingPunchAnimationSpeed = 1.25f;
@@ -531,6 +534,9 @@ public class FightCharacter : MonoBehaviour
             if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
                 fighterAnim.ResetTrigger(celebrationTriggerName);
 
+            if (!string.IsNullOrWhiteSpace(lossTriggerName))
+                fighterAnim.ResetTrigger(lossTriggerName);
+
             fighterAnim.SetBool("shuffling", false);
             fighterAnim.SetBool("crouching", false);
             fighterAnim.SetBool("blocking", false);
@@ -555,18 +561,21 @@ public class FightCharacter : MonoBehaviour
             return;
         }
 
-        ApplyGroundedState();
-
-        groundedTimer = float.PositiveInfinity;
+        isKnockedDown = false;
+        isRecovering = false;
+        ReleaseGroundedHorizontalPosition();
 
         if (fighterAnim != null)
         {
-            fighterAnim.SetBool("stunned", true);
+            fighterAnim.SetBool("stunned", false);
             fighterAnim.SetBool("recovering", false);
+
+            if (!string.IsNullOrWhiteSpace(lossTriggerName))
+                fighterAnim.SetTrigger(lossTriggerName);
+
             fighterAnim.Update(0f);
         }
     }
-
     public void SetPresentationVisible(bool isVisible)
     {
         if (!isVisible)
@@ -682,6 +691,9 @@ public class FightCharacter : MonoBehaviour
 
         if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
             fighterAnim.ResetTrigger(celebrationTriggerName);
+
+        if (!string.IsNullOrWhiteSpace(lossTriggerName))
+            fighterAnim.ResetTrigger(lossTriggerName);
 
         fighterAnim.SetBool("shuffling", false);
         fighterAnim.SetBool("crouching", false);
@@ -1857,12 +1869,34 @@ public class FightCharacter : MonoBehaviour
             fighterAnim.SetTrigger("special");
         }
     }
+    private bool IsPlayingHurtAnimation()
+    {
+        if (fighterAnim == null)
+            return false;
 
+        AnimatorStateInfo currentState =
+            fighterAnim.GetCurrentAnimatorStateInfo(0);
+
+        if (currentState.IsTag("Hurt"))
+            return true;
+
+        if (fighterAnim.IsInTransition(0))
+        {
+            AnimatorStateInfo nextState =
+                fighterAnim.GetNextAnimatorStateInfo(0);
+
+            if (nextState.IsTag("Hurt"))
+                return true;
+        }
+
+        return false;
+    }
     private bool CanStartAttack()
     {
         return !dreamTraversalMode
             && roundActive
             && !isAttackAnimationPlaying
+            && !IsPlayingHurtAnimation()
             && !isKnockedDown
             && !isRecovering
             && blockStunTimer <= 0f;
@@ -2044,10 +2078,18 @@ public class FightCharacter : MonoBehaviour
 
     private void ApplyDamage()
     {
-        if (animateFighter)
-        {
-            fighterAnim.SetTrigger("hurt");
-        }
+        if (fighterAnim == null)
+            return;
+
+        EndAttackAnimation();
+
+        fighterAnim.ResetTrigger("punch");
+        fighterAnim.ResetTrigger("kick");
+        fighterAnim.ResetTrigger("grab");
+        fighterAnim.ResetTrigger("special");
+
+        fighterAnim.ResetTrigger("hurt");
+        fighterAnim.SetTrigger("hurt");
     }
 
     private void ApplyBlockStun()
