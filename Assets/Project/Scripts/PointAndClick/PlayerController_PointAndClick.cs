@@ -57,6 +57,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private AudioClip finishMorningClip;
     [SerializeField, Tooltip("Clip played for above when afternoon task is finished")] 
     private AudioClip finishAfternoonClip;
+    [SerializeField] private AudioSource phoneClickSource;
 
     [Header("Hover Effect")]
     [SerializeField] private Animator darkeningAnimator;
@@ -693,6 +694,19 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
+    private void PlayPhoneClickSound()
+    {
+        if(phoneClickSource != null)
+        {
+            phoneClickSource.pitch = UnityEngine.Random.Range(0.85f, 1.1f);
+            phoneClickSource.Play();
+        }
+        else
+        {
+            Debug.Log("Phone click sound effect not assigned in player!");
+        }
+    }
+
     public void OnOpenInventory(PhoneState phonestate = PhoneState.None)
     {
         inventoryIsOpen = true;
@@ -705,6 +719,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         //_hideInventoryCoroutine = StartCoroutine(HideInventoryAfterDelay(FadeDelay));
 
+        PlayPhoneClickSound();
+
         if (phoneImageAnim != null)
         {
             phoneImageAnim.SetTrigger("disappear");
@@ -714,6 +730,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private IEnumerator HideInventoryAfterDelay(float delay)
     {
+        PlayPhoneClickSound();
         yield return new WaitForSeconds(delay);
 
         inventoryUI.HideInventoryInstant();
