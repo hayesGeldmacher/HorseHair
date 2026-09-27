@@ -31,6 +31,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("Inventory")]
     [SerializeField] private EventClick_Item[] Inventory = new EventClick_Item[5];
     [SerializeField] private Inventory inventoryUI;
+    [SerializeField] public bool AllowPhone = true;
+    private bool buttonPressOpen = true;
+    [SerializeField] private float buttonPressCooldown = 0.5f;
 
     [Header("Textboxes")]
     [SerializeField] private TextBox textBox;
@@ -655,12 +658,22 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     public void OnInventoryButtonPress(InputAction.CallbackContext context)
     {
+        if (buttonPressOpen == false)
+        {
+            return;
+        }
+
         if (!context.performed)
         {
             return;
         }
 
         if (startedDialogue)
+        {
+            return;
+        }
+        
+        if (!AllowPhone)
         {
             return;
         }
@@ -693,6 +706,15 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 arrowAnim.SetBool("appeared", false);
             }
         }
+
+        StartCoroutine(PhoneCooldown(buttonPressCooldown));
+    }
+
+    private IEnumerator PhoneCooldown(float v)
+    {
+        buttonPressOpen = false;
+        yield return new WaitForSeconds(v);
+        buttonPressOpen = true;
     }
 
     private void PlayPhoneClickSound()
@@ -710,6 +732,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     public void OnOpenInventory(PhoneState phonestate = PhoneState.None)
     {
+        if (!AllowPhone)
+        {
+            return;
+        }
+
         inventoryIsOpen = true;
         inventoryUI.ShowInventory(phonestate);
         PlayerCamera.rayCaster.enabled = false;
