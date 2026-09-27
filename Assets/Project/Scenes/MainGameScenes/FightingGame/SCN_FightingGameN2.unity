@@ -634,6 +634,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 940438336}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: matchWinPanel
+      value: 
+      objectReference: {fileID: 195785254}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyCharacter
       value: 
       objectReference: {fileID: 8022259651016535678}
@@ -658,6 +662,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 593833965}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: matchWinnerText
+      value: 
+      objectReference: {fileID: 397773976}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerCharacter
       value: 
       objectReference: {fileID: 2073051923754037526}
@@ -665,6 +673,10 @@ PrefabInstance:
       propertyPath: playerRigidbody
       value: 
       objectReference: {fileID: 9179110695035327369}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyDisplayName
+      value: Horse
+      objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: keyboardControls
       value: 
@@ -698,9 +710,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 175180349}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinnerPortrait
+      value: 
+      objectReference: {fileID: 125421341, guid: 0b42e5e5b157c5841b91a3987a138f10, type: 3}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: matchWinnerPortrait
+      value: 
+      objectReference: {fileID: 319931889}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: nextRoundPromptText
       value: 
       objectReference: {fileID: 571076528}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinnerPortrait
+      value: 
+      objectReference: {fileID: 21300000, guid: 8236b82bf0cffa34da21967d2af4aff2, type: 3}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: gamepadContinuePrompt
       value: 
@@ -758,6 +782,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+--- !u!1 &195785254 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5857500320115870711, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
+  m_PrefabInstance: {fileID: 247595924}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &221949829 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4079954468223956511, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
@@ -858,6 +887,10 @@ PrefabInstance:
     - target: {fileID: 1888170364252855090, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1974793308721638226, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
+      propertyPath: m_text
+      value: Horse
       objectReference: {fileID: 0}
     - target: {fileID: 2079292208440706987, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -1017,7 +1050,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5050410956408238108, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5799327560742450960, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1041,6 +1074,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5799327560742450960, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5857500320115870711, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6424314920965657304, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
@@ -1150,6 +1187,14 @@ PrefabInstance:
     - target: {fileID: 8060990227648488019, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8091637923972526299, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8091637923972526299, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -310.6
       objectReference: {fileID: 0}
     - target: {fileID: 9047038082624938093, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1298,6 +1343,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3646803958266811365, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
   m_PrefabInstance: {fileID: 3102505697181209073}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &319931889 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5974253179719059977, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
+  m_PrefabInstance: {fileID: 247595924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!43 &345482227
 Mesh:
   m_ObjectHideFlags: 0
@@ -1862,6 +1918,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &397773976 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3034133017551773943, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
+  m_PrefabInstance: {fileID: 247595924}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &425708209
 GameObject:
   m_ObjectHideFlags: 0
@@ -3462,7 +3529,8 @@ Transform:
   m_LocalPosition: {x: -4.9302893, y: 0.19300444, z: -8.133158}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 523809397}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &497324303
@@ -3624,6 +3692,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!4 &523809397 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
+  m_PrefabInstance: {fileID: 923858404}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &527661379
 GameObject:
   m_ObjectHideFlags: 0
@@ -5907,7 +5980,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 0}
+    m_TransformParent: {fileID: 490602659}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalScale.x
@@ -5919,35 +5992,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7291009
+      value: 0.729101
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.259
+      value: 0.6713445
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.47449225
+      value: 0.28137487
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -11.339
+      value: -3.2058403
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.20229971
+      value: 0.20229223
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.044638954
+      value: 0.044734992
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9754201
+      value: 0.97541595
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.075086236
+      value: -0.07510322
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 677d2580b40ac3747a78dbaf78b26d68, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -9048,6 +9121,7 @@ MonoBehaviour:
   fighterModel: {fileID: 7473938277927097388}
   standingIdleStateName: FighterMovement.Standing.Fighter_Idle_Standing 0
   celebrationTriggerName: celebrate
+  lossTriggerName: lose
   standingPunchAnimationSpeed: 2.2
   crouchingPunchAnimationSpeed: 3
   jumpingPunchAnimationSpeed: 1.5
@@ -11252,6 +11326,7 @@ MonoBehaviour:
   fighterModel: {fileID: 8037240979113995087}
   standingIdleStateName: FighterMovement.Standing.Fighter_Idle_Standing 0
   celebrationTriggerName: celebrate
+  lossTriggerName: lose
   standingPunchAnimationSpeed: 2.2
   crouchingPunchAnimationSpeed: 3
   jumpingPunchAnimationSpeed: 1.5
@@ -11728,6 +11803,5 @@ SceneRoots:
   - {fileID: 1265532784}
   - {fileID: 3102505697181209073}
   - {fileID: 372906225}
-  - {fileID: 923858404}
   - {fileID: 49178402}
   - {fileID: 490602659}
