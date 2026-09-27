@@ -530,7 +530,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -883,6 +883,9 @@ MonoBehaviour:
     playOnAwake: 1
   currentlyFading: 1
   fadingUp: 1
+  fadeOnStart: 0
+  playOnStart: 0
+  fadeUpOnStart: 0
 --- !u!114 &864018324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1183,7 +1186,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.data[4].dialogue
-      value: And people are talking, but it just sorta flits in an out...
+      value: And people are talking, but it just sorta flits in and out...
       objectReference: {fileID: 0}
     - target: {fileID: 4518672925211160668, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: m_Enabled
@@ -4393,7 +4396,10 @@ MonoBehaviour:
   - {fileID: 5349290222648128400}
   - {fileID: 6343470162722927763}
   playerClips:
-  - {fileID: 8300000, guid: 9f51f87bbcd443e4fa216d5e246721bb, type: 3}
+  - {fileID: 8300000, guid: 76fce85dcca0f45449cb2c1e87e285a3, type: 3}
+  - {fileID: 8300000, guid: fef5b669b4f37524d8919ee1907f9d35, type: 3}
+  - {fileID: 8300000, guid: e517dafcd74e0134e9a80aedbb18a8b2, type: 3}
+  - {fileID: 8300000, guid: 36df5c27d24c2c942a57240c8830b3d6, type: 3}
   brotherClips:
   - {fileID: 8300000, guid: 8ae551e4576aea94fb38a60b0e4c4681, type: 3}
   - {fileID: 8300000, guid: bd9b26ebb70b874438cb97b14494c906, type: 3}
@@ -4405,7 +4411,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 1de2acb0068e62d4f8602e0398a58e23, type: 3}
   - {fileID: 8300000, guid: cd078bddc301dcb4dbc27d509061df84, type: 3}
   scarecrowClips: []
-  interactClip: {fileID: 0}
+  interactClip: {fileID: 8300000, guid: 9f51f87bbcd443e4fa216d5e246721bb, type: 3}
   charsPerSound: 10
   spaceBetweenSounds: 0.2
   maxSoundsPerLine: 4
