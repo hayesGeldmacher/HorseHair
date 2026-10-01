@@ -262,6 +262,15 @@ public class FightCharacterAI : MonoBehaviour
     private bool openingBehaviorActive;
     private bool wasRoundActive;
 
+    public void SetPlayerTarget(Transform newPlayer)
+    {
+        player = newPlayer;
+
+        if (player != null)
+            previousPlayerX = player.position.x;
+
+        ResetAIState();
+    }
     private void Reset()
     {
         AssignMissingReferences();

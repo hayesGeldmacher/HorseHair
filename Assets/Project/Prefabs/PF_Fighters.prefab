@@ -293,6 +293,7 @@ MonoBehaviour:
   fighterModel: {fileID: 7473938277537850782}
   standingIdleStateName: FighterMovement.Standing.Fighter_Idle_Standing 0
   celebrationTriggerName: celebrate
+  lossTriggerName: lose
   standingPunchAnimationSpeed: 1.5
   crouchingPunchAnimationSpeed: 2
   jumpingPunchAnimationSpeed: 1.5
@@ -324,6 +325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FighterHealth
   maxHealth: 200
   healthBar: {fileID: 0}
+  invulnerable: 0
 --- !u!65 &2239728164049037952
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -469,6 +471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterVFXController
   fightCharacter: {fileID: 2073051923087360164}
+  roundManager: {fileID: 0}
   selfVFXPoints: {fileID: 1952043572437796159}
   opponentTransform: {fileID: 2101551262792922484}
   opponentVFXPoints: {fileID: 7224366800226469870}
@@ -875,6 +878,7 @@ MonoBehaviour:
   fighterModel: {fileID: 8037240979521133309}
   standingIdleStateName: FighterMovement.Standing.Fighter_Idle_Standing 0
   celebrationTriggerName: celebrate
+  lossTriggerName: lose
   standingPunchAnimationSpeed: 1.5
   crouchingPunchAnimationSpeed: 2
   jumpingPunchAnimationSpeed: 1.5
@@ -974,6 +978,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FighterHealth
   maxHealth: 200
   healthBar: {fileID: 0}
+  invulnerable: 0
 --- !u!65 &8872796724990347723
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1119,6 +1124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FighterVFXController
   fightCharacter: {fileID: 8022259651407421388}
+  roundManager: {fileID: 0}
   selfVFXPoints: {fileID: 7224366800226469870}
   opponentTransform: {fileID: 5358301379143721012}
   opponentVFXPoints: {fileID: 1952043572437796159}
