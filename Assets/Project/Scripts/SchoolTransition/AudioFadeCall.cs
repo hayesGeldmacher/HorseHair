@@ -17,6 +17,7 @@ public class AudioFadeCall : MonoBehaviour
     public void CalledTransition()
     {
         Debug.Log("Started Fading out!");
+
         fade.StartFadeIn(false, false);
     }
 }
