@@ -15,7 +15,7 @@ public class TextBox : MonoBehaviour
     [Header("Text Crawl Audio")]
     [SerializeField] private bool useTextCrawlAudio;
 
-    [Range(10, 60)]
+    [Range(5, 60)]
     [SerializeField] private int baseCharsPerSound; //how many characters type before audio plays - HG
 
     [Range(0, 10)]

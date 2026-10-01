@@ -284,8 +284,8 @@ public class AudioManager : MonoBehaviour
     {
 
         //not using the animal crossing-style audio anymyore - HG
-        PlayDialogueSound(sound);
-        return;
+       // PlayDialogueSound(sound);
+        //return;
 
         int charCount = 0;
         int soundCount = 0;
