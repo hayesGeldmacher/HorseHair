@@ -615,6 +615,12 @@ public class FightCharacter : MonoBehaviour
         fighterPresentationHidden = false;
     }
 
+    public void SetOpponent(Transform newOpponent)
+    {
+        opponent = newOpponent;
+        ConfigurePhysicalFighterCollisions();
+    }
+
     public void ResetRoundState()
     {
         ReleaseGroundedHorizontalPosition();

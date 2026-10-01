@@ -14,6 +14,9 @@ public class FighterHealth : MonoBehaviour
     [Tooltip("Slider used as this fighter's health bar")]
     [SerializeField] private AngledHealthFill healthBar;
 
+    [Header("Special Rules")]
+    [SerializeField] private bool invulnerable;
+
     private int currentHealth;
     private bool isDefeated;
 
@@ -30,6 +33,9 @@ public class FighterHealth : MonoBehaviour
 
     public void TakeDamage(int damage, bool canDefeat = true)
     {
+        if (invulnerable)
+            return;
+
         if (isDefeated)
             return;
 
@@ -94,5 +100,9 @@ public class FighterHealth : MonoBehaviour
         UpdateHealthBar();
 
         Debug.Log(name + " health reset to " + currentHealth);
+    }
+    public void SetInvulnerable(bool value)
+    {
+        invulnerable = value;
     }
 }

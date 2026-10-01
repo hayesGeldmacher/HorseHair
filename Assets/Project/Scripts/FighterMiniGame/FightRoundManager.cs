@@ -10,6 +10,8 @@ using System.Collections.Generic;
 /// </summary>
 public class FightRoundManager : MonoBehaviour
 {
+
+    public event System.Action<FightCharacter> MatchEnded; 
     public bool IsTutorialPhaseActive
     {
         get { return tutorialPhaseActive; }
@@ -191,6 +193,7 @@ public class FightRoundManager : MonoBehaviour
     [SerializeField] private float controlsContinueBlinkSpeed = 2f;
 
     [Header("Scene Transition")]
+    [SerializeField] private bool useExternalPostMatchSequence;
     [SerializeField] private EyelidsFG eyelids;
     [SerializeField] private string nextSceneName;
     private bool triggeredTransition = false;
@@ -203,6 +206,17 @@ public class FightRoundManager : MonoBehaviour
     [SerializeField] private AudioClip roundWinSFX;
     [SerializeField] private AudioClip backgroundMusic;
     [SerializeField] private AudioClip matchWonSFX;
+
+    private bool bonusMatchActive;
+    private bool showBonusRoundIntro;
+
+    [Header("Bonus Round Dialogue")]
+    [SerializeField]
+    private List<DialogueTrigger> bonusRevealDialogue =
+    new List<DialogueTrigger>();
+
+    [SerializeField]
+    private float bonusDialogueLineDelay = 0.25f;
 
     private float currentRoundTime;
     private float startBlinkTimer;
@@ -249,7 +263,6 @@ public class FightRoundManager : MonoBehaviour
 
             if (gameCanStart)
                 StartMatchImmediately();
-            StartMatchImmediately();
         }
     }
 
@@ -812,6 +825,9 @@ public class FightRoundManager : MonoBehaviour
 
     private IEnumerator RoundIntroRoutine()
     {
+        // Remember this before showBonusRoundIntro gets changed.
+        bool isBonusIntro = showBonusRoundIntro;
+
         SetFightersActive(false);
         startingRound = true;
         roundActive = false;
@@ -828,7 +844,10 @@ public class FightRoundManager : MonoBehaviour
         ResetFighters();
         currentRoundTime = roundTimeSeconds;
         UpdateAllUI();
-        bool startingTutorial = fightingGameTutorial != null && !tutorialFinished;
+
+        bool startingTutorial =
+            fightingGameTutorial != null &&
+            !tutorialFinished;
 
         if (timerText != null)
         {
@@ -838,10 +857,22 @@ public class FightRoundManager : MonoBehaviour
                 timerText.text = "∞";
         }
 
-        SetRoundMessage(startingTutorial ? "Tutorial" : "Round " + currentRoundNumber);
+        if (isBonusIntro)
+        {
+            SetRoundMessage("BONUS ROUND");
+        }
+        else
+        {
+            SetRoundMessage(
+                startingTutorial
+                    ? "Tutorial"
+                    : "Round " + currentRoundNumber
+            );
+        }
 
-
-        yield return new WaitForSeconds(roundIntroBlackTime);
+        yield return new WaitForSecondsRealtime(
+            roundIntroBlackTime
+        );
 
         SetFighterPresentationVisible(true);
 
@@ -850,11 +881,42 @@ public class FightRoundManager : MonoBehaviour
 
         yield return FadeScreen(0f);
 
-        SetCenterMessage(startingTutorial
-            ? "TUTORIAL, BEGIN!"
-            : "ROUND " + currentRoundNumber + ", BEGIN!");
+        if (isBonusIntro)
+        {
+            SetCenterMessage("BONUS ROUND!");
 
-        yield return new WaitForSeconds(roundBeginTextTime);
+            yield return new WaitForSecondsRealtime(
+                roundBeginTextTime
+            );
+
+            SetCenterMessage("");
+
+            if (dialogueManager != null &&
+                bonusRevealDialogue != null &&
+                bonusRevealDialogue.Count > 0)
+            {
+                yield return StartCoroutine(
+                    dialogueManager.PlayDialogueSequence(
+                        bonusRevealDialogue,
+                        bonusDialogueLineDelay
+                    )
+                );
+            }
+
+            showBonusRoundIntro = false;
+        }
+        else
+        {
+            SetCenterMessage(
+                startingTutorial
+                    ? "TUTORIAL, BEGIN!"
+                    : "ROUND " + currentRoundNumber + ", BEGIN!"
+            );
+
+            yield return new WaitForSecondsRealtime(
+                roundBeginTextTime
+            );
+        }
 
         StartRound();
     }
@@ -1137,6 +1199,12 @@ public class FightRoundManager : MonoBehaviour
         SetFightersActive(false);
         SetNextRoundPromptVisible(false);
 
+        if (useExternalPostMatchSequence)
+        {
+            MatchEnded?.Invoke(matchWinner);
+            return;
+        }
+
         if (!triggeredTransition)
         {
             triggeredTransition = true;
@@ -1199,7 +1267,139 @@ public class FightRoundManager : MonoBehaviour
         else
             SceneManager.LoadScene("SCN_DreamSequenceN1");
     }
+    public void BeginBonusMatch(
+        FightCharacter bonusEnemy,
+        string bonusEnemyName)
+    {
+        if (bonusEnemy == null)
+        {
+            Debug.LogError(
+                "Cannot begin bonus match: horse reference is missing.",
+                this
+            );
 
+            return;
+        }
+
+        enemyCharacter = bonusEnemy;
+
+        // The farmer must stop targeting the disabled sheep.
+        playerCharacter.SetOpponent(enemyCharacter.transform);
+
+        // The horse must target the farmer.
+        enemyCharacter.SetOpponent(playerCharacter.transform);
+
+        FightCharacterAI horseAI =
+            enemyCharacter.GetComponent<FightCharacterAI>();
+
+        if (horseAI == null)
+        {
+            horseAI =
+                enemyCharacter.GetComponentInChildren<FightCharacterAI>(true);
+        }
+
+        if (horseAI != null)
+        {
+            horseAI.SetPlayerTarget(playerCharacter.transform);
+            horseAI.enabled = true;
+        }
+        else
+        {
+            Debug.LogWarning(
+                "The bonus horse has no FightCharacterAI component.",
+                enemyCharacter
+            );
+        }
+
+        enemyHealth =
+            bonusEnemy.GetComponent<FighterHealth>();
+
+        if (enemyHealth == null)
+        {
+            enemyHealth =
+                bonusEnemy.GetComponentInChildren<FighterHealth>(true);
+        }
+
+        enemySuperMeter =
+            bonusEnemy.GetComponent<FighterSuperMeter>();
+
+        if (enemySuperMeter == null)
+        {
+            enemySuperMeter =
+                bonusEnemy.GetComponentInChildren<FighterSuperMeter>(true);
+        }
+
+        enemyRigidbody =
+            bonusEnemy.GetComponent<Rigidbody>();
+
+        if (enemyRigidbody == null)
+        {
+            enemyRigidbody =
+                bonusEnemy.GetComponentInChildren<Rigidbody>(true);
+        }
+
+        enemyDisplayName = bonusEnemyName;
+
+        roundsNeededToWinGame = 1;
+        playerRoundWins = 0;
+        enemyRoundWins = 0;
+        currentRoundNumber = 1;
+
+        gameOver = false;
+        triggeredTransition = false;
+        waitingForGameOverInput = false;
+        waitingForNextRound = false;
+        startingRound = false;
+        roundActive = false;
+
+        bonusMatchActive = true;
+        showBonusRoundIntro = true;
+
+        if (matchWinPanel != null)
+            matchWinPanel.SetActive(false);
+
+        SetNameTextVisible(true);
+        SetRoundWinIconsVisible(true);
+        SetNextRoundPromptVisible(false);
+
+        UpdateEnemyNameText();
+        UpdateRoundWinText();
+
+        if (playerCharacter != null)
+        {
+            playerCharacter.SetRoundActive(false);
+            playerCharacter.ResetRoundState();
+        }
+
+        if (enemyHealth != null)
+            enemyHealth.ResetHealth();
+
+        if (enemyCharacter != null)
+        {
+            enemyCharacter.SetRoundActive(false);
+            enemyCharacter.ResetRoundState();
+        }
+
+        QueueRoundStart();
+    }
+
+    private void UpdateEnemyNameText()
+    {
+        if (enemyNameText == null)
+            return;
+
+        TMP_Text enemyLabel =
+            enemyNameText.GetComponent<TMP_Text>();
+
+        if (enemyLabel == null)
+        {
+            enemyLabel =
+                enemyNameText.GetComponentInChildren<TMP_Text>(true);
+        }
+
+        if (enemyLabel != null)
+            enemyLabel.text = enemyDisplayName;
+    }
     private void ResetFighters()
     {
         if (playerHealth != null)
