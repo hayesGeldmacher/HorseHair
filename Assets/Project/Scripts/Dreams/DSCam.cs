@@ -9,6 +9,9 @@ public class DSCam : MonoBehaviour
     public float smoothSpeed = 5f;
     public float leftBoundOffset = 8f;
 
+    private bool followingPlayer = true;
+    private bool finalFollowPlayer = true;
+
     private float furthestCameraX;
 
     void Start()
@@ -18,7 +21,21 @@ public class DSCam : MonoBehaviour
 
     void LateUpdate()
     {
-        if (player == null) return;
+
+        if (player == null || !finalFollowPlayer) return;
+
+        if(!followingPlayer)
+        {
+            if(smoothSpeed > 0)
+            {
+                smoothSpeed -= Time.deltaTime * 5;
+                if(smoothSpeed < 0)
+                {
+                    smoothSpeed = 0;
+                    finalFollowPlayer = false;
+                }
+            }
+        }
 
         float desiredCameraX = player.position.x + playerLeftOffset;
 
@@ -40,5 +57,9 @@ public class DSCam : MonoBehaviour
                 leftBound.position.z
             );
         }
+    }
+    public void DisableCameraFollow()
+    {
+        followingPlayer = false;
     }
 }
