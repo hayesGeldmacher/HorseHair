@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class DSCam : MonoBehaviour
@@ -5,9 +6,16 @@ public class DSCam : MonoBehaviour
     public Transform player;
     public Transform leftBound;
 
+    [SerializeField] private FightCharacter fightCharacter;
+    [SerializeField] private Camera cam;
+    [SerializeField] private float goalZoom;
+    [SerializeField] private float zoomSpeed;
+    private float startZoom;
+    private bool isZooming = false;
     public float playerLeftOffset = 5f;
     public float smoothSpeed = 5f;
     public float leftBoundOffset = 8f;
+    float t = 0;
 
     private bool followingPlayer = true;
     private bool finalFollowPlayer = true;
@@ -22,13 +30,27 @@ public class DSCam : MonoBehaviour
     void LateUpdate()
     {
 
+        if (isZooming)
+        {
+            if(t < 1.0)
+            {
+                t += Time.deltaTime * zoomSpeed;
+                if(t > 1.0) { t = 1.0f; isZooming = false; }
+                float newFOV = Mathf.Lerp(startZoom, goalZoom, t);
+                cam.fieldOfView = newFOV;
+            }
+        }
+
+
+
+
         if (player == null || !finalFollowPlayer) return;
 
         if(!followingPlayer)
         {
-            if(smoothSpeed > 0)
+            if (smoothSpeed > 0 && fightCharacter.movingForward)
             {
-                smoothSpeed -= Time.deltaTime * 5;
+                smoothSpeed -= Time.deltaTime * 3;
                 if(smoothSpeed < 0)
                 {
                     smoothSpeed = 0;
@@ -58,8 +80,15 @@ public class DSCam : MonoBehaviour
             );
         }
     }
+
     public void DisableCameraFollow()
     {
         followingPlayer = false;
+    }
+
+    public void StartZooming()
+    {
+        isZooming = true;
+        startZoom = cam.fieldOfView;
     }
 }
