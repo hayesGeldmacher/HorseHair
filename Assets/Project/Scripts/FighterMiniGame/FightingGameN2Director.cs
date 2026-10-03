@@ -28,6 +28,8 @@ public class FightingGameN2Director : MonoBehaviour
     [SerializeField] private float dragStartDelay = 2f;
     [SerializeField] private float dragDuration = 5f;
     [SerializeField] private string horseDragTrigger = "drag";
+    [Range(0f, 1f)]
+    [SerializeField] private float dragEndDarkness = 0.8f;
 
     [Header("Scene Transition")]
     [SerializeField] private string nextSceneName;
@@ -301,6 +303,11 @@ public class FightingGameN2Director : MonoBehaviour
         Quaternion farmerRotation =
             farmerDragRoot.rotation;
 
+        float startingFadeAlpha =
+            fadeCanvas != null
+                ? fadeCanvas.alpha
+                : 0f;
+
         float elapsed = 0f;
 
         while (elapsed < dragDuration)
@@ -319,6 +326,15 @@ public class FightingGameN2Director : MonoBehaviour
                     progress
                 );
 
+            if (fadeCanvas != null)
+            {
+                fadeCanvas.alpha = Mathf.Lerp(
+                    startingFadeAlpha,
+                    dragEndDarkness,
+                    smoothedProgress
+                );
+            }
+
             Vector3 newHorsePosition =
                 Vector3.Lerp(
                     horseStartPosition,
@@ -326,11 +342,9 @@ public class FightingGameN2Director : MonoBehaviour
                     smoothedProgress
                 );
 
-            // Move the horse.
             horse.transform.position =
                 newHorsePosition;
 
-            // Directly move the farmer by the same amount.
             farmerDragRoot.position =
                 newHorsePosition + farmerOffset;
 

@@ -218,6 +218,13 @@ public class FightRoundManager : MonoBehaviour
     [SerializeField]
     private float bonusDialogueLineDelay = 0.25f;
 
+    [Header("Bonus Round Announcement")]
+    [SerializeField] private TMP_Text bonusRoundText;
+    [SerializeField] private int bonusTextFlashCount = 4;
+    [SerializeField] private float bonusTextFlashInterval = 0.2f;
+    [Header("Bonus Round Rules")]
+    [SerializeField, Min(1)] private int bonusHorseHealth = 700;
+
     private float currentRoundTime;
     private float startBlinkTimer;
     private float nextRoundBlinkTimer;
@@ -256,6 +263,13 @@ public class FightRoundManager : MonoBehaviour
     {
         ConfigureTutorial();
         ShowStartScreen();
+
+        if (bonusRoundText != null)
+        {
+            bonusRoundText.text = "BONUS ROUND!";
+            bonusRoundText.enabled = true;
+            bonusRoundText.gameObject.SetActive(false);
+        }
 
         if (skipIntroAndCharacterSelect)
         {
@@ -859,7 +873,7 @@ public class FightRoundManager : MonoBehaviour
 
         if (isBonusIntro)
         {
-            SetRoundMessage("BONUS ROUND");
+            SetRoundMessage("");
         }
         else
         {
@@ -883,13 +897,9 @@ public class FightRoundManager : MonoBehaviour
 
         if (isBonusIntro)
         {
-            SetCenterMessage("BONUS ROUND!");
-
-            yield return new WaitForSecondsRealtime(
-                roundBeginTextTime
+            yield return StartCoroutine(
+                FlashBonusRoundText()
             );
-
-            SetCenterMessage("");
 
             if (dialogueManager != null &&
                 bonusRevealDialogue != null &&
@@ -1283,11 +1293,36 @@ public class FightRoundManager : MonoBehaviour
 
         enemyCharacter = bonusEnemy;
 
+        enemyCharacter.SetTutorialDamageImmunity(false);
+
         // The farmer must stop targeting the disabled sheep.
         playerCharacter.SetOpponent(enemyCharacter.transform);
 
         // The horse must target the farmer.
         enemyCharacter.SetOpponent(playerCharacter.transform);
+
+        // Redirect the farmer's VFX from the sheep to the horse.
+        FighterVFXController[] playerVFXControllers =
+            playerCharacter.GetComponentsInChildren<FighterVFXController>(
+                true
+            );
+
+        foreach (FighterVFXController vfxController in playerVFXControllers)
+        {
+            if (vfxController != null)
+                vfxController.SetOpponent(enemyCharacter.transform);
+        }
+
+        FighterVFXController[] horseVFXControllers =
+            enemyCharacter.GetComponentsInChildren<FighterVFXController>(
+                true
+            );
+
+        foreach (FighterVFXController vfxController in horseVFXControllers)
+        {
+            if (vfxController != null)
+                vfxController.SetOpponent(playerCharacter.transform);
+        }
 
         FightCharacterAI horseAI =
             enemyCharacter.GetComponent<FightCharacterAI>();
@@ -1318,6 +1353,20 @@ public class FightRoundManager : MonoBehaviour
         {
             enemyHealth =
                 bonusEnemy.GetComponentInChildren<FighterHealth>(true);
+        }
+
+        if (enemyHealth != null)
+        {
+            enemyHealth.ConfigureBonusHealth(
+                bonusHorseHealth
+            );
+        }
+        else
+        {
+            Debug.LogError(
+                "The bonus horse has no FighterHealth component.",
+                bonusEnemy
+            );
         }
 
         enemySuperMeter =
@@ -1381,6 +1430,40 @@ public class FightRoundManager : MonoBehaviour
         }
 
         QueueRoundStart();
+    }
+
+    private IEnumerator FlashBonusRoundText()
+    {
+        if (bonusRoundText == null)
+        {
+            Debug.LogWarning(
+                "Bonus Round Text is not assigned.",
+                this
+            );
+
+            yield break;
+        }
+
+        bonusRoundText.text = "BONUS ROUND!";
+        bonusRoundText.gameObject.SetActive(true);
+
+        for (int i = 0; i < bonusTextFlashCount; i++)
+        {
+            bonusRoundText.enabled = true;
+
+            yield return new WaitForSecondsRealtime(
+                bonusTextFlashInterval
+            );
+
+            bonusRoundText.enabled = false;
+
+            yield return new WaitForSecondsRealtime(
+                bonusTextFlashInterval
+            );
+        }
+
+        bonusRoundText.enabled = true;
+        bonusRoundText.gameObject.SetActive(false);
     }
 
     private void UpdateEnemyNameText()

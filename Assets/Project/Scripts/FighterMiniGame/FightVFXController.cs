@@ -280,4 +280,33 @@ public class FighterVFXController : MonoBehaviour
 
         Destroy(vfxInstance, VFXDestroyDelay);
     }
+
+    public void SetOpponent(Transform newOpponent)
+    {
+        opponentTransform = newOpponent;
+        opponentVFXPoints = null;
+
+        if (opponentTransform == null)
+            return;
+
+        opponentVFXPoints =
+            opponentTransform.GetComponent<FighterVFXSpawnPoints>();
+
+        if (opponentVFXPoints == null)
+        {
+            opponentVFXPoints =
+                opponentTransform.GetComponentInChildren<FighterVFXSpawnPoints>(
+                    true
+                );
+        }
+
+        if (opponentVFXPoints == null)
+        {
+            Debug.LogWarning(
+                "No FighterVFXSpawnPoints found on " +
+                opponentTransform.name,
+                this
+            );
+        }
+    }
 }

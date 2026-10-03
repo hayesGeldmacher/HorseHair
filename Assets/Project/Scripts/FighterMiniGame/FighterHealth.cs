@@ -17,6 +17,8 @@ public class FighterHealth : MonoBehaviour
     [Header("Special Rules")]
     [SerializeField] private bool invulnerable;
 
+    private bool preventDefeat;
+
     private int currentHealth;
     private bool isDefeated;
 
@@ -39,12 +41,17 @@ public class FighterHealth : MonoBehaviour
         if (isDefeated)
             return;
 
-        int newHealth = currentHealth - damage;
+        long newHealth = (long)currentHealth - damage;
 
-        if (!canDefeat && newHealth <= 0)
-            newHealth = 1;
+        int minimumHealth =
+            preventDefeat || !canDefeat
+                ? 1
+                : 0;
 
-        currentHealth = Mathf.Clamp(newHealth, 0, maxHealth);
+        currentHealth = (int)System.Math.Max(
+            minimumHealth,
+            System.Math.Min((long)maxHealth, newHealth)
+        );
 
         UpdateHealthBar();
 
@@ -52,6 +59,17 @@ public class FighterHealth : MonoBehaviour
 
         if (currentHealth <= 0)
             Defeat();
+    }
+
+    public void ConfigureBonusHealth(int healthAmount)
+    {
+        maxHealth = Mathf.Max(1, healthAmount);
+
+        invulnerable = false;
+
+        preventDefeat = true;
+
+        ResetHealth();
     }
 
     public int GetCurrentHealth()
