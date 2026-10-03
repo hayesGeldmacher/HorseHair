@@ -257,34 +257,13 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Animator trigger used to play the round-loss animation")]
     [SerializeField] private string lossTriggerName = "lose";
 
-    [Header("Attack Animation Speeds")]
-    [Tooltip("Animation speed for standing punch")]
-    [SerializeField] private float standingPunchAnimationSpeed = 1.25f;
-
-    [Tooltip("Animation speed for crouching punch")]
-    [SerializeField] private float crouchingPunchAnimationSpeed = 1.35f;
-
-    [Tooltip("Animation speed for jumping punch")]
-    [SerializeField] private float jumpingPunchAnimationSpeed = 1.15f;
-
-    [Tooltip("Animation speed for standing kick")]
-    [SerializeField] private float standingKickAnimationSpeed = 0.9f;
-
-    [Tooltip("Animation speed for crouching kick")]
-    [SerializeField] private float crouchingKickAnimationSpeed = 1f;
-
-    [Tooltip("Animation speed for jumping kick")]
-    [SerializeField] private float jumpingKickAnimationSpeed = 0.85f;
-
-    [Tooltip("Animation speed for grab")]
-    [SerializeField] private float grabAnimationSpeed = 0.9f;
-
-    [Tooltip("Animation speed for special")]
-    [SerializeField] private float specialAnimationSpeed = 0.75f;
-
     [Header("Sound Effects")]
     [Tooltip("Sound played when this fighter performs a punch attack")]
     [SerializeField] private AudioSource audioSource;
+
+    [Header("Breakable Objects")]
+    [Tooltip("Layers containing breakable object colliders. Defaults to every layer.")]
+    [SerializeField] private LayerMask breakableLayers = ~0;
 
     [SerializeField] private AudioClip attackMissSound;
     [SerializeField] private AudioClip punchHitSound;
@@ -528,7 +507,7 @@ public class FightCharacter : MonoBehaviour
             fighterAnim.ResetTrigger("grab");
             fighterAnim.ResetTrigger("special");
             fighterAnim.ResetTrigger("quickStep");
-            fighterAnim.ResetTrigger("quickStep");
+            fighterAnim.ResetTrigger("quickStepBackward");
             fighterAnim.ResetTrigger("hurt");
 
             if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
@@ -693,6 +672,7 @@ public class FightCharacter : MonoBehaviour
         fighterAnim.ResetTrigger("grab");
         fighterAnim.ResetTrigger("special");
         fighterAnim.ResetTrigger("quickStep");
+        fighterAnim.ResetTrigger("quickStepBackward");
         fighterAnim.ResetTrigger("hurt");
 
         if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
@@ -738,9 +718,6 @@ public class FightCharacter : MonoBehaviour
 
     public void StartAttackAnimation()
     {
-        if (dreamTraversalMode)
-            return;
-
         isAttackAnimationPlaying = true; //locks attack input during attack animation 
         attackStartedAirborne = !isGrounded;
 
@@ -776,38 +753,20 @@ public class FightCharacter : MonoBehaviour
 
         fighterAnim.speed = speed;
     }
-
-    private float GetPunchAnimationSpeed()
-    {
-        if (!isGrounded)
-            return jumpingPunchAnimationSpeed;
-
-        if (isCrouching)
-            return crouchingPunchAnimationSpeed;
-
-        return standingPunchAnimationSpeed;
-    }
-
-    private float GetKickAnimationSpeed()
-    {
-        if (!isGrounded)
-            return jumpingKickAnimationSpeed;
-
-        if (isCrouching)
-            return crouchingKickAnimationSpeed;
-
-        return standingKickAnimationSpeed;
-    }
-
     public void PerformAttackHit()
     {
-        if (dreamTraversalMode)
-            return;
-
         if (!hasPendingAttack)
             return;
 
         hasPendingAttack = false;
+
+        if (TryHitBreakable(pendingAttackDamage, pendingAttackRange))
+        {
+            StartLocalHitstop(attackerHitstopTime);
+            PlayConnectedAttackShake();
+            PlayAttackResultSound(FighterMoveResult.Hit, pendingHitSound);
+            return;
+        }
 
         FighterMoveResult result = TryHitOpponent(
             pendingAttackName,
@@ -1193,10 +1152,17 @@ public class FightCharacter : MonoBehaviour
 
         if (dreamTraversalMode)
         {
-            isCrouching = false;
+            isCrouching = crouchHeld && isGrounded;
             isBlocking = false;
             quickstepTimer = 0f;
             quickstepDirection = 0f;
+
+            if (jumpPressed && isGrounded && !isCrouching)
+                Jump(Mathf.Max(0f, moveInput));
+            else if (punchPressed)
+                        Punch();
+            else if(kickPressed)
+                        Kick(); 
 
             ClearAIButtonInputs();
             return;
@@ -1712,21 +1678,19 @@ public class FightCharacter : MonoBehaviour
         isBlocking = false;
         isCrouching = false;
 
-        if (animateFighter)
+        if (animateFighter && fighterAnim != null)
         {
-            bool movingForward = (direction > 0) ? true : false;
-            Debug.Log("Direction!: " + direction);
-            if (movingForward)
+            bool isForwardQuickstep =
+                Mathf.Sign(direction) == facingDirection;
+
+            if (isForwardQuickstep)
             {
                 fighterAnim.SetTrigger("quickStep");
-                Debug.Log("QuickStepped forward!");
             }
             else
             {
                 fighterAnim.SetTrigger("quickStepBackward");
-                Debug.Log("Quickstepped backward!");
             }
-        
         }
     }
 
@@ -1785,7 +1749,6 @@ public class FightCharacter : MonoBehaviour
 
         if (animateFighter && fighterAnim != null)
         {
-            SetAttackAnimationSpeed(GetPunchAnimationSpeed());
             fighterAnim.SetTrigger("punch");
         }
     }
@@ -1813,7 +1776,6 @@ public class FightCharacter : MonoBehaviour
 
         if (animateFighter && fighterAnim != null)
         {
-            SetAttackAnimationSpeed(GetKickAnimationSpeed());
             fighterAnim.SetTrigger("kick");
         }
     }
@@ -1836,7 +1798,6 @@ public class FightCharacter : MonoBehaviour
 
         if (animateFighter && fighterAnim != null)
         {
-            SetAttackAnimationSpeed(grabAnimationSpeed);
             fighterAnim.SetTrigger("grab");
         }
     }
@@ -1871,7 +1832,6 @@ public class FightCharacter : MonoBehaviour
 
         if (animateFighter && fighterAnim != null)
         {
-            SetAttackAnimationSpeed(specialAnimationSpeed);
             fighterAnim.SetTrigger("special");
         }
     }
@@ -1899,8 +1859,7 @@ public class FightCharacter : MonoBehaviour
     }
     private bool CanStartAttack()
     {
-        return !dreamTraversalMode
-            && roundActive
+        return roundActive
             && !isAttackAnimationPlaying
             && !IsPlayingHurtAnimation()
             && !isKnockedDown
@@ -1950,6 +1909,49 @@ public class FightCharacter : MonoBehaviour
         }
 
         return opponentCharacter.ReceiveAttack(damage, transform.position, this);
+    }
+
+    private bool TryHitBreakable(int damage, float range)
+    {
+        Collider[] nearbyColliders = Physics.OverlapSphere(
+            transform.position,
+            range,
+            breakableLayers,
+            QueryTriggerInteraction.Collide
+        );
+
+        BreakableObject closestBreakable = null;
+        float closestDistanceSquared = float.PositiveInfinity;
+
+        foreach (Collider nearbyCollider in nearbyColliders)
+        {
+            if (nearbyCollider == null)
+                continue;
+
+            BreakableObject breakable =
+                nearbyCollider.GetComponentInParent<BreakableObject>();
+
+            if (breakable == null || breakable.IsBroken)
+                continue;
+
+            float directionToBreakable =
+                nearbyCollider.bounds.center.x - transform.position.x;
+
+            if (directionToBreakable * facingDirection < -0.05f)
+                continue;
+
+            Vector3 closestPoint = nearbyCollider.ClosestPoint(transform.position);
+            float distanceSquared =
+                (closestPoint - transform.position).sqrMagnitude;
+
+            if (distanceSquared >= closestDistanceSquared)
+                continue;
+
+            closestDistanceSquared = distanceSquared;
+            closestBreakable = breakable;
+        }
+
+        return closestBreakable != null && closestBreakable.TakeDamage(damage);
     }
 
     private FighterMoveResult TryGrabOpponent()
@@ -2057,8 +2059,11 @@ public class FightCharacter : MonoBehaviour
         float defenderFacingDirection =
             Mathf.Sign(newAttackerPosition.x - newDefenderPosition.x);
 
-        FlipModel(defenderFacingDirection);
-        attacker.FlipModel(-defenderFacingDirection);
+        facingDirection = (int)defenderFacingDirection;
+        attacker.facingDirection = -facingDirection;
+
+        FlipModel(facingDirection);
+        attacker.FlipModel(attacker.facingDirection);
     }
 
     /// <summary>
