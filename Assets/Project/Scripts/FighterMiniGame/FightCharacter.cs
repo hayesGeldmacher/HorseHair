@@ -325,6 +325,11 @@ public class FightCharacter : MonoBehaviour
     private bool isAttackAnimationPlaying; //prevents attack spam while an attack animation is still playing 
     private bool attackStartedAirborne;
 
+    [Header("Attack Animation Safety")]
+    [SerializeField] private float maximumAttackDuration = 3f;
+
+    private float attackSafetyTimer;
+
     private Renderer[] fighterRenderers;
     private bool[] fighterRendererEnabledStates;
     private bool fighterPresentationHidden;
@@ -405,10 +410,11 @@ public class FightCharacter : MonoBehaviour
         quickstepCooldownTimer = 0f;
         quickstepDirection = 0f;
 
-        hasPendingAttack = false;
-        hasPendingGrab = false;
         isAttackAnimationPlaying = false;
         attackStartedAirborne = false;
+        attackSafetyTimer = 0f;
+        hasPendingAttack = false;
+        hasPendingGrab = false;
 
         ClearBufferedAttack();
 
@@ -482,6 +488,7 @@ public class FightCharacter : MonoBehaviour
 
         isAttackAnimationPlaying = false;
         attackStartedAirborne = false;
+        attackSafetyTimer = 0f;
         hasPendingAttack = false;
         hasPendingGrab = false;
 
@@ -612,6 +619,7 @@ public class FightCharacter : MonoBehaviour
         // Attack states
         isAttackAnimationPlaying = false;
         attackStartedAirborne = false;
+        attackSafetyTimer = 0f;
         hasPendingAttack = false;
         hasPendingGrab = false;
 
@@ -718,8 +726,12 @@ public class FightCharacter : MonoBehaviour
 
     public void StartAttackAnimation()
     {
-        isAttackAnimationPlaying = true; //locks attack input during attack animation 
+        if (isAttackAnimationPlaying)
+            return;
+
+        isAttackAnimationPlaying = true;
         attackStartedAirborne = !isGrounded;
+        attackSafetyTimer = maximumAttackDuration;
 
         if (rb != null && isGrounded)
         {
@@ -731,21 +743,88 @@ public class FightCharacter : MonoBehaviour
 
     public void EndAttackAnimation()
     {
-        isAttackAnimationPlaying = false; //unlocks attack input after animation finishes 
+        isAttackAnimationPlaying = false;
         attackStartedAirborne = false;
-
-        if (fighterAnim != null)
-        {
-            if (isInHitstop)
-                animatorSpeedBeforeHitstop = 1f;
-            else
-                fighterAnim.speed = 1f;
-        }
+        attackSafetyTimer = 0f;
 
         hasPendingAttack = false;
         hasPendingGrab = false;
+
+        if (fighterAnim == null)
+            return;
+
+        fighterAnim.ResetTrigger("punch");
+        fighterAnim.ResetTrigger("kick");
+        fighterAnim.ResetTrigger("grab");
+        fighterAnim.ResetTrigger("special");
+
+        if (isInHitstop)
+            animatorSpeedBeforeHitstop = 1f;
+        else
+            fighterAnim.speed = 1f;
     }
 
+    private void UpdateAttackAnimationSafety()
+    {
+        if (!isAttackAnimationPlaying)
+            return;
+
+        if (isInHitstop)
+            return;
+
+        attackSafetyTimer -= Time.deltaTime;
+
+        if (attackSafetyTimer > 0f)
+            return;
+
+        Debug.LogWarning(
+            name + " exceeded the maximum attack duration. " +
+            "Forcing animation recovery."
+        );
+
+        EndAttackAnimation();
+
+        if (isGrounded && !isKnockedDown && !isRecovering)
+            ForceStandingIdle();
+    }
+    private void ForceStandingIdle()
+    {
+        if (fighterAnim == null)
+            return;
+
+        int idleHash = Animator.StringToHash(standingIdleStateName);
+
+        if (!fighterAnim.HasState(0, idleHash))
+        {
+            string layerName = fighterAnim.GetLayerName(0);
+
+            idleHash = Animator.StringToHash(
+                layerName + "." + standingIdleStateName
+            );
+        }
+
+        if (fighterAnim.HasState(0, idleHash))
+        {
+            fighterAnim.CrossFade(idleHash, 0.05f, 0);
+            return;
+        }
+
+        Debug.LogWarning(
+            name + " could not find emergency idle state '" +
+            standingIdleStateName + "'.",
+            this
+        );
+    }
+    private void BufferNextAttack(bool bufferPunch)
+    {
+        // Keep AI behavior deliberate rather than automatically chaining.
+        if (controlledByAI)
+            return;
+
+        bufferedPunch = bufferPunch;
+        bufferedKick = !bufferPunch;
+        bufferedAttackTimer = 0.15f;
+    }
     private void SetAttackAnimationSpeed(float speed)
     {
         if (fighterAnim == null)
@@ -925,8 +1004,6 @@ public class FightCharacter : MonoBehaviour
         if (fighterAnim != null)
             fighterAnim.speed = animatorSpeedBeforeHitstop;
 
-        if (fighterAnim != null)
-            fighterAnim.speed = animatorSpeedBeforeHitstop;
 
         if (rb != null && hasStoredHitstopVelocity)
         {
@@ -1047,6 +1124,7 @@ public class FightCharacter : MonoBehaviour
             CaptureHitstopInput();
 
         UpdateLocalHitstop();
+        UpdateAttackAnimationSafety();
 
         if (!roundActive)
             return;
@@ -1077,6 +1155,12 @@ public class FightCharacter : MonoBehaviour
             return;
 
         ReadActions();
+    }
+
+    private void OnDisable()
+    {
+        EndAttackAnimation();
+        ClearBufferedAttack();
     }
 
 
@@ -1726,12 +1810,21 @@ public class FightCharacter : MonoBehaviour
 
     #region Combat Actions
 
-    private void Punch()
+private void Punch()
     {
+        if (isAttackAnimationPlaying)
+        {
+            BufferNextAttack(true);
+            return;
+        }
+
         if (!CanStartAttack())
             return;
 
-        StartAttackAnimation(); //locks immediately so button spam cannot restart the animation
+        if (!animateFighter || fighterAnim == null)
+            return;
+
+        StartAttackAnimation();
 
         string punchType = GetPunchType();
         FighterMoveType moveType = GetPunchMoveType();
@@ -1749,16 +1842,26 @@ public class FightCharacter : MonoBehaviour
 
         if (animateFighter && fighterAnim != null)
         {
+            fighterAnim.ResetTrigger("punch");
             fighterAnim.SetTrigger("punch");
         }
     }
 
-    private void Kick()
+private void Kick()
     {
+        if (isAttackAnimationPlaying)
+        {
+            BufferNextAttack(false);
+            return;
+        }
+
         if (!CanStartAttack())
             return;
 
-        StartAttackAnimation(); //locks immediately so button spam cannot restart the animation
+        if (!animateFighter || fighterAnim == null)
+            return;
+
+        StartAttackAnimation();
 
         string kickType = GetKickType();
         FighterMoveType moveType = GetKickMoveType();
@@ -1776,6 +1879,7 @@ public class FightCharacter : MonoBehaviour
 
         if (animateFighter && fighterAnim != null)
         {
+            fighterAnim.ResetTrigger("kick");
             fighterAnim.SetTrigger("kick");
         }
     }
@@ -1785,21 +1889,26 @@ public class FightCharacter : MonoBehaviour
         if (!CanStartAttack())
             return;
 
-        if (!isGrounded || isCrouching || isBlocking || isKnockedDown || isRecovering)
+        if (!animateFighter || fighterAnim == null)
+            return;
+
+        if (!isGrounded || isCrouching || isBlocking ||
+            isKnockedDown || isRecovering)
         {
             PlaySound(attackMissSound);
-            MovePerformed?.Invoke(this, FighterMoveType.Grab, FighterMoveResult.Miss);
+            MovePerformed?.Invoke(
+                this,
+                FighterMoveType.Grab,
+                FighterMoveResult.Miss
+            );
             return;
         }
 
-        StartAttackAnimation(); //locks immediately so button spam cannot restart the animation 
-
+        StartAttackAnimation();
         hasPendingGrab = true;
 
-        if (animateFighter && fighterAnim != null)
-        {
-            fighterAnim.SetTrigger("grab");
-        }
+        fighterAnim.ResetTrigger("grab");
+        fighterAnim.SetTrigger("grab");
     }
 
     private void Special()
@@ -1807,16 +1916,24 @@ public class FightCharacter : MonoBehaviour
         if (!CanStartAttack())
             return;
 
+        if (!animateFighter || fighterAnim == null)
+            return;
+
         if (superMeter == null)
         {
-            Debug.Log(name + " has no FighterSuperMeter script.");
+            Debug.LogWarning(name + " has no FighterSuperMeter script.");
             return;
         }
 
-        if (!tutorialUnlimitedSpecials && !superMeter.TrySpendSpecial())
+        if (!tutorialUnlimitedSpecials &&
+            !superMeter.TrySpendSpecial())
         {
             PlaySound(attackMissSound);
-            MovePerformed?.Invoke(this, FighterMoveType.Special, FighterMoveResult.Miss);
+            MovePerformed?.Invoke(
+                this,
+                FighterMoveType.Special,
+                FighterMoveResult.Miss
+            );
             return;
         }
 
@@ -1827,13 +1944,13 @@ public class FightCharacter : MonoBehaviour
             FighterMoveType.Special,
             specialDamage,
             specialRange,
-            specialHitSound != null ? specialHitSound : kickHitSound
+            specialHitSound != null
+                ? specialHitSound
+                : kickHitSound
         );
 
-        if (animateFighter && fighterAnim != null)
-        {
-            fighterAnim.SetTrigger("special");
-        }
+        fighterAnim.ResetTrigger("special");
+        fighterAnim.SetTrigger("special");
     }
     private bool IsPlayingHurtAnimation()
     {
@@ -2089,15 +2206,11 @@ public class FightCharacter : MonoBehaviour
 
     private void ApplyDamage()
     {
+        EndAttackAnimation();
+        ClearBufferedAttack();
+
         if (fighterAnim == null)
             return;
-
-        EndAttackAnimation();
-
-        fighterAnim.ResetTrigger("punch");
-        fighterAnim.ResetTrigger("kick");
-        fighterAnim.ResetTrigger("grab");
-        fighterAnim.ResetTrigger("special");
 
         fighterAnim.ResetTrigger("hurt");
         fighterAnim.SetTrigger("hurt");
@@ -2268,6 +2381,8 @@ public class FightCharacter : MonoBehaviour
 
     private void ApplyGroundedState()
     {
+        EndAttackAnimation();
+
         isKnockedDown = true;
         isRecovering = false;
         groundedTimer = groundedTime;

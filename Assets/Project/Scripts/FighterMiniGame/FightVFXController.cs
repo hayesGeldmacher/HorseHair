@@ -57,16 +57,20 @@ public class FighterVFXController : MonoBehaviour
     private void Awake()
     {
         AssignMissingReferences();
-        CacheCurrentSpecialUses();
     }
 
     private void OnEnable()
     {
         AssignMissingReferences();
-        CacheCurrentSpecialUses();
 
         if (fightCharacter != null)
             fightCharacter.MovePerformed += OnMovePerformed;
+    }
+
+    private void Start()
+    {
+        AssignMissingReferences();
+        CacheCurrentSpecialUses();
     }
 
     private void OnDisable()
@@ -113,9 +117,21 @@ public class FighterVFXController : MonoBehaviour
     private void CacheCurrentSpecialUses()
     {
         if (fighterSuperMeter == null)
+        {
+            lastSpecialUses = -1;
             return;
+        }
 
         lastSpecialUses = fighterSuperMeter.GetCurrentSpecialUses();
+
+        if (debugSpecialVFX)
+        {
+            Debug.Log(
+                gameObject.name +
+                " cached initial Special uses: " +
+                lastSpecialUses
+            );
+        }
     }
 
     private void OnMovePerformed(FightCharacter attacker, FighterMoveType moveType, FighterMoveResult result)
