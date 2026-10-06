@@ -173,6 +173,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             IsTranstionScene = true;
         }
         ChangingTask(PlayerPrefs.GetString("StartingTask"));
+        PlayerPrefs.SetString("Scene", SceneManager.GetActiveScene().name);
     }
 
     //helper function for determining the correct audio clip to play when starting a new PNC seqeunce, based on time - HG
@@ -368,7 +369,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         yield return new WaitUntil(() =>
             blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
 
-        if (desc != null)
+        if (desc != null && desc.dialogue.Count > 0)
         {
             dialogueText = desc;
             OpenDialogue();
@@ -378,6 +379,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
         AudioManager.instance.PlayDayCompletedSound(dayFinished);
 
         yield return new WaitUntil(() => startedDialogue == false);
+        yield return new WaitForSeconds(1.0f);
 
         SceneManager.LoadScene(scene);
     }

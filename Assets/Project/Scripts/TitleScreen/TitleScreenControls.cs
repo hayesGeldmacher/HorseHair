@@ -17,6 +17,11 @@ public class TitleScreenControls : MonoBehaviour
         SceneManager.LoadScene(StartingLevel);
     }
 
+    public void ContinueGame()
+    {
+        SceneManager.LoadScene(PlayerPrefs.GetString("Scene"));
+    }
+
     public void QuitGame()
     {
         Application.Quit();
