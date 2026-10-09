@@ -71,9 +71,14 @@ public class FGDialogueManager : MonoBehaviour
     }
 
 
+    public bool canTriggerDialogue = false;
+
     [Header("References")]
     public BrotherDialogue PlayerDialogue;
     public BrotherDialogue JesseDialogue;
+
+    public bool hasDadDialogue = false;
+    public BrotherDialogue dadDialogue;
 
     [Header("Customize")]
     [SerializeField] private float dialogueVisibleTime = 2.0f;
@@ -83,6 +88,10 @@ public class FGDialogueManager : MonoBehaviour
     {
         HideDialogue(PlayerDialogue);
         HideDialogue(JesseDialogue);
+        if (hasDadDialogue)
+        {
+            HideDialogue(dadDialogue);
+        }
     }
 
     // Update is called once per frame
@@ -90,11 +99,17 @@ public class FGDialogueManager : MonoBehaviour
     {
         UpdateDialogueTimer(PlayerDialogue);
         UpdateDialogueTimer(JesseDialogue);
+        if (hasDadDialogue)
+        {
+            UpdateDialogueTimer(dadDialogue);
+        }
     }
 
 
     public void TriggerDialogue(DialogueTrigger trigger)
     {
+
+        if (!canTriggerDialogue) { return; }
 
         //first, check if we should even trigger
         if (trigger.triggerOnlyOnce && trigger.hasTriggered)
@@ -122,6 +137,38 @@ public class FGDialogueManager : MonoBehaviour
                 BrotherDialogue responseDialogue = (trigger.fromJesse)
                     ? PlayerDialogue
                     : JesseDialogue;
+
+                pendingResponses++;
+                StartCoroutine(WaitForBrotherResponse(responseDialogue, trigger));
+            }
+        }
+    }
+
+    public void TriggerDadDialogue(DialogueTrigger trigger)
+    {
+
+       
+
+        if (Random.value <= trigger.triggerChance)
+        {
+
+            //get who the dialogue is coming from
+            BrotherDialogue targetDialogue = dadDialogue;
+
+            if (targetDialogue.dialogueText != null)
+                targetDialogue.dialogueText.text = trigger.dialogueLine;
+
+            AudioManager.instance.PlayDialogueBurst(trigger.dialogueLine, targetDialogue.soundType);
+
+            ShowDialogue(targetDialogue);
+
+            targetDialogue.dialogueTimer = dialogueVisibleTime;
+            trigger.cooldownTimer = trigger.cooldown;
+            trigger.hasTriggered = true;
+
+            if (trigger.hasBrotherResponse)
+            {
+                BrotherDialogue responseDialogue = JesseDialogue;
 
                 pendingResponses++;
                 StartCoroutine(WaitForBrotherResponse(responseDialogue, trigger));
