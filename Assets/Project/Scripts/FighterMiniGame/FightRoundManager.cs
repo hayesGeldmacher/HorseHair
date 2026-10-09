@@ -225,6 +225,10 @@ public class FightRoundManager : MonoBehaviour
     [Header("Bonus Round Rules")]
     [SerializeField, Min(1)] private int bonusHorseHealth = 700;
 
+    [Header("Night 3 Sequence")]
+    [SerializeField] private int roundsCompleted = 0;
+    
+
     private float currentRoundTime;
     private float startBlinkTimer;
     private float nextRoundBlinkTimer;
