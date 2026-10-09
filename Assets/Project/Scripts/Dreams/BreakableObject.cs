@@ -27,6 +27,18 @@ public class BreakableObject : MonoBehaviour
     )]
     [SerializeField] private Collider[] blockingColliders;
 
+
+    [Header("VFX")]
+    [SerializeField] BreakableVFXController vfxController;
+
+    [Header("Audio")]
+    [SerializeField] private bool playHurtClips = false;
+    [SerializeField] private AudioSource hurtSource;
+    [SerializeField] private AudioClip[] hurtClips;
+    [SerializeField] private AudioSource dieSource;
+    [SerializeField] private AudioSource idleSource;
+    private bool hurtFirstTime = false; //if first hit, stop idle audio
+
     [Header("Cleanup")]
     [Tooltip("Destroy the object after its break animation")]
     [SerializeField] private bool destroyAfterBreaking;
@@ -79,7 +91,7 @@ public class BreakableObject : MonoBehaviour
     /// <summary>
     /// Called by an attack when this object is hit.
     /// </summary>
-    public bool TakeDamage(int damage)
+    public bool TakeDamage(int damage, Vector3 hitPosition)
     {
         if (isBroken || damage <= 0)
             return false;
@@ -91,6 +103,15 @@ public class BreakableObject : MonoBehaviour
             BreakObject();
             return true;
         }
+        else
+        {
+            if (playHurtClips)
+            {
+                PlayHurtAudio();
+            }
+        }
+
+        vfxController.SpawnNormalVFX(hitPosition);
 
         PlayTrigger(hitTriggerName);
         return true;
@@ -107,9 +128,32 @@ public class BreakableObject : MonoBehaviour
 
         DisableBlockingColliders();
 
+        if(dieSource != null)
+        {
+            dieSource.Play();
+        }
+
         if (destroyAfterBreaking)
             Destroy(gameObject, destroyDelay);
     }
+
+    private void PlayHurtAudio()
+    {
+
+        if (hurtSource == null || hurtClips == null) return;
+
+        if (!hurtFirstTime)
+        {
+            idleSource.Stop();
+            hurtFirstTime = true;
+        }
+
+        int randomHurtIndex = UnityEngine.Random.Range(0, hurtClips.Length);
+        AudioClip hurtClip = hurtClips[randomHurtIndex];
+        hurtSource.clip = hurtClip;
+        hurtSource.Play();
+    }
+
 
     private void DisableBlockingColliders()
     {

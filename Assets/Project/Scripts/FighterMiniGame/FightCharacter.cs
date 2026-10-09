@@ -2040,6 +2040,7 @@ private void Kick()
         BreakableObject closestBreakable = null;
         float closestDistanceSquared = float.PositiveInfinity;
 
+        Vector3 breakablePoint = Vector3.zero; 
         foreach (Collider nearbyCollider in nearbyColliders)
         {
             if (nearbyCollider == null)
@@ -2066,9 +2067,10 @@ private void Kick()
 
             closestDistanceSquared = distanceSquared;
             closestBreakable = breakable;
+            breakablePoint = closestPoint;
         }
 
-        return closestBreakable != null && closestBreakable.TakeDamage(damage);
+        return closestBreakable != null && closestBreakable.TakeDamage(damage, breakablePoint);
     }
 
     private FighterMoveResult TryGrabOpponent()

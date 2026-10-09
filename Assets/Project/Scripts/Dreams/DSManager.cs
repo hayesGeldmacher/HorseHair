@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 public class DSManager : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class DSManager : MonoBehaviour
 
     [Header("Audio")]
     [SerializeField] private bool fadeBackgroundAudio = false;
-    [SerializeField] private AudioGroupFade audioFade;
+    [SerializeField] private AudioVolumeFade fade;
 
     [Header("Animation")]
     [SerializeField] private EyelidsFG eyelids;
@@ -45,7 +46,7 @@ public class DSManager : MonoBehaviour
 
     private IEnumerator EndScene()
     {
-        audioFade.SetBackgroundFadeOut();
+        fade.StartFadeIn(false, false);
         yield return new WaitForSeconds(sceneTransitionTime);
         eyelids.TriggerEyesDownAnimation();
         yield return new WaitForSeconds(2.0f);
