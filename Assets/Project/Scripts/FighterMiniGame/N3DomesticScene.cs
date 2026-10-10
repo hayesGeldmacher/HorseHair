@@ -15,6 +15,7 @@ public class N3DomesticScene : MonoBehaviour
     /// </summary>
 
     [Header("References")]
+    [SerializeField] private FightRoundManager fgManager;
     [SerializeField] private Animator controllerAnim;
     [SerializeField] private Animator lightAnim;
 
@@ -26,11 +27,14 @@ public class N3DomesticScene : MonoBehaviour
 
     [SerializeField] private DialogueTrigger dadTrigger;
 
+    [SerializeField] private FightCharacterAI fighterAI;
+
  //   [Header("Dialogue")]
 
     //trigger now just for testing
     private void Start()
     {
+        //fgManager.onTriggerN3Sequence += TriggerFightScene;
         TriggerFightScene();
     }
 
@@ -56,6 +60,7 @@ public class N3DomesticScene : MonoBehaviour
 
 
         controllerAnim.SetTrigger("gone");
+        fighterAI.enabled = false;
 
         yield return new WaitForSeconds(5);
 

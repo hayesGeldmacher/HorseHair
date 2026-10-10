@@ -262,6 +262,14 @@ public class FightCharacterAI : MonoBehaviour
     private bool openingBehaviorActive;
     private bool wasRoundActive;
 
+    [Header("N3 Sequence Variables")]
+    private bool inactive = false;
+
+    public void SetFighterInactive()
+    {
+        inactive = true;
+    }
+
     public void SetPlayerTarget(Transform newPlayer)
     {
         player = newPlayer;
@@ -294,6 +302,7 @@ public class FightCharacterAI : MonoBehaviour
 
     private void Update()
     {
+      
         if (fightCharacter == null || player == null)
             return;
 

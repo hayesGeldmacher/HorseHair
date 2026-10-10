@@ -224,10 +224,7 @@ public class FightRoundManager : MonoBehaviour
     [SerializeField] private float bonusTextFlashInterval = 0.2f;
     [Header("Bonus Round Rules")]
     [SerializeField, Min(1)] private int bonusHorseHealth = 700;
-
-    [Header("Night 3 Sequence")]
-    [SerializeField] private int roundsCompleted = 0;
-    
+   
 
     private float currentRoundTime;
     private float startBlinkTimer;
@@ -261,6 +258,8 @@ public class FightRoundManager : MonoBehaviour
     public delegate void StartCharSelect();
     public StartCharSelect onCharSelect;
 
+    public delegate void TriggerN3Sequence();
+    public TriggerN3Sequence onTriggerN3Sequence;
 
 
     private void Start()
@@ -1158,6 +1157,13 @@ public class FightRoundManager : MonoBehaviour
             yield break;
 
         currentRoundNumber++;
+
+        //Trigger the N3 delegate after two rounds are completed - HG
+        if(currentRoundNumber >= 2)
+        {
+            onTriggerN3Sequence?.Invoke();
+        }
+
         ShowNextRoundPrompt();
     }
 
