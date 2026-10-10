@@ -60,7 +60,7 @@ public class N3DomesticScene : MonoBehaviour
 
 
         controllerAnim.SetTrigger("gone");
-        fighterAI.enabled = false;
+        fighterAI.SetFighterInactive();
 
         yield return new WaitForSeconds(5);
 

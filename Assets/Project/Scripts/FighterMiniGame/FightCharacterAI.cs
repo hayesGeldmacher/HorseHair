@@ -263,12 +263,29 @@ public class FightCharacterAI : MonoBehaviour
     private bool wasRoundActive;
 
     [Header("N3 Sequence Variables")]
-    private bool inactive = false;
+    private bool inactive;
 
     public void SetFighterInactive()
     {
         inactive = true;
+
+        pendingDecision = false;
+        waitingForJumpAttack = false;
+        openingBehaviorActive = false;
+        currentMoveInput = Vector2.zero;
+        openingMoveInput = Vector2.zero;
+
+        if (fightCharacter != null)
+            fightCharacter.SetAIInput(
+                0f,
+                false,
+                false,
+                false,
+                false,
+                false
+            );
     }
+
 
     public void SetPlayerTarget(Transform newPlayer)
     {
@@ -302,9 +319,14 @@ public class FightCharacterAI : MonoBehaviour
 
     private void Update()
     {
-      
         if (fightCharacter == null || player == null)
             return;
+
+        if (inactive)
+        {
+            SendIdleInput();
+            return;
+        }
 
         UpdateSpatialData();
         UpdateRoundActiveState();
