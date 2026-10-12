@@ -29,13 +29,15 @@ public class N3DomesticScene : MonoBehaviour
 
     [SerializeField] private FightCharacterAI fighterAI;
 
+    [SerializeField] private AudioSource carpetStepsSoure;
+
  //   [Header("Dialogue")]
 
     //trigger now just for testing
     private void Start()
     {
-        //fgManager.onTriggerN3Sequence += TriggerFightScene;
-        TriggerFightScene();
+        fgManager.onTriggerN3Sequence += TriggerFightScene;
+       // TriggerFightScene();
     }
 
     public void TriggerFightScene()
@@ -62,7 +64,10 @@ public class N3DomesticScene : MonoBehaviour
         controllerAnim.SetTrigger("gone");
         fighterAI.SetFighterInactive();
 
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(1.5f);
+        carpetStepsSoure.Play();
+
+        yield return new WaitForSeconds(3.5f);
 
         //wait another second, light anim closes
         lightAnim.SetTrigger("close");
@@ -71,6 +76,10 @@ public class N3DomesticScene : MonoBehaviour
         yield return new WaitForSeconds(4);
 
         fightAudio.Play();
+
+        yield return new WaitForSeconds(25.0f);
+
+        fgManager.SetSceneTransitionReady();
         
     }
 }

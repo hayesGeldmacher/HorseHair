@@ -33,6 +33,15 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Skip all opening screens and the tutorial, then immediately begin Round 1")]
     [SerializeField] private bool skipIntroAndCharacterSelect = false;
 
+    [Tooltip("Skip the tutorial but still do character select")]
+    [SerializeField] private bool skipJustTutorial = false;
+
+    [Tooltip("Delays standard scene transition for unique scene sequences")]
+    [SerializeField] private bool delayNextSceneTransition = false;
+    [SerializeField] private bool sceneTransitionIsReady = false;
+    [SerializeField] private bool fightTransitionIsReady = false;
+    [SerializeField] private bool triggeredDelayTransition = false;
+
     [Header("Character Select")]
     [Tooltip("Character selection shown after leaving the start screen")]
     [SerializeField] private CharacterSelectManager characterSelectManager;
@@ -281,6 +290,15 @@ public class FightRoundManager : MonoBehaviour
             if (gameCanStart)
                 StartMatchImmediately();
         }
+        else if (skipJustTutorial)
+        {
+           // PrepareForImmediateStart();
+                if (gameCanStart)
+                {
+                }
+            SkipJustTutorial();
+            
+        }
     }
 
     private void OnEnable()
@@ -290,6 +308,16 @@ public class FightRoundManager : MonoBehaviour
 
     private void Update()
     {
+
+        if (delayNextSceneTransition && !triggeredDelayTransition)
+        {
+            if(sceneTransitionIsReady && fightTransitionIsReady)
+            {
+                StartCoroutine(TransitionScene());
+            }
+        }
+
+
         UpdateLastUsedControlDevice();
 
         if (controlsPanel != null && controlsPanel.activeInHierarchy)
@@ -651,6 +679,19 @@ public class FightRoundManager : MonoBehaviour
         }
     }
 
+    private void SkipJustTutorial()
+    {
+
+        tutorialPhaseActive = false;
+        tutorialFinished = true;
+
+        if (fightingGameTutorial != null)
+            fightingGameTutorial.SkipTutorial();
+
+        SetTutorialDamageImmunity(false);
+        SetTutorialUnlimitedSpecials(false);
+    }
+
     private void StartMatchImmediately()
     {
         waitingForStart = false;
@@ -1008,6 +1049,13 @@ public class FightRoundManager : MonoBehaviour
         SetTutorialDamageImmunity(false);
         SetTutorialUnlimitedSpecials(false);
 
+        //Trigger the N3 delegate after two rounds are completed - HG
+        if (currentRoundNumber == 1)
+        {
+            onTriggerN3Sequence?.Invoke();
+        }
+
+
         if (timerText != null)
             timerText.gameObject.SetActive(true);
 
@@ -1158,12 +1206,7 @@ public class FightRoundManager : MonoBehaviour
 
         currentRoundNumber++;
 
-        //Trigger the N3 delegate after two rounds are completed - HG
-        if(currentRoundNumber >= 2)
-        {
-            onTriggerN3Sequence?.Invoke();
-        }
-
+    
         ShowNextRoundPrompt();
     }
 
@@ -1231,7 +1274,6 @@ public class FightRoundManager : MonoBehaviour
             StartCoroutine(PostMatchSequence(matchWinner));
         }
     }
-
     private IEnumerator PostMatchSequence(FightCharacter matchWinner)
     {
 
@@ -1273,8 +1315,17 @@ public class FightRoundManager : MonoBehaviour
             );
         }
 
+        if (delayNextSceneTransition) {
+            fightTransitionIsReady = true;
+            yield break; 
+        }
         yield return new WaitForSecondsRealtime(afterDialogueDelay);
         yield return TransitionScene();
+    }
+
+    public void SetSceneTransitionReady()
+    {
+        sceneTransitionIsReady = true;
     }
 
     private IEnumerator TransitionScene()
