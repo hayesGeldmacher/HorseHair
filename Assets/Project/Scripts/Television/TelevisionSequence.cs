@@ -14,6 +14,8 @@ using UnityEngine.Video;
 public struct Channel 
 {
     public bool isTexture; //yes for animated texture channels, no for video player channels
+
+    public bool UseCamera; //if enabled, use camera and render texture
     public RuntimeAnimatorController textureAnim; //only assign for texture channels
     public VideoClip video; //only assign for video channels
     public AudioClip audio; //audio to play for channel, assign for both texture and videos
@@ -209,7 +211,7 @@ public class TelevisionSequence : MonoBehaviour
             vp.renderer.enabled = false;
             
         }
-        else
+        else if(!newChannel.UseCamera)
         { 
 
             Video vpClone = vp;
@@ -234,6 +236,11 @@ public class TelevisionSequence : MonoBehaviour
                 Debug.LogWarning("WARNING! player named: " + vp.player.gameObject.name + "is not prepared!");
             }
         }
+        else
+        {
+            Debug.Log("Using Camera!");
+        }
+
             backupIndex = channelIndex + 1;
             if(backupIndex + 1 > channels.Length) {  backupIndex = 0; }
 
