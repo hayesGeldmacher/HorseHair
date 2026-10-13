@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.Video;
+using System.Diagnostics.Contracts;
 
 /// <summary>
 /// This script is responsible for managing the television channel sequence that occurs each night
@@ -16,6 +17,12 @@ public struct Channel
     public bool isTexture; //yes for animated texture channels, no for video player channels
 
     public bool UseCamera; //if enabled, use camera and render texture
+
+    public Animator characterTrigger;// only assign for render cam channels
+
+    public string animTrigger; //only assing for render cam channels
+    public float characterTriggerDelay; //delay to triggering above anim for cam channels
+    public Material material;
     public RuntimeAnimatorController textureAnim; //only assign for texture channels
     public VideoClip video; //only assign for video channels
     public AudioClip audio; //audio to play for channel, assign for both texture and videos
@@ -64,6 +71,7 @@ public class TelevisionSequence : MonoBehaviour
     [Header("GameObject References")]
     [SerializeField] private GameObject televisionScreen;
     [SerializeField] private GameObject reflectionScreen;
+    [SerializeField] private GameObject horseScreen;
     [SerializeField] private GameObject gameScreen;
     [SerializeField] private FightRoundManager fightManager;
 
@@ -206,13 +214,24 @@ public class TelevisionSequence : MonoBehaviour
         Channel newChannel = channels[channelIndex];
         if (newChannel.isTexture)
         {
+            if(horseScreen != null)
+            {
+                horseScreen.SetActive(false);
+            }
+
             textureAnimController.runtimeAnimatorController = newChannel.textureAnim as RuntimeAnimatorController;
             cache.renderer.enabled = false;
             vp.renderer.enabled = false;
+
             
         }
         else if(!newChannel.UseCamera)
-        { 
+        {
+
+            if (horseScreen != null)
+            {
+                horseScreen.SetActive(false);
+            }
 
             Video vpClone = vp;
             Video cacheClone = cache;
@@ -238,7 +257,21 @@ public class TelevisionSequence : MonoBehaviour
         }
         else
         {
+            //using render cam channel
+
             Debug.Log("Using Camera!");
+            cache.renderer.enabled = false;
+            vp.renderer.enabled = false;
+            reflectionScreen.SetActive(false);
+            gameScreen.SetActive(false);
+
+            horseScreen.SetActive(true);
+            MeshRenderer meshRender = horseScreen.GetComponent<MeshRenderer>();
+            meshRender.material = newChannel.material;
+
+            //trigger associated animations
+            StartCoroutine(TriggerChararcterAnim(newChannel));
+
         }
 
             backupIndex = channelIndex + 1;
@@ -313,4 +346,14 @@ public class TelevisionSequence : MonoBehaviour
 
         if (ScareManager.instance != null) { ScareManager.instance.CallScares(); }
     }
+
+
+    //play associated animation for cam channels with anim properties
+    private IEnumerator TriggerChararcterAnim(Channel channel)
+    {
+        if (channel.characterTrigger == null) yield break;
+        yield return new WaitForSeconds(channel.characterTriggerDelay);
+        channel.characterTrigger.SetTrigger(channel.animTrigger);
+    }
+
 }
