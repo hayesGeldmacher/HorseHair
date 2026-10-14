@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine.Video;
 using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 /// <summary>
 /// This script is responsible for managing the television channel sequence that occurs each night
@@ -20,12 +21,17 @@ public struct Channel
 
     public Animator characterTrigger;// only assign for render cam channels
 
-    public string animTrigger; //only assing for render cam channels
+    public string animTriggerIdle;
+    public string animTriggerCrawl; //only assing for render cam channels
     public float characterTriggerDelay; //delay to triggering above anim for cam channels
+    public int position; //index for the list of positions to move horsecam to
     public Material material;
     public RuntimeAnimatorController textureAnim; //only assign for texture channels
     public VideoClip video; //only assign for video channels
     public AudioClip audio; //audio to play for channel, assign for both texture and videos
+
+    public bool playOneOffSoundOnStart;
+    public AudioSource oneOffSource;
 
     public bool hasDialogue;
     public DialogueTrigger trigger;
@@ -101,6 +107,16 @@ public class TelevisionSequence : MonoBehaviour
     [SerializeField] private float controllerWaitPlayer;
 
     [SerializeField] private PlayerController_PointAndClick playerControls;
+
+    //the following is just for the final television sequence, other scenes dont have to touch
+    [Header("Horse Cam")]
+    [SerializeField] private Transform[] horseCamPositions;
+    [SerializeField] private Transform horseCam;
+    [SerializeField] private int horseCamElements = 3;
+    private int horseCamElementCount = 0;
+    [SerializeField] private AudioSource horseBreathAudio;
+    [SerializeField] private AudioSource horseFootStepAudio;
+    
 
 
     private bool calledChannelChange = false; //is the channel currently changing
@@ -212,6 +228,13 @@ public class TelevisionSequence : MonoBehaviour
     {
 
         Channel newChannel = channels[channelIndex];
+
+        if (newChannel.playOneOffSoundOnStart)
+        {
+            newChannel.oneOffSource.Play();
+        }
+
+
         if (newChannel.isTexture)
         {
             if(horseScreen != null)
@@ -219,6 +242,7 @@ public class TelevisionSequence : MonoBehaviour
                 horseScreen.SetActive(false);
             }
 
+            tvAnim.SetTrigger("blue");
             textureAnimController.runtimeAnimatorController = newChannel.textureAnim as RuntimeAnimatorController;
             cache.renderer.enabled = false;
             vp.renderer.enabled = false;
@@ -235,7 +259,7 @@ public class TelevisionSequence : MonoBehaviour
 
             Video vpClone = vp;
             Video cacheClone = cache;
-
+            tvAnim.SetTrigger("blue");
             vp = cacheClone;
             cache = vpClone;
 
@@ -259,6 +283,14 @@ public class TelevisionSequence : MonoBehaviour
         {
             //using render cam channel
 
+            horseCamElementCount++;
+            
+            //play footsteps when horse enters the door
+            if(horseCamElementCount == horseCamElements)
+            {
+               horseBreathAudio.Play();
+            }
+
             Debug.Log("Using Camera!");
             cache.renderer.enabled = false;
             vp.renderer.enabled = false;
@@ -266,8 +298,14 @@ public class TelevisionSequence : MonoBehaviour
             gameScreen.SetActive(false);
 
             horseScreen.SetActive(true);
+            tvAnim.ResetTrigger("blue");
+            tvAnim.SetTrigger("red");
             MeshRenderer meshRender = horseScreen.GetComponent<MeshRenderer>();
             meshRender.material = newChannel.material;
+
+            //move the horse to the new location
+            horseCam.position = horseCamPositions[newChannel.position].position;
+            horseCam.rotation = horseCamPositions[newChannel.position].rotation;
 
             //trigger associated animations
             StartCoroutine(TriggerChararcterAnim(newChannel));
@@ -352,8 +390,9 @@ public class TelevisionSequence : MonoBehaviour
     private IEnumerator TriggerChararcterAnim(Channel channel)
     {
         if (channel.characterTrigger == null) yield break;
+        channel.characterTrigger.SetTrigger(channel.animTriggerIdle);
         yield return new WaitForSeconds(channel.characterTriggerDelay);
-        channel.characterTrigger.SetTrigger(channel.animTrigger);
+        channel.characterTrigger.SetTrigger(channel.animTriggerCrawl);
     }
 
 }
