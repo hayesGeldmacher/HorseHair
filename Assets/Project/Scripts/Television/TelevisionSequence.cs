@@ -30,6 +30,8 @@ public struct Channel
     public VideoClip video; //only assign for video channels
     public AudioClip audio; //audio to play for channel, assign for both texture and videos
 
+    public bool playRed; //animate the tv light to display red 
+
     public bool playOneOffSoundOnStart;
     public AudioSource oneOffSource;
 
@@ -234,6 +236,17 @@ public class TelevisionSequence : MonoBehaviour
             newChannel.oneOffSource.Play();
         }
 
+        if (newChannel.playRed)
+        {
+            tvAnim.ResetTrigger("blue");
+            tvAnim.SetTrigger("red");
+
+        }
+        else
+        {
+            tvAnim.ResetTrigger("red");
+            tvAnim.SetTrigger("blue");
+        }
 
         if (newChannel.isTexture)
         {
@@ -242,7 +255,8 @@ public class TelevisionSequence : MonoBehaviour
                 horseScreen.SetActive(false);
             }
 
-            tvAnim.SetTrigger("blue");
+
+          
             textureAnimController.runtimeAnimatorController = newChannel.textureAnim as RuntimeAnimatorController;
             cache.renderer.enabled = false;
             vp.renderer.enabled = false;
@@ -259,7 +273,6 @@ public class TelevisionSequence : MonoBehaviour
 
             Video vpClone = vp;
             Video cacheClone = cache;
-            tvAnim.SetTrigger("blue");
             vp = cacheClone;
             cache = vpClone;
 
@@ -298,8 +311,6 @@ public class TelevisionSequence : MonoBehaviour
             gameScreen.SetActive(false);
 
             horseScreen.SetActive(true);
-            tvAnim.ResetTrigger("blue");
-            tvAnim.SetTrigger("red");
             MeshRenderer meshRender = horseScreen.GetComponent<MeshRenderer>();
             meshRender.material = newChannel.material;
 
