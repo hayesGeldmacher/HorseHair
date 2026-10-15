@@ -31,6 +31,8 @@ public struct Channel
     public AudioClip audio; //audio to play for channel, assign for both texture and videos
 
     public bool playRed; //animate the tv light to display red 
+    public bool triggerCamZoom;
+    public float camZoomAmount;
 
     public bool playOneOffSoundOnStart;
     public AudioSource oneOffSource;
@@ -118,6 +120,7 @@ public class TelevisionSequence : MonoBehaviour
     private int horseCamElementCount = 0;
     [SerializeField] private AudioSource horseBreathAudio;
     [SerializeField] private AudioSource horseFootStepAudio;
+    [SerializeField] private CamZoomLerp camZoomLerp;
     
 
 
@@ -234,6 +237,11 @@ public class TelevisionSequence : MonoBehaviour
         if (newChannel.playOneOffSoundOnStart)
         {
             newChannel.oneOffSource.Play();
+        }
+
+        if (newChannel.triggerCamZoom)
+        {
+            camZoomLerp.SetCameraLerping(newChannel.camZoomAmount);
         }
 
         if (newChannel.playRed)
