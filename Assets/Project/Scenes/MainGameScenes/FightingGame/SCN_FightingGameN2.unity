@@ -596,7 +596,7 @@ PrefabInstance:
       objectReference: {fileID: 1128595468}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: nextSceneName
-      value: SCN_TV2BedN1
+      value: SCN_DreamSequenceN2
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: bonusRoundText
@@ -9475,6 +9475,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TelevisionSequence
   skipTelevision: 1
   dreamSequence: 0
+  skipToRedChannel: 0
+  sceneTransitionWait: 6
   nextScene: 
   channelIndex: 0
   backupIndex: 1
@@ -9486,6 +9488,7 @@ MonoBehaviour:
   controllerAnimBrother: {fileID: 757928347}
   televisionScreen: {fileID: 1719609908}
   reflectionScreen: {fileID: 0}
+  horseScreen: {fileID: 0}
   gameScreen: {fileID: 1197576165}
   fightManager: {fileID: 892047101}
   vp:
@@ -9513,11 +9516,32 @@ MonoBehaviour:
   controllerWaitBrother: 2
   controllerWaitPlayer: 1
   playerControls: {fileID: 0}
+  horseCamPositions: []
+  horseCam: {fileID: 0}
+  horseCamElements: 3
+  horseBreathAudio: {fileID: 0}
+  horseFootStepAudio: {fileID: 0}
+  camZoomLerp: {fileID: 0}
+  stopSoundOnEndTV: 0
+  endTVSource: {fileID: 0}
   channels:
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: f870a76dd556a3b4d8954d0d7de3f052, type: 3}
     audio: {fileID: 8300000, guid: b9c63aa47ed6f104d97debcffb1d4010, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 
@@ -9531,9 +9555,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: 3c781a2aeb0629f44afe3a01defac210, type: 3}
     audio: {fileID: 8300000, guid: 078fca522297d4c49b81f20e825ea14f, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: I always liked these old Westerns...
@@ -9547,9 +9584,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac9778d9d8578e84681bd2e81a122e12, type: 3}
     audio: {fileID: 8300000, guid: e7c7c1e76c8f5a449947968cfc3df6e3, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 
@@ -9563,9 +9613,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 1
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 9100000, guid: f2ab1cfc8f13255488e499ac776f65df, type: 2}
     video: {fileID: 0}
     audio: {fileID: 8300000, guid: 88c754c96aa91814fb82b0030f7484bd, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: 'This is boring, can we play the game now? '
@@ -20414,6 +20477,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DialogueManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4412072947381637836, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: canTriggerDialogue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6356256753110091343, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -26963,15 +27030,16 @@ MonoBehaviour:
   - {fileID: 9166242639588695703}
   - {fileID: 7855103725717250627}
   playerClips:
-  - {fileID: 8300000, guid: 76fce85dcca0f45449cb2c1e87e285a3, type: 3}
-  - {fileID: 8300000, guid: fef5b669b4f37524d8919ee1907f9d35, type: 3}
-  - {fileID: 8300000, guid: e517dafcd74e0134e9a80aedbb18a8b2, type: 3}
-  - {fileID: 8300000, guid: 36df5c27d24c2c942a57240c8830b3d6, type: 3}
+  - {fileID: 8300000, guid: 2fd256c501d402f4d996c04879939ff1, type: 3}
+  - {fileID: 8300000, guid: b76c0e22316e3914290a07450e7b1751, type: 3}
+  - {fileID: 8300000, guid: 84f7a6da2b1ddcb4b842378d21a14aba, type: 3}
+  - {fileID: 8300000, guid: a350c3717bb54bc49a41b04994d920dd, type: 3}
   brotherClips:
-  - {fileID: 8300000, guid: 8ae551e4576aea94fb38a60b0e4c4681, type: 3}
-  - {fileID: 8300000, guid: bd9b26ebb70b874438cb97b14494c906, type: 3}
-  - {fileID: 8300000, guid: 675ca47bb96c981448448f5852d97892, type: 3}
-  - {fileID: 8300000, guid: 3fd09d23977c2c54ebc42a3f44156635, type: 3}
+  - {fileID: 8300000, guid: 391aa899e8cc58e4f8f2308cca07a1e3, type: 3}
+  - {fileID: 8300000, guid: 50e21fbd67f42c248855f45cdd20951d, type: 3}
+  - {fileID: 8300000, guid: 8e0a09366cbee914da665e7f6a08ecaf, type: 3}
+  - {fileID: 8300000, guid: 960202da8ad0b434a81cc8844cbc136d, type: 3}
+  - {fileID: 8300000, guid: b3c59607cdfe4f4438fd9121e9b72656, type: 3}
   dadClips:
   - {fileID: 8300000, guid: 9e4b8ca51c7afdc438b595ec4d284797, type: 3}
   - {fileID: 8300000, guid: 97fdf54cb23728345b4b699d6299f9f4, type: 3}

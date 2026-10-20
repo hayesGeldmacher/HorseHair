@@ -9961,6 +9961,15 @@ MonoBehaviour:
   offsetSpeedX: 0.05
   offsetSpeedY: -0.025
   canMove: 1
+  stretchClouds: 0
+  stretchSpeedX: 0
+  stretchSpeedY: 0
+  currentStretchX: 1
+  currentStretchY: 1
+  maxStretchX: 1.2
+  minStretchX: 0.8
+  maxStretchY: 1.2
+  minStretchY: 0.8
 --- !u!4 &304194036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c719c6d842c353646b2af252ed6d73f1, type: 3}
@@ -24394,7 +24403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DSManager
   sceneTransitionTime: 10
-  nextSceneName: SCN_Credits
+  nextSceneName: SCN_HouseLayout
   fadeBackgroundAudio: 1
   fade: {fileID: 5315099234242909559}
   eyelids: {fileID: 359152536}
@@ -48457,6 +48466,11 @@ MonoBehaviour:
   pressAnyButtonText: {fileID: 4531815950283314288}
   blinkSpeed: 4
   skipIntroAndCharacterSelect: 0
+  skipJustTutorial: 0
+  delayNextSceneTransition: 0
+  sceneTransitionIsReady: 0
+  fightTransitionIsReady: 0
+  triggeredDelayTransition: 0
   characterSelectManager: {fileID: 0}
   characterSelectLoadingTime: 1
   nextRoundPromptText: {fileID: 0}
