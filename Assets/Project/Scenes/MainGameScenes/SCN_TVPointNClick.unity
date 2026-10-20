@@ -7802,6 +7802,10 @@ PrefabInstance:
       value: DialogueManager
       objectReference: {fileID: 0}
     - target: {fileID: 4412072947381637836, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: canTriggerDialogue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412072947381637836, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
       propertyPath: dialogueVisibleTime
       value: 3
       objectReference: {fileID: 0}
@@ -8397,6 +8401,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TelevisionSequence
   skipTelevision: 0
   dreamSequence: 0
+  skipToRedChannel: 0
+  sceneTransitionWait: 6
   nextScene: SCN_FightingGameTutorialN1
   channelIndex: 0
   backupIndex: 1
@@ -8408,6 +8414,7 @@ MonoBehaviour:
   controllerAnimBrother: {fileID: 757928347}
   televisionScreen: {fileID: 1131307633}
   reflectionScreen: {fileID: 1939125321}
+  horseScreen: {fileID: 0}
   gameScreen: {fileID: 2294865261996981892}
   fightManager: {fileID: 892047101}
   vp:
@@ -8435,11 +8442,32 @@ MonoBehaviour:
   controllerWaitBrother: 2
   controllerWaitPlayer: 0.5
   playerControls: {fileID: 920591137}
+  horseCamPositions: []
+  horseCam: {fileID: 0}
+  horseCamElements: 3
+  horseBreathAudio: {fileID: 0}
+  horseFootStepAudio: {fileID: 0}
+  camZoomLerp: {fileID: 0}
+  stopSoundOnEndTV: 0
+  endTVSource: {fileID: 0}
   channels:
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: 7cf6739f444e95e41880748e7e17b6ae, type: 3}
     audio: {fileID: 8300000, guid: 604668408ae65b849ab4990f3013260a, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 'I''m bored - can we play the game now? '
@@ -8453,9 +8481,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: f870a76dd556a3b4d8954d0d7de3f052, type: 3}
     audio: {fileID: 8300000, guid: b9c63aa47ed6f104d97debcffb1d4010, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 
@@ -8469,9 +8510,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: 3c781a2aeb0629f44afe3a01defac210, type: 3}
     audio: {fileID: 8300000, guid: 078fca522297d4c49b81f20e825ea14f, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: I always like these old Westerns.
@@ -8485,9 +8539,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac9778d9d8578e84681bd2e81a122e12, type: 3}
     audio: {fileID: 8300000, guid: e7c7c1e76c8f5a449947968cfc3df6e3, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 
@@ -8501,9 +8568,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 1
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 9100000, guid: f2ab1cfc8f13255488e499ac776f65df, type: 2}
     video: {fileID: 0}
     audio: {fileID: 8300000, guid: 88c754c96aa91814fb82b0030f7484bd, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: 'I''m bored - can we play the game now? '

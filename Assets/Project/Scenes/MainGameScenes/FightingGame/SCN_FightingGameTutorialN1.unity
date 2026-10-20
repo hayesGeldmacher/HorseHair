@@ -7022,6 +7022,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -98.75318
       objectReference: {fileID: 0}
+    - target: {fileID: 5596309499952174359, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: specialAction
+      value: 
+      objectReference: {fileID: -1042782423056772605, guid: e0c3a5bbff645d24ab07f1c6b7f5b8bd, type: 3}
     - target: {fileID: 6141039102293620364, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -45.487095
@@ -9206,6 +9210,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TelevisionSequence
   skipTelevision: 1
   dreamSequence: 0
+  skipToRedChannel: 0
+  sceneTransitionWait: 6
   nextScene: 
   channelIndex: 0
   backupIndex: 1
@@ -9217,6 +9223,7 @@ MonoBehaviour:
   controllerAnimBrother: {fileID: 757928347}
   televisionScreen: {fileID: 1719609908}
   reflectionScreen: {fileID: 0}
+  horseScreen: {fileID: 0}
   gameScreen: {fileID: 1197576165}
   fightManager: {fileID: 892047101}
   vp:
@@ -9244,11 +9251,32 @@ MonoBehaviour:
   controllerWaitBrother: 2
   controllerWaitPlayer: 1
   playerControls: {fileID: 0}
+  horseCamPositions: []
+  horseCam: {fileID: 0}
+  horseCamElements: 3
+  horseBreathAudio: {fileID: 0}
+  horseFootStepAudio: {fileID: 0}
+  camZoomLerp: {fileID: 0}
+  stopSoundOnEndTV: 0
+  endTVSource: {fileID: 0}
   channels:
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: f870a76dd556a3b4d8954d0d7de3f052, type: 3}
     audio: {fileID: 8300000, guid: b9c63aa47ed6f104d97debcffb1d4010, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 
@@ -9262,9 +9290,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: 3c781a2aeb0629f44afe3a01defac210, type: 3}
     audio: {fileID: 8300000, guid: 078fca522297d4c49b81f20e825ea14f, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: I always liked these old Westerns...
@@ -9278,9 +9319,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac9778d9d8578e84681bd2e81a122e12, type: 3}
     audio: {fileID: 8300000, guid: e7c7c1e76c8f5a449947968cfc3df6e3, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 
@@ -9294,9 +9348,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 1
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 9100000, guid: f2ab1cfc8f13255488e499ac776f65df, type: 2}
     video: {fileID: 0}
     audio: {fileID: 8300000, guid: 88c754c96aa91814fb82b0030f7484bd, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: 'This is boring, can we play the game now? '
