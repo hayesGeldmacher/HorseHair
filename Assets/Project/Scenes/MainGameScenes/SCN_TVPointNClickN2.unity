@@ -7806,6 +7806,10 @@ PrefabInstance:
       value: DialogueManager
       objectReference: {fileID: 0}
     - target: {fileID: 4412072947381637836, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: canTriggerDialogue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412072947381637836, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
       propertyPath: dialogueVisibleTime
       value: 3
       objectReference: {fileID: 0}
@@ -8401,6 +8405,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TelevisionSequence
   skipTelevision: 0
   dreamSequence: 0
+  skipToRedChannel: 0
+  sceneTransitionWait: 6
   nextScene: SCN_FightingGameN2
   channelIndex: 0
   backupIndex: 1
@@ -8412,6 +8418,7 @@ MonoBehaviour:
   controllerAnimBrother: {fileID: 757928347}
   televisionScreen: {fileID: 1131307633}
   reflectionScreen: {fileID: 1939125321}
+  horseScreen: {fileID: 0}
   gameScreen: {fileID: 2294865261996981892}
   fightManager: {fileID: 892047101}
   vp:
@@ -8440,11 +8447,32 @@ MonoBehaviour:
   controllerWaitBrother: 2
   controllerWaitPlayer: 0.5
   playerControls: {fileID: 920591137}
+  horseCamPositions: []
+  horseCam: {fileID: 0}
+  horseCamElements: 3
+  horseBreathAudio: {fileID: 0}
+  horseFootStepAudio: {fileID: 0}
+  camZoomLerp: {fileID: 0}
+  stopSoundOnEndTV: 0
+  endTVSource: {fileID: 0}
   channels:
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: 7cf6739f444e95e41880748e7e17b6ae, type: 3}
     audio: {fileID: 8300000, guid: 604668408ae65b849ab4990f3013260a, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 'I''m bored - can we play the game now? '
@@ -8458,9 +8486,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac3ff08a0f115c64a95cb4e89547de96, type: 3}
     audio: {fileID: 8300000, guid: 7604c370a7187ab4684e0d87b5505f64, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: This movie is ridiculous...
@@ -8474,9 +8515,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: 70f32cc3a75090d48b26e1cc37cad3bc, type: 3}
     audio: {fileID: 8300000, guid: 5d1639a0ef6bfc54194bd6f0931f339c, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: '...Another horror movie? '
@@ -8490,9 +8544,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: cd075efc30923c342ab16f9367004163, type: 3}
     audio: {fileID: 8300000, guid: c90926be5deed4348b7c7bd9eb8a6014, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: '...Another horror movie? '
@@ -8506,9 +8573,22 @@ MonoBehaviour:
       cooldownTimer: 0
       hasTriggered: 0
   - isTexture: 1
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 9100000, guid: 77a3d821249b44349820eaff29148eea, type: 2}
     video: {fileID: 0}
     audio: {fileID: 8300000, guid: 88c754c96aa91814fb82b0030f7484bd, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: Alright, let's get to it...
