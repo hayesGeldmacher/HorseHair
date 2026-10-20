@@ -35,7 +35,10 @@ public struct Channel
     public float camZoomAmount;
 
     public bool playOneOffSoundOnStart;
+    public bool stopSoundInsteadOfPlay;
     public AudioSource oneOffSource;
+
+
 
     public bool hasDialogue;
     public DialogueTrigger trigger;
@@ -63,6 +66,11 @@ public class TelevisionSequence : MonoBehaviour
     [Tooltip("Skip straight to fighting game.")]
     [SerializeField] private bool skipTelevision = false; //skip the television sequence, straight to fighting game
     [SerializeField] private bool dreamSequence = false;
+
+    [SerializeField] private bool skipToRedChannel = false;
+    private bool hasSkippedToRedChannel = false;
+
+    [SerializeField] private float sceneTransitionWait = 6.0f;
 
     [Header("Next Scene")]
     [SerializeField] private string nextScene; //name of the next scene to load after television sequence
@@ -121,6 +129,8 @@ public class TelevisionSequence : MonoBehaviour
     [SerializeField] private AudioSource horseBreathAudio;
     [SerializeField] private AudioSource horseFootStepAudio;
     [SerializeField] private CamZoomLerp camZoomLerp;
+    [SerializeField] private bool stopSoundOnEndTV;
+    [SerializeField] private AudioSource endTVSource;
     
 
 
@@ -210,6 +220,13 @@ public class TelevisionSequence : MonoBehaviour
 
     private IEnumerator ProgressChannels()
     {
+        if (skipToRedChannel && !hasSkippedToRedChannel)
+        {
+            hasSkippedToRedChannel = true;
+            currentClicks = totalClicks - 1;
+
+        }
+
         currentClicks++;
         calledChannelChange = true;
         currentCooldown = clickCooldown;
@@ -236,7 +253,14 @@ public class TelevisionSequence : MonoBehaviour
 
         if (newChannel.playOneOffSoundOnStart)
         {
-            newChannel.oneOffSource.Play();
+            if (newChannel.stopSoundInsteadOfPlay)
+            {
+                newChannel.oneOffSource.Stop();
+            }
+            else
+            {
+                newChannel.oneOffSource.Play();
+            }
         }
 
         if (newChannel.triggerCamZoom)
@@ -368,6 +392,10 @@ public class TelevisionSequence : MonoBehaviour
     private IEnumerator EndTelevisionSequence()
     {
         tvAudio.Stop();
+        if (stopSoundOnEndTV && endTVSource != null)
+        {
+            endTVSource.Stop();
+        }
         if (!dreamSequence)
         {
             turnOffSource.Play();
@@ -383,7 +411,7 @@ public class TelevisionSequence : MonoBehaviour
         {
             FGDialogueManager.instance.TriggerDialogue(endTrigger);
         }
-        yield return new WaitForSeconds(6.0f);
+        yield return new WaitForSeconds(sceneTransitionWait);
         if (!dreamSequence) 
         {
             playerControls.Transition(nextScene);
