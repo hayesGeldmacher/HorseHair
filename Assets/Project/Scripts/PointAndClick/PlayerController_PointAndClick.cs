@@ -293,6 +293,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 phoneImageAnim.SetTrigger("appear");
             }
             task.Giver.ChangeTaskStatus(true);
+
+            if (task.skipGoal)
+            {
+                completeTask = true;
+            }
         }
     }
 

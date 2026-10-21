@@ -16,6 +16,7 @@ public class TaskClickEventData : ClickEventData
     public string TaskName;
     public TaskItem Task;
     public EventClick_TaskGiver Giver;
+    public bool skipGoal;
 }
 
 public class EventClick_TaskGiver : EventClick
@@ -24,6 +25,7 @@ public class EventClick_TaskGiver : EventClick
     [SerializeField] public TaskItem task;
     [SerializeField] private EventClick_NEI Alternative_NEI;
     [SerializeField] private bool IsGoal;
+    [SerializeField] private bool SkipGoal = false;
     public bool Activated = false;
     public bool Talked = false;
     public bool IsUsedByGoal = false;
@@ -68,6 +70,7 @@ public class EventClick_TaskGiver : EventClick
             DialogueText = dialogueText,
             Task = task,
             Giver = this,
+            skipGoal = SkipGoal,
         };
     }
 
