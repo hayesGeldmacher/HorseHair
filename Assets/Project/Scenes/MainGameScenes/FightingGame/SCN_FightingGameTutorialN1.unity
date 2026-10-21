@@ -950,34 +950,31 @@ MonoBehaviour:
   requiredMovementDistance: 0.5
   lessons:
   - step: 0
-    instruction: First, move left and right with the control sitck or the 'A' and
+    instruction: First, Move Left and Right with the control sitck or the 'A' and
       'D' keys.
     successResponse: You can review the controls by pressing the view button or tab
       key.
-  - step: 1
-    instruction: Now double-tap a direction to quickstep.
-    successResponse: Quick! I like it.
   - step: 2
-    instruction: Move up to jump and hold down to crouch. Try both.
+    instruction: Move up to Jump and hold down to Crouch. Try both.
     successResponse: Great! Different stances can avoid certain attacks.
   - step: 3
-    instruction: Throw a punch with the west face button or the 'J' key. You can
+    instruction: Throw a punch with the West Face Button or the 'J' key. You can
       also punch while jumping or crouching.
     successResponse: Solid punch!
   - step: 4
-    instruction: Now kick with the south face button or the 'K' key. Kicks also work
+    instruction: Now kick with the South Face Button or the 'K' key. Kicks also work
       while jumping or crouching.
     successResponse: Awesome kick!
   - step: 5
-    instruction: Get close to me and perform a grab with the east face button or
+    instruction: Get close to me and perform a grab with the East Face Button or
       the 'L' key.
     successResponse: This is a smart move when your cornered and need some space.
   - step: 6
     instruction: Now walk backwards to block my attack.
     successResponse: Just like that. Blocking attacks will reduce your damage taken.
   - step: 7
-    instruction: 'Go ahead and finish with your special move by punching and kicking
-      at the same time. '
+    instruction: Go ahead and finish with your Special move by pressing the 'I' Key
+      or using the North Face Button
     successResponse: That was powerful! You only have three special moves per round,
       so use them carefully...
   finalMessage: Now lets get into the real thing. I wont be going easy on you.
@@ -1150,6 +1147,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4929571221038266179, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5857500320115870711, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7020176117284465806, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
@@ -9213,6 +9214,7 @@ MonoBehaviour:
   skipToRedChannel: 0
   sceneTransitionWait: 6
   nextScene: 
+  IsDreamWorldPNC: 0
   channelIndex: 0
   backupIndex: 1
   tvAnim: {fileID: 1719609914}
@@ -22577,22 +22579,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1265532783}
-    - target: {fileID: 2998344197053849674, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3646803958266811365, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4915805114431597889, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1265532783}
-    - target: {fileID: 6400242162178260037, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System.Collections;
@@ -507,7 +507,7 @@ public class FightRoundManager : MonoBehaviour
 
     private bool ControlsConfirmPressed()
     {
-        if (Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             usingGamepadControls = false;
             UpdateDisplayedControls();

@@ -12,8 +12,8 @@ public class FightingGameTutorial : MonoBehaviour
     private enum TutorialStep
     {
         MoveLeftAndRight,
-        Quickstep,
-        JumpAndCrouch,
+        // Value 1 belonged to the retired movement lesson. Preserve saved lesson IDs.
+        JumpAndCrouch = 2,
         Punch,
         Kick,
         Grab,
@@ -107,6 +107,10 @@ public class FightingGameTutorial : MonoBehaviour
 
 
         SetOpponentDummyMode(true);
+
+        // Remove the retired lesson from lists already saved in scenes and prefabs.
+        if (lessons != null)
+            lessons.RemoveAll(lesson => (int)lesson.step == 1);
 
         if (lessons == null || lessons.Count == 0)
             lessons = CreateDefaultLessons();
@@ -209,8 +213,6 @@ public class FightingGameTutorial : MonoBehaviour
         TutorialStep step = lessons[lessonIndex].step;
 
         if (step == TutorialStep.MoveLeftAndRight && movedLeft && movedRight)
-            CompleteCurrentLesson();
-        else if (step == TutorialStep.Quickstep && player.IsQuickstepping)
             CompleteCurrentLesson();
         else if (step == TutorialStep.JumpAndCrouch)
         {
@@ -407,8 +409,6 @@ public class FightingGameTutorial : MonoBehaviour
         {
             NewLesson(TutorialStep.MoveLeftAndRight,
                 "First, move left and right.", "Nice movement!"),
-            NewLesson(TutorialStep.Quickstep,
-                "Now double-tap a direction to quickstep.", "Quick! I like it."),
             NewLesson(TutorialStep.JumpAndCrouch,
                 "Try jumping, then crouching.", "Great! High and low."),
             NewLesson(TutorialStep.Punch,

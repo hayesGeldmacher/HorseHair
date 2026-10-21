@@ -60,19 +60,6 @@ public class FightCharacter : MonoBehaviour
     [Tooltip("Minimum input value required before movement input is counted")]
     [SerializeField] private float inputDeadZone = 0.25f;
 
-    [Header("Quickstep")]
-    [Tooltip("Horizontal speed applied during a quickstep dodge")]
-    [SerializeField] private float quickstepSpeed = 12f;
-
-    [Tooltip("Duration of the quickstep dodge movement")]
-    [SerializeField] private float quickstepTime = 0.15f;
-
-    [Tooltip("Cooldown time after performing a quickstep before it can be used again")]
-    [SerializeField] private float quickstepCooldown = 0.4f;
-
-    [Tooltip("Maximum time between two taps in the same direction to trigger a quickstep")]
-    [SerializeField] private float doubleTapWindow = 0.25f;
-
     [Header("Ground Check")]
     [Tooltip("Layer used to detect the ground")]
     [SerializeField] private LayerMask groundLayer;
@@ -297,14 +284,6 @@ public class FightCharacter : MonoBehaviour
     private float groundedTimer;
     private float recoveryTimer;
 
-    private float quickstepTimer;
-    private float quickstepCooldownTimer;
-    private float quickstepDirection;
-
-    private float lastTapTime;
-    private float lastTapDirection;
-    private bool wasMovePressed;
-
     private float aiMoveInput;
     private bool aiJumpPressed;
     private bool aiPunchPressed;
@@ -369,12 +348,6 @@ public class FightCharacter : MonoBehaviour
         get { return isBlocking; }
     }
 
-    public bool IsQuickstepping
-    {
-        get { return quickstepTimer > 0f; }
-    }
-
-
     public void SetTutorialDamageImmunity(bool immune)
     {
         tutorialDamageImmune = immune;
@@ -406,9 +379,6 @@ public class FightCharacter : MonoBehaviour
         isCrouching = false;
         isBlocking = false;
 
-        quickstepTimer = 0f;
-        quickstepCooldownTimer = 0f;
-        quickstepDirection = 0f;
 
         isAttackAnimationPlaying = false;
         attackStartedAirborne = false;
@@ -444,8 +414,6 @@ public class FightCharacter : MonoBehaviour
             isCrouching = false;
             isBlocking = false;
 
-            quickstepTimer = 0f;
-            quickstepDirection = 0f;
 
             aiMoveInput = 0f;
             aiJumpPressed = false;
@@ -513,8 +481,6 @@ public class FightCharacter : MonoBehaviour
             fighterAnim.ResetTrigger("kick");
             fighterAnim.ResetTrigger("grab");
             fighterAnim.ResetTrigger("special");
-            fighterAnim.ResetTrigger("quickStep");
-            fighterAnim.ResetTrigger("quickStepBackward");
             fighterAnim.ResetTrigger("hurt");
 
             if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
@@ -623,14 +589,6 @@ public class FightCharacter : MonoBehaviour
         hasPendingAttack = false;
         hasPendingGrab = false;
 
-        // Quickstep states
-        quickstepTimer = 0f;
-        quickstepCooldownTimer = 0f;
-        quickstepDirection = 0f;
-        wasMovePressed = false;
-        lastTapTime = 0f;
-        lastTapDirection = 0f;
-
         // AI input
         aiMoveInput = 0f;
         aiJumpPressed = false;
@@ -679,8 +637,6 @@ public class FightCharacter : MonoBehaviour
         fighterAnim.ResetTrigger("kick");
         fighterAnim.ResetTrigger("grab");
         fighterAnim.ResetTrigger("special");
-        fighterAnim.ResetTrigger("quickStep");
-        fighterAnim.ResetTrigger("quickStepBackward");
         fighterAnim.ResetTrigger("hurt");
 
         if (!string.IsNullOrWhiteSpace(celebrationTriggerName))
@@ -897,9 +853,6 @@ public class FightCharacter : MonoBehaviour
         if (isKnockedDown || isRecovering)
             return FighterMoveResult.Miss;
 
-        if (quickstepTimer > 0f)
-            return FighterMoveResult.Miss;
-
         if (attacker == null)
             return FighterMoveResult.Miss;
 
@@ -930,9 +883,6 @@ public class FightCharacter : MonoBehaviour
             return FighterMoveResult.Miss;
 
         if (isKnockedDown)
-            return FighterMoveResult.Miss;
-
-        if (quickstepTimer > 0f)
             return FighterMoveResult.Miss;
 
         if (IsBlockingAttack(attackerPosition))
@@ -1133,7 +1083,6 @@ public class FightCharacter : MonoBehaviour
             return;
 
         UpdateBlockStunTimer();
-        UpdateQuickstepTimers();
         UpdateGroundedStateTimers();
 
         if (animateFighter && fighterAnim != null)
@@ -1238,8 +1187,6 @@ public class FightCharacter : MonoBehaviour
         {
             isCrouching = crouchHeld && isGrounded;
             isBlocking = false;
-            quickstepTimer = 0f;
-            quickstepDirection = 0f;
 
             if (jumpPressed && isGrounded && !isCrouching)
                 Jump(Mathf.Max(0f, moveInput));
@@ -1252,21 +1199,10 @@ public class FightCharacter : MonoBehaviour
             return;
         }
 
-        CheckQuickstepInput(moveInput);
-
         bool holdingBack = IsHoldingBack(moveInput);
 
-        isCrouching = quickstepTimer <= 0f && crouchHeld && isGrounded;
-        isBlocking = quickstepTimer <= 0f && holdingBack && isGrounded;
-
-        if (quickstepTimer > 0f)
-        {
-            isBlocking = false;
-            isCrouching = false;
-
-            ClearAIButtonInputs();
-            return;
-        }
+        isCrouching = crouchHeld && isGrounded;
+        isBlocking = holdingBack && isGrounded;
 
         if (jumpPressed && isGrounded && !isCrouching && !isBlocking)
         {
@@ -1368,14 +1304,6 @@ public class FightCharacter : MonoBehaviour
 
         if (rb == null || blockStunTimer > 0f || isKnockedDown || isRecovering || isAttackAnimationPlaying)
             return;
-
-        if (quickstepTimer > 0f)
-        {
-            Vector3 quickstepVelocity = rb.linearVelocity;
-            quickstepVelocity.x = quickstepDirection * quickstepSpeed;
-            rb.linearVelocity = quickstepVelocity;
-            return;
-        }
 
         if (!isGrounded)
             return;
@@ -1490,12 +1418,6 @@ public class FightCharacter : MonoBehaviour
             return false;
 
         float directionToTarget = Mathf.Sign(differenceX);
-
-        if (quickstepTimer > 0f &&
-            Mathf.Sign(quickstepDirection) == directionToTarget)
-        {
-            return true;
-        }
 
         if (!isKnockedDown && !isRecovering &&
             blockStunTimer <= 0f && !isAttackAnimationPlaying &&
@@ -1720,80 +1642,6 @@ public class FightCharacter : MonoBehaviour
             Physics.gravity * (gravityMultiplier - 1f),
             ForceMode.Acceleration
         );
-    }
-
-    private void CheckQuickstepInput(float moveInput)
-    {
-        if (!isGrounded || isCrouching || blockStunTimer > 0f || isKnockedDown || isRecovering)
-            return;
-
-        if (quickstepCooldownTimer > 0f || quickstepTimer > 0f)
-            return;
-
-        bool movePressed = Mathf.Abs(moveInput) >= inputDeadZone;
-
-        if (movePressed && !wasMovePressed)
-        {
-            float tapDirection = Mathf.Sign(moveInput);
-
-            if (tapDirection == lastTapDirection &&
-                Time.time - lastTapTime <= doubleTapWindow)
-            {
-                StartQuickstep(tapDirection);
-                lastTapTime = 0f;
-                lastTapDirection = 0f;
-            }
-            else
-            {
-                lastTapTime = Time.time;
-                lastTapDirection = tapDirection;
-            }
-        }
-
-        wasMovePressed = movePressed;
-    }
-
-    private void StartQuickstep(float direction)
-    {
-        quickstepDirection = direction;
-        quickstepTimer = quickstepTime;
-        quickstepCooldownTimer = quickstepCooldown;
-
-        isBlocking = false;
-        isCrouching = false;
-
-        if (animateFighter && fighterAnim != null)
-        {
-            bool isForwardQuickstep =
-                Mathf.Sign(direction) == facingDirection;
-
-            if (isForwardQuickstep)
-            {
-                fighterAnim.SetTrigger("quickStep");
-            }
-            else
-            {
-                fighterAnim.SetTrigger("quickStepBackward");
-            }
-        }
-    }
-
-    private void UpdateQuickstepTimers()
-    {
-        if (quickstepTimer > 0f)
-        {
-            quickstepTimer -= Time.deltaTime;
-
-            if (quickstepTimer <= 0f && rb != null)
-            {
-                Vector3 stopVelocity = rb.linearVelocity;
-                stopVelocity.x = 0f;
-                rb.linearVelocity = stopVelocity;
-            }
-        }
-
-        if (quickstepCooldownTimer > 0f)
-            quickstepCooldownTimer -= Time.deltaTime;
     }
 
     //updating whether the player is moving forward or not for dream seqeuence stuff - HG

@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// Opponent AI for the fighting game
-/// Controls spacing, attacking, blocking, jump attacks, quickstep, round-start easing, breathing space, and player pressure response through FightCharacter input
+/// Controls spacing, attacking, blocking, jump attacks, round-start easing, breathing space, and player pressure response through FightCharacter input
 /// </summary>
 public class FightCharacterAI : MonoBehaviour
 {
@@ -12,8 +12,7 @@ public class FightCharacterAI : MonoBehaviour
         Spacing,
         BackingAway,
         Blocking,
-        JumpAttack,
-        Quickstep
+        JumpAttack
     }
 
     private enum LastAction
@@ -27,8 +26,7 @@ public class FightCharacterAI : MonoBehaviour
         JumpingKick,
         Grab,
         Special,
-        Block,
-        Quickstep
+        Block
     }
 
     private enum JumpAttackType
@@ -111,9 +109,6 @@ public class FightCharacterAI : MonoBehaviour
     [Tooltip("Cooldown after the AI attempts a special so it does not repeatedly use specials")]
     [SerializeField] private float specialCooldown = 4f;
 
-    [Tooltip("Cooldown after the AI quicksteps so it does not quickstep repeatedly")]
-    [SerializeField] private float aiQuickstepCooldown = 1.25f;
-
     [Header("Behavior Weights")]
     [Tooltip("Higher value means standing punch is more likely")]
     [SerializeField] private int standingPunchWeight = 50;
@@ -141,22 +136,6 @@ public class FightCharacterAI : MonoBehaviour
 
     [Tooltip("Higher value means blocking is more likely")]
     [SerializeField] private int blockWeight = 15;
-
-    [Tooltip("Higher value means quickstep is more likely")]
-    [SerializeField] private int quickstepWeight = 20;
-
-    [Header("Quickstep")]
-    [Tooltip("How long the AI holds the first quickstep tap")]
-    [SerializeField] private float quickstepTapTime = 0.06f;
-
-    [Tooltip("How long the AI releases movement between quickstep taps")]
-    [SerializeField] private float quickstepReleaseTime = 0.06f;
-
-    [Tooltip("How long the AI pauses after sending the quickstep input")]
-    [SerializeField] private float quickstepAfterPauseTime = 0.2f;
-
-    [Tooltip("Chance that the AI quicksteps away from the player instead of toward the player")]
-    [SerializeField] private float quickstepAwayChance = 0.65f;
 
     [Header("Movement Feel")]
     [Tooltip("Prevents the AI from switching left/right movement too rapidly")]
@@ -228,7 +207,6 @@ public class FightCharacterAI : MonoBehaviour
     private float jumpAttackCooldownTimer;
     private float grabCooldownTimer;
     private float specialCooldownTimer;
-    private float aiQuickstepCooldownTimer;
     private float movementCommitTimer;
 
     private float openingEaseTimer;
@@ -245,9 +223,6 @@ public class FightCharacterAI : MonoBehaviour
     private float cornerSurveyTimer;
     private float cornerMercyCooldownTimer;
 
-    private float quickstepInputTimer;
-    private int quickstepPhase;
-    private float quickstepInputDirection;
 
     private float distanceToPlayer;
     private float directionToPlayer;
@@ -342,12 +317,6 @@ public class FightCharacterAI : MonoBehaviour
         if (HandleOpeningBehavior())
             return;
 
-        if (currentState == AIState.Quickstep)
-        {
-            HandleQuickstep();
-            return;
-        }
-
         if (HandleCornerPressureMercy())
             return;
 
@@ -422,7 +391,6 @@ public class FightCharacterAI : MonoBehaviour
         blockCooldownTimer = 0f;
         jumpAttackCooldownTimer = 0f;
         grabCooldownTimer = 0f;
-        aiQuickstepCooldownTimer = 0f;
         movementCommitTimer = 0f;
         specialCooldownTimer = 0f;
 
@@ -435,9 +403,6 @@ public class FightCharacterAI : MonoBehaviour
         pressureTimer = 0f;
         pressureBackAwayTimer = 0f;
 
-        quickstepInputTimer = 0f;
-        quickstepPhase = 0;
-        quickstepInputDirection = 0f;
 
         distanceToPlayer = 0f;
         directionToPlayer = 0f;
@@ -719,7 +684,6 @@ public class FightCharacterAI : MonoBehaviour
         int grab = grabWeight;
         int special = specialWeight;
         int blockingWeight = blockWeight;
-        int quickstep = quickstepWeight;
 
         if (lastAction == LastAction.StandingPunch)
             standingPunch = ReduceWeight(standingPunch, 0.75f);
@@ -748,9 +712,6 @@ public class FightCharacterAI : MonoBehaviour
         if (lastAction == LastAction.Block)
             blockingWeight = 0;
 
-        if (lastAction == LastAction.Quickstep)
-            quickstep = 0;
-
         if (blockCooldownTimer > 0f)
             blockingWeight = 0;
 
@@ -766,9 +727,6 @@ public class FightCharacterAI : MonoBehaviour
         if (specialCooldownTimer > 0f)
             special = 0;
 
-        if (aiQuickstepCooldownTimer > 0f)
-            quickstep = 0;
-
         int totalWeight =
             standingPunch +
             crouchingPunch +
@@ -778,8 +736,7 @@ public class FightCharacterAI : MonoBehaviour
             jumpingKick +
             grab +
             special +
-            blockingWeight +
-            quickstep;
+            blockingWeight;
 
         if (totalWeight <= 0)
             return;
@@ -810,10 +767,7 @@ public class FightCharacterAI : MonoBehaviour
         if (TryUseWeightedAction(ref roll, special, DoSpecial))
             return;
 
-        if (TryUseWeightedAction(ref roll, blockingWeight, StartBlock))
-            return;
-
-        StartQuickstep();
+        TryUseWeightedAction(ref roll, blockingWeight, StartBlock);
     }
 
     private bool TryUseWeightedAction(ref int roll, int weight, System.Action action)
@@ -972,61 +926,6 @@ public class FightCharacterAI : MonoBehaviour
         SendMovementOnlyInput();
     }
 
-    /// <summary>
-    /// Sends the double-tap movement input needed to trigger FightCharacter quickstep.
-    /// </summary>
-    private void StartQuickstep()
-    {
-        currentState = AIState.Quickstep;
-        lastAction = LastAction.Quickstep;
-
-        aiQuickstepCooldownTimer = aiQuickstepCooldown;
-
-        bool stepAway = Random.value < quickstepAwayChance;
-        quickstepInputDirection = stepAway ? GetDirectionAwayFromPlayer() : GetDirectionTowardPlayer();
-
-        quickstepPhase = 0;
-        quickstepInputTimer = quickstepTapTime;
-
-        attackSequenceCount = 0;
-
-        fightCharacter.SetAIInput(quickstepInputDirection, false, false, false, false, false);
-    }
-
-    private void HandleQuickstep()
-    {
-        quickstepInputTimer -= Time.deltaTime;
-
-        if (quickstepInputTimer > 0f)
-            return;
-
-        quickstepPhase++;
-
-        switch (quickstepPhase)
-        {
-            case 1:
-                quickstepInputTimer = quickstepReleaseTime;
-                fightCharacter.SetAIInput(0f, false, false, false, false, false);
-                break;
-
-            case 2:
-                quickstepInputTimer = quickstepTapTime;
-                fightCharacter.SetAIInput(quickstepInputDirection, false, false, false, false, false);
-                break;
-
-            case 3:
-                quickstepInputTimer = quickstepAfterPauseTime;
-                fightCharacter.SetAIInput(0f, false, false, false, false, false);
-                break;
-
-            default:
-                currentState = AIState.Spacing;
-                currentMoveInput = Vector2.zero;
-                SendIdleInput();
-                break;
-        }
-    }
-
     private void SendMovementOnlyInput()
     {
         SendMovementInput(currentMoveInput);
@@ -1086,7 +985,6 @@ public class FightCharacterAI : MonoBehaviour
         jumpAttackCooldownTimer = TickTimer(jumpAttackCooldownTimer);
         grabCooldownTimer = TickTimer(grabCooldownTimer);
         specialCooldownTimer = TickTimer(specialCooldownTimer);
-        aiQuickstepCooldownTimer = TickTimer(aiQuickstepCooldownTimer);
         movementCommitTimer = TickTimer(movementCommitTimer);
         pressureBackAwayTimer = TickTimer(pressureBackAwayTimer);
 
