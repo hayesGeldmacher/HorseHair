@@ -74,6 +74,7 @@ public class TelevisionSequence : MonoBehaviour
 
     [Header("Next Scene")]
     [SerializeField] private string nextScene; //name of the next scene to load after television sequence
+    [SerializeField] private bool IsDreamWorldPNC = false;
 
     [SerializeField] private int channelIndex = 0; //index for the current channel
     [SerializeField] private int backupIndex = 1; //index for the next channel in sequence, for pre-loading videos
@@ -414,7 +415,7 @@ public class TelevisionSequence : MonoBehaviour
         yield return new WaitForSeconds(sceneTransitionWait);
         if (!dreamSequence) 
         {
-            playerControls.Transition(nextScene);
+            playerControls.Transition(nextScene, IsDreamWorldPNC);
         }
     }
 

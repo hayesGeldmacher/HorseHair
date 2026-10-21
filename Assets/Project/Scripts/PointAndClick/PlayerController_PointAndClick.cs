@@ -142,6 +142,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void Start()
     {
+        if (phoneImageAnim != null)
+        {
+            phoneImageAnim.SetTrigger("disappear");
+        }
+
         SetDayStartedAudio();
         string environment = PlayerPrefs.GetString("Environment");
         if (!string.IsNullOrEmpty(environment))
@@ -225,8 +230,20 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
     }
 
-    public void Transition(string level)
+    public void Transition(string level, bool isDreamWorld)
     {
+        if (!isDreamWorld)
+        {
+            TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+            int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
+
+            PlayerPrefs.SetInt("TaskNum", ++currentTaskNum);
+            PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
+            Debug.Log("Set int to timeofday morning!");
+
+            dayFinished = AudioTime.Night; //set time to play correct audio clip on end sequence - HG
+        }
+
         StartCoroutine(TransitionEnumerator(level));
     }
 
@@ -270,7 +287,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
             yield return new WaitUntil(() => startedDialogue == false);
 
             task.Giver.ChangeGoalStatus(true);
-            OnOpenInventory(PhoneState.Tasks);
+            //OnOpenInventory(PhoneState.Tasks);
+            if (phoneImageAnim != null)
+            {
+                phoneImageAnim.SetTrigger("appear");
+            }
             task.Giver.ChangeTaskStatus(true);
         }
     }
@@ -337,13 +358,13 @@ public class PlayerController_PointAndClick : MonoBehaviour
         {
             PlayerPrefs.SetInt("TaskNum", currentTaskNum);
             PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Dream);
-            Debug.Log("Set into to timeofday dream!");
+            Debug.Log("Set int to timeofday dream!");
 
             dayFinished = AudioTime.Afternoon; //set time to play correct audio clip on end sequence - HG
         }
         else
         {
-            PlayerPrefs.SetInt("TaskNum", currentTaskNum++);
+            PlayerPrefs.SetInt("TaskNum", ++currentTaskNum);
             PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
             Debug.Log("Set int to timeofday morning!");
 
@@ -417,7 +438,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
             {
                 AddHint(data.requiredItemDesc);
             }
-            OnOpenInventory(PhoneState.Tasks);
+            if (phoneImageAnim != null)
+            {
+                phoneImageAnim.SetTrigger("appear");
+            }
+            //OnOpenInventory(PhoneState.Tasks);
             return;
         }
         StartCoroutine(TeleportSequence(data));
@@ -555,7 +580,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 Inventory[i] = item;
                 inventoryUI.AddItem(item.itemImage, item.itemName, i);
                 textBox.SetName("Me");
-                OnOpenInventory(PhoneState.Inventory);
+                //OnOpenInventory(PhoneState.Inventory);
+                if (phoneImageAnim != null)
+                {
+                    phoneImageAnim.SetTrigger("appear");
+                }
                 dialogueText = item.dialogueText;
                 OpenDialogue();
                 return true;
@@ -597,14 +626,22 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 {
                     dialogueText = data.compDialogueText;
                     OpenDialogue();
-                    OnOpenInventory(PhoneState.Tasks);
+                    //OnOpenInventory(PhoneState.Tasks);
+                    if (phoneImageAnim != null)
+                    {
+                        phoneImageAnim.SetTrigger("appear");
+                    }
                 }
                 else
                 {
                     dialogueText = data.DialogueText;
                     OpenDialogue();
                     ChangingTask(data.nextTask);
-                    OnOpenInventory(PhoneState.Tasks);
+                    //OnOpenInventory(PhoneState.Tasks);
+                    if (phoneImageAnim != null)
+                    {
+                        phoneImageAnim.SetTrigger("appear");
+                    }
                     completeTask = true;
                     AudioManager.instance.CallTaskCompletedSound();
                 }
@@ -689,11 +726,11 @@ public class PlayerController_PointAndClick : MonoBehaviour
             _hideInventoryCoroutine = 
                 StartCoroutine(HideInventoryAfterDelay(0));
 
-            if(phoneImageAnim != null)
-            {
-                phoneImageAnim.SetTrigger("appear");
-            }
-            else { Debug.Log("Phone Image Animator Reference not assigned in Player!"); }
+            //if(phoneImageAnim != null)
+            //{
+            //    phoneImageAnim.SetTrigger("appear");
+            //}
+            //else { Debug.Log("Phone Image Animator Reference not assigned in Player!"); }
             
             if (arrowIsVisible && arrowAnim != null)
             {

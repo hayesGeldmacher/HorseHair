@@ -15088,6 +15088,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7099926910692669048, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7104407437435234256, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_Layer
       value: 12
@@ -33830,6 +33834,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogueSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -36600,7 +36608,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTaskNum
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTimeOfDay
@@ -36998,122 +37006,6 @@ PrefabInstance:
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: NotCompletedText
       value: I can't leave until I've found Harold
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogueSpeed
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[0].name
-      value: Michael
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[1].name
-      value: Me
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[2].name
-      value: Michael
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[3].name
-      value: Me
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[4].name
-      value: Mrs. Burns
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[5].name
-      value: Me
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[6].name
-      value: Dad
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[7].name
-      value: Dad
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[0].sound
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[1].sound
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[2].sound
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[3].sound
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[4].sound
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[5].sound
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[6].sound
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[7].sound
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.alternativeDialogue.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[0].dialogue
-      value: Jay, my man. Your dad gonna let you out of the house this weekend?
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[1].dialogue
-      value: Might just sneak out. Need to figure out what to do with Jes first
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[2].dialogue
-      value: C'mon man, I don't wanna baby sit, just send him to the park or something
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[3].dialogue
-      value: He's not "that" young but I'll think about it
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[4].dialogue
-      value: Quiet in the back... thank you
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[5].dialogue
-      value: 'Dinner sounds good - did dad actually make something tonight? '
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[6].dialogue
-      value: Whatever you say pal
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.dialogue.Array.data[7].dialogue
-      value: Whatever you say pal
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.alternativeDialogue.Array.data[0].name
-      value: Me
-      objectReference: {fileID: 0}
-    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
-      propertyPath: dialogueText.alternativeDialogue.Array.data[0].dialogue
-      value: I shouldn't leave until I've helped Jesse...
       objectReference: {fileID: 0}
     - target: {fileID: 831882386346081683, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: m_Enabled
@@ -46809,30 +46701,6 @@ PrefabInstance:
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: environmentName
       value: My room
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
-      propertyPath: dialogueMovements.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
-      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
-      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.data[0].name
-      value: Me
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
-      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.data[1].name
-      value: Me
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
-      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.data[0].dialogue
-      value: 'Jesse''s probably downstairs already. '
-      objectReference: {fileID: 0}
-    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
-      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.data[1].dialogue
-      value: If I forget what to do, I can check y
       objectReference: {fileID: 0}
     - target: {fileID: 8573105133974736201, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: m_IsActive
@@ -61670,6 +61538,10 @@ PrefabInstance:
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: dialogueMovements.Array.data[0].time.timeOfDay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogueSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.size

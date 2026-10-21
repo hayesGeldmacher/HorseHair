@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,7 +34,6 @@ public class Inventory : MonoBehaviour
 
     private Coroutine _fadeCoroutine;
     private PhoneState currentPhoneState = PhoneState.None;
-
 
     private void PlayPhoneButtonSound()
     {
@@ -84,6 +84,10 @@ public class Inventory : MonoBehaviour
         currentPhoneState = PhoneState.Tasks;
         inventoryPanel.SetActive(false);
         taskPanel.SetActive(true);
+        foreach(var slot in _slots)
+        {
+            slot.ClearSlot();
+        }
     }
 
     public void AddItem(Sprite itemSprite, string itemName, int index)
