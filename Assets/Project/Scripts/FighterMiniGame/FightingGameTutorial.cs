@@ -27,6 +27,15 @@ public class FightingGameTutorial : MonoBehaviour
         public TutorialStep step;
         [TextArea(2, 4)] public string instruction;
         [TextArea(1, 3)] public string successResponse = "Awesome!";
+
+        public float successResponseDelay = 0.65f;
+        public float successMessageTime = 1.25f;
+        public bool hasSuccessResponse = true;
+        public bool hasBrotherResponse = false;
+        public float brotherResponseWaitTime = 2.0f;
+
+        public DialogueTrigger responseTrigger;
+        
     }
 
     [Header("References")]
@@ -34,6 +43,7 @@ public class FightingGameTutorial : MonoBehaviour
     [SerializeField] private FGTutorialDialogue dialogueUI;
     [Tooltip("Enemy.")]
     [SerializeField] private FightCharacterAI opponentAI;
+    [SerializeField] private FGDialogueManager dialogueManager;
 
     [Header("Starting")]
     [Tooltip("Automatically begins when the player becomes active after the controls screen.")]
@@ -42,8 +52,6 @@ public class FightingGameTutorial : MonoBehaviour
     [Header("Timing")]
     [SerializeField, Min(0f)] private float openingDelay = 0.5f;
     [SerializeField, Min(0f)] private float openingMessageTime = 2.5f;
-    [SerializeField, Min(0f)] private float successMessageTime = 1.25f;
-    [SerializeField, Min(0f)] private float successResponseDelay = 05f;
 
     [Header("Opening")]
     [TextArea(2, 4)]
@@ -366,10 +374,18 @@ public class FightingGameTutorial : MonoBehaviour
     private IEnumerator AdvanceAfterResponse()
     {
         TutorialLesson lesson = lessons[lessonIndex];
-        yield return new WaitForSeconds(successResponseDelay);
-        dialogueUI.Show(lesson.successResponse);
-        AudioManager.instance.PlayDialogueBurst(lesson.successResponse, DialogueSound.Brother);
-        yield return new WaitForSeconds(successMessageTime);
+        if (lesson.hasBrotherResponse)
+        {
+            dialogueUI.Hide();
+            dialogueManager.CallDialogueOnDelay(lesson.brotherResponseWaitTime, lesson.responseTrigger);
+        }
+        yield return new WaitForSeconds(lesson.successResponseDelay);
+        if (lesson.hasSuccessResponse)
+        {
+            dialogueUI.Show(lesson.successResponse);
+            AudioManager.instance.PlayDialogueBurst(lesson.successResponse, DialogueSound.Brother);
+        }
+        yield return new WaitForSeconds(lesson.successMessageTime);
 
         lessonIndex++;
 

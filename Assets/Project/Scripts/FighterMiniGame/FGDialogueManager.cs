@@ -26,6 +26,8 @@ public class DialogueTrigger
 
     [HideInInspector] public float cooldownTimer;
     [HideInInspector] public bool hasTriggered;
+
+    public float dialogueVisibleTime = 2.0f;
 }
 
 public class FGDialogueManager : MonoBehaviour
@@ -80,8 +82,7 @@ public class FGDialogueManager : MonoBehaviour
     public bool hasDadDialogue = false;
     public BrotherDialogue dadDialogue;
 
-    [Header("Customize")]
-    [SerializeField] private float dialogueVisibleTime = 2.0f;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -105,7 +106,16 @@ public class FGDialogueManager : MonoBehaviour
         }
     }
 
+    public void CallDialogueOnDelay(float delay, DialogueTrigger trigger)
+    {
+        StartCoroutine(WaitToTriggerDialogue(delay, trigger));
+    }
 
+    private IEnumerator WaitToTriggerDialogue(float delay, DialogueTrigger trigger)
+    {
+        yield return new WaitForSeconds(delay);
+        TriggerDialogue(trigger);
+    }
     public void TriggerDialogue(DialogueTrigger trigger)
     {
 
@@ -128,7 +138,7 @@ public class FGDialogueManager : MonoBehaviour
 
             ShowDialogue(targetDialogue);
 
-            targetDialogue.dialogueTimer = dialogueVisibleTime;
+            targetDialogue.dialogueTimer = trigger.dialogueVisibleTime;
             trigger.cooldownTimer = trigger.cooldown;
             trigger.hasTriggered = true;
 
@@ -162,7 +172,7 @@ public class FGDialogueManager : MonoBehaviour
 
             ShowDialogue(targetDialogue);
 
-            targetDialogue.dialogueTimer = dialogueVisibleTime;
+            targetDialogue.dialogueTimer = trigger.dialogueVisibleTime;
             trigger.cooldownTimer = trigger.cooldown;
             trigger.hasTriggered = true;
 
@@ -183,12 +193,12 @@ public class FGDialogueManager : MonoBehaviour
         yield return new WaitForSeconds(trigger.brotherResponseTime);
 
         if (!responseDialogue.isTalking)
-            TriggerResponse(responseDialogue, trigger.brotherDialogueLine);
+            TriggerResponse(responseDialogue, trigger.brotherDialogueLine, trigger.dialogueVisibleTime);
 
         pendingResponses--;
     }
 
-    public void TriggerResponse(BrotherDialogue responseDialogue, string line)
+    public void TriggerResponse(BrotherDialogue responseDialogue, string line, float dialogueTime)
     {
         if (responseDialogue.dialogueText != null)
             responseDialogue.dialogueText.text = line;
@@ -198,7 +208,7 @@ public class FGDialogueManager : MonoBehaviour
         if (AudioManager.instance != null)
             AudioManager.instance.PlayDialogueBurst(line, responseDialogue.soundType);
 
-        responseDialogue.dialogueTimer = dialogueVisibleTime;
+        responseDialogue.dialogueTimer = dialogueTime;
     }
 
     private void ShowDialogue(BrotherDialogue dialogue)
