@@ -2479,7 +2479,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &425708210
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8404,6 +8404,7 @@ MonoBehaviour:
   skipToRedChannel: 0
   sceneTransitionWait: 6
   nextScene: SCN_FightingGameTutorialN1
+  IsDreamWorldPNC: 0
   channelIndex: 0
   backupIndex: 1
   tvAnim: {fileID: 1131307639}
@@ -16978,14 +16979,14 @@ RectTransform:
   m_GameObject: {fileID: 1967096227}
   m_LocalRotation: {x: -0, y: -0.9999692, z: -0, w: 0.007849811}
   m_LocalPosition: {x: 0, y: 0, z: -14.94}
-  m_LocalScale: {x: 0.120774, y: 0.093389824, z: 0.093389824}
+  m_LocalScale: {x: 0.120774, y: 0.08988957, z: 0.093389824}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 527661383}
   m_LocalEulerAnglesHint: {x: 0, y: -179.1, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -628.04, y: -376.11}
+  m_AnchoredPosition: {x: -628.04, y: -376.55}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1967096229
@@ -17030,7 +17031,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: bbefe933e8d917d46ac1d5739c727ff0, type: 3}
+  m_Texture: {fileID: 2800000, guid: bffdafc79d0b56b49956d6bc9611935c, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -20478,7 +20479,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 824808762}
     m_Modifications:
+    - target: {fileID: 1083587671816191500, guid: 406e6c44d786f5341a07ed5561fe1264, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2417516004936196850, guid: 406e6c44d786f5341a07ed5561fe1264, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2760793195123373507, guid: 406e6c44d786f5341a07ed5561fe1264, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -20550,6 +20559,10 @@ PrefabInstance:
       propertyPath: sourceUICamera
       value: 
       objectReference: {fileID: 2071812720}
+    - target: {fileID: 5001821915742600008, guid: 406e6c44d786f5341a07ed5561fe1264, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7687712124995952662, guid: 406e6c44d786f5341a07ed5561fe1264, type: 3}
       propertyPath: sourceCanvas
       value: 
