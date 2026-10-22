@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ public class FGTutorialDialogue : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private CanvasGroup dialoguePanel;
     [SerializeField] private TMP_Text messageText;
-
+    [SerializeField] private Animator textBoxAnim; //animation for the text box to appear/disappear
     private void Reset()
     {
         dialoguePanel = GetComponent<CanvasGroup>();
@@ -54,8 +55,19 @@ public class FGTutorialDialogue : MonoBehaviour
         if (dialoguePanel == null)
             return;
 
-        dialoguePanel.alpha = visible ? 1f : 0f;
-        dialoguePanel.interactable = false;
-        dialoguePanel.blocksRaycasts = false;
+        if (visible)
+        {
+            textBoxAnim.ResetTrigger("disappear");
+            textBoxAnim.SetTrigger("appear");
+        }
+        else
+        {
+            textBoxAnim.ResetTrigger("appear");
+            textBoxAnim.SetTrigger("disappear");
+        }
+
+        //dialoguePanel.alpha = visible ? 1f : 0f;
+        //dialoguePanel.interactable = false;
+        //dialoguePanel.blocksRaycasts = false;
     }
 }

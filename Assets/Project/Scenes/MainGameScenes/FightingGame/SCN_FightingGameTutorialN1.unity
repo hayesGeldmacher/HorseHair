@@ -953,91 +953,90 @@ MonoBehaviour:
       'D' keys.
     successResponse: You can review the controls by pressing the view button or tab
       key.
-    successResponseDelay: 2
-    successMessageTime: 3
+    successResponseDelay: 0
+    successMessageTime: 4
     hasSuccessResponse: 0
     hasBrotherResponse: 1
     brotherResponseWaitTime: 1
     responseTrigger:
-      dialogueLine: I think I know how to walk ... I'll just review the controls
-        by pressing the tab key if I forget.
+      dialogueLine: 'I think I know how to walk ... I can review the controls by
+        pressing the Tab key. '
       fromJesse: 0
       hasBrotherResponse: 0
-      brotherResponseTime: 0.25
+      brotherResponseTime: 0.5
       brotherDialogueLine: 
       triggerChance: 1
       cooldown: 2
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 3.5
+      dialogueVisibleTime: 4
   - step: 2
     instruction: Whatever, try moving up to Jump and hold down to Crouch.
     successResponse: Nice. Different stances can avoid certain attacks.
-    successResponseDelay: 2
-    successMessageTime: 3
-    hasSuccessResponse: 1
-    hasBrotherResponse: 0
-    brotherResponseWaitTime: 1
+    successResponseDelay: 0
+    successMessageTime: 3.2
+    hasSuccessResponse: 0
+    hasBrotherResponse: 1
+    brotherResponseWaitTime: 0.5
     responseTrigger:
-      dialogueLine: 
+      dialogueLine: 'Sweet, I bet different stances can avoid certain attacks, right? '
       fromJesse: 0
       hasBrotherResponse: 0
-      brotherResponseTime: 1
+      brotherResponseTime: 0.5
       brotherDialogueLine: 
       triggerChance: 1
       cooldown: 2
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 2
+      dialogueVisibleTime: 4
   - step: 3
-    instruction: Throw a punch with the 'J' key. You can also punch while jumping
+    instruction: Yup. Throw a punch with the 'J' key. You can also punch while jumping
       or crouching.
     successResponse: 'You''re not as slow as I thought! '
-    successResponseDelay: 2
-    successMessageTime: 3
+    successResponseDelay: 0
+    successMessageTime: 2
     hasSuccessResponse: 0
     hasBrotherResponse: 1
-    brotherResponseWaitTime: 0.3
+    brotherResponseWaitTime: 0.5
     responseTrigger:
-      dialogueLine: 
+      dialogueLine: Gotcha!
       fromJesse: 0
-      hasBrotherResponse: 1
-      brotherResponseTime: 1
+      hasBrotherResponse: 0
+      brotherResponseTime: 0.5
       brotherDialogueLine: Gotcha!
       triggerChance: 1
       cooldown: 2
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 3.5
+      dialogueVisibleTime: 2.2
   - step: 4
     instruction: Now kick with the 'K' key. Kicks also work while jumping or crouching.
-    successResponse: You're not as slow as I thought! Kicking does a bit more damage
-      than punching, but it's slower too.
-    successResponseDelay: 2
-    successMessageTime: 3
-    hasSuccessResponse: 1
-    hasBrotherResponse: 0
-    brotherResponseWaitTime: 2
+    successResponse: 
+    successResponseDelay: 0
+    successMessageTime: 2
+    hasSuccessResponse: 0
+    hasBrotherResponse: 1
+    brotherResponseWaitTime: 0.5
     responseTrigger:
-      dialogueLine: 
+      dialogueLine: Oh, that felt good.
       fromJesse: 0
       hasBrotherResponse: 0
-      brotherResponseTime: 1
+      brotherResponseTime: 0.5
       brotherDialogueLine: 
       triggerChance: 1
       cooldown: 2
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 2
+      dialogueVisibleTime: 2.2
   - step: 5
     instruction: Now, get close to me and perform a grab with the 'L' key.
     successResponse: 
-    successResponseDelay: 2
-    successMessageTime: 3
+    successResponseDelay: 0
+    successMessageTime: 3.5
     hasSuccessResponse: 0
     hasBrotherResponse: 1
     brotherResponseWaitTime: 0.5
@@ -1053,17 +1052,17 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 3.5
+      dialogueVisibleTime: 4
   - step: 6
     instruction: Alright spammer, walk backwards to block my attack.
-    successResponse: Just like that. Blocking attacks will reduce your damage taken.
-    successResponseDelay: 2
-    successMessageTime: 1.25
-    hasSuccessResponse: 1
-    hasBrotherResponse: 0
-    brotherResponseWaitTime: 2
+    successResponse: 
+    successResponseDelay: 0
+    successMessageTime: 3.5
+    hasSuccessResponse: 0
+    hasBrotherResponse: 1
+    brotherResponseWaitTime: 3.5
     responseTrigger:
-      dialogueLine: 
+      dialogueLine: I think I can safely assume that blocking reduces damage...
       fromJesse: 0
       hasBrotherResponse: 0
       brotherResponseTime: 1
@@ -1073,18 +1072,18 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 2
+      dialogueVisibleTime: 4
   - step: 7
     instruction: Go ahead and finish with your Special move by pressing the 'I' Key.
     successResponse: 
-    successResponseDelay: 2
-    successMessageTime: 3
+    successResponseDelay: 0
+    successMessageTime: 4
     hasSuccessResponse: 0
     hasBrotherResponse: 1
     brotherResponseWaitTime: 0.5
     responseTrigger:
-      dialogueLine: Oh, that felt good. I have only three of these per round, right?
-        Better use em wisely.
+      dialogueLine: ' I have only three of these per round, right? Better use em
+        wisely.'
       fromJesse: 0
       hasBrotherResponse: 0
       brotherResponseTime: 1
@@ -1094,7 +1093,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 3.5
+      dialogueVisibleTime: 4
   finalMessage: Now lets get into the real thing. I wont be going easy on you.
   finalMessageTime: 2
   onTutorialCompleted:
@@ -14728,13 +14727,14 @@ GameObject:
   - component: {fileID: 1451128965}
   - component: {fileID: 1451128964}
   - component: {fileID: 1451128963}
+  - component: {fileID: 1451128966}
   m_Layer: 5
   m_Name: TutorialDialogueCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1451128962
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14805,6 +14805,28 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1451128961}
   m_CullTransparentMesh: 1
+--- !u!95 &1451128966
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451128961}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a9d2271546962f04ba9378978b3b6593, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1479744028
 GameObject:
   m_ObjectHideFlags: 0
@@ -14963,6 +14985,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FGTutorialDialogue
   dialoguePanel: {fileID: 1451128963}
   messageText: {fileID: 1082160245}
+  textBoxAnim: {fileID: 1451128966}
 --- !u!4 &1511594233
 Transform:
   m_ObjectHideFlags: 0

@@ -376,15 +376,24 @@ public class FightingGameTutorial : MonoBehaviour
         TutorialLesson lesson = lessons[lessonIndex];
         if (lesson.hasBrotherResponse)
         {
-            dialogueUI.Hide();
             dialogueManager.CallDialogueOnDelay(lesson.brotherResponseWaitTime, lesson.responseTrigger);
         }
-        yield return new WaitForSeconds(lesson.successResponseDelay);
+        else
+        {
+            yield return new WaitForSeconds(lesson.successResponseDelay);
+
+        }
         if (lesson.hasSuccessResponse)
         {
             dialogueUI.Show(lesson.successResponse);
             AudioManager.instance.PlayDialogueBurst(lesson.successResponse, DialogueSound.Brother);
         }
+        else
+        {
+            dialogueUI.Hide();
+        }
+
+ 
         yield return new WaitForSeconds(lesson.successMessageTime);
 
         lessonIndex++;
