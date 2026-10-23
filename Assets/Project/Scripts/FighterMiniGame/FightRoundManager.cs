@@ -36,6 +36,8 @@ public class FightRoundManager : MonoBehaviour
     [Tooltip("Skip the tutorial but still do character select")]
     [SerializeField] private bool skipJustTutorial = false;
 
+    [SerializeField] private bool skipToEndDialogue = false;
+
     [Tooltip("Delays standard scene transition for unique scene sequences")]
     [SerializeField] private bool delayNextSceneTransition = false;
     [SerializeField] private bool sceneTransitionIsReady = false;
@@ -273,6 +275,16 @@ public class FightRoundManager : MonoBehaviour
 
     private void Start()
     {
+
+        if (skipToEndDialogue)
+        {
+            if (!triggeredTransition)
+            {
+                triggeredTransition = true;
+                StartCoroutine(PostMatchSequence(playerCharacter));
+            }
+        }
+
         ConfigureTutorial();
         ShowStartScreen();
 

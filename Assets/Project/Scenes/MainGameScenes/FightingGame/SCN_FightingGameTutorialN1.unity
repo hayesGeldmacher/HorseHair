@@ -584,6 +584,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 158451735}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: skipJustTutorial
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: startScreenPanel
       value: 
       objectReference: {fileID: 514399745}
@@ -591,6 +595,10 @@ PrefabInstance:
       propertyPath: centerMessageText
       value: 
       objectReference: {fileID: 1926219244}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: skipToEndDialogue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: afterDialogueDelay
       value: 1
@@ -669,7 +677,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: 'playerWinIcons.Array.data[0]'
@@ -733,10 +741,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[2].fromJesse
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[3].fromJesse
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[4].fromJesse
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[5].fromJesse
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
@@ -773,11 +789,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[2].dialogueLine
-      value: Well, I'm going to bed - teaching you all the moves wore me out.
+      value: 'Well, kicking your ass wore me out. Why don''t you get outta here for
+        the night? '
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[3].dialogueLine
-      value: night, Jay...
+      value: 'Alright, I''m leaving. Night, Jay. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[4].dialogueLine
+      value: Night, Jesse.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[5].dialogueLine
+      value: See ya, Jay
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[0].triggerChance
@@ -793,6 +818,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[3].triggerChance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[4].triggerChance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[5].triggerChance
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
@@ -824,6 +857,14 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[4].triggerOnlyOnce
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[5].triggerOnlyOnce
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[1].hasBrotherResponse
       value: 1
       objectReference: {fileID: 0}
@@ -845,15 +886,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[1].hasBrotherResponse
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[2].hasBrotherResponse
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[3].hasBrotherResponse
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[0].dialogueVisibleTime
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[1].brotherDialogueLine
@@ -861,6 +906,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[1].brotherResponseTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[1].dialogueVisibleTime
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
@@ -872,12 +921,44 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[2].dialogueVisibleTime
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[3].brotherDialogueLine
-      value: Goodnight, Jesse.
+      value: See ya, J
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[3].brotherResponseTime
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[3].dialogueVisibleTime
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[4].brotherDialogueLine
+      value: See ya, J
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[4].brotherResponseTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[4].dialogueVisibleTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[5].brotherDialogueLine
+      value: See ya, J
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[5].brotherResponseTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: playerWinDialogue.Array.data[5].dialogueVisibleTime
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8162191619237208354, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: m_Name
@@ -949,8 +1030,7 @@ MonoBehaviour:
   requiredMovementDistance: 0.5
   lessons:
   - step: 0
-    instruction: First, Move Left and Right with the control sitck or the 'A' and
-      'D' keys.
+    instruction: First, Move Left and Right with the 'A' and 'D' keys.
     successResponse: You can review the controls by pressing the view button or tab
       key.
     successResponseDelay: 0

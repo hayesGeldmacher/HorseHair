@@ -36,15 +36,15 @@ public class FGDialogueManager : MonoBehaviour
 
     public static FGDialogueManager instance;
 
-    private int pendingResponses;
+    public int pendingResponses;
 
     public bool IsDialogueActive
     {
         get
         {
-            return PlayerDialogue.isTalking ||
-                   JesseDialogue.isTalking ||
-                   pendingResponses > 0;
+            return PlayerDialogue.dialogueTimer > 0 ||
+                   JesseDialogue.dialogueTimer > 0 ||
+                pendingResponses > 0;
         }
     }
 
