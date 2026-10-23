@@ -376,6 +376,91 @@ Transform:
   m_Children: []
   m_Father: {fileID: 864800124}
   m_LocalEulerAnglesHint: {x: 0, y: 182.49, z: 0}
+--- !u!1001 &491760833
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1622018644324231418, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_Name
+      value: MovieProps
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.0663
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.0663
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.0663
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3873504052724985206, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6542958574204084413, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.3699999
+      objectReference: {fileID: 0}
+    - target: {fileID: 6542958574204084413, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6542958574204084413, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.036252476
+      objectReference: {fileID: 0}
+    - target: {fileID: 6542958574204084413, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.9993427
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 63d0a92506c8e1046a4d6d587029e5c2, type: 3}
 --- !u!1 &760103005
 GameObject:
   m_ObjectHideFlags: 0
@@ -468,7 +553,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -530,7 +615,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 40
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -596,7 +681,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: af9c3b417cf545f45a96cde778dd7126, type: 2}
+  sharedProfile: {fileID: 11400000, guid: ce10ee7796d8e4140a11d16f6af3b266, type: 2}
 --- !u!4 &780424457
 Transform:
   m_ObjectHideFlags: 0
@@ -667,7 +752,7 @@ VideoPlayer:
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
-  m_Looping: 0
+  m_Looping: 1
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
@@ -883,6 +968,9 @@ MonoBehaviour:
     playOnAwake: 1
   currentlyFading: 1
   fadingUp: 1
+  fadeOnStart: 0
+  playOnStart: 0
+  fadeUpOnStart: 0
 --- !u!114 &864018324
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1600,6 +1688,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 260439171588270297, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 460076029916431738, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: charsVariance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 460076029916431738, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: baseCharsPerSound
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 460076029916431738, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: useTextCrawlAudio
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 831787545934616908, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
@@ -3534,25 +3634,33 @@ MonoBehaviour:
     ThoughtText:
       dialogue:
       - name: Me
-        dialogue: day2test
+        dialogue: 'I really try to focus at school, but I can''t help drifting away. '
         sound: 0
       - name: Me
-        dialogue: test
+        dialogue: It's like my house is a desert island, or a spaceship.
         sound: 0
       - name: Me
-        dialogue: test
+        dialogue: And when I leave, I'm an alien explorer on a strange new world.
         sound: 0
       - name: Me
-        dialogue: test
+        dialogue: What's worse, I'm starting to feel the same way at home.
         sound: 0
       - name: Me
-        dialogue: lalal
+        dialogue: Jesse talks to me, and I want to take him serioulsy, but I end
+          up looking right through him...
+        sound: 0
+      - name: Me
+        dialogue: 'And Dad - well, I don''t even know what to say there. '
+        sound: 0
+      - name: Me
+        dialogue: And the ship just keeps flying into the dark...
         sound: 0
       dialogueSpeed: 15
       alternativeDialogue: []
       useAltDialogue: 0
   Alternative_NEI: {fileID: 0}
   IsGoal: 0
+  SkipGoal: 0
   Activated: 0
   Talked: 0
   IsUsedByGoal: 0
@@ -4153,6 +4261,7 @@ MonoBehaviour:
   availableTime: []
   EndingCamera: 0
   IsVisbleArrow: 0
+  ShowDarkenedImage: 0
 --- !u!33 &2855530352437300752
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4216,12 +4325,17 @@ MonoBehaviour:
   - {fileID: 5349290222648128400}
   - {fileID: 6343470162722927763}
   playerClips:
-  - {fileID: 8300000, guid: 9f51f87bbcd443e4fa216d5e246721bb, type: 3}
+  - {fileID: 8300000, guid: 2fd256c501d402f4d996c04879939ff1, type: 3}
+  - {fileID: 8300000, guid: b76c0e22316e3914290a07450e7b1751, type: 3}
+  - {fileID: 8300000, guid: 84f7a6da2b1ddcb4b842378d21a14aba, type: 3}
+  - {fileID: 8300000, guid: a350c3717bb54bc49a41b04994d920dd, type: 3}
   brotherClips:
-  - {fileID: 8300000, guid: 8ae551e4576aea94fb38a60b0e4c4681, type: 3}
-  - {fileID: 8300000, guid: bd9b26ebb70b874438cb97b14494c906, type: 3}
-  - {fileID: 8300000, guid: 675ca47bb96c981448448f5852d97892, type: 3}
-  - {fileID: 8300000, guid: 3fd09d23977c2c54ebc42a3f44156635, type: 3}
+  - {fileID: 8300000, guid: 391aa899e8cc58e4f8f2308cca07a1e3, type: 3}
+  - {fileID: 8300000, guid: 50e21fbd67f42c248855f45cdd20951d, type: 3}
+  - {fileID: 8300000, guid: 8e0a09366cbee914da665e7f6a08ecaf, type: 3}
+  - {fileID: 8300000, guid: 960202da8ad0b434a81cc8844cbc136d, type: 3}
+  - {fileID: 8300000, guid: b3c59607cdfe4f4438fd9121e9b72656, type: 3}
+  - {fileID: 8300000, guid: 3c8dd3e4073389641a7ae490ac6cbac1, type: 3}
   dadClips:
   - {fileID: 8300000, guid: ae3b08d746df22c4b8b892f262baa6f7, type: 3}
   - {fileID: 8300000, guid: 4b224551ae71cac48889e23e67b96537, type: 3}
@@ -6729,3 +6843,4 @@ SceneRoots:
   - {fileID: 5347853070191374055}
   - {fileID: 4037758205009934755}
   - {fileID: 4541942692427729849}
+  - {fileID: 491760833}
