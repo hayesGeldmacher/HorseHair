@@ -257,11 +257,22 @@ public class PlayerController_PointAndClick : MonoBehaviour
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
         blinkAnimator.SetTrigger("EyesDown");
 
-
+        Debug.Log("FADING AUDIO");
+        //TO DO - have the damn scene fade out here!
+        if (volumeFadeRoomTone != null)
+        {
+            volumeFadeRoomTone.StartFadeIn(false, false);
+        }
+        if (volumeFadeBackgroundMusic != null)
+        {
+            volumeFadeBackgroundMusic.StartFadeIn(false, false);
+        }
         yield return new WaitUntil(() =>
         blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
 
-        
+
+        yield return new WaitForSeconds(2.0f);
+
         SceneManager.LoadScene(level);
     }
 

@@ -182,6 +182,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Grabbed
     moveSequence: 09000000
     resultSequence: 
@@ -197,6 +198,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Punched
     moveSequence: 05000000
     resultSequence: 
@@ -212,6 +214,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   dialogueVisibleTime: 2
   isTalking: 0
 --- !u!1 &67698780
@@ -760,6 +763,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -10.85
       objectReference: {fileID: 0}
+    - target: {fileID: 3796428002867225274, guid: 6bf182df73cef8a48861d5d2b352ad12, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5319148223274872037, guid: 6bf182df73cef8a48861d5d2b352ad12, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.495
@@ -816,7 +823,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: PF_playerRoom
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8540631779399789634, guid: 6bf182df73cef8a48861d5d2b352ad12, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -8439,6 +8447,7 @@ MonoBehaviour:
     triggerOnlyOnce: 0
     cooldownTimer: 0
     hasTriggered: 0
+    dialogueVisibleTime: 2
   remoteWait: 1
   controllerWaitBrother: 2
   controllerWaitPlayer: 0.5
@@ -8481,6 +8490,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 0
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8510,6 +8520,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 0
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8539,6 +8550,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 0
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8568,6 +8580,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 1
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8597,6 +8610,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
 --- !u!4 &1111314899
 Transform:
   m_ObjectHideFlags: 0
@@ -10910,6 +10924,30 @@ PrefabInstance:
       propertyPath: AllowPhone
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: phoneClickSource
+      value: 
+      objectReference: {fileID: 8455432853581870133}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: volumeFadeRoomTone
+      value: 
+      objectReference: {fileID: 8455432853581870132}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: currentTask.goalItem
+      value: 
+      objectReference: {fileID: 1092710955}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: currentTask.finalPoint
+      value: 
+      objectReference: {fileID: 443838055}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: volumeFadeBackgroundMusic
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: currentTask.startingPosition
+      value: 
+      objectReference: {fileID: 1689106482}
     - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
       value: 0
@@ -19188,20 +19226,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 5951501534388983769}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2933005821245939047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6258669321119444972}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d3a21e93c7aca2d45b039a2a1c960559, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ClipPitchFade
-  source: {fileID: 0}
-  pitchChangeSpeed: 0.5
 --- !u!82 &3148623712794060972
 AudioSource:
   m_ObjectHideFlags: 0
@@ -20306,7 +20330,6 @@ GameObject:
   - component: {fileID: 6037753397131951025}
   - component: {fileID: 2809304797571036642}
   - component: {fileID: 2199978132633284312}
-  - component: {fileID: 2933005821245939047}
   - component: {fileID: 655288445803615829}
   - component: {fileID: 3577203364503883178}
   - component: {fileID: 4332711280839471653}
@@ -20935,13 +20958,13 @@ MonoBehaviour:
     track: {fileID: 8300000, guid: 1527834ecccd85443afec8bad4bc3718, type: 3}
     lowerLimit: 0
     upperLimit: 0.6
-    speed: 2.5
+    speed: 15
     playOnAwake: 1
-  currentlyFading: 1
-  fadingUp: 1
-  fadeOnStart: 0
+  currentlyFading: 0
+  fadingUp: 0
+  fadeOnStart: 1
   playOnStart: 0
-  fadeUpOnStart: 0
+  fadeUpOnStart: 1
 --- !u!82 &8455432853581870133
 AudioSource:
   m_ObjectHideFlags: 0
