@@ -58,8 +58,13 @@ public class PlayerController_PointAndClick : MonoBehaviour
     private AudioSource finishTaskSource;
     [SerializeField, Tooltip("Clip played for above when morning task is finished")] 
     private AudioClip finishMorningClip;
-    [SerializeField, Tooltip("Clip played for above when afternoon task is finished")] 
+    [SerializeField, Tooltip("Clip played for above when afternoon task is finished")]
+
     private AudioClip finishAfternoonClip;
+    [SerializeField, Tooltip("Audio fade trigger for room tone")]
+    private AudioVolumeFade volumeFadeRoomTone;
+    [SerializeField, Tooltip("Audio fade trigger for background music")]
+    private AudioVolumeFade volumeFadeBackgroundMusic;
     [SerializeField] private AudioSource phoneClickSource;
 
     [Header("Hover Effect")]
@@ -251,6 +256,17 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
         blinkAnimator.SetTrigger("EyesDown");
+
+
+        //TO DO - have the damn scene fade out here!
+        if(volumeFadeRoomTone != null)
+        {
+            volumeFadeRoomTone.StartFadeIn(false, false);
+        }
+        if (volumeFadeBackgroundMusic != null)
+        {
+        volumeFadeBackgroundMusic.StartFadeIn(false, false);
+        }
 
         yield return new WaitUntil(() =>
         blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
