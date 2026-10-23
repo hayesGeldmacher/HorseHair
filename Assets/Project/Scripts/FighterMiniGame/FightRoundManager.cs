@@ -283,7 +283,7 @@ public class FightRoundManager : MonoBehaviour
             if (!triggeredTransition)
             {
                 triggeredTransition = true;
-                StartCoroutine(PostMatchSequence(playerCharacter));
+                StartCoroutine(PostMatchSequence(enemyCharacter));
             }
         }
 

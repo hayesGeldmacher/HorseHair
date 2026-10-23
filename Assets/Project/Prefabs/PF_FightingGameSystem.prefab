@@ -49,6 +49,13 @@ MonoBehaviour:
   titleText: {fileID: 0}
   pressAnyButtonText: {fileID: 0}
   blinkSpeed: 4
+  skipIntroAndCharacterSelect: 0
+  skipJustTutorial: 0
+  skipToEndDialogue: 0
+  delayNextSceneTransition: 0
+  sceneTransitionIsReady: 0
+  fightTransitionIsReady: 0
+  triggeredDelayTransition: 0
   characterSelectManager: {fileID: 0}
   characterSelectLoadingTime: 1
   nextRoundPromptText: {fileID: 0}
@@ -58,6 +65,7 @@ MonoBehaviour:
   roundsNeededToWinGame: 2
   playerCharacter: {fileID: 0}
   enemyCharacter: {fileID: 0}
+  fightingGameTutorial: {fileID: 0}
   playerHealth: {fileID: 0}
   enemyHealth: {fileID: 0}
   playerSuperMeter: {fileID: 0}
@@ -88,6 +96,51 @@ MonoBehaviour:
   roundEndPresentationTime: 4
   playerDisplayName: Farmer
   enemyDisplayName: Sheep
+  matchWinPanel: {fileID: 0}
+  matchWinnerText: {fileID: 0}
+  matchWinnerPortrait: {fileID: 0}
+  playerWinnerPortrait: {fileID: 0}
+  enemyWinnerPortrait: {fileID: 0}
+  dialogueStartDelay: 1
+  dialogueManager: {fileID: 0}
+  playerWinDialogue: []
+  enemyWinDialogue:
+  - dialogueLine: And that's the game!
+    fromJesse: 1
+    hasBrotherResponse: 0
+    brotherResponseTime: 0
+    brotherDialogueLine: 
+    triggerChance: 1
+    cooldown: 0
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+    dialogueVisibleTime: 0
+  - dialogueLine: I know you're still learning, but that was embarrassing...
+    fromJesse: 1
+    hasBrotherResponse: 1
+    brotherResponseTime: 0
+    brotherDialogueLine: Oh, shut up.
+    triggerChance: 1
+    cooldown: 0
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+    dialogueVisibleTime: 0
+  - dialogueLine: Well, kicking your ass wore me out - I'm headed to bed...
+    fromJesse: 1
+    hasBrotherResponse: 1
+    brotherResponseTime: 1
+    brotherDialogueLine: Night, Jesse.
+    triggerChance: 1
+    cooldown: 0
+    triggerOnlyOnce: 1
+    cooldownTimer: 0
+    hasTriggered: 0
+    dialogueVisibleTime: 0
+  delayBetweenDialogueLines: 0.25
+  afterDialogueDelay: 0.25
+  afterMatchDelay: 1
   controlsPreloadTime: 1
   controlsPanel: {fileID: 0}
   keyboardControls: {fileID: 0}
@@ -96,6 +149,7 @@ MonoBehaviour:
   gamepadContinuePrompt: {fileID: 0}
   controlsBackButton: {fileID: 0}
   controlsContinueBlinkSpeed: 4
+  useExternalPostMatchSequence: 0
   eyelids: {fileID: 0}
   nextSceneName: SCN_DreamSequenceN2
   audioSource: {fileID: 8874995253650183303}
@@ -105,6 +159,13 @@ MonoBehaviour:
   roundWinSFX: {fileID: 8300000, guid: 37d40b8d31ce4e542bfc75506e462908, type: 3}
   backgroundMusic: {fileID: 8300000, guid: 417681b882afd9a40bb2faf664fcb9bd, type: 3}
   matchWonSFX: {fileID: 8300000, guid: b38b84b5702119d4fb4d5a4612e073a9, type: 3}
+  bonusRevealDialogue: []
+  bonusDialogueLineDelay: 0.25
+  bonusRoundText: {fileID: 0}
+  bonusTextFlashCount: 4
+  bonusTextFlashInterval: 0.2
+  bonusHorseHealth: 700
+  roomToneFade: {fileID: 0}
   gameCanStart: 0
 --- !u!82 &8874995253650183303
 AudioSource:

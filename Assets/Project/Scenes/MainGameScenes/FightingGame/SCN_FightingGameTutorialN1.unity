@@ -665,7 +665,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: 'enemyWinIcons.Array.data[0]'
@@ -724,15 +724,11 @@ PrefabInstance:
       value: Yeah, yeah. Dont get used to it.
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[0].fromJesse
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[1].fromJesse
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[2].fromJesse
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinDialogue.Array.data[3].fromJesse
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
@@ -760,27 +756,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[0].dialogueLine
-      value: And that's the game!
-      objectReference: {fileID: 0}
-    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[1].dialogueLine
-      value: I know you're still learning, but that was embarrassing...
-      objectReference: {fileID: 0}
-    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[2].dialogueLine
-      value: Well, kicking your ass wore me out - I'm headed to bed...
+      value: Well, getting my ass kicked wore me out - I'm heading to bed.
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[0].triggerChance
-      value: 1
+      propertyPath: enemyWinDialogue.Array.data[3].dialogueLine
+      value: Alright, I'm outta here - night, Jay.
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[1].triggerChance
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[2].triggerChance
+      propertyPath: enemyWinDialogue.Array.data[3].triggerChance
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
@@ -833,15 +817,7 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[0].triggerOnlyOnce
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[1].triggerOnlyOnce
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[2].triggerOnlyOnce
+      propertyPath: enemyWinDialogue.Array.data[3].triggerOnlyOnce
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
@@ -869,24 +845,44 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[1].hasBrotherResponse
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[2].hasBrotherResponse
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinDialogue.Array.data[3].hasBrotherResponse
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[1].brotherDialogueLine
-      value: Oh, shut up.
+      propertyPath: enemyWinDialogue.Array.data[0].brotherResponseTime
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[2].brotherDialogueLine
+      propertyPath: enemyWinDialogue.Array.data[0].dialogueVisibleTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinDialogue.Array.data[1].brotherResponseTime
+      value: 1.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinDialogue.Array.data[1].dialogueVisibleTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinDialogue.Array.data[2].dialogueVisibleTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinDialogue.Array.data[3].brotherDialogueLine
       value: Night, Jesse.
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
-      propertyPath: enemyWinDialogue.Array.data[2].brotherResponseTime
-      value: 1
+      propertyPath: enemyWinDialogue.Array.data[3].brotherResponseTime
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: enemyWinDialogue.Array.data[3].dialogueVisibleTime
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[1].hasBrotherResponse
@@ -1161,7 +1157,7 @@ MonoBehaviour:
     instruction: Go ahead and finish with your Special move by pressing the 'I' Key.
     successResponse: 
     successResponseDelay: 0
-    successMessageTime: 4
+    successMessageTime: 4.5
     hasSuccessResponse: 0
     hasBrotherResponse: 1
     brotherResponseWaitTime: 0.5
@@ -1177,9 +1173,9 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 4
-  finalMessage: Now lets get into the real thing. I wont be going easy on you.
-  finalMessageTime: 2
+      dialogueVisibleTime: 4.5
+  finalMessage: 'Alright, let''s play for real - I''m not messing around now! '
+  finalMessageTime: 3.5
   onTutorialCompleted:
     m_PersistentCalls:
       m_Calls: []
@@ -20119,6 +20115,10 @@ PrefabInstance:
     - target: {fileID: 1989334843392178721, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
       propertyPath: m_Name
       value: DialogueManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412072947381637836, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4412072947381637836, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
       propertyPath: canTriggerDialogue
