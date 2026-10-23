@@ -468,7 +468,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -596,7 +596,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: af9c3b417cf545f45a96cde778dd7126, type: 2}
+  sharedProfile: {fileID: 11400000, guid: 36b7c61cafd1016449da2395cd0631e5, type: 2}
 --- !u!4 &780424457
 Transform:
   m_ObjectHideFlags: 0
@@ -643,7 +643,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 864018316}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 60e1208ec4268314382c1901407038d7, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 510c9c06e416e414f973abba745a4aaa, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -1603,6 +1603,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 260439171588270297, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 460076029916431738, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: charsVariance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 460076029916431738, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: baseCharsPerSound
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 460076029916431738, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: useTextCrawlAudio
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 831787545934616908, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
@@ -3537,25 +3549,30 @@ MonoBehaviour:
     ThoughtText:
       dialogue:
       - name: Me
-        dialogue: Day 3 test
+        dialogue: 'I know something bad is happening in that house. '
         sound: 0
       - name: Me
-        dialogue: test
+        dialogue: I hear it some nights when I'm going to sleep.
         sound: 0
       - name: Me
-        dialogue: test
+        dialogue: 'I know I should stand up, do something. '
         sound: 0
       - name: Me
-        dialogue: test
+        dialogue: 'But everytime I even think about it, my whole body freezes up. '
         sound: 0
       - name: Me
-        dialogue: lalal
+        dialogue: 'I don''t think I''m a very good person. '
+        sound: 0
+      - name: Me
+        dialogue: Sometimes I wish I could just melt away into the TV and forget
+          about it all...
         sound: 0
       dialogueSpeed: 15
       alternativeDialogue: []
       useAltDialogue: 0
   Alternative_NEI: {fileID: 0}
   IsGoal: 0
+  SkipGoal: 0
   Activated: 0
   Talked: 0
   IsUsedByGoal: 0
@@ -4220,7 +4237,10 @@ MonoBehaviour:
   - {fileID: 5349290222648128400}
   - {fileID: 6343470162722927763}
   playerClips:
-  - {fileID: 8300000, guid: 9f51f87bbcd443e4fa216d5e246721bb, type: 3}
+  - {fileID: 8300000, guid: 2fd256c501d402f4d996c04879939ff1, type: 3}
+  - {fileID: 8300000, guid: b76c0e22316e3914290a07450e7b1751, type: 3}
+  - {fileID: 8300000, guid: 84f7a6da2b1ddcb4b842378d21a14aba, type: 3}
+  - {fileID: 8300000, guid: a350c3717bb54bc49a41b04994d920dd, type: 3}
   brotherClips:
   - {fileID: 8300000, guid: 8ae551e4576aea94fb38a60b0e4c4681, type: 3}
   - {fileID: 8300000, guid: bd9b26ebb70b874438cb97b14494c906, type: 3}
