@@ -495,7 +495,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -623,7 +623,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: af9c3b417cf545f45a96cde778dd7126, type: 2}
+  sharedProfile: {fileID: 11400000, guid: ab5fb65d771df7648b83f34fdbdf9106, type: 2}
 --- !u!4 &780424457
 Transform:
   m_ObjectHideFlags: 0
@@ -787,7 +787,7 @@ Transform:
   m_GameObject: {fileID: 864018316}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.32, y: 3.77, z: -18.86}
+  m_LocalPosition: {x: 1.09, y: 3.77, z: -16.3}
   m_LocalScale: {x: 12.139168, y: 12.139168, z: 12.139168}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1627,6 +1627,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: cc70ad0a56849524c950b30c4e2d3746, type: 3}
       propertyPath: m_Name
       value: horseEnemy_Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: cc70ad0a56849524c950b30c4e2d3746, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2495150459969789966, guid: cc70ad0a56849524c950b30c4e2d3746, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -4241,6 +4245,9 @@ MonoBehaviour:
         dialogue: 'Is it here? '
         sound: 0
       - name: Me
+        dialogue: ...
+        sound: 0
+      - name: Me
         dialogue: Jesse hates the dark...
         sound: 0
       dialogueSpeed: 15
@@ -4248,6 +4255,7 @@ MonoBehaviour:
       useAltDialogue: 0
   Alternative_NEI: {fileID: 0}
   IsGoal: 0
+  SkipGoal: 0
   Activated: 0
   Talked: 0
   IsUsedByGoal: 0
