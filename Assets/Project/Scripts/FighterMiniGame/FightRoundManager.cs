@@ -235,7 +235,9 @@ public class FightRoundManager : MonoBehaviour
     [SerializeField] private float bonusTextFlashInterval = 0.2f;
     [Header("Bonus Round Rules")]
     [SerializeField, Min(1)] private int bonusHorseHealth = 700;
-   
+
+    [Header("Transition Fields")]
+    [SerializeField] private AudioVolumeFade roomToneFade;
 
     private float currentRoundTime;
     private float startBlinkTimer;
@@ -1343,7 +1345,11 @@ public class FightRoundManager : MonoBehaviour
     private IEnumerator TransitionScene()
     {
         eyelids.TriggerEyesDownAnimation();
-        yield return new WaitForSeconds(2.0f);
+        if(roomToneFade != null)
+        {
+            roomToneFade.StartFadeIn(false, false);
+        }
+        yield return new WaitForSeconds(5.5f);
 
         if (!string.IsNullOrWhiteSpace(nextSceneName))
             SceneManager.LoadScene(nextSceneName);
