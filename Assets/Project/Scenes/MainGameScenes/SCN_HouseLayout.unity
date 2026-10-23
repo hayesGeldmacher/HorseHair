@@ -4263,7 +4263,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: neiName
-      value: Cereal and Milk
+      value: Wine bottles
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: Activated
@@ -4320,13 +4320,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3764532326570402451, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 202322200}
   m_SourcePrefab: {fileID: 100100000, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
 --- !u!4 &202322194 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
   m_PrefabInstance: {fileID: 202322193}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &202322195 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3764532326570402451, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
+  m_PrefabInstance: {fileID: 202322193}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &202322200
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 202322195}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51327faac36436246a305b1b649aa2b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDisappear
+  alternativeItem: {fileID: 0}
+  availableEveryday: 1
+  availableTime:
+  - timeOfDay: 0
+    TaskNum: 0
 --- !u!1 &206749792
 GameObject:
   m_ObjectHideFlags: 0
@@ -17994,10 +18019,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 174379590528896619, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 735827540}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3764532326570402451, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       insertIndex: -1
@@ -20924,6 +20946,7 @@ GameObject:
   - component: {fileID: 735827540}
   - component: {fileID: 735827542}
   - component: {fileID: 735827541}
+  - component: {fileID: 735827543}
   m_Layer: 0
   m_Name: SM_wholemilk (1)
   m_TagString: Untagged
@@ -20939,12 +20962,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 735827539}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.12601365, y: 0.21455708, z: 0.43248078}
+  m_LocalRotation: {x: -0, y: -0.34434798, z: -0, w: 0.9388422}
+  m_LocalPosition: {x: -0.055502653, y: -0.2284429, z: 2.337395}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 646059187}
+  m_Father: {fileID: 827094419}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &735827541
 MeshRenderer:
@@ -21003,6 +21026,23 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 735827539}
   m_Mesh: {fileID: -2620739328850070289, guid: 83b6861e7fe186f478176de38b5ebaf8, type: 3}
+--- !u!114 &735827543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735827539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51327faac36436246a305b1b649aa2b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemDisappear
+  alternativeItem: {fileID: 0}
+  availableEveryday: 0
+  availableTime:
+  - timeOfDay: 0
+    TaskNum: 0
 --- !u!1001 &740978440
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22116,6 +22156,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8307889161650280648, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2141521825}
+    - targetCorrespondingSourceObject: {fileID: 714299772151755328, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 735827540}
     - targetCorrespondingSourceObject: {fileID: 714299772151755328, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       insertIndex: -1
       addedObject: {fileID: 646059187}
@@ -25496,7 +25539,7 @@ MonoBehaviour:
     track: {fileID: 0}
     lowerLimit: 0
     upperLimit: 0.1
-    speed: 0.05
+    speed: 2.5
     playOnAwake: 0
   currentlyFading: 0
   fadingUp: 0
@@ -60441,7 +60484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: neiName
-      value: Cereal and Milk
+      value: Birdhouses
       objectReference: {fileID: 0}
     - target: {fileID: 9036534360600337674, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
       propertyPath: Activated

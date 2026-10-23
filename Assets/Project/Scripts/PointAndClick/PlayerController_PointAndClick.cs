@@ -258,19 +258,10 @@ public class PlayerController_PointAndClick : MonoBehaviour
         blinkAnimator.SetTrigger("EyesDown");
 
 
-        //TO DO - have the damn scene fade out here!
-        if(volumeFadeRoomTone != null)
-        {
-            volumeFadeRoomTone.StartFadeIn(false, false);
-        }
-        if (volumeFadeBackgroundMusic != null)
-        {
-        volumeFadeBackgroundMusic.StartFadeIn(false, false);
-        }
-
         yield return new WaitUntil(() =>
         blinkAnimator.GetCurrentAnimatorStateInfo(0).IsName("EyesClosed"));
 
+        
         SceneManager.LoadScene(level);
     }
 
@@ -365,6 +356,10 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     public void EndingSequenceDay(DialogueStorage desc, FPBClickEventData data, float delay = 0)
     {
+
+     
+
+
         TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
         int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
         if (currentTimeOfDay == TimeOfDay.Morning)
@@ -417,11 +412,23 @@ public class PlayerController_PointAndClick : MonoBehaviour
             OpenDialogue();
         }
 
+
+        Debug.Log("FADING AUDIO");
+        //TO DO - have the damn scene fade out here!
+        if (volumeFadeRoomTone != null)
+        {
+            volumeFadeRoomTone.StartFadeIn(false, false);
+        }
+        if (volumeFadeBackgroundMusic != null)
+        {
+            volumeFadeBackgroundMusic.StartFadeIn(false, false);
+        }
+
+        yield return new WaitForSeconds(5.5f);
         //play corresponding audio - HG
         AudioManager.instance.PlayDayCompletedSound(dayFinished);
 
         yield return new WaitUntil(() => startedDialogue == false);
-        yield return new WaitForSeconds(1.0f);
 
         SceneManager.LoadScene(scene);
     }
