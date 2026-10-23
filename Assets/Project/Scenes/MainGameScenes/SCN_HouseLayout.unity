@@ -8199,7 +8199,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7721657243373945279, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: itemName
-      value: Old Toolbox
+      value: Toolbox
       objectReference: {fileID: 0}
     - target: {fileID: 7721657243373945279, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: itemImage
@@ -19176,15 +19176,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[0].name
-      value: Me
+      value: Jesse
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[1].name
-      value: Jesse
+      value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[2].name
@@ -19208,11 +19208,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[0].sound
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[1].sound
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[2].sound
@@ -19236,15 +19236,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[0].dialogue
-      value: 'What are you arleady doing in here? '
+      value: Do you wanna play Horsehair? I've been reading the forums and I'm getting
+        really good.
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[1].dialogue
-      value: Dad said you'd play Horsehair with me tonight.
+      value: 'Yeah, but let''s see what''s on TV first. '
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[2].dialogue
@@ -19271,8 +19272,28 @@ PrefabInstance:
       value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[1].name
+      value: Jesse
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[2].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[1].sound
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: dialogueText.alternativeDialogue.Array.data[0].dialogue
-      value: I shouldn't play yet...
+      value: 'What are you doing in here? '
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[1].dialogue
+      value: Dad said you'd play Horsehair with me tonight.
+      objectReference: {fileID: 0}
+    - target: {fileID: 361243124172791228, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
+      propertyPath: dialogueText.alternativeDialogue.Array.data[2].dialogue
+      value: I guess, but gimme a few minutes to help with something.
       objectReference: {fileID: 0}
     - target: {fileID: 2291255322109271705, guid: 03308a7cf8b3e9c4ba4a98db353d32d9, type: 3}
       propertyPath: m_LocalScale.x
@@ -23345,12 +23366,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[2].dialogue
-      value: Can you be a pal and find it for me? I saw it around the living room
-        last week.
+      value: Can you be a pal and track it down for me? I saw it around the living
+        room last week.
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[3].dialogue
-      value: And grab some wood glue while you're at it. Should be some by the laundry.
+      value: And grab my wood glue while you're at it. Should be some by the laundry.
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[4].dialogue
@@ -40522,13 +40543,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1096935753}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.6926973, y: 0.010083273, z: -0.29525653, w: 0.6579457}
-  m_LocalPosition: {x: 2.37, y: 4.7, z: -0.91}
+  m_LocalRotation: {x: 0.7910472, y: -0.0626453, z: -0.30687493, w: 0.5254975}
+  m_LocalPosition: {x: 3.96, y: 4.8, z: 2.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1242285692}
-  m_LocalEulerAnglesHint: {x: 66.559, y: -84.209, z: -109.687}
+  m_LocalEulerAnglesHint: {x: 52.461, y: -115.193, z: -136.212}
 --- !u!114 &1096935755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40569,7 +40590,7 @@ Light:
   serializedVersion: 13
   m_Type: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.3
+  m_Intensity: 0.19
   m_Range: 0.92
   m_SpotAngle: 63.269634
   m_InnerSpotAngle: 30
@@ -45998,15 +46019,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8871c61e11a361d40bcd37850e803db3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.051
+      value: -0.05
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8871c61e11a361d40bcd37850e803db3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.16
+      value: -0.12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8871c61e11a361d40bcd37850e803db3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.061
+      value: -0.06
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8871c61e11a361d40bcd37850e803db3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -49894,15 +49915,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 913835327312750872, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.048
+      value: -3.082
       objectReference: {fileID: 0}
     - target: {fileID: 913835327312750872, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.579
+      value: -1.531
       objectReference: {fileID: 0}
     - target: {fileID: 913835327312750872, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.587
+      value: -5.349
       objectReference: {fileID: 0}
     - target: {fileID: 913835327312750872, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -66679,7 +66700,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2095332977
 Transform:
   m_ObjectHideFlags: 0
@@ -66688,13 +66709,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2095332976}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.19, y: 0.732, z: -0.672}
+  m_LocalRotation: {x: 0.4053569, y: -0.057401374, z: -0.008635791, w: 0.9123137}
+  m_LocalPosition: {x: 0.307, y: 0.904, z: -1.084}
   m_LocalScale: {x: 0.86742, y: 0.86742, z: 0.86742}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1558724728}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 47.615, y: -9.541, z: -5.302}
 --- !u!114 &2095332978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66733,11 +66754,11 @@ Light:
   m_GameObject: {fileID: 2095332976}
   m_Enabled: 1
   serializedVersion: 13
-  m_Type: 2
+  m_Type: 0
   m_Color: {r: 0.8551129, g: 0.8584906, b: 0.7653525, a: 1}
-  m_Intensity: 0.05
-  m_Range: 0.78
-  m_SpotAngle: 30
+  m_Intensity: 0.36
+  m_Range: 1.5613581
+  m_SpotAngle: 61.85685
   m_InnerSpotAngle: 21.80208
   m_CookieSize2D: {x: 0.5, y: 0.5}
   m_Shadows:
