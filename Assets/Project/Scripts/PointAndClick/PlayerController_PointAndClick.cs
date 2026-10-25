@@ -149,7 +149,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
     {
         if (phoneImageAnim != null)
         {
-            phoneImageAnim.SetTrigger("disappear");
+            phoneImageAnim.SetBool("Appear", false);
         }
 
         SetDayStartedAudio();
@@ -308,7 +308,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             //OnOpenInventory(PhoneState.Tasks);
             if (phoneImageAnim != null)
             {
-                phoneImageAnim.SetTrigger("appear");
+                phoneImageAnim.SetBool("Appear", true);
             }
             task.Giver.ChangeTaskStatus(true);
 
@@ -479,7 +479,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
             }
             if (phoneImageAnim != null)
             {
-                phoneImageAnim.SetTrigger("appear");
+                phoneImageAnim.SetBool("Appear", true);
             }
             //OnOpenInventory(PhoneState.Tasks);
             return;
@@ -622,7 +622,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 //OnOpenInventory(PhoneState.Inventory);
                 if (phoneImageAnim != null)
                 {
-                    phoneImageAnim.SetTrigger("appear");
+                    phoneImageAnim.SetBool("Appear", true);
                 }
                 dialogueText = item.dialogueText;
                 OpenDialogue();
@@ -668,7 +668,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                     //OnOpenInventory(PhoneState.Tasks);
                     if (phoneImageAnim != null)
                     {
-                        phoneImageAnim.SetTrigger("appear");
+                        phoneImageAnim.SetBool("Appear", true);
                     }
                 }
                 else
@@ -679,7 +679,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
                     //OnOpenInventory(PhoneState.Tasks);
                     if (phoneImageAnim != null)
                     {
-                        phoneImageAnim.SetTrigger("appear");
+                        phoneImageAnim.SetBool("Appear", true);
                     }
                     completeTask = true;
                     AudioManager.instance.CallTaskCompletedSound();
@@ -829,7 +829,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         if (phoneImageAnim != null)
         {
-            phoneImageAnim.SetTrigger("disappear");
+            phoneImageAnim.SetBool("Appear", false);
         }
         else { Debug.Log("Phone Image Animator Reference not assigned in Player!"); }
     }
