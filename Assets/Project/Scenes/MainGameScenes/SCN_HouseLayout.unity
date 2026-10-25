@@ -11055,7 +11055,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.data[1].sound
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.data[2].sound
@@ -11067,7 +11067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.data[1].dialogue
-      value: I should check on Jesse, I'm a bit worried about him...
+      value: 'I should check on Jesse. '
       objectReference: {fileID: 0}
     - target: {fileID: 966868564021206957, guid: 1d237f6ce9410a847812f7e5ab034948, type: 3}
       propertyPath: task.ThoughtText.dialogue.Array.data[2].dialogue
@@ -23395,6 +23395,16 @@ MonoBehaviour:
     TaskNum: 0
   - timeOfDay: 1
     TaskNum: 0
+  - timeOfDay: 1
+    TaskNum: 1
+  - timeOfDay: 0
+    TaskNum: 2
+  - timeOfDay: 1
+    TaskNum: 2
+  - timeOfDay: 0
+    TaskNum: 3
+  - timeOfDay: 1
+    TaskNum: 3
 --- !u!23 &723781083
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -40032,11 +40042,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTaskNum
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTimeOfDay
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: tasks.Array.size
@@ -48046,14 +48056,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: dialogueMovements.Array.size
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[1].time.TaskNum
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: dialogueMovements.Array.data[0].dialogue.dialogueSpeed
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[1].dialogue.dialogueSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[1].dialogue.dialogue.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
@@ -48062,6 +48084,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.data[1].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[1].dialogue.dialogue.Array.data[0].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[1].dialogue.dialogue.Array.data[1].name
       value: Me
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
@@ -48081,6 +48111,14 @@ PrefabInstance:
       propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.data[1].dialogue
       value: 'I can click near the bottom of the screen to turn around in places
         like this. '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[1].dialogue.dialogue.Array.data[0].dialogue
+      value: I don't think Jesse's left his room yet today.
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[1].dialogue.dialogue.Array.data[1].dialogue
+      value: 'I can hear him breathing heavily. '
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -50545,6 +50583,30 @@ PrefabInstance:
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: environmentName
       value: My room
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[0].time.TaskNum
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogueSpeed
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.data[0].name
+      value: Me
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.data[0].dialogue
+      value: I think he's still in his room - I haven't heard his door open all morning.
       objectReference: {fileID: 0}
     - target: {fileID: 8573105133974736201, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: m_IsActive
@@ -65610,6 +65672,12 @@ MonoBehaviour:
     TaskNum: 1
   - timeOfDay: 1
     TaskNum: 2
+  - timeOfDay: 0
+    TaskNum: 2
+  - timeOfDay: 0
+    TaskNum: 3
+  - timeOfDay: 1
+    TaskNum: 3
 --- !u!1 &1898629238
 GameObject:
   m_ObjectHideFlags: 0
@@ -69767,6 +69835,18 @@ MonoBehaviour:
   availableTime:
   - timeOfDay: 0
     TaskNum: 0
+  - timeOfDay: 1
+    TaskNum: 0
+  - timeOfDay: 1
+    TaskNum: 1
+  - timeOfDay: 0
+    TaskNum: 2
+  - timeOfDay: 1
+    TaskNum: 2
+  - timeOfDay: 0
+    TaskNum: 3
+  - timeOfDay: 1
+    TaskNum: 3
 --- !u!1001 &2028903376
 PrefabInstance:
   m_ObjectHideFlags: 0
