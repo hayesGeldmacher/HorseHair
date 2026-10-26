@@ -114,7 +114,7 @@ public class AudioManager : MonoBehaviour
         return Random.Range(0.8f, 1.1f);
     }
 
-    public void PlayDayStartedSound(AudioTime day)
+    public void PlayDayStartedSound(AudioTime day, int taskNum)
     {
         if (!playDayStartedSound) 
         {
@@ -131,6 +131,7 @@ public class AudioManager : MonoBehaviour
             case AudioTime.Afternoon:
                 if (afternoonStartedClips.Length == 0) { return; }
                 clip = afternoonStartedClips[0];
+                
                 break;
             case AudioTime.Night:
                 if (nightStartedClips.Length == 0) { return; }

@@ -37,15 +37,18 @@ public class MusicManagerHouse : MonoBehaviour
     private void GetCurrentSlot()
     {
         //don't progress if there are not listed tracks for the day
-        if(day > musicDays.Count){ 
+        if(day > musicDays.Count - 1){ 
             if(source != null) { source.Stop(); }
             return; 
-        }  
+        }
+
+        Debug.Log("Playing Music Track");
         MusicDay currentDay = musicDays[day];
         currentSlot = (isMorning) ? currentDay.morningSlot : currentDay.afternoonSlot;
         if(currentSlot.track != null)
         {
             volumeFade.SetAudioClip(currentSlot.track);
+            volumeFade.groups[0].upperLimit = currentSlot.upperLimit;
         }
         currentSlot.source = source;
         if(currentSlot.track != null && currentSlot.playOnAwake) {
