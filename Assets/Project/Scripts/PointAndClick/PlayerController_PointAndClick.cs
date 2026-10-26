@@ -487,40 +487,41 @@ public class PlayerController_PointAndClick : MonoBehaviour
         StartCoroutine(TeleportSequence(data));
     }
 
-    ////teleport function for unique first blinking animation
-    //private IEnumerator TeleportSequenceFirst(TeleportClickEventData data)
-    //{
-    //    if (currentCamera != null)
-    //    {
-    //        currentCamera.ActivateOrDeactivate(false);
-    //    }
+    //teleport function for unique first blinking animation
+    private IEnumerator TeleportSequenceFirst(TeleportClickEventData data)
+    {
+        if (currentCamera != null)
+        {
+            currentCamera.ActivateOrDeactivate(false);
+        }
 
-    //    transform.position = data.ObjectTransform.position;
-    //    transform.rotation = data.ObjectTransform.rotation;
-
-
-    //    yield return new WaitForSeconds(1.5f);
-    //    bool isMorning = false;
-    //    TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
-    //    if (currentTimeOfDay == TimeOfDay.Morning)
-    //    {
-    //        isMorning = true;
-    //    }
-
-    //    AudioManager.instance.PlayDayStartedSound(dayStarted);
-    //    yield return new WaitForSeconds(2.0f);
-
-    //    blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
-    //    yield return new WaitForSeconds(0.4f);
-    //    blinkAnimator.SetTrigger("EyesStart");
+        transform.position = data.ObjectTransform.position;
+        transform.rotation = data.ObjectTransform.rotation;
 
 
-    //    PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX,
-    //        data.FollowSpeedY, data.spin_360_x, data.spin_360_y);
+        yield return new WaitForSeconds(1.5f);
+        bool isMorning = false;
+        TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
+        if (currentTimeOfDay == TimeOfDay.Morning)
+        {
+            isMorning = true;
+        }
 
-    //    currentCamera = data.Camera;
-    //    currentCamera.ActivateOrDeactivate(true);
-    //}
+        int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
+        AudioManager.instance.PlayDayStartedSound(dayStarted, currentTaskNum);
+        yield return new WaitForSeconds(2.0f);
+
+        blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
+        yield return new WaitForSeconds(0.4f);
+        blinkAnimator.SetTrigger("EyesStart");
+
+
+        PlayerCamera.ChangeCameraSettings(data.PitchClamp, data.YawClamp, data.FollowSpeedX,
+            data.FollowSpeedY, data.spin_360_x, data.spin_360_y);
+
+        currentCamera = data.Camera;
+        currentCamera.ActivateOrDeactivate(true);
+    }
 
     private IEnumerator TeleportSequence(TeleportClickEventData data)
     {
@@ -539,13 +540,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
             yield return new WaitForSeconds(1.5f);
             bool isMorning = false;
             TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
-            int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
-
             if (currentTimeOfDay == TimeOfDay.Morning)
             {
                 isMorning = true;
             }
 
+            int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
             AudioManager.instance.PlayDayStartedSound(dayStarted, currentTaskNum);
             yield return new WaitForSeconds(2.0f);
 
