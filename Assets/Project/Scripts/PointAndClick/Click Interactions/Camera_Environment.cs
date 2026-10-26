@@ -19,7 +19,12 @@ public class Camera_Environment : MonoBehaviour
     private bool full360Camera_x = false;
     [SerializeField]
     private bool full360Camera_y = false;
+
+    [Header("Flashlight")]
     [SerializeField] private bool _activateFlashlight = false;
+    [SerializeField] private bool _limitFlashToSpecificDays = false;
+    [SerializeField] private TimeCheck[] availableTimeFlashlight;
+
     [Header("Ending Camera")]
     [SerializeField] private bool _endingCamera = false;
     [SerializeField] private float delayBeforeEnding = 2f;
@@ -116,6 +121,26 @@ public class Camera_Environment : MonoBehaviour
         int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
         DialogueStorage used = (dialogueMovementDict.ContainsKey((currentTimeOfDay, currentTaskNum)) && !talked) ? 
             dialogueMovementDict[(currentTimeOfDay, currentTaskNum)] : null;
+
+        bool flashActivated = false;
+        if (_activateFlashlight)
+        {
+            if (!_limitFlashToSpecificDays)
+            {
+                flashActivated = true;
+            }
+            else
+            {
+                foreach (var timeCheck in availableTimeFlashlight)
+                {
+                    if (timeCheck.timeOfDay == (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0) && timeCheck.TaskNum == PlayerPrefs.GetInt("TaskNum", 0))
+                    {
+                        flashActivated = true;
+                        break;
+                    }
+                }
+            }
+        }
         TeleportClickEventData = new TeleportClickEventData
         {
             EnvironmentName = environmentName,
@@ -133,7 +158,7 @@ public class Camera_Environment : MonoBehaviour
             delayBeforeEnding = delayBeforeEnding,
             endingDialogue = endingDialogue,
             NextScene = NextScene,
-            ActivateFlashlight = _activateFlashlight,
+            ActivateFlashlight = flashActivated,
             movementDialogue = used,      
             UseSpecialBlinking = useSpecialBlinking,
         };

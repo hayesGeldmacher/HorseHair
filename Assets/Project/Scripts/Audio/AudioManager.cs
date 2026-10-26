@@ -130,7 +130,16 @@ public class AudioManager : MonoBehaviour
                 break;
             case AudioTime.Afternoon:
                 if (afternoonStartedClips.Length == 0) { return; }
-                clip = afternoonStartedClips[0];
+                // play a unique starting sound for final afternoon scene - HG
+                if(taskNum == 3)
+                {
+                    clip = afternoonStartedClips[1];
+                    Debug.Log("PLAYED ALTERNATE AFTERNOON START");
+                }
+                else
+                {
+                    clip = afternoonStartedClips[0];
+                }
                 
                 break;
             case AudioTime.Night:

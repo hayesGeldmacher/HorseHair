@@ -507,7 +507,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
             isMorning = true;
         }
 
-        AudioManager.instance.PlayDayStartedSound(dayStarted);
+        int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
+        AudioManager.instance.PlayDayStartedSound(dayStarted, currentTaskNum);
         yield return new WaitForSeconds(2.0f);
 
         blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
@@ -544,8 +545,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
                 isMorning = true;
             }
 
-
-            AudioManager.instance.PlayDayStartedSound(dayStarted);
+            int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
+            AudioManager.instance.PlayDayStartedSound(dayStarted, currentTaskNum);
             yield return new WaitForSeconds(2.0f);
 
             blinkAnimator.SetFloat("AnimationSpeed", blinkAnimationSpeed);
