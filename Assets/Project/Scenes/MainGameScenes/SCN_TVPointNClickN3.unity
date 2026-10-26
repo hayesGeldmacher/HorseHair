@@ -182,6 +182,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Grabbed
     moveSequence: 09000000
     resultSequence: 
@@ -197,6 +198,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Punched
     moveSequence: 05000000
     resultSequence: 
@@ -212,6 +214,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   dialogueVisibleTime: 2
   isTalking: 0
 --- !u!1 &67698780
@@ -8408,6 +8411,7 @@ MonoBehaviour:
   skipToRedChannel: 0
   sceneTransitionWait: 6
   nextScene: SCN_FightingGameN3
+  IsDreamWorldPNC: 0
   channelIndex: 0
   backupIndex: 1
   tvAnim: {fileID: 1131307639}
@@ -8443,6 +8447,7 @@ MonoBehaviour:
     triggerOnlyOnce: 0
     cooldownTimer: 0
     hasTriggered: 0
+    dialogueVisibleTime: 2
   remoteWait: 1
   controllerWaitBrother: 2
   controllerWaitPlayer: 0.5
@@ -8485,6 +8490,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 0
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8514,6 +8520,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 0
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8543,6 +8550,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 0
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8572,6 +8580,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 1
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8601,6 +8610,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
 --- !u!4 &1111314899
 Transform:
   m_ObjectHideFlags: 0
@@ -10910,6 +10920,14 @@ PrefabInstance:
       propertyPath: Lens.FieldOfView
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: fightingGameScene
+      value: SCN_FightingGameN3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
+      propertyPath: volumeFadeRoomTone
+      value: 
+      objectReference: {fileID: 8455432853581870132}
     - target: {fileID: 5486129628746571025, guid: 39dfebf6071a8d14692fccc9a86cfc16, type: 3}
       propertyPath: dialogueText.dialogue.Array.size
       value: 0
@@ -16991,7 +17009,7 @@ Animator:
   m_GameObject: {fileID: 1967096227}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 77a3d821249b44349820eaff29148eea, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2c7ed3ad00f867142adf2ae7517a421b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -17023,7 +17041,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: bbefe933e8d917d46ac1d5739c727ff0, type: 3}
+  m_Texture: {fileID: 2800000, guid: 905a991329f4361478c90dbdd451280f, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -20915,7 +20933,7 @@ MonoBehaviour:
     track: {fileID: 8300000, guid: 1527834ecccd85443afec8bad4bc3718, type: 3}
     lowerLimit: 0
     upperLimit: 0.6
-    speed: 2.5
+    speed: 15
     playOnAwake: 1
   currentlyFading: 1
   fadingUp: 1
@@ -21133,8 +21151,8 @@ SceneRoots:
   - {fileID: 811596926}
   - {fileID: 1806776735}
   - {fileID: 1699308459}
-  - {fileID: 53929659}
   - {fileID: 1265532784}
+  - {fileID: 53929659}
   - {fileID: 2108522885}
   - {fileID: 358715571}
   - {fileID: 1921682530}
