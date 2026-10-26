@@ -7,6 +7,7 @@ public class ControlsGuideDisplay : MonoBehaviour
     [SerializeField] private GameObject controllerGuide;
 
     private static bool usingController;
+    public static bool UsingController => usingController;
 
     private void OnEnable()
     {

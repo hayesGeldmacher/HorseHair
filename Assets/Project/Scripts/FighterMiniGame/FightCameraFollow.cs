@@ -141,6 +141,17 @@ public class FightCameraFollow : MonoBehaviour
         smoothedPosition = transform.position;
     }
 
+    public void SetTargets(
+    Transform newPlayer,
+    Transform newEnemy)
+    {
+        player = newPlayer;
+        enemy = newEnemy;
+
+        followVelocity = Vector3.zero;
+        zoomVelocity = 0f;
+    }
+
     private void LateUpdate()
     {
         if (player == null || enemy == null || fightCamera == null)
@@ -204,26 +215,8 @@ public class FightCameraFollow : MonoBehaviour
         float halfCameraWidth,
         float halfCameraHeight)
     {
-        float leftFighterX = Mathf.Min(
-            player.position.x,
-            enemy.position.x
-        );
-
-        float rightFighterX = Mathf.Max(
-            player.position.x,
-            enemy.position.x
-        );
-
-        float usableHalfWidth =
-            halfCameraWidth * horizontalScreenZone;
-
-        float targetX = CalculateAxisTarget(
-            smoothedPosition.x,
-            leftFighterX,
-            rightFighterX,
-            usableHalfWidth,
-            horizontalPadding
-        );
+        float targetX =
+            (player.position.x + enemy.position.x) * 0.5f;
 
         float targetY = startingPosition.y;
 

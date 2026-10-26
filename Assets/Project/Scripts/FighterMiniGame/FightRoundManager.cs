@@ -267,6 +267,9 @@ public class FightRoundManager : MonoBehaviour
 
     [SerializeField] private bool gameCanStart = false;
 
+    [Header("Fight Camera")]
+    [SerializeField] private FightCameraFollow fightCameraFollow;
+
     //Adding delegates for narrative and dialogue events - HG
     public delegate void StartCharSelect();
     public StartCharSelect onCharSelect;
@@ -1371,6 +1374,19 @@ public class FightRoundManager : MonoBehaviour
         }
 
         enemyCharacter = bonusEnemy;
+
+        if (fightCameraFollow != null)
+        {
+            fightCameraFollow.SetTargets(
+                playerCharacter.transform,
+                enemyCharacter.transform);
+        }
+        else
+        {
+            Debug.LogWarning(
+                "Assign Fight Camera Follow on FightRoundManager.",
+                this);
+        }
 
         enemyCharacter.SetTutorialDamageImmunity(false);
 

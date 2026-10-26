@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +10,15 @@ public class FGTutorialDialogue : MonoBehaviour
     [SerializeField] private CanvasGroup dialoguePanel;
     [SerializeField] private TMP_Text messageText;
     [SerializeField] private Animator textBoxAnim; //animation for the text box to appear/disappear
+
+    private string keyboardMessage;
+    private string controllerMessage;
+    private bool hasInputVariants;
+    private bool lastUsingController;
+
+    public string CurrentMessage =>
+        messageText != null ? messageText.text : "";
+
     private void Reset()
     {
         dialoguePanel = GetComponent<CanvasGroup>();
@@ -24,29 +32,61 @@ public class FGTutorialDialogue : MonoBehaviour
 
     public void Show(string message)
     {
-        if (dialoguePanel == null)
-        {
-            Debug.LogError(
-                "FGTutorialDialogue needs a CanvasGroup assigned to Dialogue Panel.",
-                this);
-            return;
-        }
+        hasInputVariants = false;
 
-        if (messageText == null)
+        if (dialoguePanel == null || messageText == null)
         {
             Debug.LogError(
-                "FGTutorialDialogue needs a TMP text assigned to Message Text.",
+                "Assign Dialogue Panel and Message Text.",
                 this);
             return;
         }
 
         dialoguePanel.gameObject.SetActive(true);
         messageText.text = message;
+
         SetVisible(true);
+    }
+
+    public void Show(
+        string keyboardText,
+        string controllerText)
+    {
+        bool controller = ControlsGuideDisplay.UsingController;
+
+        string controllerVersion =
+            string.IsNullOrWhiteSpace(controllerText)
+                ? keyboardText
+                : controllerText;
+
+        Show(controller ? controllerVersion : keyboardText);
+
+        keyboardMessage = keyboardText;
+        controllerMessage = controllerVersion;
+        lastUsingController = controller;
+        hasInputVariants = true;
+    }
+
+    private void Update()
+    {
+        if (!hasInputVariants || messageText == null)
+            return;
+
+        bool controller = ControlsGuideDisplay.UsingController;
+
+        if (controller == lastUsingController)
+            return;
+
+        lastUsingController = controller;
+
+        messageText.text = controller
+            ? controllerMessage
+            : keyboardMessage;
     }
 
     public void Hide()
     {
+        hasInputVariants = false;
         SetVisible(false);
     }
 
@@ -55,19 +95,18 @@ public class FGTutorialDialogue : MonoBehaviour
         if (dialoguePanel == null)
             return;
 
-        if (visible)
+        dialoguePanel.interactable = false;
+        dialoguePanel.blocksRaycasts = false;
+
+        if (textBoxAnim != null)
         {
-            textBoxAnim.ResetTrigger("disappear");
-            textBoxAnim.SetTrigger("appear");
+            textBoxAnim.ResetTrigger( visible ? "disappear" : "appear");
+
+            textBoxAnim.SetTrigger( visible ? "appear" : "disappear");
         }
         else
         {
-            textBoxAnim.ResetTrigger("appear");
-            textBoxAnim.SetTrigger("disappear");
+            dialoguePanel.alpha = visible ? 1f : 0f;
         }
-
-        //dialoguePanel.alpha = visible ? 1f : 0f;
-        //dialoguePanel.interactable = false;
-        //dialoguePanel.blocksRaycasts = false;
     }
 }

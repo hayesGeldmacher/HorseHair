@@ -1105,6 +1105,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1926219244}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: fightCameraFollow
+      value: 
+      objectReference: {fileID: 1346963763}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: afterDialogueDelay
       value: 1
       objectReference: {fileID: 0}
@@ -8159,8 +8163,12 @@ PrefabInstance:
       value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: grabWeight
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: blockWeight
-      value: 22
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: grabCooldown
@@ -8168,15 +8176,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: blockCooldown
-      value: 1
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: blockHoldTime
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: reactionDelay
+      value: 0.18
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: specialWeight
-      value: 16
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: openingEaseTime
-      value: 0.75
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: quickstepWeight
@@ -8184,11 +8200,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: specialCooldown
-      value: 3
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: decisionCooldown
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpingKickWeight
-      value: 10
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: openingWaitChance
@@ -8196,7 +8216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: recoveryPauseTime
-      value: 0.12
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: cornerBackAwayTime
@@ -8204,19 +8224,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: forcedBackAwayTime
-      value: 0.4
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpAttackCooldown
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpingPunchWeight
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: movementCommitTime
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: standingKickWeight
-      value: 35
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: aiQuickstepCooldown
@@ -8224,7 +8248,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: crouchingKickWeight
-      value: 22
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: standingPunchWeight
@@ -8232,7 +8256,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: crouchingPunchWeight
-      value: 25
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: openingChoiceMaxTime
@@ -8249,6 +8273,10 @@ PrefabInstance:
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: pressureReactionTime
       value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: attacksBeforeBackAway
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1921400400505178447, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: openingBackAwayChance
@@ -11603,6 +11631,7 @@ MonoBehaviour:
   dreamSequence: 0
   skipToRedChannel: 0
   sceneTransitionWait: 6
+  roomToneFade: {fileID: 0}
   nextScene: 
   IsDreamWorldPNC: 0
   channelIndex: 0

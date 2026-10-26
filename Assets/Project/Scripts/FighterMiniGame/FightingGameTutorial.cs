@@ -25,7 +25,14 @@ public class FightingGameTutorial : MonoBehaviour
     private class TutorialLesson
     {
         public TutorialStep step;
-        [TextArea(2, 4)] public string instruction;
+        [Tooltip("Instructions when using keyboard/mouse.")]
+        [TextArea(2, 4)]
+        public string instruction;
+
+        [Tooltip("Instructions when using a controller.")]
+        [TextArea(2, 4)]
+        public string controllerInstruction;
+
         [TextArea(1, 3)] public string successResponse = "Awesome!";
 
         public float successResponseDelay = 0.65f;
@@ -283,13 +290,20 @@ public class FightingGameTutorial : MonoBehaviour
     private void ShowCurrentInstruction()
     {
         ResetLessonProgress();
+
         TutorialLesson lesson = lessons[lessonIndex];
 
         if (lesson.step == TutorialStep.Block)
             SetOpponentDummyMode(false);
 
-        dialogueUI.Show(lesson.instruction);
-        AudioManager.instance.PlayDialogueBurst(lesson.instruction, DialogueSound.Brother);
+        dialogueUI.Show(
+            lesson.instruction,
+            lesson.controllerInstruction);
+
+        AudioManager.instance.PlayDialogueBurst(
+            dialogueUI.CurrentMessage,
+            DialogueSound.Brother);
+
         acceptingAction = true;
     }
 
