@@ -46,7 +46,7 @@ public struct LightProfile
 
     [Header("Fog")]
     public bool alterFog;
-    [Range(0.0f, 0.1f)]
+    [Range(0.0f, 0.5f)]
     public float fogIntensity;
     public Color fogColor;
 }
