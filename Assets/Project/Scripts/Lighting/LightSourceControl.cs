@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -49,15 +50,17 @@ public class LightSourceControl : MonoBehaviour
 
     private LightingProfile GetLightProfile(int index)
     {
+        LightingProfile profile;
+
         switch (index)
         {
-            case 0: return day1;
+            case 0: profile = day1;
                 break;
-            case 1: return day2;
+            case 1: profile = day2;
                 break;
-            case 2: return day3;
+            case 2: profile = day3;
                 break;
-            case 3: return day4;
+            case 3: profile = day4;
                 break;
         }
 
