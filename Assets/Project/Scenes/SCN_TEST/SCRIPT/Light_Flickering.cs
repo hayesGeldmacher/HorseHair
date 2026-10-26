@@ -25,6 +25,7 @@ public class Light_Flickering : MonoBehaviour
     [SerializeField] private FlickerDayProfile day3;
     [SerializeField] private FlickerDayProfile day4;
 
+    [SerializeField] private bool justHandleLight = false;
     [SerializeField] private Material lightMat;
 
     [Header("Mesh Renderer Reference")]
@@ -90,6 +91,9 @@ public class Light_Flickering : MonoBehaviour
             CancelInvoke("Flicker");
             return; 
         }
+
+        //dont worry about materials for objects that are just light sources - HG
+        if (justHandleLight) return;
 
         currentFlickerSpeed = lightProf.flickerSpeed;
         currentMaxIntensity = lightProf.maxIntensity;

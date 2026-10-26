@@ -45,6 +45,7 @@ public class Camera_Environment : MonoBehaviour
 
     [Header("Jumpscare Audio")]
     [SerializeField] private AudioSource jumpscareAudio;
+    private bool playedJumpscareAudio = false;
 
     [Header("Tutorial")]
     [SerializeField] public DialogueMovement[] dialogueMovements;
@@ -94,7 +95,12 @@ public class Camera_Environment : MonoBehaviour
         selfClickEvent.ForceClick();
         if(jumpscareAudio != null)
         {
-            jumpscareAudio.Play();
+            if (!playedJumpscareAudio)
+            {
+                jumpscareAudio.Play();
+                playedJumpscareAudio = true;
+
+            }
         }
     }
 
