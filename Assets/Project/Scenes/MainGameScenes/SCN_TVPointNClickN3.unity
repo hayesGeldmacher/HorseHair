@@ -8436,12 +8436,11 @@ MonoBehaviour:
   clickCooldown: 1
   totalClicks: 4
   endTrigger:
-    dialogueLine: You have a big forehead...
-    fromJesse: 1
+    dialogueLine: ...
+    fromJesse: 0
     hasBrotherResponse: 1
     brotherResponseTime: 2.2
-    brotherDialogueLine: 'So you''re quiet all night, and that''s what you have to
-      say? '
+    brotherDialogueLine: ...
     triggerChance: 1
     cooldown: 2
     triggerOnlyOnce: 0
@@ -8500,15 +8499,15 @@ MonoBehaviour:
     position: 0
     material: {fileID: 0}
     textureAnim: {fileID: 0}
-    video: {fileID: 32900000, guid: ac3ff08a0f115c64a95cb4e89547de96, type: 3}
-    audio: {fileID: 8300000, guid: 7604c370a7187ab4684e0d87b5505f64, type: 3}
+    video: {fileID: 32900000, guid: 28a9c0bb917af94469223b023e46fcb3, type: 3}
+    audio: {fileID: 8300000, guid: f326fb2d8a6c0b84cb2030441fa3fc04, type: 3}
     playRed: 0
     triggerCamZoom: 0
     camZoomAmount: 0
     playOneOffSoundOnStart: 0
     stopSoundInsteadOfPlay: 0
     oneOffSource: {fileID: 0}
-    hasDialogue: 1
+    hasDialogue: 0
     trigger:
       dialogueLine: This movie is ridiculous...
       fromJesse: 0
@@ -8530,8 +8529,8 @@ MonoBehaviour:
     position: 0
     material: {fileID: 0}
     textureAnim: {fileID: 0}
-    video: {fileID: 32900000, guid: 70f32cc3a75090d48b26e1cc37cad3bc, type: 3}
-    audio: {fileID: 8300000, guid: 5d1639a0ef6bfc54194bd6f0931f339c, type: 3}
+    video: {fileID: 32900000, guid: 2f0c9ecc616d4354dac72aec5f272ef7, type: 3}
+    audio: {fileID: 8300000, guid: 23f46566bb8f4da42ae06219625621ba, type: 3}
     playRed: 0
     triggerCamZoom: 0
     camZoomAmount: 0
@@ -8541,7 +8540,7 @@ MonoBehaviour:
     hasDialogue: 0
     trigger:
       dialogueLine: '...Another horror movie? '
-      fromJesse: 1
+      fromJesse: 0
       hasBrotherResponse: 0
       brotherResponseTime: 1
       brotherDialogueLine: 
@@ -8560,15 +8559,15 @@ MonoBehaviour:
     position: 0
     material: {fileID: 0}
     textureAnim: {fileID: 0}
-    video: {fileID: 32900000, guid: cd075efc30923c342ab16f9367004163, type: 3}
-    audio: {fileID: 8300000, guid: c90926be5deed4348b7c7bd9eb8a6014, type: 3}
+    video: {fileID: 32900000, guid: 8130a9a2a461fa54fb62c56f7ef6c965, type: 3}
+    audio: {fileID: 8300000, guid: 4249bba3a00284a439ebfe3e17ee9ead, type: 3}
     playRed: 0
     triggerCamZoom: 0
     camZoomAmount: 0
     playOneOffSoundOnStart: 0
     stopSoundInsteadOfPlay: 0
     oneOffSource: {fileID: 0}
-    hasDialogue: 1
+    hasDialogue: 0
     trigger:
       dialogueLine: '...Another horror movie? '
       fromJesse: 0
@@ -8589,7 +8588,7 @@ MonoBehaviour:
     characterTriggerDelay: 0
     position: 0
     material: {fileID: 0}
-    textureAnim: {fileID: 9100000, guid: 77a3d821249b44349820eaff29148eea, type: 2}
+    textureAnim: {fileID: 9100000, guid: 2c7ed3ad00f867142adf2ae7517a421b, type: 2}
     video: {fileID: 0}
     audio: {fileID: 8300000, guid: 88c754c96aa91814fb82b0030f7484bd, type: 3}
     playRed: 0
@@ -20909,6 +20908,7 @@ GameObject:
   - component: {fileID: 3787000006176699416}
   - component: {fileID: 8455432853581870133}
   - component: {fileID: 8455432853581870132}
+  - component: {fileID: 8455432853581870134}
   m_Layer: 0
   m_Name: RoomTone
   m_TagString: Untagged
@@ -20935,6 +20935,12 @@ MonoBehaviour:
     upperLimit: 0.6
     speed: 15
     playOnAwake: 1
+  - source: {fileID: 8455432853581870134}
+    track: {fileID: 8300000, guid: 624b602ad5cb96c44b3c9480f33e1013, type: 3}
+    lowerLimit: 0
+    upperLimit: 0.2
+    speed: 15
+    playOnAwake: 1
   currentlyFading: 1
   fadingUp: 1
   fadeOnStart: 0
@@ -20952,6 +20958,103 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 1527834ecccd85443afec8bad4bc3718, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &8455432853581870134
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8455432853581870131}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 8a4d8223ae21d724a9b4ec1ed26322aa, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 624b602ad5cb96c44b3c9480f33e1013, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0
   m_Pitch: 1
