@@ -5,37 +5,40 @@ using UnityEngine.UI;
 
 public enum OptionsCategory
 {
-    Display,
-    Audio
+    General = 0,
+    Audio = 1,
+    Controls = 2
 }
 
 public class OptionsMenuController : MonoBehaviour
 {
     [Header("Settings Panels")]
-    [SerializeField] private CanvasGroup displayPanel;
+    [SerializeField] private CanvasGroup generalPanel;
     [SerializeField] private CanvasGroup audioPanel;
+    [SerializeField] private CanvasGroup controlsPanel;
 
     [Header("Category Buttons")]
-    [SerializeField] private Selectable displayButton;
+    [SerializeField] private Selectable generalButton;
     [SerializeField] private Selectable audioButton;
+    [SerializeField] private Selectable controlsButton;
 
     [Header("First Settings")]
-    [SerializeField] private Selectable displayFirstControl;
+    [SerializeField] private Selectable generalFirstControl;
     [SerializeField] private Selectable audioFirstControl;
+    [SerializeField] private Selectable controlsFirstControl;
 
     public bool IsEditingSettings { get; private set; }
 
-    private OptionsCategory currentCategory = OptionsCategory.Display;
+    private OptionsCategory currentCategory = OptionsCategory.General;
     private Coroutine selectionCoroutine;
 
     public void OpenOptionsMenu()
     {
-        currentCategory = OptionsCategory.Display;
+        currentCategory = OptionsCategory.General;
         IsEditingSettings = false;
 
-        ShowCategory(currentCategory);
-        DisableSettingsInteraction();
-        SelectNextFrame(displayButton);
+        RefreshPanels();
+        SelectNextFrame(generalButton);
     }
 
     public void PreviewCategory(OptionsCategory category)
@@ -44,63 +47,22 @@ public class OptionsMenuController : MonoBehaviour
             return;
 
         currentCategory = category;
-
-        ShowCategory(category);
-        DisableSettingsInteraction();
+        RefreshPanels();
     }
 
     public void CategoryPressed(OptionsCategory category)
     {
-        if (IsEditingSettings)
+        if (IsEditingSettings && category == currentCategory)
         {
-            if (category == currentCategory)
-            {
-                ExitSettingsToCategory(category);
-                return;
-            }
-
-            EnterSettings(category);
+            ExitSettingsToCategory();
             return;
         }
 
-        EnterSettings(category);
-    }
-
-    private void EnterSettings(OptionsCategory category)
-    {
         currentCategory = category;
         IsEditingSettings = true;
 
-        ShowCategory(category);
-
-        bool isDisplay =
-            category == OptionsCategory.Display;
-
-        SetPanelInteraction(displayPanel, isDisplay);
-        SetPanelInteraction(audioPanel, !isDisplay);
-
-        Selectable firstControl = isDisplay
-            ? displayFirstControl
-            : audioFirstControl;
-
-        SelectNextFrame(firstControl);
-    }
-
-    private void ExitSettingsToCategory(
-        OptionsCategory category)
-    {
-        currentCategory = category;
-        IsEditingSettings = false;
-
-        ShowCategory(category);
-        DisableSettingsInteraction();
-
-        Selectable categoryButton =
-            category == OptionsCategory.Display
-                ? displayButton
-                : audioButton;
-
-        SelectNextFrame(categoryButton);
+        RefreshPanels();
+        SelectNextFrame(GetFirstControl(category));
     }
 
     public bool TryLeaveSettings()
@@ -108,49 +70,75 @@ public class OptionsMenuController : MonoBehaviour
         if (!IsEditingSettings)
             return false;
 
-        ExitSettingsToCategory(currentCategory);
+        PlayerPrefs.Save();
+        ExitSettingsToCategory();
         return true;
     }
 
     public void CloseOptionsMenu()
     {
+        PlayerPrefs.Save();
         IsEditingSettings = false;
-        DisableSettingsInteraction();
+        RefreshPanels();
     }
 
-    private void ShowCategory(OptionsCategory category)
+    private void ExitSettingsToCategory()
     {
-        if (displayPanel != null)
-        {
-            displayPanel.gameObject.SetActive(
-                category == OptionsCategory.Display
-            );
-        }
-
-        if (audioPanel != null)
-        {
-            audioPanel.gameObject.SetActive(
-                category == OptionsCategory.Audio
-            );
-        }
+        IsEditingSettings = false;
+        RefreshPanels();
+        SelectNextFrame(GetCategoryButton(currentCategory));
     }
 
-    private void DisableSettingsInteraction()
+    private void RefreshPanels()
     {
-        SetPanelInteraction(displayPanel, false);
-        SetPanelInteraction(audioPanel, false);
+        UpdatePanel(generalPanel, OptionsCategory.General);
+        UpdatePanel(audioPanel, OptionsCategory.Audio);
+        UpdatePanel(controlsPanel, OptionsCategory.Controls);
     }
 
-    private static void SetPanelInteraction(
+    private void UpdatePanel(
         CanvasGroup panel,
-        bool canInteract)
+        OptionsCategory category)
     {
         if (panel == null)
             return;
 
+        bool visible = category == currentCategory;
+
+        panel.gameObject.SetActive(visible);
         panel.alpha = 1f;
-        panel.interactable = canInteract;
-        panel.blocksRaycasts = canInteract;
+        panel.interactable = visible && IsEditingSettings;
+        panel.blocksRaycasts = visible && IsEditingSettings;
+    }
+
+    private Selectable GetCategoryButton(OptionsCategory category)
+    {
+        switch (category)
+        {
+            case OptionsCategory.Audio:
+                return audioButton;
+
+            case OptionsCategory.Controls:
+                return controlsButton;
+
+            default:
+                return generalButton;
+        }
+    }
+
+    private Selectable GetFirstControl(OptionsCategory category)
+    {
+        switch (category)
+        {
+            case OptionsCategory.Audio:
+                return audioFirstControl;
+
+            case OptionsCategory.Controls:
+                return controlsFirstControl;
+
+            default:
+                return generalFirstControl;
+        }
     }
 
     private void SelectNextFrame(Selectable selectable)
@@ -158,28 +146,25 @@ public class OptionsMenuController : MonoBehaviour
         if (selectionCoroutine != null)
             StopCoroutine(selectionCoroutine);
 
-        selectionCoroutine =
-            StartCoroutine(SelectAfterFrame(selectable));
+        selectionCoroutine = StartCoroutine(
+            SelectAfterFrame(selectable));
     }
 
-    private IEnumerator SelectAfterFrame(
-        Selectable selectable)
+    private IEnumerator SelectAfterFrame(Selectable selectable)
     {
         yield return null;
+
+        selectionCoroutine = null;
 
         if (selectable == null ||
             EventSystem.current == null ||
             !selectable.gameObject.activeInHierarchy)
         {
-            selectionCoroutine = null;
             yield break;
         }
 
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(
-            selectable.gameObject
-        );
-
-        selectionCoroutine = null;
+            selectable.gameObject);
     }
 }

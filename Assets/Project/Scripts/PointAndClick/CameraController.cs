@@ -56,6 +56,7 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] private float EnableDeviceDelay = 0.3f;
     private bool mouseEnabled = true;
+    private float baseControllerCursorSpeed;
 
     private void OnEnable()
     {
@@ -73,15 +74,47 @@ public class CameraController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Confined;
         Mouse.current.WarpCursorPosition(_screenCenter);
         _panTilt = GetComponent<CinemachinePanTilt>();
+        if (VM != null)
+            baseControllerCursorSpeed = VM.cursorSpeed;
         Switch();
     }
 
     private void LateUpdate()
     {
-        _currentInput.x = Mathf.Lerp(_currentInput.x, _mouseInput.x,
-            Time.deltaTime * _followSpeedX);
-        _currentInput.y = Mathf.Lerp(_currentInput.y, _mouseInput.y,
-            Time.deltaTime * _followSpeedY);
+        bool paused = PauseManager.Instance != null &&
+                      PauseManager.Instance.IsPaused;
+
+        if (VM != null)
+        {
+            VM.cursorSpeed = baseControllerCursorSpeed *
+                (paused ? 1f : ControlSettings.ControllerSensitivity);
+        }
+
+        if (paused)
+            return;
+
+        Vector2 target = _mouseInput;
+
+        bool invertY = UseMouse
+            ? ControlSettings.MouseInvertY
+            : ControlSettings.ControllerInvertY;
+
+        if (invertY)
+            target.y = -target.y;
+
+        float response = UseMouse
+            ? ControlSettings.MouseSensitivity
+            : 1f;
+
+        _currentInput.x = Mathf.Lerp(
+            _currentInput.x,
+            target.x,
+            Time.deltaTime * _followSpeedX * response);
+
+        _currentInput.y = Mathf.Lerp(
+            _currentInput.y,
+            target.y,
+            Time.deltaTime * _followSpeedY * response);
 
         if (full360Camera_x)
         {
@@ -169,6 +202,11 @@ public class CameraController : MonoBehaviour
 
     public void OnLook(InputAction.CallbackContext context)
     {
+        if (PauseManager.Instance != null &&
+    PauseManager.Instance.IsPaused)
+        {
+            return;
+        }
         Vector2 mousePos = Mouse.current.position.ReadValue();
         Vector2 offset = new Vector2(
             (mousePos.x - _screenCenter.x) / _screenCenter.x,
