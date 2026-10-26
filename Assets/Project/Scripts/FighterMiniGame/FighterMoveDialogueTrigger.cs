@@ -107,31 +107,42 @@ public class FighterMoveDialogueTrigger : MonoBehaviour
         FighterMoveType moveType,
         FighterMoveResult result)
     {
-        if (IsTutorialActive())
-            return;
+        FGDialogueManager manager = FGDialogueManager.instance;
 
-        moveHistory.Add(new MoveRecord(moveType, result, Time.time));
+        if (IsTutorialActive() ||
+            manager == null ||
+            !manager.CanStartMoveDialogue)
+        {
+            moveHistory.Clear();
+            return;
+        }
+
+        moveHistory.Add(
+            new MoveRecord(moveType, result, Time.time));
+
         TrimOldMoveHistory();
         CheckRules();
     }
 
     private void CheckRules()
     {
+        FGDialogueManager manager = FGDialogueManager.instance;
+
+        if (manager == null || !manager.CanStartMoveDialogue)
+            return;
+
         foreach (MoveDialogueRule rule in rules)
         {
             if (!CanRuleTrigger(rule))
                 continue;
 
-            if (DoesHistoryMatchRule(rule))
-            {
-                FGDialogueManager.instance.TriggerDialogue(rule.trigger);
-                if (Random.value <= rule.trigger.triggerChance)
-                {
-                    // TriggerDialogue(rule.trigger);
-                    return;
-                }
+            if (!DoesHistoryMatchRule(rule))
+                continue;
 
-                rule.trigger.cooldownTimer = rule.trigger.cooldown;
+            if (manager.TryTriggerMoveDialogue(rule.trigger))
+            {
+                moveHistory.Clear();
+                return;
             }
         }
     }

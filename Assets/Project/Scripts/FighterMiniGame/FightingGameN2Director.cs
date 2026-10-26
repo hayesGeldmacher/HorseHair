@@ -145,7 +145,7 @@ public class FightingGameN2Director : MonoBehaviour
         {
             roundManager.BeginBonusMatch(
                 horse,
-                "HORSE"
+                "Horse"
             );
         }
     }

@@ -1031,6 +1031,7 @@ MonoBehaviour:
   lessons:
   - step: 0
     instruction: First, Move Left and Right with the 'A' and 'D' keys.
+    controllerInstruction: First, move left and right with the left stick or D-pad.
     successResponse: You can review the controls by pressing the view button or tab
       key.
     successResponseDelay: 0
@@ -1040,7 +1041,7 @@ MonoBehaviour:
     brotherResponseWaitTime: 1
     responseTrigger:
       dialogueLine: 'I think I know how to walk ... I can review the controls by
-        pressing the Tab key. '
+        pressing the Tab/View key. '
       fromJesse: 0
       hasBrotherResponse: 0
       brotherResponseTime: 0.5
@@ -1052,7 +1053,9 @@ MonoBehaviour:
       hasTriggered: 0
       dialogueVisibleTime: 5
   - step: 2
-    instruction: Whatever, try moving up to Jump and hold down to Crouch.
+    instruction: Whatever, try pressing 'W' or 'Space' to Jump and hold 'S' to Crouch.
+    controllerInstruction: Whatever, push the left stick or D-pad up to Jump, and
+      hold down to Crouch.
     successResponse: Nice. Different stances can avoid certain attacks.
     successResponseDelay: 0
     successMessageTime: 3.2
@@ -1074,6 +1077,8 @@ MonoBehaviour:
   - step: 3
     instruction: Yup. Throw a punch with the 'J' key. You can also punch while jumping
       or crouching.
+    controllerInstruction: Yup. Throw a punch with the 'West(Left) Face' button.
+      You can also punch while jumping or crouching
     successResponse: 'You''re not as slow as I thought! '
     successResponseDelay: 0
     successMessageTime: 2
@@ -1094,6 +1099,8 @@ MonoBehaviour:
       dialogueVisibleTime: 2.2
   - step: 4
     instruction: Now kick with the 'K' key. Kicks also work while jumping or crouching.
+    controllerInstruction: Now kick with the 'South(Bottom) Face' button. Kicks also
+      work while jumping or crouching.
     successResponse: 
     successResponseDelay: 0
     successMessageTime: 2
@@ -1114,6 +1121,8 @@ MonoBehaviour:
       dialogueVisibleTime: 2.2
   - step: 5
     instruction: Now, get close to me and perform a grab with the 'L' key.
+    controllerInstruction: 'Now, get close to me and perform a grab with the ''Right
+      Face'' button. '
     successResponse: 
     successResponseDelay: 0
     successMessageTime: 4.5
@@ -1135,6 +1144,7 @@ MonoBehaviour:
       dialogueVisibleTime: 5
   - step: 6
     instruction: Alright spammer, walk backwards to block my attack.
+    controllerInstruction: Alright spammer, walk backwards to block my attack.
     successResponse: 
     successResponseDelay: 0
     successMessageTime: 3.5
@@ -1155,6 +1165,8 @@ MonoBehaviour:
       dialogueVisibleTime: 4
   - step: 7
     instruction: Go ahead and finish with your Special move by pressing the 'I' Key.
+    controllerInstruction: Go ahead and finish with your Special move by pressing
+      the 'North Face' button.
     successResponse: 
     successResponseDelay: 0
     successMessageTime: 4.5
@@ -9569,6 +9581,7 @@ MonoBehaviour:
   dreamSequence: 0
   skipToRedChannel: 0
   sceneTransitionWait: 6
+  roomToneFade: {fileID: 0}
   nextScene: 
   IsDreamWorldPNC: 0
   channelIndex: 0
@@ -9903,6 +9916,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fef552233ce304d46a02e0ef0a082455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FightCharacterAI
+--- !u!1 &1190455530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1190455531}
+  - component: {fileID: 1190455532}
+  m_Layer: 0
+  m_Name: ControlsGuideDisplay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1190455531
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190455530}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1011.0076, y: -0.00001, z: 935.6936}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1190455532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190455530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f652a583ef1e554187f1b7dd63cb26d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ControlsGuideDisplay
+  mouseKeyboardGuide: {fileID: 0}
+  controllerGuide: {fileID: 0}
 --- !u!1 &1197576165 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7133249064254135832, guid: d004c45dccf5b4444b4ef45b05a7b8fd, type: 3}
@@ -20121,6 +20180,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4412072947381637836, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
+      propertyPath: moveDialogueGap
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4412072947381637836, guid: 962f3c1d4d2c1564e9b610477ac44517, type: 3}
       propertyPath: canTriggerDialogue
       value: 1
       objectReference: {fileID: 0}
@@ -26811,3 +26874,4 @@ SceneRoots:
   - {fileID: 60263699}
   - {fileID: 4442029}
   - {fileID: 2080863836}
+  - {fileID: 1190455531}
