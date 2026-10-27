@@ -37,7 +37,7 @@ public class Dream2EndTrigger : PlayerNearTrigger
     private IEnumerator TriggerAnimation()
     {
         yield return new WaitForSeconds(triggerAnimDelay);
-        horseWalkAnim.SetTrigger("walk");
+        horseWalkAnim.SetTrigger("scare");
     }
 
     private IEnumerator PlayScareSound()
