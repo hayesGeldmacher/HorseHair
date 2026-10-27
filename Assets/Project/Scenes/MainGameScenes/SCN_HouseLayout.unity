@@ -38993,7 +38993,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3556689769639696183, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 913835327312750872, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       insertIndex: -1
@@ -46655,9 +46656,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 714299772151755328, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1943771290}
-    - targetCorrespondingSourceObject: {fileID: 714299772151755328, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1724395536}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
 --- !u!4 &662204453 stripped
@@ -110262,37 +110260,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.7950823, y: 1.9163368, z: 1.0000001}
   m_Center: {x: 0.74343264, y: -0.066875495, z: 0.0000006459298}
---- !u!1 &1724395535
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1724395536}
-  m_Layer: 9
-  m_Name: EmptyObj
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1724395536
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1724395535}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1950916763}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1727097075 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3764532326570402451, guid: 62ccc57d9446b3945970f5f661ff9660, type: 3}
@@ -117055,7 +117022,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51327faac36436246a305b1b649aa2b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ItemDisappear
-  alternativeItem: {fileID: 1724395535}
+  alternativeItem: {fileID: 0}
   availableEveryday: 0
   availableTime:
   - timeOfDay: 1
@@ -124275,20 +124242,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[0].dialogue
-      value: 'Thanks pal... I''ll give him a proper burial. '
+      value: 'Thanks pal... I''ll give the brat a proper burial. '
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[1].dialogue
-      value: 'I''m worried about you dad. What''s been going on? '
+      value: 'I''m worried about you. What''s been going on? '
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[2].dialogue
-      value: I'm sorry to scare ya pal, but to be honest, things are pretty scary
-        right now.
+      value: I'm sorry to scare ya pal, but I'll be be square with you.
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[3].dialogue
-      value: 'I don''t know if your brother realizes it yet. '
+      value: 'Things aren''t looking good for us. I don''t know if your brother realizes
+        it yet. '
       objectReference: {fileID: 0}
     - target: {fileID: 8491677008935539016, guid: ea8b1146c61dc2b4ab769c34be1bb6ee, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[4].dialogue

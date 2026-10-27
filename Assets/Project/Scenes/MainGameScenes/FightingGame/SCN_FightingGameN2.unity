@@ -1021,6 +1021,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 644139989}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: roomToneFade
+      value: 
+      objectReference: {fileID: 2130230061}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: controlsPanel
       value: 
       objectReference: {fileID: 101757407}
@@ -1274,11 +1278,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: bonusRevealDialogue.Array.data[0].fromJesse
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: bonusRevealDialogue.Array.data[1].fromJesse
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: bonusRevealDialogue.Array.data[2].fromJesse
@@ -1346,11 +1350,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: bonusRevealDialogue.Array.data[1].dialogueLine
-      value: you unlocked somebody!
+      value: You unlocked somebody! Quick, fight back!
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: bonusRevealDialogue.Array.data[2].dialogueLine
-      value: why did dad stop talking?
+      value: '...where did Dad go? '
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyWinDialogue.Array.data[0].triggerOnlyOnce
@@ -1447,6 +1451,18 @@ PrefabInstance:
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: playerWinDialogue.Array.data[3].brotherResponseTime
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: bonusRevealDialogue.Array.data[0].dialogueVisibleTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: bonusRevealDialogue.Array.data[1].dialogueVisibleTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
+      propertyPath: bonusRevealDialogue.Array.data[2].dialogueVisibleTime
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8162191619237208354, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: m_Name
@@ -5323,6 +5339,7 @@ GameObject:
   m_Component:
   - component: {fileID: 425708211}
   - component: {fileID: 425708210}
+  - component: {fileID: 425708212}
   m_Layer: 0
   m_Name: ScareManager
   m_TagString: Untagged
@@ -5356,8 +5373,30 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1424983080}
+  - {fileID: 1312322050}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &425708212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425708209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8852db7bab3f3348b46a6174110e05e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DadStumbleAudio
+  shouldPlayAudio: 1
+  source: {fileID: 1312322051}
+  clips:
+  - {fileID: 8300000, guid: 63da7da92b9fd8b4087d28fc446d9eb8, type: 3}
+  - {fileID: 8300000, guid: 32d7edb84a16511439d6fa830d7cfa1b, type: 3}
+  - {fileID: 8300000, guid: e62f7143df4f56240bbdf41e41f25916, type: 3}
+  minWaitTime: 15
+  maxWaitTime: 22
+  currentWaitTime: 10
 --- !u!1 &490602653
 GameObject:
   m_ObjectHideFlags: 0
@@ -16974,6 +17013,73 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1312322049
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 425708211}
+    m_Modifications:
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.38339007
+      objectReference: {fileID: 0}
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 6.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3491785622317307260, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+      propertyPath: m_Name
+      value: DadStumbleAudio
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+--- !u!4 &1312322050 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 539705041431371689, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+  m_PrefabInstance: {fileID: 1312322049}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1312322051 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 3776993501744058768, guid: cf2e590ddb2c17f4a8995736d57d5e38, type: 3}
+  m_PrefabInstance: {fileID: 1312322049}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1346963759
 GameObject:
   m_ObjectHideFlags: 0
@@ -25533,7 +25639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!33 &761956443770175321
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -29142,6 +29248,7 @@ MonoBehaviour:
     notActivatedEvening: 0
   darkMat: {fileID: 2100000, guid: 814fd165cb7228945bfa310ff5cdfbcd, type: 2}
   lightMat: {fileID: 2100000, guid: a0027c1955a04ff40a92739d096aea66, type: 2}
+  chosenRender: {fileID: 0}
 --- !u!1 &5261092979130094445
 GameObject:
   m_ObjectHideFlags: 0
