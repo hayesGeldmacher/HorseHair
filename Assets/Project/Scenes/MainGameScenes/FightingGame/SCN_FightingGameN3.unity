@@ -529,7 +529,7 @@ PrefabInstance:
       objectReference: {fileID: 1128595468}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: nextSceneName
-      value: SCN_HouseLayout
+      value: SCN_DreamN3_Part1
       objectReference: {fileID: 0}
     - target: {fileID: 7506401663983764462, guid: 5f8e0d9dd8907d348aa17c573844a771, type: 3}
       propertyPath: enemyCharacter
@@ -953,45 +953,188 @@ MonoBehaviour:
   player: {fileID: 644139990}
   dialogueUI: {fileID: 1511594232}
   opponentAI: {fileID: 1173407408}
+  dialogueManager: {fileID: 0}
   beginWhenRoundBecomesActive: 0
   openingDelay: 0.5
   openingMessageTime: 4
-  successMessageTime: 4
-  successResponseDelay: 2
   openingMessage: Okay, I know it's been a while. Let me remind you how to play.
   requiredMovementDistance: 0.5
   lessons:
   - step: 0
     instruction: First, move left and right with the control sitck or the 'A' and
       'D' keys.
+    controllerInstruction: 
     successResponse: You can review the controls by pressing the view button or tab
       key.
+    successResponseDelay: 0.65
+    successMessageTime: 1.25
+    hasSuccessResponse: 1
+    hasBrotherResponse: 0
+    brotherResponseWaitTime: 2
+    responseTrigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
+      dialogueVisibleTime: 2
   - step: 1
     instruction: Now double-tap a direction to quickstep.
+    controllerInstruction: 
     successResponse: Quick! I like it.
+    successResponseDelay: 0.65
+    successMessageTime: 1.25
+    hasSuccessResponse: 1
+    hasBrotherResponse: 0
+    brotherResponseWaitTime: 2
+    responseTrigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
+      dialogueVisibleTime: 2
   - step: 2
     instruction: Move up to jump and hold down to crouch. Try both.
+    controllerInstruction: 
     successResponse: Great! Different stances can avoid certain attacks.
+    successResponseDelay: 0.65
+    successMessageTime: 1.25
+    hasSuccessResponse: 1
+    hasBrotherResponse: 0
+    brotherResponseWaitTime: 2
+    responseTrigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
+      dialogueVisibleTime: 2
   - step: 3
     instruction: Throw a punch with the west face button or the 'J' key. You can
       also punch while jumping or crouching.
+    controllerInstruction: 
     successResponse: Solid punch!
+    successResponseDelay: 0.65
+    successMessageTime: 1.25
+    hasSuccessResponse: 1
+    hasBrotherResponse: 0
+    brotherResponseWaitTime: 2
+    responseTrigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
+      dialogueVisibleTime: 2
   - step: 4
     instruction: Now kick with the south face button or the 'K' key. Kicks also work
       while jumping or crouching.
+    controllerInstruction: 
     successResponse: Awesome kick!
+    successResponseDelay: 0.65
+    successMessageTime: 1.25
+    hasSuccessResponse: 1
+    hasBrotherResponse: 0
+    brotherResponseWaitTime: 2
+    responseTrigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
+      dialogueVisibleTime: 2
   - step: 5
     instruction: Get close to me and perform a grab with the east face button or
       the 'L' key.
+    controllerInstruction: 
     successResponse: This is a smart move when your cornered and need some space.
+    successResponseDelay: 0.65
+    successMessageTime: 1.25
+    hasSuccessResponse: 1
+    hasBrotherResponse: 0
+    brotherResponseWaitTime: 2
+    responseTrigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
+      dialogueVisibleTime: 2
   - step: 6
     instruction: Now walk backwards to block my attack.
+    controllerInstruction: 
     successResponse: Just like that. Blocking attacks will reduce your damage taken.
+    successResponseDelay: 0.65
+    successMessageTime: 1.25
+    hasSuccessResponse: 1
+    hasBrotherResponse: 0
+    brotherResponseWaitTime: 2
+    responseTrigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
+      dialogueVisibleTime: 2
   - step: 7
     instruction: 'Go ahead and finish with your special move by punching and kicking
       at the same time. '
+    controllerInstruction: 
     successResponse: That was powerful! You only have three special moves per round,
       so use them carefully...
+    successResponseDelay: 0.65
+    successMessageTime: 1.25
+    hasSuccessResponse: 1
+    hasBrotherResponse: 0
+    brotherResponseWaitTime: 2
+    responseTrigger:
+      dialogueLine: 
+      fromJesse: 0
+      hasBrotherResponse: 0
+      brotherResponseTime: 1
+      brotherDialogueLine: 
+      triggerChance: 1
+      cooldown: 2
+      triggerOnlyOnce: 0
+      cooldownTimer: 0
+      hasTriggered: 0
+      dialogueVisibleTime: 2
   finalMessage: Now lets get into the real thing. I wont be going easy on you.
   finalMessageTime: 2
   onTutorialCompleted:
@@ -4443,6 +4586,7 @@ MonoBehaviour:
     triggerOnlyOnce: 0
     cooldownTimer: 0
     hasTriggered: 0
+    dialogueVisibleTime: 2
   fighterAI: {fileID: 1173407408}
   carpetStepsSoure: {fileID: 1003277815}
 --- !u!1 &468519531
@@ -6496,6 +6640,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Punch Combo
     moveSequence: 020000000200000002000000
     resultSequence: 010000000100000001000000
@@ -6511,6 +6656,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Fancy Combo
     moveSequence: 010000000500000001000000
     resultSequence: 010000000100000001000000
@@ -6526,6 +6672,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Whiff
     moveSequence: 000000000000000000000000
     resultSequence: 020000000200000002000000
@@ -6541,6 +6688,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Crouch Combo
     moveSequence: 0700000007000000
     resultSequence: 0100000001000000
@@ -6556,6 +6704,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Grab
     moveSequence: 09000000
     resultSequence: 01000000
@@ -6571,6 +6720,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Two-One
     moveSequence: 0500000001000000
     resultSequence: 0100000001000000
@@ -6586,6 +6736,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Hit
     moveSequence: 00000000
     resultSequence: 01000000
@@ -6601,6 +6752,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   dialogueVisibleTime: 2
   isTalking: 0
 --- !u!114 &571076528 stripped
@@ -9671,7 +9823,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TelevisionSequence
   skipTelevision: 1
   dreamSequence: 0
+  skipToRedChannel: 0
+  sceneTransitionWait: 6
+  roomToneFade: {fileID: 0}
   nextScene: 
+  IsDreamWorldPNC: 0
   channelIndex: 0
   backupIndex: 1
   tvAnim: {fileID: 1719609914}
@@ -9682,6 +9838,7 @@ MonoBehaviour:
   controllerAnimBrother: {fileID: 757928347}
   televisionScreen: {fileID: 1719609908}
   reflectionScreen: {fileID: 0}
+  horseScreen: {fileID: 0}
   gameScreen: {fileID: 1197576165}
   fightManager: {fileID: 892047101}
   vp:
@@ -9705,15 +9862,37 @@ MonoBehaviour:
     triggerOnlyOnce: 0
     cooldownTimer: 0
     hasTriggered: 0
+    dialogueVisibleTime: 2
   remoteWait: 0.5
   controllerWaitBrother: 2
   controllerWaitPlayer: 1
   playerControls: {fileID: 0}
+  horseCamPositions: []
+  horseCam: {fileID: 0}
+  horseCamElements: 3
+  horseBreathAudio: {fileID: 0}
+  horseFootStepAudio: {fileID: 0}
+  camZoomLerp: {fileID: 0}
+  stopSoundOnEndTV: 0
+  endTVSource: {fileID: 0}
   channels:
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: f870a76dd556a3b4d8954d0d7de3f052, type: 3}
     audio: {fileID: 8300000, guid: b9c63aa47ed6f104d97debcffb1d4010, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 
@@ -9726,10 +9905,24 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: 3c781a2aeb0629f44afe3a01defac210, type: 3}
     audio: {fileID: 8300000, guid: 078fca522297d4c49b81f20e825ea14f, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: I always liked these old Westerns...
@@ -9742,10 +9935,24 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 0
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac9778d9d8578e84681bd2e81a122e12, type: 3}
     audio: {fileID: 8300000, guid: e7c7c1e76c8f5a449947968cfc3df6e3, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 0
     trigger:
       dialogueLine: 
@@ -9758,10 +9965,24 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - isTexture: 1
+    UseCamera: 0
+    characterTrigger: {fileID: 0}
+    animTriggerIdle: 
+    animTriggerCrawl: 
+    characterTriggerDelay: 0
+    position: 0
+    material: {fileID: 0}
     textureAnim: {fileID: 9100000, guid: f2ab1cfc8f13255488e499ac776f65df, type: 2}
     video: {fileID: 0}
     audio: {fileID: 8300000, guid: 88c754c96aa91814fb82b0030f7484bd, type: 3}
+    playRed: 0
+    triggerCamZoom: 0
+    camZoomAmount: 0
+    playOneOffSoundOnStart: 0
+    stopSoundInsteadOfPlay: 0
+    oneOffSource: {fileID: 0}
     hasDialogue: 1
     trigger:
       dialogueLine: 'This is boring, can we play the game now? '
@@ -9774,6 +9995,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
 --- !u!4 &1111314899
 Transform:
   m_ObjectHideFlags: 0
@@ -15373,6 +15595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FGTutorialDialogue
   dialoguePanel: {fileID: 1451128963}
   messageText: {fileID: 1082160245}
+  textBoxAnim: {fileID: 0}
 --- !u!4 &1511594233
 Transform:
   m_ObjectHideFlags: 0
@@ -16581,6 +16804,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Triple Block
     moveSequence: 000000000000000000000000
     resultSequence: 030000000300000003000000
@@ -16596,6 +16820,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Fancy Combos
     moveSequence: 010000000500000001000000
     resultSequence: 010000000100000001000000
@@ -16611,6 +16836,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Whiff
     moveSequence: 000000000000000000000000
     resultSequence: 020000000200000002000000
@@ -16626,6 +16852,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Crouch Combo
     moveSequence: 0700000007000000
     resultSequence: 0100000001000000
@@ -16641,6 +16868,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Grab Miss
     moveSequence: 09000000
     resultSequence: 02000000
@@ -16656,6 +16884,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: One-Two
     moveSequence: 0100000005000000
     resultSequence: 0100000001000000
@@ -16671,6 +16900,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   - ruleName: Greed
     moveSequence: 000000000000000000000000
     resultSequence: 030000000300000001000000
@@ -16686,6 +16916,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
+      dialogueVisibleTime: 2
   dialogueVisibleTime: 2
   isTalking: 0
 --- !u!4 &1869722159
@@ -20493,6 +20724,7 @@ MonoBehaviour:
     triggerOnlyOnce: 1
     cooldownTimer: 0
     hasTriggered: 0
+    dialogueVisibleTime: 2
   hasCharSelectDialogue: 1
   charSelectDelay: 5
   charSelectTrigger:
@@ -20506,6 +20738,7 @@ MonoBehaviour:
     triggerOnlyOnce: 1
     cooldownTimer: 0
     hasTriggered: 0
+    dialogueVisibleTime: 2
   manager: {fileID: 136155257004112312}
   fightRoundManager: {fileID: 892047101}
   stopAudio: 1
@@ -24435,6 +24668,7 @@ MonoBehaviour:
     notActivatedEvening: 0
   darkMat: {fileID: 2100000, guid: 814fd165cb7228945bfa310ff5cdfbcd, type: 2}
   lightMat: {fileID: 2100000, guid: a0027c1955a04ff40a92739d096aea66, type: 2}
+  chosenRender: {fileID: 0}
 --- !u!1 &5261092979130094445
 GameObject:
   m_ObjectHideFlags: 0

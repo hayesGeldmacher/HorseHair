@@ -12,7 +12,7 @@ public class Dream3EndTrigger : MonoBehaviour
     [SerializeField] private DSCam cam;
     [SerializeField] private float sceneEndDelay;
     [SerializeField] private AudioVolumeFade fade;
-
+    [SerializeField] private string sceneName;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -30,7 +30,7 @@ public class Dream3EndTrigger : MonoBehaviour
         fade.StartFadeIn(false, false);
         lightBulbAnim.SetTrigger("play");
         yield return new WaitForSeconds(sceneEndDelay);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(sceneName);
 
     }
 }

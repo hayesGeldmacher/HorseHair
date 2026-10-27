@@ -9587,6 +9587,7 @@ MonoBehaviour:
   cam: {fileID: 1346963763}
   sceneEndDelay: 10
   fade: {fileID: 1131657040}
+  sceneName: SCN_DreamN3_Part2
 --- !u!1 &1061670622
 GameObject:
   m_ObjectHideFlags: 0
@@ -39970,6 +39971,12 @@ MonoBehaviour:
   pressAnyButtonText: {fileID: 4531815950283314288}
   blinkSpeed: 4
   skipIntroAndCharacterSelect: 0
+  skipJustTutorial: 0
+  skipToEndDialogue: 0
+  delayNextSceneTransition: 0
+  sceneTransitionIsReady: 0
+  fightTransitionIsReady: 0
+  triggeredDelayTransition: 0
   characterSelectManager: {fileID: 0}
   characterSelectLoadingTime: 1
   nextRoundPromptText: {fileID: 0}
@@ -40046,7 +40053,9 @@ MonoBehaviour:
   bonusTextFlashCount: 4
   bonusTextFlashInterval: 0.2
   bonusHorseHealth: 700
+  roomToneFade: {fileID: 0}
   gameCanStart: 1
+  fightCameraFollow: {fileID: 0}
 --- !u!23 &7525652147377306488
 MeshRenderer:
   m_ObjectHideFlags: 0

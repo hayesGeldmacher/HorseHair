@@ -1347,6 +1347,7 @@ public class FightRoundManager : MonoBehaviour
 
     private IEnumerator TransitionScene()
     {
+        
         eyelids.TriggerEyesDownAnimation();
         if(roomToneFade != null)
         {
