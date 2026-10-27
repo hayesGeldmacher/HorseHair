@@ -237,7 +237,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     public void Transition(string level, bool isDreamWorld)
     {
-        if (!isDreamWorld)
+        if (true)
         {
             TimeOfDay currentTimeOfDay = (TimeOfDay)PlayerPrefs.GetInt("TimeOfDay", 0);
             int currentTaskNum = PlayerPrefs.GetInt("TaskNum", 0);
