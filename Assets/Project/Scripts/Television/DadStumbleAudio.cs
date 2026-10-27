@@ -13,6 +13,8 @@ public class DadStumbleAudio : MonoBehaviour
 
     [SerializeField] private float currentWaitTime;
 
+    [SerializeField] private AudioVolumeFade audioFade;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -43,6 +45,16 @@ public class DadStumbleAudio : MonoBehaviour
        AudioClip clip = clips[randIndex];
         source.clip = clip;
         source.Play();
+    }
+
+    public void ForceStop()
+    {
+        shouldPlayAudio = false;
+        if(audioFade != null)
+        {
+         audioFade.StartFadeIn(false, false);
+        }
+        
     }
 
     

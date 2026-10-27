@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 /// <summary>
 /// Handles start screen, round timing, round wins, bo3 game rules, next-round prompt, and round resets
@@ -239,6 +240,8 @@ public class FightRoundManager : MonoBehaviour
     [Header("Transition Fields")]
     [SerializeField] private AudioVolumeFade roomToneFade;
 
+    [Header("Bonus Rounds Fields")]
+    [SerializeField] private DadStumbleAudio dadStumbleAudio;
     private float currentRoundTime;
     private float startBlinkTimer;
     private float nextRoundBlinkTimer;
@@ -1361,7 +1364,7 @@ public class FightRoundManager : MonoBehaviour
             SceneManager.LoadScene("SCN_DreamSequenceN1");
     }
     public void BeginBonusMatch(
-        FightCharacter bonusEnemy,
+       FightCharacter bonusEnemy,
         string bonusEnemyName)
     {
         if (bonusEnemy == null)
@@ -1374,7 +1377,12 @@ public class FightRoundManager : MonoBehaviour
             return;
         }
 
-        enemyCharacter = bonusEnemy;
+        if (dadStumbleAudio != null)
+        {
+            dadStumbleAudio.ForceStop();
+        }
+
+            enemyCharacter = bonusEnemy;
 
         if (fightCameraFollow != null)
         {

@@ -14,6 +14,12 @@ public class FightingGameN2Director : MonoBehaviour
     [SerializeField] private CanvasGroup fadeCanvas;
     [SerializeField] private float fadeDuration = 0.75f;
     [SerializeField] private float normalWinScreenDuration = 2.5f;
+    [SerializeField] private EyelidsFG eyelids;
+    [SerializeField] private AudioVolumeFade volumeFade;
+
+    [SerializeField] private FGDialogueBonusTriggers dialogueBonusTriggers;
+    [SerializeField] private float midFightDelay0 = 8.0f;
+    [SerializeField] private float endFightDelay = 4.5f;
 
     [Header("Audio")]
     [SerializeField] private AudioSource dadArgumentSource;
@@ -139,6 +145,11 @@ public class FightingGameN2Director : MonoBehaviour
         bonusMatchActive = true;
         runningSequence = false;
 
+       if(dialogueBonusTriggers != null)
+        {
+            dialogueBonusTriggers.CallFightTrigger(0, midFightDelay0);
+        }
+
         // FightRoundManager keeps the screen covered while it
         // resets both fighters, then performs the round-intro fade.
         if (roundManager != null)
@@ -152,6 +163,12 @@ public class FightingGameN2Director : MonoBehaviour
 
     private IEnumerator PlayFinale()
     {
+
+        if(dialogueBonusTriggers != null)
+        {
+            dialogueBonusTriggers.CallFightTrigger(2, endFightDelay);
+        }
+        dialogueBonusTriggers.CallFinalFightDialogue();
         if (horse == null || farmer == null)
         {
             Debug.LogError(
@@ -363,7 +380,11 @@ public class FightingGameN2Director : MonoBehaviour
         farmerDragRoot.rotation =
             farmerRotation;
 
+        volumeFade.StartFadeIn(false, false);
         yield return FadeTo(1f);
+        yield return new WaitForSeconds(4.5f);
+        eyelids.TriggerEyesDownAnimation();
+        yield return new WaitForSeconds(2.5f);
 
         if (!string.IsNullOrWhiteSpace(nextSceneName))
         {
