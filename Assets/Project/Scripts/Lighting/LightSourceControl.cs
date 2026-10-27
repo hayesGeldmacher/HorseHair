@@ -25,6 +25,8 @@ public class LightSourceControl : MonoBehaviour
     public Material darkMat;
     public Material lightMat;
 
+    [SerializeField] private MeshRenderer chosenRender;
+
     private void Start()
     {
         LightMapController.instance.OnChangeLights += SetLighting;
@@ -44,13 +46,21 @@ public class LightSourceControl : MonoBehaviour
             newMat = (profile.notActivatedEvening ? darkMat: lightMat);
         }
 
-        MeshRenderer renderer = transform.GetComponent<MeshRenderer>();
-        renderer.material = newMat;
+        if (chosenRender)
+        {
+            chosenRender.materials[0] = newMat;
+        }
+        else
+        {
+            MeshRenderer renderer = transform.GetComponent<MeshRenderer>();
+            renderer.material = newMat; 
+        }
+
     }
 
     private LightingProfile GetLightProfile(int index)
     {
-        LightingProfile profile;
+        LightingProfile profile = day1;
 
         switch (index)
         {
@@ -64,7 +74,8 @@ public class LightSourceControl : MonoBehaviour
                 break;
         }
 
-        return day1;
+        Debug.Log("RETURNED LIGHT: " + index);
+        return profile;
     }
 
 }
