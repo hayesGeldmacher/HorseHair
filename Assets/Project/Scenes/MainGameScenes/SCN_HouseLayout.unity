@@ -40248,8 +40248,6 @@ MonoBehaviour:
   availableTime:
   - timeOfDay: 0
     TaskNum: 1
-  - timeOfDay: 0
-    TaskNum: 2
 --- !u!1 &494597111
 GameObject:
   m_ObjectHideFlags: 0
@@ -87211,7 +87209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTaskNum
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTimeOfDay
@@ -110251,7 +110249,7 @@ MonoBehaviour:
       alterFog: 1
       fogIntensity: 0.22
       fogColor: {r: 0, g: 0, b: 0, a: 0}
-  testingInput: 1
+  testingInput: 0
   taskCount: 0
   brightLightmapDir:
   - {fileID: 2800000, guid: eada6bfb0026ced45a8469f5037e3108, type: 3}
@@ -123176,6 +123174,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: availableTime.Array.data[4].timeOfDay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[5].timeOfDay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[6].timeOfDay
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
