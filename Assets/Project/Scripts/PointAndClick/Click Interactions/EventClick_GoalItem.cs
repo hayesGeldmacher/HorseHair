@@ -157,7 +157,8 @@ public class EventClick_GoalItem : EventClick
     {
         foreach(var item in requiredItems)
         {
-            item.ActivateOrDeactivate(true);
+            item.Activated = true;
+            //item.ActivateOrDeactivate(true);
         }
     }
 }
