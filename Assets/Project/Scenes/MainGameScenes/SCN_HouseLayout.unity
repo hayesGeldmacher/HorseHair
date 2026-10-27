@@ -26388,7 +26388,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: requiredItemString
-      value: Find gloves
+      value: Find gloves nearby
       objectReference: {fileID: 0}
     - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: availableTime.Array.size
@@ -34445,23 +34445,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.70348287
+      value: 0.64967763
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.735
+      value: -5.3410006
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.586
+      value: 0.6530001
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.671
+      value: 2.9030004
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.14720464
+      value: -0.14720462
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalRotation.x
@@ -34473,7 +34473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.07525569
+      value: 0.075255685
       objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -39516,6 +39516,10 @@ PrefabInstance:
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: dialogueMovements.Array.data[0].time.timeOfDay
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      propertyPath: dialogueMovements.Array.data[0].dialogue.dialogueSpeed
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7118720351443627444, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       propertyPath: dialogueMovements.Array.data[0].dialogue.dialogue.Array.size
@@ -70985,6 +70989,46 @@ PrefabInstance:
       propertyPath: ShowDarkenedImage
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableEveryday
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[1].TaskNum
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[2].TaskNum
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[3].TaskNum
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[5].TaskNum
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[6].TaskNum
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[4].timeOfDay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[5].timeOfDay
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[6].timeOfDay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.61942667
@@ -74896,7 +74940,7 @@ MonoBehaviour:
     track: {fileID: 0}
     lowerLimit: 0
     upperLimit: 0.1
-    speed: 2.5
+    speed: 15
     playOnAwake: 0
   currentlyFading: 0
   fadingUp: 0
@@ -74965,14 +75009,14 @@ MonoBehaviour:
       track: {fileID: 8300000, guid: d2c2a14f068338c428c044c44866c25d, type: 3}
       lowerLimit: 0
       upperLimit: 0.3
-      speed: 5
+      speed: 15
       playOnAwake: 1
     afternoonSlot:
       source: {fileID: 823866730}
       track: {fileID: 8300000, guid: d2c2a14f068338c428c044c44866c25d, type: 3}
       lowerLimit: 0
       upperLimit: 0.3
-      speed: 5
+      speed: 15
       playOnAwake: 1
   currentSlot:
     source: {fileID: 0}
@@ -83882,6 +83926,133 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.7854497, y: 3.823328, z: 1.0000006}
   m_Center: {x: -0.5419683, y: -0.06348695, z: -0.0000016014558}
+--- !u!1001 &876357923
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1448688827}
+    m_Modifications:
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: connectedCamera
+      value: 
+      objectReference: {fileID: 1634581785}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.61942667
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.61942667
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.29810238
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.042
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.93
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.52168536
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.47533473
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.6164511
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.3491266
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 3.756
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 102.261
+      objectReference: {fileID: 0}
+    - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 72.242
+      objectReference: {fileID: 0}
+    - target: {fileID: 3579324845554013986, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Radius
+      value: 0.9735068
+      objectReference: {fileID: 0}
+    - target: {fileID: 3579324845554013986, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3579324845554013986, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Center.x
+      value: 0.05037365
+      objectReference: {fileID: 0}
+    - target: {fileID: 3579324845554013986, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Center.y
+      value: -0.08254186
+      objectReference: {fileID: 0}
+    - target: {fileID: 3579324845554013986, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Center.z
+      value: -0.15940891
+      objectReference: {fileID: 0}
+    - target: {fileID: 6027383702789033556, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: m_Name
+      value: Jesse'sRoom
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6027383702789033556, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 876357926}
+  m_SourcePrefab: {fileID: 100100000, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+--- !u!4 &876357924 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+  m_PrefabInstance: {fileID: 876357923}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &876357925 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6027383702789033556, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+  m_PrefabInstance: {fileID: 876357923}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &876357926
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876357925}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.0209093, y: 0.79300606, z: 4.0465674}
+  m_Center: {x: -0.014705945, y: 0.10349967, z: -1.0399809}
 --- !u!1 &879154514
 GameObject:
   m_ObjectHideFlags: 0
@@ -87040,7 +87211,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTaskNum
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTimeOfDay
@@ -101646,6 +101817,9 @@ PrefabInstance:
       addedObject: {fileID: 298833037}
     - targetCorrespondingSourceObject: {fileID: 8307889161650280648, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 876357924}
+    - targetCorrespondingSourceObject: {fileID: 8307889161650280648, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 612621449}
     - targetCorrespondingSourceObject: {fileID: 8307889161650280648, guid: 162c57b8d0e8c094ebfcb3f6e0b72e78, type: 3}
       insertIndex: -1
@@ -110061,8 +110235,8 @@ MonoBehaviour:
       fogColor: {r: 0, g: 0, b: 0, a: 0}
   - morningProfile:
       lightMapState: 1
-      largeWindowState: 1
-      smallWindowsDim: 0
+      largeWindowState: 2
+      smallWindowsDim: 1
       alterReflection: 0
       reflectionIntensity: 0
       alterFog: 0
@@ -122972,6 +123146,38 @@ PrefabInstance:
       propertyPath: connectedCamera
       value: 
       objectReference: {fileID: 1448688828}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableEveryday
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[1].TaskNum
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[2].TaskNum
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[3].TaskNum
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[5].TaskNum
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[6].TaskNum
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 362308032587551373, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
+      propertyPath: availableTime.Array.data[4].timeOfDay
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 858759729414627114, guid: c894aee9a353b5a4b8178b1afdde571d, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.61942667

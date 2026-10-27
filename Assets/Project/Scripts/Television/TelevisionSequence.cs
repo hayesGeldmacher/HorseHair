@@ -71,7 +71,7 @@ public class TelevisionSequence : MonoBehaviour
     private bool hasSkippedToRedChannel = false;
 
     [SerializeField] private float sceneTransitionWait = 6.0f;
-    [SerializeField] private AudioVolumeFade roomToneFade;
+    [SerializeField] private AudioVolumeFade[] roomToneFades;
     [Header("Next Scene")]
     [SerializeField] private string nextScene; //name of the next scene to load after television sequence
     [SerializeField] private bool IsDreamWorldPNC = false;
@@ -412,7 +412,14 @@ public class TelevisionSequence : MonoBehaviour
         {
             FGDialogueManager.instance.TriggerDialogue(endTrigger);
         }
-        if (roomToneFade) roomToneFade.StartFadeIn(false, false);
+
+        if(roomToneFades.Length > 0)
+        {
+            foreach(AudioVolumeFade fade in roomToneFades)
+            {
+                fade.StartFadeIn(false, false);
+            }
+        }
         yield return new WaitForSeconds(sceneTransitionWait);
         if (!dreamSequence) 
         {

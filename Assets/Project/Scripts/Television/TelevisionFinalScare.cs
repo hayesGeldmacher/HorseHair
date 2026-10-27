@@ -31,7 +31,7 @@ public class TelevisionFinalScare : MonoBehaviour
     private IEnumerator ScareSequence()
     {
 
-        violinSting.Play();
+      //  violinSting.Play();
         yield return new WaitForSeconds(wait1);
         canYouSeeSource.Play();
         yield return new WaitForSeconds(wait2);

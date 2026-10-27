@@ -15261,7 +15261,10 @@ MonoBehaviour:
   dreamSequence: 0
   skipToRedChannel: 0
   sceneTransitionWait: 22
-  roomToneFade: {fileID: 8455432853581870132}
+  roomToneFades:
+  - {fileID: 8455432853581870132}
+  - {fileID: 1812893282}
+  - {fileID: 1839988333}
   nextScene: SCN_Credits
   IsDreamWorldPNC: 1
   channelIndex: 0
@@ -15386,7 +15389,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 2f4c7578214db4a4b9fd6b668353b318, type: 2}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac3ff08a0f115c64a95cb4e89547de96, type: 3}
-    audio: {fileID: 8300000, guid: c4c1892bba2a38e43ac25df8ebfe6ef4, type: 3}
+    audio: {fileID: 8300000, guid: fea37404c5e9c2747a2202b75e4b837f, type: 3}
     playRed: 1
     triggerCamZoom: 1
     camZoomAmount: 35
@@ -15446,7 +15449,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 2f4c7578214db4a4b9fd6b668353b318, type: 2}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac3ff08a0f115c64a95cb4e89547de96, type: 3}
-    audio: {fileID: 8300000, guid: c4c1892bba2a38e43ac25df8ebfe6ef4, type: 3}
+    audio: {fileID: 8300000, guid: fea37404c5e9c2747a2202b75e4b837f, type: 3}
     playRed: 1
     triggerCamZoom: 1
     camZoomAmount: 30
@@ -15536,7 +15539,7 @@ MonoBehaviour:
     material: {fileID: 2100000, guid: 2f4c7578214db4a4b9fd6b668353b318, type: 2}
     textureAnim: {fileID: 0}
     video: {fileID: 32900000, guid: ac3ff08a0f115c64a95cb4e89547de96, type: 3}
-    audio: {fileID: 8300000, guid: c4c1892bba2a38e43ac25df8ebfe6ef4, type: 3}
+    audio: {fileID: 8300000, guid: fea37404c5e9c2747a2202b75e4b837f, type: 3}
     playRed: 1
     triggerCamZoom: 1
     camZoomAmount: 25
@@ -15600,7 +15603,7 @@ MonoBehaviour:
     playRed: 1
     triggerCamZoom: 0
     camZoomAmount: 0
-    playOneOffSoundOnStart: 1
+    playOneOffSoundOnStart: 0
     stopSoundInsteadOfPlay: 0
     oneOffSource: {fileID: 1839988332}
     hasDialogue: 0
@@ -29439,6 +29442,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1812893280}
   - component: {fileID: 1812893281}
+  - component: {fileID: 1812893282}
   m_Layer: 0
   m_Name: MonsterBreathAudio3D
   m_TagString: Untagged
@@ -29472,10 +29476,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 18f6356573b50704fa91ee3465d7dc6b, type: 3}
+  m_Resource: {fileID: 8300000, guid: fea37404c5e9c2747a2202b75e4b837f, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.244
-  m_Pitch: 0.9
+  m_Volume: 0
+  m_Pitch: 0.94
   Loop: 1
   Mute: 0
   Spatialize: 0
@@ -29585,6 +29589,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1812893282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1812893279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b8ce18909a7c745bd1b186eacfa75c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioVolumeFade
+  groups:
+  - source: {fileID: 1812893281}
+    track: {fileID: 0}
+    lowerLimit: 0
+    upperLimit: 0.7
+    speed: 10
+    playOnAwake: 0
+  currentlyFading: 0
+  fadingUp: 0
+  fadeOnStart: 1
+  playOnStart: 0
+  fadeUpOnStart: 1
 --- !u!1 &1825187894
 GameObject:
   m_ObjectHideFlags: 0
@@ -29776,6 +29804,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1839988331}
   - component: {fileID: 1839988332}
+  - component: {fileID: 1839988333}
   m_Layer: 0
   m_Name: WailingAudio
   m_TagString: Untagged
@@ -29811,7 +29840,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 9325f7362334eb642aa167e704944873, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.2
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -29922,6 +29951,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1839988333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1839988330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7b8ce18909a7c745bd1b186eacfa75c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioVolumeFade
+  groups:
+  - source: {fileID: 1839988332}
+    track: {fileID: 8300000, guid: 9325f7362334eb642aa167e704944873, type: 3}
+    lowerLimit: 0
+    upperLimit: 0.2
+    speed: 15
+    playOnAwake: 0
+  currentlyFading: 0
+  fadingUp: 0
+  fadeOnStart: 1
+  playOnStart: 0
+  fadeUpOnStart: 1
 --- !u!1 &1858477878
 GameObject:
   m_ObjectHideFlags: 0
