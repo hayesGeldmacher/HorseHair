@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 public class TitleScreenControls : MonoBehaviour
 {
     [SerializeField] private string StartingLevel;
-    [SerializeField] private AudioVolumeFade titleMusicFade;
+    [SerializeField] private AudioSource titleMusicSource;
 
     [Header("Headphones Screen")]
     [SerializeField] private GameObject headphonesPanel;
@@ -45,7 +45,7 @@ public class TitleScreenControls : MonoBehaviour
             headphonesPanel == null ||
             headphonesContent == null)
         {
-            SceneManager.LoadScene(StartingLevel);
+            StartCoroutine(FadeAndLoad(StartingLevel));
             return;
         }
 
@@ -64,10 +64,10 @@ public class TitleScreenControls : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(displaySeconds);
 
-        if (titleMusicFade != null)
-            titleMusicFade.StartFadeIn(false, false);
+        Coroutine musicFade = StartCoroutine(FadeTitleMusic());
 
         yield return FadeHeadphones(1f, 0f);
+        yield return musicFade;
 
         SceneManager.LoadScene(StartingLevel);
     }
@@ -98,12 +98,47 @@ public class TitleScreenControls : MonoBehaviour
         headphonesContent.alpha = to;
     }
 
+    private IEnumerator FadeTitleMusic()
+    {
+        float startVolume = titleMusicSource != null
+            ? titleMusicSource.volume : 0f;
+
+        float elapsed = 0f;
+
+        while (elapsed < fadeSeconds)
+        {
+            elapsed += Time.unscaledDeltaTime;
+
+            if (titleMusicSource != null)
+            {
+                titleMusicSource.volume = Mathf.Lerp(
+                    startVolume, 0f,
+                    Mathf.Clamp01(elapsed / fadeSeconds));
+            }
+
+            yield return null;
+        }
+
+        if (titleMusicSource != null)
+        {
+            titleMusicSource.volume = 0f;
+            titleMusicSource.Stop();
+        }
+    }
+
+    private IEnumerator FadeAndLoad(string sceneName)
+    {
+        yield return FadeTitleMusic();
+        SceneManager.LoadScene(sceneName);
+    }
+
     public void ContinueGame()
     {
         if (starting)
             return;
 
-        SceneManager.LoadScene(PlayerPrefs.GetString("Scene"));
+        starting = true;
+        StartCoroutine(FadeAndLoad(PlayerPrefs.GetString("Scene")));
     }
 
     public void QuitGame()
