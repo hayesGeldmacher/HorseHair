@@ -124,6 +124,10 @@ public class FightCameraFollow : MonoBehaviour
     private float shakeDuration;
     private float shakeStrength;
 
+    private bool impactFrozen;
+    private double impactFreezeEndsAt;
+    private float timeScaleBeforeImpact;
+
     #endregion
 
     #region Unity Lifecycle
@@ -154,8 +158,16 @@ public class FightCameraFollow : MonoBehaviour
 
     private void LateUpdate()
     {
+        UpdateImpactFreeze();
         if (player == null || enemy == null || fightCamera == null)
             return;
+
+        // Avoid zero-delta smoothing while gameplay is frozen; shake still runs.
+        if (Time.deltaTime <= 0f)
+        {
+            transform.position = smoothedPosition + CalculateShakeOffset();
+            return;
+        }
 
         UpdateDynamicZoom();
 
@@ -486,9 +498,63 @@ public class FightCameraFollow : MonoBehaviour
     #region Camera Shake
 
     /// <summary>
-    /// Plays a shake using the default Inspector values.
-    /// Can be called by an animation event or another script.
+    /// Freezes scaled gameplay for a real-time duration while camera shake continues.
     /// </summary>
+    public void FreezeImpact(float duration)
+    {
+        if (!isActiveAndEnabled || duration <= 0f)
+            return;
+
+        if (!impactFrozen)
+        {
+            // Do not take ownership of a pause started by another system.
+            if (Time.timeScale <= 0f)
+                return;
+
+            timeScaleBeforeImpact = Time.timeScale;
+            impactFrozen = true;
+            Time.timeScale = 0f;
+        }
+
+        impactFreezeEndsAt = System.Math.Max(
+            impactFreezeEndsAt, Time.realtimeSinceStartupAsDouble + duration);
+    }
+
+    private void UpdateImpactFreeze()
+    {
+        if (!impactFrozen)
+            return;
+
+        // Respect a time-scale change made by round-end slow motion or another owner.
+        if (Time.timeScale > 0f)
+        {
+            impactFrozen = false;
+            impactFreezeEndsAt = 0d;
+            return;
+        }
+
+        if (Time.realtimeSinceStartupAsDouble >= impactFreezeEndsAt)
+            EndImpactFreeze();
+    }
+
+    private void EndImpactFreeze()
+    {
+        if (impactFrozen && Time.timeScale == 0f)
+            Time.timeScale = timeScaleBeforeImpact;
+
+        impactFrozen = false;
+        impactFreezeEndsAt = 0d;
+    }
+
+    private void OnDisable()
+    {
+        EndImpactFreeze();
+        shakeTimer = 0f;
+        shakeStrength = 0f;
+        transform.position = smoothedPosition;
+    }
+
+    /// <summary>Plays a shake using the default Inspector values.</summary>
     public void PlayShake()
     {
         Shake(defaultShakeDuration, defaultShakeStrength);
@@ -509,7 +575,7 @@ public class FightCameraFollow : MonoBehaviour
         if (shakeTimer <= 0f)
             return Vector3.zero;
 
-        shakeTimer -= Time.deltaTime;
+        shakeTimer -= Time.unscaledDeltaTime;
 
         float remainingPercentage =
             Mathf.Clamp01(shakeTimer / shakeDuration);

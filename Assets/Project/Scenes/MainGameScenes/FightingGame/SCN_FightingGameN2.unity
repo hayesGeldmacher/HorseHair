@@ -2754,6 +2754,10 @@ PrefabInstance:
       value: -111.86669
       objectReference: {fileID: 0}
     - target: {fileID: -1562761632943557092, guid: 54958eb7c4be97c468e40e62093d6fc0, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: -1562761632943557092, guid: 54958eb7c4be97c468e40e62093d6fc0, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 5538da4ee33272f4393989a5e222cf87, type: 2}
@@ -8409,8 +8413,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1210320934}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: hitPushbackForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: hitShakeDuration
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: hitShakeStrength
-      value: 0.2
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: quickstepCooldown
@@ -8425,6 +8437,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: impactFreezeFrames
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: attackerHitstopTime
       value: 0.055
       objectReference: {fileID: 0}
@@ -8435,6 +8451,18 @@ PrefabInstance:
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: specialAnimationSpeed
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: attackerHitRecoilForce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: grabImpact.freezeFrames
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: attackerHitRecoilDuration
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpingKickAnimationSpeed
@@ -8459,6 +8487,30 @@ PrefabInstance:
     - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: crouchingPunchAnimationSpeed
       value: 2.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpingKickImpact.freezeFrames
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpingPunchImpact.freezeFrames
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingKickImpact.freezeFrames
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingKickImpact.freezeFrames
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingPunchImpact.freezeFrames
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2073051923087360164, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingPunchImpact.freezeFrames
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2162462940059566536, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -8757,6 +8809,18 @@ PrefabInstance:
       value: 32
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: hitPushbackForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: hitShakeDuration
+      value: 0.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: hitShakeStrength
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpingKickDamage
       value: 20
       objectReference: {fileID: 0}
@@ -8767,6 +8831,10 @@ PrefabInstance:
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: grabAnimationSpeed
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: impactFreezeFrames
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpingPunchDamage
@@ -8805,6 +8873,18 @@ PrefabInstance:
       value: SheepMovement.Standing.Sheep_Idle_Standing
       objectReference: {fileID: 0}
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: attackerHitRecoilForce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: grabImpact.freezeFrames
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: attackerHitRecoilDuration
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: jumpingKickAnimationSpeed
       value: 2
       objectReference: {fileID: 0}
@@ -8827,6 +8907,30 @@ PrefabInstance:
     - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: crouchingPunchAnimationSpeed
       value: 2.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpingKickImpact.freezeFrames
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: jumpingPunchImpact.freezeFrames
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingKickImpact.freezeFrames
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingKickImpact.freezeFrames
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: standingPunchImpact.freezeFrames
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8022259651407421388, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
+      propertyPath: crouchingPunchImpact.freezeFrames
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8639788899531191079, guid: e7b15ce7bb2b496438e21a91494bdb38, type: 3}
       propertyPath: superBar
@@ -11713,7 +11817,7 @@ MonoBehaviour:
   dreamSequence: 0
   skipToRedChannel: 0
   sceneTransitionWait: 6
-  roomToneFade: {fileID: 0}
+  roomToneFades: []
   nextScene: 
   IsDreamWorldPNC: 0
   channelIndex: 0
@@ -15598,6 +15702,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 12.4169035
       objectReference: {fileID: 0}
+    - target: {fileID: 6691350610769145860, guid: b5e7fb05e8f926e40befe73434985c53, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 6693861417405527857, guid: b5e7fb05e8f926e40befe73434985c53, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0.6381609
@@ -17056,171 +17164,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1346963759
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1346963762}
-  - component: {fileID: 1346963761}
-  - component: {fileID: 1346963760}
-  - component: {fileID: 1346963763}
-  m_Layer: 0
-  m_Name: FightingGameCamera
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1346963760
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1346963759}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
-  m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
-  m_Cameras: []
-  m_RendererIndex: -1
-  m_VolumeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_VolumeTrigger: {fileID: 0}
-  m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
-  m_AntialiasingQuality: 2
-  m_StopNaN: 0
-  m_Dithering: 0
-  m_ClearDepth: 1
-  m_AllowXRRendering: 1
-  m_AllowHDROutput: 1
-  m_UseScreenCoordOverride: 0
-  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
-  m_RequiresDepthTexture: 0
-  m_RequiresColorTexture: 0
-  m_TaaSettings:
-    m_Quality: 3
-    m_FrameInfluence: 0.1
-    m_JitterScale: 1
-    m_MipBias: 0
-    m_VarianceClampScale: 0.9
-    m_ContrastAdaptiveSharpening: 0
-  m_Version: 2
---- !u!20 &1346963761
+--- !u!20 &1346963761 stripped
 Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 7104927640674173494, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+  m_PrefabInstance: {fileID: 5096918212445841467}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1346963759}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.7607843, g: 0.7607843, b: 0.7607843, a: 1}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 60
-  orthographic: 1
-  orthographic size: 5.3
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: 34397b366fa660a4181c194d9d8460a8, type: 2}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!4 &1346963762
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1346963759}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.13040192, y: -0.043246232, z: 0.005693473, w: 0.9905012}
-  m_LocalPosition: {x: 0.3, y: 4.35, z: 50}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 15, y: -5, z: 0}
---- !u!114 &1346963763
+--- !u!114 &1346963763 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 526055900314166112, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+  m_PrefabInstance: {fileID: 5096918212445841467}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1346963759}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 08a544de4c73011469288bfe07fe8e05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FightCameraFollow
-  player: {fileID: 644139987}
-  enemy: {fileID: 1173407394}
-  horizontalScreenZone: 0.78
-  verticalScreenZone: 0.72
-  horizontalPadding: 0.8
-  verticalPadding: 1.2
-  followVertically: 1
-  verticalOffset: 1.2
-  followSmoothTime: 0.18
-  maxFollowSpeed: 12
-  useDynamicZoom: 1
-  minOrthographicSize: 4.5
-  maxOrthographicSize: 7
-  minFieldOfView: 35
-  maxFieldOfView: 60
-  zoomSmoothTime: 0.25
-  useHorizontalBounds: 1
-  visibleStageMinX: -11
-  visibleStageMaxX: 11
-  useVerticalBounds: 0
-  visibleStageMinY: -2
-  visibleStageMaxY: 10
-  defaultShakeDuration: 0.055
-  defaultShakeStrength: 0.025
 --- !u!1001 &1384900148
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29393,6 +29352,83 @@ Transform:
   m_Children: []
   m_Father: {fileID: 8605508471849537631}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5096918212445841467
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 219029763063176623, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.13
+      objectReference: {fileID: 0}
+    - target: {fileID: 219029763063176623, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.56
+      objectReference: {fileID: 0}
+    - target: {fileID: 219029763063176623, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.83
+      objectReference: {fileID: 0}
+    - target: {fileID: 526055900314166112, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: enemy
+      value: 
+      objectReference: {fileID: 1173407394}
+    - target: {fileID: 526055900314166112, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 644139987}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.35
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9905012
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.13040192
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.043246232
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.005693473
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2544462322288592674, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8577855594466977601, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
+      propertyPath: m_Name
+      value: FightingGameCamera
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 027274903dc67b44f8f132b54642c6d7, type: 3}
 --- !u!114 &5205011245757845752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32094,7 +32130,7 @@ SceneRoots:
   - {fileID: 605040338}
   - {fileID: 824808762}
   - {fileID: 7036998812301431472}
-  - {fileID: 1346963762}
+  - {fileID: 5096918212445841467}
   - {fileID: 1806776735}
   - {fileID: 1699308459}
   - {fileID: 1265532784}

@@ -162,17 +162,65 @@ public class FightCharacter : MonoBehaviour
     [SerializeField] private float attackerBlockRecoilForce = 4f;
 
     [Header("Hit Pushback")]
-    [Tooltip("Force applied to the opponent after a normal attack lands")]
+    [Tooltip("Initial horizontal knockback speed after an unblocked attack lands")]
+    [Min(0f)]
     [SerializeField] private float hitPushbackForce = 3f;
 
-    [Header("Hit Camera Shake")]
-    [Tooltip("How long the camera shakes after this fighter lands an attack")]
+    [Tooltip("Seconds for hit knockback to slow to a stop, excluding hitstop")]
     [Min(0f)]
-    [SerializeField] private float hitShakeDuration = 0.08f;
+    [SerializeField] private float hitPushbackDuration = 0.3f;
 
-    [Tooltip("How far the camera moves during a connected attack shake")]
+    [Tooltip("Small backward speed applied to the attacker on a successful hit")]
     [Min(0f)]
-    [SerializeField] private float hitShakeStrength = 0.05f;
+    [SerializeField] private float attackerHitRecoilForce = 1.2f;
+
+    [Tooltip("Seconds for attacker recoil to slow to a stop, excluding hitstop")]
+    [Min(0f)]
+    [SerializeField] private float attackerHitRecoilDuration = 0.14f;
+
+    private float hitMovementVelocity;
+    private float hitMovementDeceleration;
+    private float hitMovementTimer;
+
+    [System.Serializable]
+    private struct AttackImpactSettings
+    {
+        [Tooltip("Camera displacement on a landed hit. Set to 0 to disable shake.")]
+        [Min(0f)] public float shakeStrength;
+
+        [Tooltip("Shake duration in real-time seconds.")]
+        [Min(0f)] public float shakeDuration;
+
+        [Tooltip("Whole-game freeze measured in frames at 60 FPS. Set to 0 to disable.")]
+        [Min(0)] public int freezeFrames;
+
+        public AttackImpactSettings(float strength, float duration, int frames)
+        {
+            shakeStrength = strength;
+            shakeDuration = duration;
+            freezeFrames = frames;
+        }
+    }
+
+    [Header("Overall Impact Intensity")]
+    [Tooltip("Scales shake strength for every attack while preserving their individual settings.")]
+    [Min(0f)]
+    [SerializeField] private float impactShakeMultiplier = 1.75f;
+
+    [Tooltip("Extra freeze frames added to attacks that have impact freeze enabled.")]
+    [Min(0)]
+    [SerializeField] private int extraImpactFreezeFrames = 2;
+
+    [Header("Impact Effects Per Attack")]
+    [Tooltip("Each landed attack uses its own shake and freeze settings.")]
+    [SerializeField] private AttackImpactSettings standingPunchImpact = new AttackImpactSettings(0.22f, 0.1f, 2);
+    [SerializeField] private AttackImpactSettings crouchingPunchImpact = new AttackImpactSettings(0.18f, 0.08f, 1);
+    [SerializeField] private AttackImpactSettings jumpingPunchImpact = new AttackImpactSettings(0.28f, 0.12f, 3);
+    [SerializeField] private AttackImpactSettings standingKickImpact = new AttackImpactSettings(0.35f, 0.14f, 3);
+    [SerializeField] private AttackImpactSettings crouchingKickImpact = new AttackImpactSettings(0.3f, 0.12f, 2);
+    [SerializeField] private AttackImpactSettings jumpingKickImpact = new AttackImpactSettings(0.42f, 0.16f, 4);
+    [SerializeField] private AttackImpactSettings grabImpact = new AttackImpactSettings(0.38f, 0.15f, 4);
+    [SerializeField] private AttackImpactSettings specialImpact = new AttackImpactSettings(0.65f, 0.22f, 6);
 
     [Header("Fighter Pushboxes")]
     [Tooltip("Main body size while standing or crouching, increase width if idle animations allow fighters to overlap")]
@@ -410,6 +458,7 @@ public class FightCharacter : MonoBehaviour
 
         if (!roundActive)
         {
+            ClearHitMovement();
             isShuffling = false;
             isCrouching = false;
             isBlocking = false;
@@ -575,6 +624,7 @@ public class FightCharacter : MonoBehaviour
 
     public void ResetRoundState()
     {
+        ClearHitMovement();
         ReleaseGroundedHorizontalPosition();
 
         // Movement states
@@ -798,7 +848,7 @@ public class FightCharacter : MonoBehaviour
         if (TryHitBreakable(pendingAttackDamage, pendingAttackRange))
         {
             StartLocalHitstop(attackerHitstopTime);
-            PlayConnectedAttackShake();
+            PlayConnectedAttackImpact(pendingMoveType);
             PlayAttackResultSound(FighterMoveResult.Hit, pendingHitSound);
             return;
         }
@@ -812,10 +862,13 @@ public class FightCharacter : MonoBehaviour
         if (result == FighterMoveResult.Hit)
         {
             StartLocalHitstop(attackerHitstopTime);
-            PlayConnectedAttackShake();
+            PlayConnectedAttackImpact(pendingMoveType);
         }
-        else if (result == FighterMoveResult.Blocked)
-            StartLocalHitstop(blockedHitstopTime);
+        else
+        {
+            if (result == FighterMoveResult.Blocked)
+                StartLocalHitstop(blockedHitstopTime);
+        }
 
         PlayAttackResultSound(result, pendingHitSound);
 
@@ -837,10 +890,12 @@ public class FightCharacter : MonoBehaviour
         if (result == FighterMoveResult.Hit)
         {
             PlaySound(grabSound);
-            PlayConnectedAttackShake();
+            PlayConnectedAttackImpact(FighterMoveType.Grab);
         }
         else
+        {
             PlaySound(attackMissSound);
+        }
 
         MovePerformed?.Invoke(this, FighterMoveType.Grab, result);
     }
@@ -902,7 +957,15 @@ public class FightCharacter : MonoBehaviour
 
         health.TakeDamage(tutorialDamageImmune ? 0 : damage, true);
         ApplyDamage();
-        ApplyHitPushback(attackerPosition);
+        float hitDirection = Mathf.Sign(transform.position.x - attackerPosition.x);
+        StartHitMovement(hitDirection * hitPushbackForce, hitPushbackDuration);
+
+        if (attacker != null)
+        {
+            attacker.StartHitMovement(
+                -hitDirection * attacker.attackerHitRecoilForce,
+                attacker.attackerHitRecoilDuration);
+        }
 
         StartLocalHitstop(defenderHitstopTime);
 
@@ -959,7 +1022,9 @@ public class FightCharacter : MonoBehaviour
         {
             Vector3 velocity = rb.linearVelocity;
 
-            velocity.x = horizontalVelocityBeforeHitstop * 0.65f;
+            velocity.x = hitMovementTimer > 0f
+                ? hitMovementVelocity
+                : horizontalVelocityBeforeHitstop * 0.65f;
 
             rb.linearVelocity = velocity;
         }
@@ -1074,6 +1139,11 @@ public class FightCharacter : MonoBehaviour
             CaptureHitstopInput();
 
         UpdateLocalHitstop();
+
+        // Keep collecting buffered input, but do not start actions during impact freeze.
+        if (Time.timeScale <= 0f)
+            return;
+
         UpdateAttackAnimationSafety();
 
         if (!roundActive)
@@ -1108,6 +1178,7 @@ public class FightCharacter : MonoBehaviour
 
     private void OnDisable()
     {
+        ClearHitMovement();
         EndAttackAnimation();
         ClearBufferedAttack();
     }
@@ -1134,7 +1205,8 @@ public class FightCharacter : MonoBehaviour
         }
 
         ApplyJumpGravity();
-        Move();
+        if (!UpdateHitMovement())
+            Move();
         LimitCurrentVelocityIntoOpponentPushbox();
         ResolveFighterPushboxes();
     }
@@ -1946,13 +2018,35 @@ private void Kick()
         return opponentCharacter.ReceiveGrab(this, grabDamage);
     }
 
-    private void PlayConnectedAttackShake()
+    private AttackImpactSettings GetAttackImpact(FighterMoveType moveType)
+    {
+        switch (moveType)
+        {
+            case FighterMoveType.CrouchingPunch: return crouchingPunchImpact;
+            case FighterMoveType.JumpingPunch: return jumpingPunchImpact;
+            case FighterMoveType.StandingKick: return standingKickImpact;
+            case FighterMoveType.CrouchingKick: return crouchingKickImpact;
+            case FighterMoveType.JumpingKick: return jumpingKickImpact;
+            case FighterMoveType.Grab: return grabImpact;
+            case FighterMoveType.Special: return specialImpact;
+            default: return standingPunchImpact;
+        }
+    }
+
+    private void PlayConnectedAttackImpact(FighterMoveType moveType)
     {
         if (fightCamera == null)
             fightCamera = FindAnyObjectByType<FightCameraFollow>();
 
-        if (fightCamera != null)
-            fightCamera.Shake(hitShakeDuration, hitShakeStrength);
+        if (fightCamera == null)
+            return;
+
+        AttackImpactSettings impact = GetAttackImpact(moveType);
+        if (impact.shakeDuration > 0f && impact.shakeStrength > 0f)
+            fightCamera.Shake(impact.shakeDuration, impact.shakeStrength * Mathf.Max(0f, impactShakeMultiplier));
+
+        if (impact.freezeFrames > 0)
+            fightCamera.FreezeImpact((impact.freezeFrames + Mathf.Max(0, extraImpactFreezeFrames)) / 60f);
     }
 
     /// <summary>
@@ -2095,18 +2189,54 @@ private void Kick()
         rb.linearVelocity = velocity;
     }
 
-    private void ApplyHitPushback(Vector3 attackerPosition)
+    private void StartHitMovement(float velocityX, float duration)
     {
-        if (rb == null)
+        if (rb == null || !roundActive || isKnockedDown || isRecovering ||
+            duration <= 0f || Mathf.Approximately(velocityX, 0f))
+        {
             return;
+        }
 
-        float directionAwayFromAttacker = Mathf.Sign(transform.position.x - attackerPosition.x);
+        // Replace the previous hit instead of stacking unbounded impulses.
+        hitMovementVelocity = velocityX;
+        hitMovementDeceleration = Mathf.Abs(velocityX) / duration;
+        hitMovementTimer = duration;
+        isShuffling = false;
 
         Vector3 velocity = rb.linearVelocity;
-        velocity.x = 0f;
+        velocity.x = isInHitstop ? 0f : hitMovementVelocity;
         rb.linearVelocity = velocity;
+    }
 
-        rb.AddForce(Vector3.right * directionAwayFromAttacker * hitPushbackForce, ForceMode.Impulse);
+    private bool UpdateHitMovement()
+    {
+        if (rb == null || hitMovementTimer <= 0f)
+            return false;
+
+        // FixedUpdate skips this during hitstop so the full push happens afterward.
+        hitMovementTimer = Mathf.Max(0f, hitMovementTimer - Time.fixedDeltaTime);
+        hitMovementVelocity = Mathf.MoveTowards(
+            hitMovementVelocity, 0f, hitMovementDeceleration * Time.fixedDeltaTime);
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.x = hitMovementTimer > 0f ? hitMovementVelocity : 0f;
+        rb.linearVelocity = velocity;
+        isShuffling = false;
+        return true;
+    }
+
+    private void ClearHitMovement()
+    {
+        if (rb != null && hitMovementTimer > 0f)
+        {
+            Vector3 velocity = rb.linearVelocity;
+            velocity.x = 0f;
+            rb.linearVelocity = velocity;
+        }
+
+        hitMovementVelocity = 0f;
+        hitMovementDeceleration = 0f;
+        hitMovementTimer = 0f;
     }
 
     #endregion
@@ -2231,6 +2361,7 @@ private void Kick()
 
     private void ApplyGroundedState()
     {
+        ClearHitMovement();
         EndAttackAnimation();
 
         isKnockedDown = true;
