@@ -1845,15 +1845,10 @@ private void Kick()
             return;
         }
 
+        // An unavailable special never starts an attack, so it has no hit/miss result.
         if (!tutorialUnlimitedSpecials &&
             !superMeter.TrySpendSpecial())
         {
-            PlaySound(attackMissSound);
-            MovePerformed?.Invoke(
-                this,
-                FighterMoveType.Special,
-                FighterMoveResult.Miss
-            );
             return;
         }
 
