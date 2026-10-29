@@ -150,6 +150,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
     private void Start()
     {
+        PlayerCamera.rayCaster.enabled = false;
+
         if (phoneImageAnim != null)
         {
             phoneImageAnim.SetBool("Appear", false);
@@ -583,7 +585,7 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         currentCamera = data.Camera;
         currentCamera.ActivateOrDeactivate(true);
-        PlayerCamera.rayCaster.enabled = true;
+        StartCoroutine(TurnOnRaycastAfterDelay(0.5f));
 
         if (data.movementDialogue != null)
         {
