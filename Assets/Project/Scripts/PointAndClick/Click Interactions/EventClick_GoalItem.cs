@@ -161,4 +161,9 @@ public class EventClick_GoalItem : EventClick
             //item.ActivateOrDeactivate(true);
         }
     }
+
+    public int CheckNumberOfRequiredItems()
+    {
+        return requiredItems.Length;
+    }
 }

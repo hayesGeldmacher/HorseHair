@@ -14,8 +14,11 @@ public class TitleScreenControls : MonoBehaviour
     [SerializeField] private float displaySeconds = 5f;
     [SerializeField] private float fadeSeconds = 1f;
     [SerializeField] private CanvasGroup screenFade;
+
+    [Header("Buttons")]
     [SerializeField] private Button resumeButton;
     [SerializeField] private GameObject newGameConfirmation;
+    [SerializeField] private GameObject deleteGameConfirmation;
 
     private const string HeadphonesShownKey = "HeadphonesScreenShown";
     private bool starting;
@@ -85,6 +88,37 @@ public class TitleScreenControls : MonoBehaviour
            // newGameConfirmation.SetActive(false);
 
         BeginNewGame();
+    }
+
+    public void deleteGame()
+    {
+        if (starting)
+            return;
+        if (deleteGameConfirmation != null)
+            deleteGameConfirmation.SetActive(true);
+    }
+
+    public void ConfirmDeleteGame()
+    {
+        if (starting)
+            return;
+        PlayerPrefs.DeleteKey("TaskNum");
+        PlayerPrefs.DeleteKey("Environment");
+        PlayerPrefs.DeleteKey("TimeOfDay");
+        PlayerPrefs.DeleteKey("Goal");
+        PlayerPrefs.DeleteKey("Thoughts");
+        PlayerPrefs.DeleteKey("Scene");
+        PlayerPrefs.Save();
+        if (deleteGameConfirmation != null)
+            deleteGameConfirmation.SetActive(false);
+        if (resumeButton != null)
+            resumeButton.interactable = HasSaveData();
+    }
+
+    public void CancelDeleteGame()
+    {
+        if (deleteGameConfirmation != null)
+            deleteGameConfirmation.SetActive(false);
     }
 
     public void CancelNewGame()

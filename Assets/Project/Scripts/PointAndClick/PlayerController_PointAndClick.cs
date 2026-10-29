@@ -639,16 +639,28 @@ public class PlayerController_PointAndClick : MonoBehaviour
     // ********************************************************************************
     private void InteractWith(GoalEventData data)
     {
+        int requiredItem = 0;
         for (int i = 0; i < Inventory.Length; i++)
         {
             if (Inventory[i] != null && data.SourceGoal.CollectItem(Inventory[i]))
             {
-                Inventory[i] = null;
-                inventoryUI.RemoveItem(i);
+                requiredItem++;
+            }
+        }
+        if (requiredItem >= data.SourceGoal.CheckNumberOfRequiredItems())
+        {
+            for (int i = 0; i < Inventory.Length; i++)
+            {
+                if (Inventory[i] != null && data.SourceGoal.CollectItem(Inventory[i]))
+                {
+                    Inventory[i] = null;
+                    inventoryUI.RemoveItem(i);
+                }
             }
         }
         data.SourceGoal.CheckGoal();
     }
+
     private void HandleGoalCompleted(GoalCompletionData data)
     {
         if (data.IsCompleted)
