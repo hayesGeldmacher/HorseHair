@@ -8699,22 +8699,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 69e90200cedef6246b619c3f43d9b76c, type: 3}
   m_PrefabInstance: {fileID: 757928345}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &778186365 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1320857160807748287, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-  m_PrefabInstance: {fileID: 3102505697181209073}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 127365939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
---- !u!1 &782489000 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7556295285874961531, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-  m_PrefabInstance: {fileID: 3102505697181209073}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &785506870 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3034133017551773943, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
@@ -13688,56 +13672,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 6859763450132576749, guid: b5e7fb05e8f926e40befe73434985c53, type: 3}
   m_PrefabInstance: {fileID: 1210320933}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1265532782
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1265532784}
-  - component: {fileID: 1265532783}
-  m_Layer: 0
-  m_Name: FightingGamePauseManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1265532783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1265532782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 207e7034ebee3f0448549ecca6a1d343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FightingGamePauseManager
-  fightingGameParent: {fileID: 1699308458}
-  fightingGamePauseScreen: {fileID: 782489000}
-  controlsPanel: {fileID: 287091029}
-  fightRoundManager: {fileID: 892047101}
-  firstPauseSelection: {fileID: 1897961146}
-  firstControlsSelection: {fileID: 778186365}
---- !u!4 &1265532784
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1265532782}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 921.9591, y: 589.19995, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1303801826
 GameObject:
   m_ObjectHideFlags: 0
@@ -16445,17 +16379,6 @@ Transform:
   - {fileID: 529926992}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1897961146 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4915805114431597889, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-  m_PrefabInstance: {fileID: 3102505697181209073}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
 --- !u!114 &1926219244 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8593704591743975925, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
@@ -23081,18 +23004,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 988647132152003439, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+    - target: {fileID: 2377052909680795902, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+      propertyPath: fightRoundManager
       value: 
-      objectReference: {fileID: 1265532783}
-    - target: {fileID: 1320857160807748287, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      objectReference: {fileID: 892047101}
+    - target: {fileID: 2377052909680795902, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+      propertyPath: fightingGameParent
       value: 
-      objectReference: {fileID: 1265532783}
-    - target: {fileID: 4915805114431597889, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1265532783}
+      objectReference: {fileID: 1699308458}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -26898,7 +26817,6 @@ SceneRoots:
   - {fileID: 1346963762}
   - {fileID: 1806776735}
   - {fileID: 1699308459}
-  - {fileID: 1265532784}
   - {fileID: 3102505697181209073}
   - {fileID: 372906225}
   - {fileID: 923858404}
