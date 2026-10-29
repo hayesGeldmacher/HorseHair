@@ -585,19 +585,25 @@ public class PlayerController_PointAndClick : MonoBehaviour
 
         currentCamera = data.Camera;
         currentCamera.ActivateOrDeactivate(true);
-        StartCoroutine(TurnOnRaycastAfterDelay(0.5f));
+
+        bool DialogueOpen = false;
 
         if (data.movementDialogue != null)
         {
             dialogueText = data.movementDialogue;
             OpenDialogue();
+            DialogueOpen = true;
         }
 
         if (!leftBedroom)
         {
             leftBedroom = true;
             StartCoroutine(DisplayTaskStartDialogue());
+            DialogueOpen = true;
         }
+
+        if (!DialogueOpen)
+            PlayerCamera.rayCaster.enabled = true;
 
         if (data.endingCamera)
         {
