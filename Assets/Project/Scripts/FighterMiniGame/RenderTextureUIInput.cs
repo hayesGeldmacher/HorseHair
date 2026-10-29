@@ -4,7 +4,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(MeshCollider))]
-public sealed class RenderTextureUIInput : MonoBehaviour, IPointerClickHandler
+public sealed class RenderTextureUIInput :
+    MonoBehaviour,
+    IPointerClickHandler,
+    IPointerEnterHandler,
+    IPointerMoveHandler,
+    IPointerExitHandler
 {
     [SerializeField] private Canvas sourceCanvas;
     [SerializeField] private Camera sourceUICamera;
@@ -19,6 +24,11 @@ public sealed class RenderTextureUIInput : MonoBehaviour, IPointerClickHandler
     [SerializeField] private bool flipY;
 
     private GraphicRaycaster sourceRaycaster;
+    private PointerEventData screenPointer;
+    private PointerEventData hoverEvent;
+    private EventSystem hoverSystem;
+    private GameObject hoverTarget;
+    private GameObject nextHoverTarget;
 
     private readonly List<RaycastResult> uiResults =
         new List<RaycastResult>();
@@ -52,9 +62,111 @@ public sealed class RenderTextureUIInput : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        screenPointer = eventData;
+    }
+
+    public void OnPointerMove(PointerEventData eventData)
+    {
+        screenPointer = eventData;
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        screenPointer = null;
+        SetHoverTarget(null);
+    }
+
+    private void OnDisable()
+    {
+        screenPointer = null;
+        SetHoverTarget(null);
+    }
+
+    private void LateUpdate()
+    {
+        if (screenPointer == null)
+        {
+            return;
+        }
+
+        nextHoverTarget = null;
+        ProcessPointer(screenPointer, true);
+        SetHoverTarget(nextHoverTarget);
+    }
+
+    private void SetHoverTarget(GameObject target)
+    {
+        if (hoverTarget == target)
+        {
+            return;
+        }
+
+        if (hoverEvent == null)
+        {
+            hoverTarget = target;
+            return;
+        }
+
+        Transform common =
+            hoverTarget != null ? hoverTarget.transform : null;
+
+        while (common != null &&
+               (target == null || !target.transform.IsChildOf(common)))
+        {
+            common = common.parent;
+        }
+
+        Transform current =
+            hoverTarget != null ? hoverTarget.transform : null;
+
+        while (current != null && current != common)
+        {
+            Transform parent = current.parent;
+
+            ExecuteEvents.Execute(
+                current.gameObject,
+                hoverEvent,
+                ExecuteEvents.pointerExitHandler
+            );
+
+            hoverEvent.hovered.Remove(current.gameObject);
+            current = parent;
+        }
+
+        hoverTarget = target;
+        hoverEvent.pointerEnter = target;
+
+        current = target != null ? target.transform : null;
+
+        while (current != null && current != common)
+        {
+            Transform parent = current.parent;
+
+            hoverEvent.hovered.Add(current.gameObject);
+
+            ExecuteEvents.Execute(
+                current.gameObject,
+                hoverEvent,
+                ExecuteEvents.pointerEnterHandler
+            );
+
+            current = parent;
+        }
+    }
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button != PointerEventData.InputButton.Left)
+        ProcessPointer(eventData, false);
+    }
+
+    private void ProcessPointer(
+        PointerEventData eventData,
+        bool hoverOnly)
+    {
+        if (!hoverOnly &&
+            eventData.button != PointerEventData.InputButton.Left)
         {
             return;
         }
@@ -62,13 +174,15 @@ public sealed class RenderTextureUIInput : MonoBehaviour, IPointerClickHandler
         if (EventSystem.current == null ||
             screenCollider == null ||
             sourceRaycaster == null ||
-            sourceTexture == null)
+            sourceTexture == null ||
+            !screenCollider.enabled ||
+            !sourceRaycaster.isActiveAndEnabled)
         {
             return;
         }
 
         Camera viewingCamera =
-            eventData.pressEventCamera != null
+            !hoverOnly && eventData.pressEventCamera != null
                 ? eventData.pressEventCamera
                 : eventData.enterEventCamera;
 
@@ -82,7 +196,8 @@ public sealed class RenderTextureUIInput : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        Ray ray = viewingCamera.ScreenPointToRay(eventData.position);
+        Ray ray =
+            viewingCamera.ScreenPointToRay(eventData.position);
 
         if (!screenCollider.Raycast(
                 ray,
@@ -132,6 +247,28 @@ public sealed class RenderTextureUIInput : MonoBehaviour, IPointerClickHandler
         }
 
         RaycastResult topResult = uiResults[0];
+
+        if (hoverOnly)
+        {
+            if (hoverEvent == null ||
+                hoverSystem != EventSystem.current)
+            {
+                SetHoverTarget(null);
+
+                hoverSystem = EventSystem.current;
+                hoverEvent = new PointerEventData(hoverSystem);
+            }
+
+            hoverEvent.delta =
+                mappedEvent.position - hoverEvent.position;
+
+            hoverEvent.position = mappedEvent.position;
+            hoverEvent.pointerId = mappedEvent.pointerId;
+            hoverEvent.pointerCurrentRaycast = topResult;
+
+            nextHoverTarget = topResult.gameObject;
+            return;
+        }
 
         GameObject clickHandler =
             ExecuteEvents.GetEventHandler<IPointerClickHandler>(

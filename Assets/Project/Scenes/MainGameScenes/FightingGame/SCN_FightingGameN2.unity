@@ -426,6 +426,8 @@ GameObject:
   - component: {fileID: 52236887}
   - component: {fileID: 52236886}
   - component: {fileID: 52236885}
+  - component: {fileID: 52236888}
+  - component: {fileID: 52236889}
   m_Layer: 5
   m_Name: BackButton
   m_TagString: Untagged
@@ -496,9 +498,21 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1227199660}
         m_TargetAssemblyTypeName: FightingGamePauseManager, Assembly-CSharp
         m_MethodName: HideControls
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 52236889}
+        m_TargetAssemblyTypeName: btnFX, Assembly-CSharp
+        m_MethodName: ClickSound
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -546,6 +560,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 52236883}
   m_CullTransparentMesh: 1
+--- !u!114 &52236888
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52236883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1897961150}
+          m_TargetAssemblyTypeName: btnFX, Assembly-CSharp
+          m_MethodName: HoverSound
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 9
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1897961150}
+          m_TargetAssemblyTypeName: btnFX, Assembly-CSharp
+          m_MethodName: SelectSound
+          m_Mode: 0
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &52236889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52236883}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afb1855c0d8d14e4c92d544ba66434b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::btnFX
+  myFx: {fileID: 2114293555}
+  hoverFX: {fileID: 8300000, guid: 3ef222e904a671f4b9a9970df8fad1b2, type: 3}
+  clickFX: {fileID: 8300000, guid: 04d00ac632aaf2846abdfb2a3072ae33, type: 3}
 --- !u!1001 &60263699
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10375,11 +10449,6 @@ RectTransform:
   m_AnchoredPosition: {x: -548, y: 137}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &782489000 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7556295285874961531, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
-  m_PrefabInstance: {fileID: 3102505697181209073}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &785506870 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3034133017551773943, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
@@ -16661,6 +16730,17 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 6859763450132576749, guid: b5e7fb05e8f926e40befe73434985c53, type: 3}
   m_PrefabInstance: {fileID: 1210320933}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1227199660 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2377052909680795902, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+  m_PrefabInstance: {fileID: 3102505697181209073}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 207e7034ebee3f0448549ecca6a1d343, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FightingGamePauseManager
 --- !u!1 &1244103911
 GameObject:
   m_ObjectHideFlags: 0
@@ -16737,56 +16817,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244103911}
   m_CullTransparentMesh: 1
---- !u!1 &1265532782
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1265532784}
-  - component: {fileID: 1265532783}
-  m_Layer: 0
-  m_Name: FightingGamePauseManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1265532783
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1265532782}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 207e7034ebee3f0448549ecca6a1d343, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FightingGamePauseManager
-  fightingGameParent: {fileID: 1699308458}
-  fightingGamePauseScreen: {fileID: 782489000}
-  controlsPanel: {fileID: 0}
-  fightRoundManager: {fileID: 892047101}
-  firstPauseSelection: {fileID: 1897961146}
-  firstControlsSelection: {fileID: 0}
---- !u!4 &1265532784
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1265532782}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 921.9591, y: 589.19995, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1294324206
 GameObject:
   m_ObjectHideFlags: 0
@@ -20338,17 +20368,17 @@ Transform:
   - {fileID: 529926992}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1897961146 stripped
+--- !u!114 &1897961150 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4915805114431597889, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+  m_CorrespondingSourceObject: {fileID: 1390502253498795360, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
   m_PrefabInstance: {fileID: 3102505697181209073}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: afb1855c0d8d14e4c92d544ba66434b2, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_EditorClassIdentifier: Assembly-CSharp::btnFX
 --- !u!1 &1899617682
 GameObject:
   m_ObjectHideFlags: 0
@@ -22191,6 +22221,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113097858}
   m_CullTransparentMesh: 1
+--- !u!82 &2114293555 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 1139399913881664040, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+  m_PrefabInstance: {fileID: 3102505697181209073}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2120375543 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1572996870429927481, guid: 08a765e891735bb4597de86bca52c3d3, type: 3}
@@ -28097,11 +28132,15 @@ PrefabInstance:
     - target: {fileID: 988647132152003439, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1265532783}
+      objectReference: {fileID: 1227199660}
+    - target: {fileID: 988647132152003439, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ShowControls
+      objectReference: {fileID: 0}
     - target: {fileID: 1320857160807748287, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1265532783}
+      objectReference: {fileID: 0}
     - target: {fileID: 1774118094761325657, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
       propertyPath: m_text
       value: M
@@ -28110,6 +28149,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: M
       objectReference: {fileID: 0}
+    - target: {fileID: 2377052909680795902, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+      propertyPath: controlsPanel
+      value: 
+      objectReference: {fileID: 101757407}
+    - target: {fileID: 2377052909680795902, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+      propertyPath: fightRoundManager
+      value: 
+      objectReference: {fileID: 892047101}
+    - target: {fileID: 2377052909680795902, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+      propertyPath: fightingGameParent
+      value: 
+      objectReference: {fileID: 1699308458}
+    - target: {fileID: 2377052909680795902, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+      propertyPath: firstControlsSelection
+      value: 
+      objectReference: {fileID: 52236885}
     - target: {fileID: 2998344197053849674, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -28129,7 +28184,15 @@ PrefabInstance:
     - target: {fileID: 4915805114431597889, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1265532783}
+      objectReference: {fileID: 1897961150}
+    - target: {fileID: 4915805114431597889, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1227199660}
+    - target: {fileID: 4915805114431597889, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: ResumeGame
+      objectReference: {fileID: 0}
     - target: {fileID: 6400242162178260037, guid: 8809a09e07fa4fa44bd14aedf8260c85, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -32149,7 +32212,6 @@ SceneRoots:
   - {fileID: 5096918212445841467}
   - {fileID: 1806776735}
   - {fileID: 1699308459}
-  - {fileID: 1265532784}
   - {fileID: 3102505697181209073}
   - {fileID: 372906225}
   - {fileID: 923858404}
