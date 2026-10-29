@@ -8439,7 +8439,7 @@ MonoBehaviour:
   totalClicks: 4
   endTrigger:
     dialogueLine: You look alot like dad.
-    fromJesse: 0
+    fromJesse: 1
     hasBrotherResponse: 1
     brotherResponseTime: 2.2
     brotherDialogueLine: ...
@@ -8514,14 +8514,14 @@ MonoBehaviour:
       dialogueLine: I always like these old Westerns.
       fromJesse: 1
       hasBrotherResponse: 1
-      brotherResponseTime: 1
+      brotherResponseTime: 1.6
       brotherDialogueLine: Nah, not enough action for me...
       triggerChance: 1
       cooldown: 2
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 2
+      dialogueVisibleTime: 3.2
   - isTexture: 0
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8569,19 +8569,19 @@ MonoBehaviour:
     playOneOffSoundOnStart: 0
     stopSoundInsteadOfPlay: 0
     oneOffSource: {fileID: 0}
-    hasDialogue: 0
+    hasDialogue: 1
     trigger:
       dialogueLine: This happened to me once.
       fromJesse: 1
       hasBrotherResponse: 1
-      brotherResponseTime: 1
+      brotherResponseTime: 1.4
       brotherDialogueLine: '... what part? '
       triggerChance: 1
       cooldown: 2
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 2
+      dialogueVisibleTime: 3.5
   - isTexture: 1
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8604,14 +8604,14 @@ MonoBehaviour:
       dialogueLine: 'I''m bored - can we play the game now? '
       fromJesse: 1
       hasBrotherResponse: 1
-      brotherResponseTime: 1
+      brotherResponseTime: 1.4
       brotherDialogueLine: Alright, I hear ya...
       triggerChance: 1
       cooldown: 2
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 2
+      dialogueVisibleTime: 3.5
 --- !u!4 &1111314899
 Transform:
   m_ObjectHideFlags: 0
@@ -12636,7 +12636,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -20993,6 +20993,12 @@ MonoBehaviour:
     upperLimit: 0.6
     speed: 15
     playOnAwake: 1
+  - source: {fileID: 1424983082}
+    track: {fileID: 8300000, guid: f986430e581fbeb419867b659c66f977, type: 3}
+    lowerLimit: 0
+    upperLimit: 1
+    speed: 40
+    playOnAwake: 0
   currentlyFading: 0
   fadingUp: 0
   fadeOnStart: 1

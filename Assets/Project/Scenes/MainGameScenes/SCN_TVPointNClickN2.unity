@@ -8514,7 +8514,7 @@ MonoBehaviour:
       dialogueLine: This movie is ridiculous...
       fromJesse: 0
       hasBrotherResponse: 1
-      brotherResponseTime: 1
+      brotherResponseTime: 1.2
       brotherDialogueLine: 'I dunno, it''s kinda scary. What if that happened to
         Harold? '
       triggerChance: 1
@@ -8522,7 +8522,7 @@ MonoBehaviour:
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 2
+      dialogueVisibleTime: 3.5
   - isTexture: 0
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8543,7 +8543,7 @@ MonoBehaviour:
     hasDialogue: 0
     trigger:
       dialogueLine: '...Another horror movie? '
-      fromJesse: 1
+      fromJesse: 0
       hasBrotherResponse: 0
       brotherResponseTime: 1
       brotherDialogueLine: 
@@ -8582,7 +8582,7 @@ MonoBehaviour:
       triggerOnlyOnce: 1
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 2
+      dialogueVisibleTime: 3
   - isTexture: 1
     UseCamera: 0
     characterTrigger: {fileID: 0}
@@ -8600,19 +8600,19 @@ MonoBehaviour:
     playOneOffSoundOnStart: 0
     stopSoundInsteadOfPlay: 0
     oneOffSource: {fileID: 0}
-    hasDialogue: 0
+    hasDialogue: 1
     trigger:
-      dialogueLine: Alright, let's get to it...
-      fromJesse: 0
-      hasBrotherResponse: 0
-      brotherResponseTime: 1
+      dialogueLine: 'Let''s start the game - I hate the news. '
+      fromJesse: 1
+      hasBrotherResponse: 1
+      brotherResponseTime: 1.3
       brotherDialogueLine: Alright, I hear ya...
       triggerChance: 1
       cooldown: 2
       triggerOnlyOnce: 0
       cooldownTimer: 0
       hasTriggered: 0
-      dialogueVisibleTime: 2
+      dialogueVisibleTime: 3.5
 --- !u!4 &1111314899
 Transform:
   m_ObjectHideFlags: 0
@@ -12617,7 +12617,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -20982,6 +20982,12 @@ MonoBehaviour:
     lowerLimit: 0
     upperLimit: 0.6
     speed: 15
+    playOnAwake: 1
+  - source: {fileID: 1424983082}
+    track: {fileID: 8300000, guid: 840db3a13c2907a4bb08be362f636364, type: 3}
+    lowerLimit: 0
+    upperLimit: 1
+    speed: 40
     playOnAwake: 1
   currentlyFading: 1
   fadingUp: 1
