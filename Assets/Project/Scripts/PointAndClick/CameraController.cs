@@ -308,7 +308,7 @@ public class CameraController : MonoBehaviour
 
     private IEnumerator EnableDeviceAfterDelay()
     { 
-        yield return new WaitForSeconds(EnableDeviceDelay);
+        yield return new WaitForSecondsRealtime(EnableDeviceDelay);
         if (mouseEnabled != true)
         {
             enableDeviceCoroutine = null;

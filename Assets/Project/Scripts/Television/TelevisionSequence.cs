@@ -413,7 +413,7 @@ public class TelevisionSequence : MonoBehaviour
             FGDialogueManager.instance.TriggerDialogue(endTrigger);
         }
 
-        if(roomToneFades.Length > 0)
+        if(roomToneFades != null && roomToneFades.Length > 0)
         {
             foreach(AudioVolumeFade fade in roomToneFades)
             {

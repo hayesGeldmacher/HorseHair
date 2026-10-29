@@ -164,7 +164,7 @@ public class OptionsMenuController : MonoBehaviour
         }
 
         EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(
-            selectable.gameObject);
+        //EventSystem.current.SetSelectedGameObject(
+        //    selectable.gameObject);
     }
 }

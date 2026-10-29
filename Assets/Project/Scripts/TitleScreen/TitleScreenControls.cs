@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -27,6 +28,9 @@ public class TitleScreenControls : MonoBehaviour
     {
         if (newGameConfirmation != null)
             newGameConfirmation.SetActive(false);
+        
+        if (deleteGameConfirmation != null)
+            deleteGameConfirmation.SetActive(false);
 
         if (headphonesPanel != null)
             headphonesPanel.SetActive(false);
