@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEngine;
+using UnityEngine.Rendering;
 
 
 /// <summary>
@@ -49,6 +51,9 @@ public struct LightProfile
     [Range(0.0f, 0.5f)]
     public float fogIntensity;
     public Color fogColor;
+
+    public bool editPP; //edit post process
+    public float filmIntensity;
 }
 
 //struct for day-specific lighting data
@@ -124,10 +129,20 @@ public class LightMapController : MonoBehaviour
     private Color defaultFogColor;
     private float defaultFogIntensity;
 
+
+    [Header("Post-Process")]
+    [SerializeField] private Volume volume;
+    [SerializeField] private UnityEngine.Rendering.Universal.FilmGrain filmGrain;
+
     void Start() 
     {
         defaultFogColor = RenderSettings.fogColor;
         defaultFogIntensity = RenderSettings.fogDensity;
+
+        if (volume.profile.TryGet<UnityEngine.Rendering.Universal.FilmGrain>(out UnityEngine.Rendering.Universal.FilmGrain grain))
+        {
+            filmGrain = grain;
+        }
 
         SetTimeAndDay();
     }
@@ -221,7 +236,8 @@ public class LightMapController : MonoBehaviour
 
          
          */
-        //finall, set the lightmaps!
+
+        //finally, set the lightmaps!
         SetLightMap(profile.lightMapState);
 
         float newReflectionIntensity = (profile.alterReflection ? profile.reflectionIntensity : 1.0f);
@@ -237,6 +253,13 @@ public class LightMapController : MonoBehaviour
 
         bool isMorning = (currentTime == TimeOfDay.Morning) ? true : false;
         OnChangeLights?.Invoke(currentDay, isMorning);
+
+
+        //check for post process change
+        if (profile.editPP)
+        {
+            filmGrain.intensity.value = profile.filmIntensity;
+        }
     }
 
     private Material GetWindowLarge(LargeWindowState windowState)
