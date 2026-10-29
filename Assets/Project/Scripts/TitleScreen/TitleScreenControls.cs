@@ -82,7 +82,7 @@ public class TitleScreenControls : MonoBehaviour
             return;
 
         if (newGameConfirmation != null)
-            newGameConfirmation.SetActive(false);
+           // newGameConfirmation.SetActive(false);
 
         BeginNewGame();
     }
