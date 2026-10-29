@@ -73,6 +73,9 @@ public class PlayerController_PointAndClick : MonoBehaviour
     [Header("Phone UI")]
     [SerializeField] private Animator phoneImageAnim;
 
+    [Header("Save Level")]
+    [SerializeField] private bool SaveLevel = true;
+
     [Header("Other")]
 
     private int dialogueIndex = 0;
@@ -183,7 +186,8 @@ public class PlayerController_PointAndClick : MonoBehaviour
             IsTranstionScene = true;
         }
         ChangingTask(PlayerPrefs.GetString("StartingTask"));
-        PlayerPrefs.SetString("Scene", SceneManager.GetActiveScene().name);
+        if (SaveLevel)
+            PlayerPrefs.SetString("Scene", SceneManager.GetActiveScene().name);
     }
 
     //helper function for determining the correct audio clip to play when starting a new PNC seqeunce, based on time - HG

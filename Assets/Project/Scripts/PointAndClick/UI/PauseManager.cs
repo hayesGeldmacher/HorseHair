@@ -17,6 +17,9 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private OptionsMenuController optionsMenu;
     [SerializeField] private Selectable pauseFirstSelected;
 
+    [Header("Title Screen")]
+    [SerializeField] private string TitleSceneName = "Title";
+
     public bool IsPaused { get; private set; }
 
     private Coroutine selectionCoroutine;
@@ -67,12 +70,16 @@ public class PauseManager : MonoBehaviour
 
     private bool PauseButtonPressed()
     {
+        if (SceneManager.GetActiveScene().name == TitleSceneName)
+            return false;
         return Input.GetKeyDown(KeyCode.Escape) ||
                Input.GetKeyDown(KeyCode.JoystickButton7);
     }
 
     private bool CancelButtonPressed()
     {
+        if (SceneManager.GetActiveScene().name == TitleSceneName)
+            return false;
         return Input.GetKeyDown(KeyCode.Escape) ||
                Input.GetButtonDown("Cancel");
     }
@@ -89,7 +96,11 @@ public class PauseManager : MonoBehaviour
 
     public void OpenOptions()
     {
-        if (!IsPaused)
+        if (SceneManager.GetActiveScene().name == TitleSceneName)
+            SetPaused(true);
+
+        if (!IsPaused && 
+            SceneManager.GetActiveScene().name != TitleSceneName)
             return;
 
         if (pauseHomeScreen != null)
@@ -110,9 +121,17 @@ public class PauseManager : MonoBehaviour
         if (optionsScreen != null)
             optionsScreen.SetActive(false);
 
-        if (pauseHomeScreen != null)
-            pauseHomeScreen.SetActive(true);
-
+        if (SceneManager.GetActiveScene().name != TitleSceneName) {
+            if (pauseHomeScreen != null)
+                pauseHomeScreen.SetActive(true);
+        }
+        else
+        {
+            if (pauseHomeScreen != null)
+                pauseHomeScreen.SetActive(false);
+            ResumeGame();
+        }
+        
         SelectNextFrame(pauseFirstSelected);
     }
 
