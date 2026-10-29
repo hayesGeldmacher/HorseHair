@@ -39655,8 +39655,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: da012f26d47a2ff4b9040f362d150c61, type: 3}
     - target: {fileID: 7721657243373945279, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
+      propertyPath: meshRender
+      value: 
+      objectReference: {fileID: 2048386822}
+    - target: {fileID: 7721657243373945279, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: description
       value: 'Whose leaving cheese out at room temp? '
+      objectReference: {fileID: 0}
+    - target: {fileID: 7721657243373945279, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
+      propertyPath: disableMesh
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7721657243373945279, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: ResetAfterClick
@@ -87213,11 +87221,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTaskNum
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: currentTimeOfDay
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6877676650831836745, guid: 7a72546651ed43543b9d3c34a10637eb, type: 3}
       propertyPath: tasks.Array.size
@@ -102438,7 +102446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7721657243373945279, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: dialogueText.dialogue.Array.data[0].dialogue
-      value: I don't wanna touch the bird with this...
+      value: I don't remember the last time I used this.
       objectReference: {fileID: 0}
     - target: {fileID: 8557965160574445519, guid: 9f2804e921aeac64ea1f03072450e9d1, type: 3}
       propertyPath: m_Name
@@ -109706,15 +109714,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalScale.x
-      value: 11.785526
+      value: 11.954951
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalScale.y
-      value: 11.785526
+      value: 11.525066
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalScale.z
-      value: 11.785526
+      value: 11.525066
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalPosition.x
@@ -109730,19 +109738,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.58039856
+      value: -0.58066016
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.021367304
+      value: 0.017060893
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.81245923
+      value: 0.8125611
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.050902475
+      value: -0.047825586
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -109754,7 +109762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 5.392
+      value: 4.784
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3355eb009ea218e4f96c5d17b0a5a143, type: 3}
       propertyPath: m_Name
@@ -111999,6 +112007,10 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: af06cc243aaa0114989af30aa06ed305, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 69.616
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: af06cc243aaa0114989af30aa06ed305, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: af06cc243aaa0114989af30aa06ed305, type: 3}
       propertyPath: m_Name
@@ -118711,6 +118723,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: af06cc243aaa0114989af30aa06ed305, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2048386819}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: af06cc243aaa0114989af30aa06ed305, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2048386822}
   m_SourcePrefab: {fileID: 100100000, guid: af06cc243aaa0114989af30aa06ed305, type: 3}
 --- !u!4 &2048386817 stripped
 Transform:
@@ -118739,6 +118754,25 @@ MonoBehaviour:
   availableTime:
   - timeOfDay: 1
     TaskNum: 2
+--- !u!23 &2048386820 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: af06cc243aaa0114989af30aa06ed305, type: 3}
+  m_PrefabInstance: {fileID: 2048386816}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2048386822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048386818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b19813d133290c4b94733d506f73d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MeshRenderDisappear
+  render: {fileID: 2048386820}
+  gObject: {fileID: 494597111}
 --- !u!1001 &2049259749
 PrefabInstance:
   m_ObjectHideFlags: 0

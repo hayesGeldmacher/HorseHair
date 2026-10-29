@@ -13,6 +13,10 @@ public class EventClick_Item : EventClick
     public bool Collected = false;
     public bool Activated = false;
 
+    [Header("Bird-Specific")]
+    public bool disableMesh = false;
+    public MeshRenderDisappear meshRender;
+
     protected override void SetType()
     {
         Type = ObjectType.Item;
@@ -36,6 +40,10 @@ public class EventClick_Item : EventClick
     private void CollectedByPlayer()
     {
         Collected = true;
+        if (disableMesh && meshRender)
+        {
+            meshRender.DisableMesh();
+        }
         gameObject.SetActive(false);
     }
 
