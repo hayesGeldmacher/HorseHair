@@ -21,6 +21,10 @@ public class DSCam : MonoBehaviour
     private bool finalFollowPlayer = true;
 
     private float furthestCameraX;
+    private float shakeTimer;
+    private float shakeDuration;
+    private float shakeStrength;
+    private Vector3 shakeOffset;
 
     void Start()
     {
@@ -28,6 +32,39 @@ public class DSCam : MonoBehaviour
     }
 
     void LateUpdate()
+    {
+        transform.position -= shakeOffset;
+        UpdateCameraFollow();
+        shakeOffset = CalculateShakeOffset();
+        transform.position += shakeOffset;
+    }
+
+    private void OnDisable()
+    {
+        transform.position -= shakeOffset;
+        shakeOffset = Vector3.zero;
+        shakeTimer = 0f;
+    }
+
+    public void Shake(float duration, float strength)
+    {
+        shakeDuration = Mathf.Max(duration, 0.01f);
+        shakeTimer = shakeDuration;
+        shakeStrength = Mathf.Max(strength, 0f);
+    }
+
+    private Vector3 CalculateShakeOffset()
+    {
+        if (shakeTimer <= 0f)
+            return Vector3.zero;
+
+        shakeTimer = Mathf.Max(0f, shakeTimer - Time.unscaledDeltaTime);
+        float remainingPercentage = Mathf.Clamp01(shakeTimer / shakeDuration);
+        Vector2 offset = Random.insideUnitCircle * shakeStrength * remainingPercentage;
+        return new Vector3(offset.x, offset.y, 0f);
+    }
+
+    private void UpdateCameraFollow()
     {
 
         if (isZooming)
