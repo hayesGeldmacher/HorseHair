@@ -19650,6 +19650,7 @@ MonoBehaviour:
   playerLeftOffset: 3
   smoothSpeed: 5
   leftBoundOffset: 5.5
+  followingPlayer: 1
 --- !u!43 &1355390040
 Mesh:
   m_ObjectHideFlags: 0
@@ -30396,7 +30397,6 @@ GameObject:
   - component: {fileID: 2080034434}
   - component: {fileID: 2080034433}
   - component: {fileID: 2080034437}
-  - component: {fileID: 2080034438}
   m_Layer: 10
   m_Name: DreamLightBulbTrigger1
   m_TagString: Untagged
@@ -30510,20 +30510,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DreamLightBulbTrigger
   cam: {fileID: 1346963763}
---- !u!114 &2080034438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2080034430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b65e19d34402c3a4f8b2c9dee244926c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StopCameraFollowTrigger
-  exitWalkSpeed: 5
-  exitPadding: 0.02
 --- !u!1 &2081109878
 GameObject:
   m_ObjectHideFlags: 0

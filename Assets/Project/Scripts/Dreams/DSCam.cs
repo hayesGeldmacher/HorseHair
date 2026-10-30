@@ -17,7 +17,7 @@ public class DSCam : MonoBehaviour
     public float leftBoundOffset = 8f;
     float t = 0;
 
-    private bool followingPlayer = true;
+    public bool followingPlayer = true;
     private bool finalFollowPlayer = true;
 
     private float furthestCameraX;
@@ -85,13 +85,13 @@ public class DSCam : MonoBehaviour
 
         if(!followingPlayer)
         {
+                    smoothSpeed = 0;
+                    finalFollowPlayer = false;
             if (smoothSpeed > 0 && fightCharacter.movingForward)
             {
                 smoothSpeed -= Time.deltaTime * 3;
                 if(smoothSpeed < 0)
                 {
-                    smoothSpeed = 0;
-                    finalFollowPlayer = false;
                 }
             }
         }
