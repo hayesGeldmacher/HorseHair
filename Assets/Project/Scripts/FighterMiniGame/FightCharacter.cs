@@ -2028,15 +2028,32 @@ private void Kick()
         }
     }
 
+    private DSCam dreamImpactCamera;
+
     private void PlayConnectedAttackImpact(FighterMoveType moveType)
     {
+        AttackImpactSettings impact = GetAttackImpact(moveType);
+
+        if (dreamTraversalMode)
+        {
+            if (dreamImpactCamera == null)
+                dreamImpactCamera = FindAnyObjectByType<DSCam>();
+
+            if (dreamImpactCamera != null && dreamImpactCamera.isActiveAndEnabled)
+            {
+                if (impact.shakeDuration > 0f && impact.shakeStrength > 0f)
+                    dreamImpactCamera.Shake(impact.shakeDuration, impact.shakeStrength * Mathf.Max(0f, impactShakeMultiplier));
+
+                return;
+            }
+        }
+
         if (fightCamera == null)
             fightCamera = FindAnyObjectByType<FightCameraFollow>();
 
         if (fightCamera == null)
             return;
 
-        AttackImpactSettings impact = GetAttackImpact(moveType);
         if (impact.shakeDuration > 0f && impact.shakeStrength > 0f)
             fightCamera.Shake(impact.shakeDuration, impact.shakeStrength * Mathf.Max(0f, impactShakeMultiplier));
 
