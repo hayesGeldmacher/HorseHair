@@ -67,6 +67,11 @@ public class CursorManager : MonoBehaviour
             SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Environment]);
     }
 
+    public void ForceChangeDefault()
+    {
+        SetActiveCursorsScript(_CursorsScriptsDict[CursorType.Default]);
+    }
+
     private void SetActiveCursorsScript(CursorsScript CursorsScript)
     {
         _CursorsScript = CursorsScript;

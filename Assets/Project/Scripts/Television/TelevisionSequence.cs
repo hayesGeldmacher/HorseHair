@@ -132,8 +132,9 @@ public class TelevisionSequence : MonoBehaviour
     [SerializeField] private CamZoomLerp camZoomLerp;
     [SerializeField] private bool stopSoundOnEndTV;
     [SerializeField] private AudioSource endTVSource;
-    
 
+    [SerializeField] private GameObject Interactable;
+    [SerializeField] private CursorManager CM;
 
     private bool calledChannelChange = false; //is the channel currently changing
     private bool calledEndSequence = false; //has the tv ending sequence been called yet
@@ -190,10 +191,20 @@ public class TelevisionSequence : MonoBehaviour
                     else
                     {
                         CallEndTelevisionSequence();
+                        if (Interactable != null)
+                            Interactable.SetActive(false);
+                        StartCoroutine(delayForce());
                     }
                 }
             }
         }
+    }
+
+    private IEnumerator delayForce()
+    {
+        yield return new WaitForSecondsRealtime(0.5f);
+        if (CM != null)
+            CM.ForceChangeDefault();
     }
 
     private IEnumerator BeginTelevisionScene()
