@@ -30396,6 +30396,7 @@ GameObject:
   - component: {fileID: 2080034434}
   - component: {fileID: 2080034433}
   - component: {fileID: 2080034437}
+  - component: {fileID: 2080034438}
   m_Layer: 10
   m_Name: DreamLightBulbTrigger1
   m_TagString: Untagged
@@ -30490,7 +30491,7 @@ Transform:
   m_GameObject: {fileID: 2080034430}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.010140016, z: -0, w: 0.9999486}
-  m_LocalPosition: {x: 142.74, y: 1.27, z: 58.57}
+  m_LocalPosition: {x: 147.08, y: 1.27, z: 58.66}
   m_LocalScale: {x: 5.502151, y: 4.4533396, z: 9.846695}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30509,6 +30510,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DreamLightBulbTrigger
   cam: {fileID: 1346963763}
+--- !u!114 &2080034438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2080034430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b65e19d34402c3a4f8b2c9dee244926c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StopCameraFollowTrigger
+  exitWalkSpeed: 5
+  exitPadding: 0.02
 --- !u!1 &2081109878
 GameObject:
   m_ObjectHideFlags: 0
