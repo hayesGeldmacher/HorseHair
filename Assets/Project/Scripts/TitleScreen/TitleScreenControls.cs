@@ -43,12 +43,13 @@ public class TitleScreenControls : MonoBehaviour
 
         starting = true;
 
-        PlayerPrefs.DeleteKey("TaskNum");
-        PlayerPrefs.DeleteKey("Environment");
-        PlayerPrefs.DeleteKey("TimeOfDay");
-        PlayerPrefs.DeleteKey("Goal");
-        PlayerPrefs.DeleteKey("Thoughts");
-        PlayerPrefs.DeleteKey("Scene");
+        //PlayerPrefs.DeleteKey("TaskNum");
+        //PlayerPrefs.DeleteKey("Environment");
+        //PlayerPrefs.DeleteKey("TimeOfDay");
+        //PlayerPrefs.DeleteKey("Goal");
+        //PlayerPrefs.DeleteKey("Thoughts");
+        //PlayerPrefs.DeleteKey("Scene");
+        PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("TaskNum", 0);
         PlayerPrefs.SetInt("TimeOfDay", (int)TimeOfDay.Morning);
         PlayerPrefs.Save();
@@ -106,12 +107,13 @@ public class TitleScreenControls : MonoBehaviour
     {
         if (starting)
             return;
-        PlayerPrefs.DeleteKey("TaskNum");
-        PlayerPrefs.DeleteKey("Environment");
-        PlayerPrefs.DeleteKey("TimeOfDay");
-        PlayerPrefs.DeleteKey("Goal");
-        PlayerPrefs.DeleteKey("Thoughts");
-        PlayerPrefs.DeleteKey("Scene");
+        //PlayerPrefs.DeleteKey("TaskNum");
+        //PlayerPrefs.DeleteKey("Environment");
+        //PlayerPrefs.DeleteKey("TimeOfDay");
+        //PlayerPrefs.DeleteKey("Goal");
+        //PlayerPrefs.DeleteKey("Thoughts");
+        //PlayerPrefs.DeleteKey("Scene");
+        PlayerPrefs.DeleteAll();
         PlayerPrefs.Save();
         if (deleteGameConfirmation != null)
             deleteGameConfirmation.SetActive(false);
@@ -261,6 +263,11 @@ public class TitleScreenControls : MonoBehaviour
             return;
 
         starting = true;
+
+        PlayerPrefs.SetInt("TaskNum", PlayerPrefs.GetInt("SavedTaskNum"));
+        PlayerPrefs.SetInt("TimeOfDay", PlayerPrefs.GetInt("SavedTime"));
+        PlayerPrefs.Save();
+
         StartCoroutine(FadeAndLoad(PlayerPrefs.GetString("Scene")));
     }
 

@@ -189,7 +189,12 @@ public class PlayerController_PointAndClick : MonoBehaviour
         }
         ChangingTask(PlayerPrefs.GetString("StartingTask"));
         if (SaveLevel)
+        {
             PlayerPrefs.SetString("Scene", SceneManager.GetActiveScene().name);
+            PlayerPrefs.SetInt("SavedTime", PlayerPrefs.GetInt("TimeOfDay", 0));
+            PlayerPrefs.SetInt("SavedTaskNum", PlayerPrefs.GetInt("TaskNum", 0));
+            PlayerPrefs.Save();
+        }
     }
 
     //helper function for determining the correct audio clip to play when starting a new PNC seqeunce, based on time - HG
